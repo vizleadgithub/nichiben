@@ -156,8 +156,8 @@ foreach ($tmp as $val){
 $template->assign('mtb_live_target_flg', $mtb_live_target_flg);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $mid = '';
-if(isset($_REQUEST["mid"])){
-	$mid = intval($_REQUEST["mid"]);
+if(isset($_GET["mid"])){
+	$mid = intval($_GET["mid"]);
 }
 $template->assign('mid', $mid);
 

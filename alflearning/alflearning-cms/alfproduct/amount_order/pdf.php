@@ -19,17 +19,17 @@ $mode = "";
 $order_id = "";
 $order_detail_id = "";
 $payment_status = "";
-if( isset($_REQUEST["mode"]) && !empty($_REQUEST["mode"]) ){
-	$mode = $_REQUEST["mode"];
+if( isset($_GET["mode"]) && !empty($_GET["mode"]) ){
+	$mode = $_GET["mode"];
 }
-if( isset($_REQUEST["oid"]) && !empty($_REQUEST["oid"]) ){
-	$order_id = $_REQUEST["oid"];
+if( isset($_GET["oid"]) && !empty($_GET["oid"]) ){
+	$order_id = $_GET["oid"];
 }
-if( isset($_REQUEST["order_detail_id"]) && !empty($_REQUEST["order_detail_id"]) ){
-	$order_detail_id = $_REQUEST["order_detail_id"];
+if( isset($_GET["order_detail_id"]) && !empty($_GET["order_detail_id"]) ){
+	$order_detail_id = $_GET["order_detail_id"];
 }
-if( isset($_REQUEST["payment_status"]) && !empty($_REQUEST["payment_status"]) ){
-	$payment_status = $_REQUEST["payment_status"];
+if( isset($_GET["payment_status"]) && !empty($_GET["payment_status"]) ){
+	$payment_status = $_GET["payment_status"];
 }
 
 if($order_id == ""){

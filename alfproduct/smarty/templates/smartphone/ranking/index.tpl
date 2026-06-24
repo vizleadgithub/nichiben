@@ -63,7 +63,7 @@
 		<!--{foreach from=$file_list item="row"}-->
 			<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 			<!--{if $row.file_text!=""}-->
-				<a href="/custom_pages/cp-content/uploads/<!--{$row.file_path|escape}-->" target="_blank">こちら</a>
+				<a href="/custom_pages/cp-content/uploads/<!--{$row.file_path|escape}-->" target="_blank" rel="noopener noreferrer">こちら</a>
 				<!--<a href="/custom_pages/cp-content/uploads/<!--{$row.file_path|escape}-->" target="_blank"><!--{$row.file_text|escape}--></a>-->
 			<!--{/if}-->
 			<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->

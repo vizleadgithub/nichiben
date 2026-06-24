@@ -21,13 +21,13 @@
 		<tr>
 			<th>商品名</th>
 			<td>
-				<input type="text" name="search_product_name" value="<!--{$search_product_name}-->" /> 
+				<input type="text" name="search_product_name" value="<!--{$search_product_name|escape}-->" />
 			</td>
 		</tr>
 		<tr>
 			<th>商品コード</th>
 			<td>
-				<input type="text" name="search_product_code" value="<!--{$search_product_code}-->" /> 
+				<input type="text" name="search_product_code" value="<!--{$search_product_code|escape}-->" />
 			</td>
 		</tr>
 		<tr>
@@ -65,7 +65,7 @@
 <br />
 
 <!--{if $disp_flg}-->
-	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
+	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
 	（全<!--{$all_count}-->件）
 
 	<!--{if $search_monthly==""}-->

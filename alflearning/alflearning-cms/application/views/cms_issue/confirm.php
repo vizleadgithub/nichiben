@@ -163,7 +163,7 @@
 													<div style="float: left; width: 85px;"><?= $issue_submit_date; ?></div>
 													<div style="float: left; width: 120px;"><?= $issue['issue_submit_student_name'][$id]; ?></div>
 													<div style="float: left; width: 150px;">
-														<a href="<?= $this->config->item('stream_get_url'); ?>/school_<?= $this->session->userdata['cms_master.login.school_id']; ?>/issue_<?= $issue['issue_id']; ?>/student_<?= $issue['issue_submit_student_id'][$id]; ?>/issue_submit_<?= $issue['issue_submit_id'][$id]; ?>/<?= $issue['issue_submit_name'][$id]; ?>?token=<?= $this->session->userdata('session_id'); ?>" target="_blank"><?= $issue['issue_submit_logic_name'][$id]; ?></a>
+														<a href="<?= $this->config->item('stream_get_url'); ?>/school_<?= $this->session->userdata['cms_master.login.school_id']; ?>/issue_<?= $issue['issue_id']; ?>/student_<?= $issue['issue_submit_student_id'][$id]; ?>/issue_submit_<?= $issue['issue_submit_id'][$id]; ?>/<?= $issue['issue_submit_name'][$id]; ?>?token=<?= $this->session->userdata('session_id'); ?>" target="_blank" rel="noopener noreferrer"><?= $issue['issue_submit_logic_name'][$id]; ?></a>
 													</div>
 													<div style="float: left; width: 220px;"><?= nl2br($issue['issue_submit_caption'][$id]); ?></div>
 													<div style="clear:both;">

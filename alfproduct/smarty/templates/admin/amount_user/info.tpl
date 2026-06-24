@@ -7,13 +7,13 @@
 		<tr>
 			<th style="width:100px;">登録番号</th>
 			<td style="">
-				<!--{$arr_student.lawyer_number}-->
+				<!--{$arr_student.lawyer_number|escape}-->
 			</td>
 		</tr>
 		<tr>
 			<th style="">氏名</th>
 			<td style="">
-				<!--{$arr_student.student_name}-->
+				<!--{$arr_student.student_name|escape}-->
 			</td>
 		</tr>
 		<tr>
@@ -25,7 +25,7 @@
 		<tr>
 			<th style="">所属弁護士会</th>
 			<td style="">
-				<!--{$arr_student.association_name}-->
+				<!--{$arr_student.association_name|escape}-->
 			</td>
 		</tr>
 	</table>
@@ -34,7 +34,7 @@
 </form>
 <br />
 
-<a href="csv.php?sid=<!--{$sid}-->" target="_blank"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
+<a href="csv.php?sid=<!--{$sid}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
 <table class="list">
 	<form accept-charset="utf-8" method="get" name="list_form">
 	</form>

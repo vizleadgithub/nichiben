@@ -223,7 +223,7 @@
 							
 							var problem_kind_detail = response['exam_problems_problem_contents'];
 							if(problem_kind_link != ''){
-								problem_kind_detail = '[No'+response['exam_problems_problem_contents_id']+'] '+'<a style="text-decoration: none;" href="'+problem_kind_link+'" target="_blank">'+response['exam_problems_problem_contents']+'</a>';
+								problem_kind_detail = '[No'+response['exam_problems_problem_contents_id']+'] '+'<a style="text-decoration: none;" href="'+problem_kind_link+'" target="_blank" rel="noopener noreferrer">'+response['exam_problems_problem_contents']+'</a>';
 							}
 							
 							var answer_kind = "<?= $this->lang->line_or_def('common_exam_answer','解答'); ?>";

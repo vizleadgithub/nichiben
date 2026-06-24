@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title><!--{$admin_main_title}-->　|　JFBA総合研修サイト</title>
+	<title><!--{$admin_main_title|escape}-->　|　JFBA総合研修サイト</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" href="/static/image/favicon.ico" >
 	<link rel="stylesheet" href="/alfproduct/css/common.css?_=20250305" type="text/css" />
@@ -60,7 +60,7 @@
 		//	$('.clear_date').click(function(){$(this).prev().val(''); return false;});
 	</script>
 	<script type="text/javascript" src="/alfproduct/js/main.js"></script>
-	<title><!--{$admin_main_title}-->　|　JFBA総合研修サイト</title>
+	<title><!--{$admin_main_title|escape}-->　|　JFBA総合研修サイト</title>
 </head>
 <body>
 <!--{php}-->
@@ -75,8 +75,8 @@ $arr_session = $objAlfSession->session_check();
 		<div id="header_top">
 			<a href="/"><img class="logo" src="/static/image/logo_On-Tap.png" style="margin-top: 12px; margin-right: 4px; margin-bottom: 12px; margin-left: 4px;"></a>
 			<div class="header_top_right">
-				<div class="login_teacher_name"><!--{$admin_main_name}--></div>
-				<div class="login_school_name">[<!--{$admin_main_school}-->]管理ページ</div>
+				<div class="login_teacher_name"><!--{$admin_main_name|escape}--></div>
+				<div class="login_school_name">[<!--{$admin_main_school|escape}-->]管理ページ</div>
 				<div class="logout">
 					<a href="javascript:void(0);" onclick="logout_confirm('/', 'ログアウトしますか？');return false;">ログアウト</a>
 				</div>
@@ -190,8 +190,8 @@ $arr_session = $objAlfSession->session_check();
 
 	<div id="wrapper">
 		<h1 class="claerfix" style="margin-top:0px;margin-bottom:0px;">
-			<div class="title"><!--{$admin_main_title}-->　</div>
-			<div class="comment"><!--{$admin_main_comment}-->　</div>
+			<div class="title"><!--{$admin_main_title|escape}-->　</div>
+			<div class="comment"><!--{$admin_main_comment|escape}-->　</div>
 		</h1>
 		<div id="main">
 			<div id="menu_sub" class="clearfix">
@@ -222,8 +222,8 @@ $arr_session = $objAlfSession->session_check();
 	</style>
 	<div id="footer">
 		<ul><!--{*
-			<li><a target="_blank" href="http://alfredcore.com/">運営会社</a></li>
-			<li><a target="_blank" href="http://alfredcore.com/privacy">個人情報保護方針</a></li>
+			<li><a target="_blank" rel="noopener noreferrer" href="http://alfredcore.com/">運営会社</a></li>
+			<li><a target="_blank" rel="noopener noreferrer" href="http://alfredcore.com/privacy">個人情報保護方針</a></li>
 		*}--></ul>
 		<div style="text-align:right;margin-top:5px;"><!--{*ALF Learning 1.5.0 | Powered by Alfredcore,inc*}--></div>
 	</div>

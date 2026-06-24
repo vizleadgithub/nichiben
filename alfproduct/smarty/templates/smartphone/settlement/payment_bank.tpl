@@ -120,7 +120,7 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 		</tr>
 	</table>
 <br />
-<span style="color:#ff6666;"><a href="http://www.nichibenren.or.jp/copyright/privacy.html" target="_blank">プライパシーポリシー</a>及び<a href="/policy" target="_blank">利用規約</a>に同意の上，以上の内容を確認して「購入を完了する」ボタンをクリックして下さい。</span>
+<span style="color:#ff6666;"><a href="http://www.nichibenren.or.jp/copyright/privacy.html" target="_blank" rel="noopener noreferrer">プライパシーポリシー</a>及び<a href="/policy" target="_blank" rel="noopener noreferrer">利用規約</a>に同意の上，以上の内容を確認して「購入を完了する」ボタンをクリックして下さい。</span>
 <br />
 
 <div style="padding-top:20px;">

@@ -135,8 +135,8 @@ $btn_type_list = array('1' => '解答する', '2' => '回答する');
 $template->assign('btn_type_list', $btn_type_list);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $mid = '';
-if(isset($_REQUEST["mid"])){
-	$mid = intval($_REQUEST["mid"]);
+if(isset($_GET["mid"])){
+	$mid = intval($_GET["mid"]);
 }
 $template->assign('mid', $mid);
 

@@ -158,7 +158,7 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 保存期間　必要情報入力後，本サイトの購入手続終了まで<br />
 本サイトの購入手続が終了いたしました後，カード情報は一切保持しません。<br />
 	<br />
-	<span style="color:#ff6666;"><a href="http://www.nichibenren.or.jp/copyright/privacy.html" target="_blank">プライパシーポリシー</a>及び<a href="/policy" target="_blank">利用規約</a>に同意の上，以上の内容を確認して「購入を完了する」ボタンをクリックして下さい。</span>
+	<span style="color:#ff6666;"><a href="http://www.nichibenren.or.jp/copyright/privacy.html" target="_blank" rel="noopener noreferrer">プライパシーポリシー</a>及び<a href="/policy" target="_blank" rel="noopener noreferrer">利用規約</a>に同意の上，以上の内容を確認して「購入を完了する」ボタンをクリックして下さい。</span>
 	<br />
 入力した決済情報は暗号化され送信されます。
 	</div>

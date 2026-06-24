@@ -19,13 +19,13 @@
 		<tr>
 			<th style="">登録番号</th>
 			<td style="">
-				<!--{$arr_order[0].lawyer_number}-->
+				<!--{$arr_order[0].lawyer_number|escape}-->
 			</td>
 		</tr>
 		<tr>
 			<th style="">氏名</th>
 			<td style="">
-				<!--{$arr_order[0].student_name}-->
+				<!--{$arr_order[0].student_name|escape}-->
 			</td>
 		</tr>
 		<tr>
@@ -37,7 +37,7 @@
 		<tr>
 			<th style="">所属弁護士会</th>
 			<td style="">
-				<!--{$arr_order[0].association_name}-->
+				<!--{$arr_order[0].association_name|escape}-->
 			</td>
 		</tr>
 		<tr>
@@ -76,7 +76,7 @@
 <script type="text/javascript">
 	function non_download() {
 		var atena = document.getElementById("atena").value;
-		if (confirm("宛名は、以下のように発行されます。\n\n" + atena + "\n<!--{$arr_order[0].student_name}--> 様\n\n発行しても宜しいですか？")){
+		if (confirm("宛名は、以下のように発行されます。\n\n" + atena + "\n<!--{$arr_order[0].student_name|escape}--> 様\n\n発行しても宜しいですか？")){
 			document.getElementById('download_btn').disabled = true;
 			window.document.downloadForm.submit();
 		}

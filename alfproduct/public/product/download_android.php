@@ -8,10 +8,10 @@ require_once(dirname(__FILE__) ."./../../module/value_check.php");
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect = new DbConnect();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-if (isset($_REQUEST['pid']) && isset($_REQUEST['cdname']) && isset($_REQUEST['uid'])){
-	$pid = $_REQUEST['pid'];
-	$cdname = $_REQUEST['cdname'];
-	$uid = $_REQUEST['uid'];
+if (isset($_GET['pid']) && isset($_GET['cdname']) && isset($_GET['uid'])){
+	$pid = $_GET['pid'];
+	$cdname = $_GET['cdname'];
+	$uid = $_GET['uid'];
 	
 	if(!cmCheckInput($pid, 'CK_NUM') && !cmCheckInput($uid, 'CK_NUM')){
 		if ($uid != ''){
@@ -30,15 +30,15 @@ if (isset($_REQUEST['pid']) && isset($_REQUEST['cdname']) && isset($_REQUEST['ui
 							header('Cache-Control: no-cache, must-revalidate');
 							header('Connection: close');
 							//readfile($file_path);
-							// out of memoryƒGƒ‰[‚ªo‚éê‡‚Éo—Íƒoƒbƒtƒ@ƒŠƒ“ƒO‚ğ–³Œø
+							// out of memoryï¿½Gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½ï¿½ê‡ï¿½Éoï¿½Íƒoï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ğ–³Œï¿½
 							while (ob_get_level() > 0) {
 								ob_end_clean();
 							}
 							ob_start();
-							// ƒtƒ@ƒCƒ‹o—Í
+							// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½oï¿½ï¿½
 							if ($file = fopen($file_path, 'rb')) {
 								while(!feof($file) and (connection_status() == 0)) {
-									echo fread($file, '4096'); //w’è‚µ‚½ƒoƒCƒg”‚¸‚Âo—Í
+									echo fread($file, '4096'); //ï¿½wï¿½è‚µï¿½ï¿½ï¿½oï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Âoï¿½ï¿½
 									ob_flush();
 								}
 								ob_flush();

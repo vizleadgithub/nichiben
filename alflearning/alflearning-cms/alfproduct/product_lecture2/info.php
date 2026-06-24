@@ -23,8 +23,8 @@ if ($login_bar_association_id == 1){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if(isset($_REQUEST["pid"])){
-	$pid = intval($_REQUEST["pid"]);
+if(isset($_GET["pid"])){
+	$pid = intval($_GET["pid"]);
 }
 if (strlen($pid) == 0) {
 	header('Location: index.php');

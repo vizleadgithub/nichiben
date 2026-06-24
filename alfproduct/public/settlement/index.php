@@ -1,4 +1,9 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('HTTP/1.1 405 Method Not Allowed');
+    header('Allow: POST');
+    exit;
+}
 include(dirname(__FILE__) ."./../../module/module.php");
 $_SESSION['wp_page_head_title'] = '講座購入';
 $objDbConnect = new DbConnect();
@@ -7,7 +12,7 @@ $template = new Template();
 $back_url = "/";
 
 $err_msg = '';
-$mode = $_REQUEST["mode"] ?? '';
+$mode = $_POST["mode"] ?? '';
 $product_type_add = $_POST['hid_product_type_add'] ?? '';
 
 // ログインチェック
@@ -21,7 +26,7 @@ if (!$st_login_check){
 }
 
 $pid = "";
-if (isset($_REQUEST['pid'])){
+if (isset($_POST['pid'])){
 	if (strpos($_SERVER['HTTP_REFERER'], '/product/detail.php') !== false
 	 && strpos($_SERVER['HTTP_REFERER'], '/settlement/index.php') !== false){
 		$template->layout_noside('settlement/err.tpl');
@@ -29,7 +34,7 @@ if (isset($_REQUEST['pid'])){
 		exit;
 	}
 
-	$pid = intval($_REQUEST['pid'] ?? 0);
+	$pid = intval($_POST['pid'] ?? 0);
 	if(cmCheckInput($pid, 'CK_NUM')){
 		$template->layout_noside('settlement/err.tpl');
 		$objDbConnect->close();

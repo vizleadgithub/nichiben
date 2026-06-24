@@ -23,8 +23,8 @@ $template->assign('nichibenren_flg', $nichibenren_flg);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if(isset($_REQUEST["pid"])){
-	$pid = intval($_REQUEST["pid"]);
+if(isset($_GET["pid"])){
+	$pid = intval($_GET["pid"]);
 }
 if (strlen($pid) == 0) {
 	header('Location: index.php');
@@ -158,16 +158,16 @@ foreach ($tmp_mtb_bar_association as $key => $val){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 削除ID＆削除結果
 $oid = '';
-if(isset($_REQUEST["oid"])){
-	$oid = $_REQUEST["oid"];
+if(isset($_GET["oid"])){
+	$oid = $_GET["oid"];
 }
 $odid = '';
-if(isset($_REQUEST["odid"])){
-	$odid = $_REQUEST["odid"];
+if(isset($_GET["odid"])){
+	$odid = $_GET["odid"];
 }
 $res = '';
-if(isset($_REQUEST["res"])){
-	$res = $_REQUEST["res"];
+if(isset($_GET["res"])){
+	$res = $_GET["res"];
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if(!isset($_POST['mode'])){
@@ -206,8 +206,8 @@ if(!isset($_POST['mode'])){
 elseif($_POST['mode'] == 'delete') {
 	// 生徒ID
 	$sid = '';
-	if(isset($_REQUEST["sid"])){
-		$sid = $_REQUEST["sid"];
+	if(isset($_GET["sid"])){
+		$sid = $_GET["sid"];
 	}
 	if (strlen($sid) == 0) {
 		header('Location: index.php');
@@ -231,8 +231,8 @@ elseif($_POST['mode'] == 'delete') {
 elseif($_POST['mode'] == 'complete') {
 	// 生徒ID
 	$sid = '';
-	if(isset($_REQUEST["sid"])){
-		$sid = $_REQUEST["sid"];
+	if(isset($_GET["sid"])){
+		$sid = $_GET["sid"];
 	}
 	if (strlen($sid) == 0) {
 		header('Location: index.php');
@@ -263,8 +263,8 @@ elseif($_POST['mode'] == 'complete') {
 elseif($_POST['mode'] == 'status') {
 	// 生徒ID
 	$sid = '';
-	if(isset($_REQUEST["sid"])){
-		$sid = $_REQUEST["sid"];
+	if(isset($_GET["sid"])){
+		$sid = $_GET["sid"];
 	}
 	if (strlen($sid) == 0) {
 		header('Location: index.php');

@@ -24,17 +24,17 @@ $mode = "";
 $order_id = "";
 $order_detail_id = "";
 $payment_status = "";
-if( isset($_REQUEST["mode"]) && !empty($_REQUEST["mode"]) ){
-	$mode = strip_tags($_REQUEST["mode"]);
+if( isset($_GET["mode"]) && !empty($_GET["mode"]) ){
+	$mode = strip_tags($_GET["mode"]);
 }
-if( isset($_REQUEST["oid"]) && !empty($_REQUEST["oid"]) ){
-	$order_id = intval($_REQUEST["oid"]);
+if( isset($_GET["oid"]) && !empty($_GET["oid"]) ){
+	$order_id = intval($_GET["oid"]);
 }
-if( isset($_REQUEST["order_detail_id"]) && !empty($_REQUEST["order_detail_id"]) ){
-	$order_detail_id = intval($_REQUEST["order_detail_id"]);
+if( isset($_GET["order_detail_id"]) && !empty($_GET["order_detail_id"]) ){
+	$order_detail_id = intval($_GET["order_detail_id"]);
 }
-if( isset($_REQUEST["payment_status"]) && !empty($_REQUEST["payment_status"]) ){
-	$payment_status = strip_tags($_REQUEST["payment_status"]);
+if( isset($_GET["payment_status"]) && !empty($_GET["payment_status"]) ){
+	$payment_status = strip_tags($_GET["payment_status"]);
 }
 
 if($order_id == ""){

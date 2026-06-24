@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title><!--{$admin_main_title}-->　|　JFBA総合研修サイト</title>
+	<title><!--{$admin_main_title|escape}-->　|　JFBA総合研修サイト</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" href="/alfproduct/image/favicon.ico" >
 	<link rel="stylesheet" href="/alfproduct/css/common.css?_=20250305" type="text/css" />
@@ -58,8 +58,8 @@
 <body>
 	<div id="wrapper">
 		<h1 class="claerfix" style="margin-top:0px;margin-bottom:0px;">
-			<div class="title"><!--{$admin_main_title}-->　</div>
-			<div class="comment"><!--{$admin_main_comment}-->　</div>
+			<div class="title"><!--{$admin_main_title|escape}-->　</div>
+			<div class="comment"><!--{$admin_main_comment|escape}-->　</div>
 		</h1>
 		<div id="main">
 			<div id="menu_sub" class="clearfix"><br></div>

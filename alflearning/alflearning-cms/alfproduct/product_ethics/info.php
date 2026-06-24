@@ -120,8 +120,8 @@ $template->assign('ethic_group', get_ethic_group());
 $template->assign('bar_association_year', get_bar_association_year_select());
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $mid = '';
-if(isset($_REQUEST["mid"])){
-	$mid = intval($_REQUEST["mid"]);
+if(isset($_GET["mid"])){
+	$mid = intval($_GET["mid"]);
 }
 $template->assign('mid', $mid);
 

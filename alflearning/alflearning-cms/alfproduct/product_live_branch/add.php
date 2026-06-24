@@ -1,4 +1,9 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('HTTP/1.1 405 Method Not Allowed');
+    header('Allow: POST');
+    exit;
+}
 ini_set('display_errors', 1);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //include(dirname(__FILE__) ."./../../module/module.php");

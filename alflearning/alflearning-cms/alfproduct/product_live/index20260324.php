@@ -397,8 +397,6 @@ WHERE
 
 //echo $sql.$where.$order;
 
-echo "<!--[".$sql.$where.$order.$offset."]-->";
-
 $ret = $objDbConnect->query_fetch_arr($sql.$where.$order.$offset);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $template->admin_title("登録商品一覧");

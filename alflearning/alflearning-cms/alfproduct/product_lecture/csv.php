@@ -52,15 +52,15 @@ if( isset($_SESSION["product_lecture_info.search_end_date"]) && !empty($_SESSION
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if(isset($_REQUEST["pid"])){
-	$pid = $_REQUEST["pid"];
+if(isset($_GET["pid"])){
+	$pid = $_GET["pid"];
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 弁護士会支部ID
 $aid = '';
 //$atype = '';
-if(isset($_REQUEST["aid"])){
-	$aid = $_REQUEST["aid"];
+if(isset($_GET["aid"])){
+	$aid = $_GET["aid"];
 }
 //if(isset($_REQUEST["atype"])){
 //	$atype = $_REQUEST["atype"];
@@ -68,8 +68,8 @@ if(isset($_REQUEST["aid"])){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // CSV種類
 $type = '';
-if(isset($_REQUEST["type"])){
-	$type = $_REQUEST["type"];
+if(isset($_GET["type"])){
+	$type = $_GET["type"];
 }
 if (strlen($type) == 0) {
 	header("Location: /index.php");

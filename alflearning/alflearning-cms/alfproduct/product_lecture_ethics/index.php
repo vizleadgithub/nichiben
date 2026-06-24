@@ -426,8 +426,6 @@ if( $disp_flg ){
 	$order = " ORDER BY tbl_product.product_id DESC ";
 	//$sql = "select tbl_product.product_id,TP.product_name,DATE_FORMAT(TP.start_date,'%Y/%m/%d %H:%i') as start_date,DATE_FORMAT(TP.end_date,'%Y/%m/%d %H:%i') as end_date,DATE_FORMAT(TPLT.live_start_date,'%Y/%m/%d') as live_start_date from ((tbl_product TP LEFT JOIN tbl_product_add TPA ON (TP.product_id = TPA.product_id)) LEFT JOIN tbl_product_live_training TPLT ON (TP.product_id = TPLT.product_id)) LEFT JOIN rel_product_bar_association RPBA ON (TP.product_id = RPBA.product_id) where tbl_product.del_flg=0 ";
 
-	echo "<!--[".$sql.$where.$group.$order.$offset."]-->";
-
 	$ret = $objDbConnect->query_fetch_arr($sql.$where.$group.$order.$offset);
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

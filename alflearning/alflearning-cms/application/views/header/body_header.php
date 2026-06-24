@@ -159,9 +159,9 @@
 							if(preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/', $user_auth['url']) != 1) {
 								$temp_li = $temp_li.'><a href="'.$user_auth['url'].'?_='.date("YmdHis").'">'.$user_auth['name'].'</a></li>';
 							}else if($user_auth['auth'] == 'outside_elm'){
-								$temp_li = $temp_li.'><a href="'.$user_auth['url'].'" target="_blank"><img src="/static/image/logo_eLearningManager.png" />'.$user_auth['name'].'</a></li>';
+								$temp_li = $temp_li.'><a href="'.$user_auth['url'].'" target="_blank" rel="noopener noreferrer"><img src="/static/image/logo_eLearningManager.png" />'.$user_auth['name'].'</a></li>';
 							}else{
-								$temp_li = $temp_li.'><a href="'.$user_auth['url'].'" target="_blank">'.$user_auth['name'].'</a></li>';
+								$temp_li = $temp_li.'><a href="'.$user_auth['url'].'" target="_blank" rel="noopener noreferrer">'.$user_auth['name'].'</a></li>';
 							}
 							
 							print($temp_li);

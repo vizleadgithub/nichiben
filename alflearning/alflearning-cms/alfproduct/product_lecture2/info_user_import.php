@@ -1,4 +1,9 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('HTTP/1.1 405 Method Not Allowed');
+    header('Allow: POST');
+    exit;
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //include(dirname(__FILE__) ."./../../module/module.php");
 include("/srv/alfproduct/module/module.php");
@@ -25,8 +30,8 @@ if ($login_bar_association_id == 1){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if(isset($_REQUEST["pid"])){
-	$pid = intval( $_REQUEST["pid"] );
+if(isset($_POST["pid"])){
+	$pid = intval( $_POST["pid"] );
 }
 if (strlen($pid) == 0) {
 	header('Location: index.php');
@@ -53,11 +58,11 @@ if (!$arr_input) {
 // 弁護士会ID
 $aid = '';
 //$atype = '';
-if(isset($_REQUEST["aid"])){
-	$aid = $_REQUEST["aid"];
+if(isset($_POST["aid"])){
+	$aid = $_POST["aid"];
 }
-//if(isset($_REQUEST["atype"])){
-//	$atype = $_REQUEST["atype"];
+//if(isset($_POST["atype"])){
+//	$atype = $_POST["atype"];
 //}
 //if (strlen($aid) == 0 || strlen($atype) == 0) {
 if (strlen($aid) == 0) {
@@ -187,12 +192,12 @@ $oid = '';
 //if(isset($_FILES["oid_file"])){
 //	$oid = $_FILES["oid_file"]["tmp_name"];
 //}
-if(isset($_REQUEST["oid"])){
-	$oid = $_REQUEST["oid"];
+if(isset($_POST["oid"])){
+	$oid = $_POST["oid"];
 }
 $res = '';
-if(isset($_REQUEST["res"])){
-	$res = $_REQUEST["res"];
+if(isset($_POST["res"])){
+	$res = $_POST["res"];
 }
 $res_cnt = '';
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

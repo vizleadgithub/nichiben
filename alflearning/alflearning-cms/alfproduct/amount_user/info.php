@@ -21,8 +21,8 @@ if ($login_bar_association_id == 1){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $member_id = "";
-if( isset($_REQUEST["sid"]) && !empty($_REQUEST["sid"]) ){
-	$member_id = intval($_REQUEST["sid"]);
+if( isset($_GET["sid"]) && !empty($_GET["sid"]) ){
+	$member_id = intval($_GET["sid"]);
 }
 if($member_id == ""){
 	header("Location: /index.php");

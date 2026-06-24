@@ -68,8 +68,8 @@ $arr_passport_target = get_mtb_passport_target_checkbox();
 $template->assign('arr_passport_target', $arr_passport_target);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $mid = '';
-if(isset($_REQUEST["mid"])){
-	$mid = intval($_REQUEST["mid"]);
+if(isset($_GET["mid"])){
+	$mid = intval($_GET["mid"]);
 }
 $template->assign('mid', $mid);
 

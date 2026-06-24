@@ -1,4 +1,9 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('HTTP/1.1 405 Method Not Allowed');
+    header('Allow: POST');
+    exit;
+}
 include(dirname(__FILE__) ."./../../module/module.php");
 $objDbConnect = new DbConnect();
 $template = new Template();
@@ -17,10 +22,10 @@ if (strpos($_SERVER['HTTP_REFERER'], '/settlement') === false){
 $order_id = 0;
 //$pid = $_POST["pid"];
 //$payment_type = $_POST["payment_type"];
-//$pid       = $_REQUEST["pid"];
-$temp_date = $_REQUEST["temp_date"];
-$temp_no   = $_REQUEST["temp_no"];
-$payment_type = $_REQUEST["payment_type"];
+//$pid       = $_POST["pid"];
+$temp_date = $_POST["temp_date"];
+$temp_no   = $_POST["temp_no"];
+$payment_type = $_POST["payment_type"];
 
 
 

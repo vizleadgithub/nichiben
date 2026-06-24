@@ -1,4 +1,9 @@
 <?php
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('HTTP/1.1 405 Method Not Allowed');
+    header('Allow: POST');
+    exit;
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //include(dirname(__FILE__) ."./../../module/module.php");
 include("/srv/alfproduct/module/module.php");
@@ -25,8 +30,8 @@ $template->assign('nichibenren_flg', $nichibenren_flg);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if(isset($_REQUEST["pid"])){
-	$pid = $_REQUEST["pid"];
+if(isset($_POST["pid"])){
+	$pid = $_POST["pid"];
 }
 if (strlen($pid) == 0) {
 	header('Location: index.php');
@@ -58,12 +63,12 @@ if(isset($_POST["mode"])){
 	$mode = $_POST["mode"];
 }
 $oid = '';
-if(isset($_REQUEST["oid"])){
-	$oid = $_REQUEST["oid"];
+if(isset($_POST["oid"])){
+	$oid = $_POST["oid"];
 }
 $res = '';
-if(isset($_REQUEST["res"])){
-	$res = $_REQUEST["res"];
+if(isset($_POST["res"])){
+	$res = $_POST["res"];
 }
 $res_cnt = '';
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

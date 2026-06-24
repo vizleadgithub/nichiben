@@ -201,7 +201,7 @@ $(function(){
 
 					<h3>サービス拡張</h3>
 					<div class="history_detail">
-						<a href="http://elearningmanager.jp/" target="_blank">eLearning Manager</a>との連携に対応しました（別途ご契約が必要となります）<br />
+						<a href="http://elearningmanager.jp/" target="_blank" rel="noopener noreferrer">eLearning Manager</a>との連携に対応しました（別途ご契約が必要となります）<br />
 					</div>
 				</li>
 				<li>

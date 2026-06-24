@@ -206,7 +206,7 @@
 <br />
 
 <!--{if $disp_flg}-->
-	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
+	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
 	<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中）
 	<table class="list">
 		<form accept-charset="utf-8" method="get" name="list_form">

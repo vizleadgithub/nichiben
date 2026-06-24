@@ -41,7 +41,7 @@
 				<select name="search_association">
 					<option value="">-</option>
 				<!--{foreach from=$arr_association item="row"}-->
-					<option value="<!--{$row.id}-->" <!--{if $row.id==$search_association}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->" <!--{if $row.id==$search_association}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -61,7 +61,7 @@
 			<th>入金ステータス</th>
 			<td>
 				<!--{foreach from=$arr_payment_status item="row"}-->
-					<input type="checkbox" name="search_payment_status[]" value="<!--{$row.id}-->" id="search_payment_status_<!--{$row.id}-->"<!--{if in_array($row.id,$search_payment_status)}--> checked="checked"<!--{/if}-->><label for="search_payment_status_<!--{$row.id}-->"><!--{$row.name}--></label>&nbsp;
+					<input type="checkbox" name="search_payment_status[]" value="<!--{$row.id}-->" id="search_payment_status_<!--{$row.id}-->"<!--{if in_array($row.id,$search_payment_status)}--> checked="checked"<!--{/if}-->><label for="search_payment_status_<!--{$row.id}-->"><!--{$row.name|escape}--></label>&nbsp;
 				<!--{/foreach}-->
 			</td>
 		</tr>
@@ -75,7 +75,7 @@
 			<th>請求書</th>
 			<td>
 				<!--{foreach from=$arr_claim_flg item="row"}-->
-					<input type="checkbox" name="search_claim_flg[]" value="<!--{$row.id}-->" id="search_claim_flg_<!--{$row.id}-->"<!--{if in_array($row.id,$search_claim_flg)}--> checked="checked"<!--{/if}-->><label for="search_claim_flg_<!--{$row.id}-->"><!--{$row.name}--></label>&nbsp;
+					<input type="checkbox" name="search_claim_flg[]" value="<!--{$row.id}-->" id="search_claim_flg_<!--{$row.id}-->"<!--{if in_array($row.id,$search_claim_flg)}--> checked="checked"<!--{/if}-->><label for="search_claim_flg_<!--{$row.id}-->"><!--{$row.name|escape}--></label>&nbsp;
 				<!--{/foreach}-->
 			</td>
 		</tr>
@@ -88,7 +88,7 @@
 
 
 <!--{if $disp_flg}-->
-	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
+	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
 	<!--{$list_start}-->～<!--{$list_end}-->件を表示中（全<!--{$list_max}-->件）
 	<table class="list">
 		<form accept-charset="utf-8" method="get" name="list_form">

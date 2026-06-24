@@ -11,10 +11,10 @@
 	<tr>
 		<td>
 			<!--{if $err_msg!=""}-->
-			<!--{$err_msg}-->
+			<!--{$err_msg|escape}-->
 			<!--{/if}-->
 			<!--{if $ok_msg!=""}-->
-			<!--{$ok_msg}-->
+			<!--{$ok_msg|escape}-->
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -50,7 +50,7 @@
 			<!--{/foreach}-->
 		</table>
 		<!--{if $ok_msg!=""}-->
-		<!--{$ok_msg}-->
+		<!--{$ok_msg|escape}-->
 		<!--{/if}-->
 
 	<!--{/if}-->

@@ -3,4 +3,8 @@
 /alflearning/alflearning-cms/pma
 *.log
 
-/secure_report
+/secure_report/*.md
+/secure_report/*.pdf
+/secure_report/body-*
+/secure_report/edu*
+/secure_report/additional

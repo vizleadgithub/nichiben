@@ -358,8 +358,6 @@ $order = " ORDER BY product_id DESC ";
 
 $sql = "select tbl_product.product_id,tbl_product.product_name,DATE_FORMAT(tbl_product.start_date,'%Y/%m/%d %H:%i') as start_date,DATE_FORMAT(tbl_product.end_date,'%Y/%m/%d %H:%i') as end_date from tbl_product INNER JOIN tbl_product_add ON tbl_product.product_id = tbl_product_add.product_id INNER JOIN tbl_product_ethic_training ON tbl_product.product_id = tbl_product_ethic_training.product_id where del_flg=0 ";
 
-echo "<!--[".$sql.$where.$order.$offset."]-->";
-
 $ret = $objDbConnect->query_fetch_arr($sql.$where.$order.$offset);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $template->admin_title("登録商品一覧");

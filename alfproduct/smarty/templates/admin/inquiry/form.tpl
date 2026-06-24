@@ -3,11 +3,11 @@
 </div>
 
 
-<form action="<!--{$next_url}-->" accept-charset="utf-8" method="post" name="inquiry_form">
+<form action="<!--{$next_url|escape}-->" accept-charset="utf-8" method="post" name="inquiry_form">
 	<input type="hidden" name="iid" value="<!--{$iid|escape}-->">
 	<h2>お問い合わせの内容を確認</h2>
 	<!--{foreach from=$arr_err item="err"}-->
-	<div class="error"><!--{$err}--></div>
+	<div class="error"><!--{$err|escape}--></div>
 	<!--{/foreach}-->
 	<table class="form">
 		<!--{if $iid!=""}-->

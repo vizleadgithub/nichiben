@@ -53,12 +53,12 @@
 				<td colspan="3"><input type="text" name="zip1" id="zip1" value="<!--{$arr_input.zip1|escape}-->" <!--{$zip1_style}--> style="width:20%;" />
 				&nbsp;-&nbsp;
 				<input type="text" name="zip2" id="zip2" value="<!--{$arr_input.zip2|escape}-->" <!--{$zip2_style}--> style="width:25%;" /></td>
-				<a target="_blank" href="http://search.post.japanpost.jp/zipcode/"><span>郵便番号検索</span></a></td>
+				<a target="_blank" rel="noopener noreferrer" href="http://search.post.japanpost.jp/zipcode/"><span>郵便番号検索</span></a></td>
 			</tr></table>
 			<!--{if isset($err_msg.zip)}-->
 			<br /><span style="color:red;"><!--{$err_msg.zip}--></span>
 			<!--{/if}-->
-			<a target="_blank" onclick="fnCallAddress('input_zip.php', 'zip1', 'zip2', 'pref_id' ); return false;" href="javascript:void(0);"><img width="120" height="24" alt="住所自動入力" src="/img/btn_zip.jpg" style="margin-top: 10px;"></a>
+			<a target="_blank" rel="noopener noreferrer" onclick="fnCallAddress('input_zip.php', 'zip1', 'zip2', 'pref_id' ); return false;" href="javascript:void(0);"><img width="120" height="24" alt="住所自動入力" src="/img/btn_zip.jpg" style="margin-top: 10px;"></a>
 			<span> 郵便番号を入力後、クリックしてください。</span>
 		</td>
 	</tr>
