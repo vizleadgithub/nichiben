@@ -1,0 +1,275 @@
+<h2>検索する内容を入力してください</h2>
+
+<form action="#" accept-charset="utf-8" method="post" name="search_form">
+	<table class="form">
+		<tr>
+			<th>商品名</th>
+			<td colspan = "3">
+				<input type="text" name="search_product_name" size="45" value="<!--{$search_product_name|escape}-->">
+			</td>
+		</tr>
+		<tr>
+			<th>商品コード</th>
+			<td colspan = "3">
+				<input type="text" name="search_product_code" size="45" value="<!--{$search_product_code|escape}-->">
+			</td>
+		</tr>
+		<tr>
+			<th>商品種別</th>
+			<td>
+				<!--{foreach from=$arr_product_type_add item="row"}-->
+					<input type="checkbox" name="search_product_type_add[]" value="<!--{$row.id}-->" id="search_product_type_add_<!--{$row.id}-->"<!--{if in_array($row.id,$search_product_type_add)}--> checked="checked"<!--{/if}-->><label for="search_product_type_add_<!--{$row.id}-->"><!--{$row.name}--></label>&nbsp;
+				<!--{/foreach}-->
+			</td>
+		</tr>
+		<tr>
+			<th>弁護士会</th>
+			<td>
+				<select name="search_association">
+					<option value=""></option>
+				<!--{foreach from=$arr_bar_association item="row"}-->
+					<option value="<!--{$row.id}-->" <!--{if $row.id==$search_association}--> selected<!--{/if}--> ><!--{$row.name}--></option>
+				<!--{/foreach}-->
+				</select>
+			</td>
+		</tr>
+
+
+<script type="text/javascript">
+    /* ブラウザ判別 */
+    var ie=document.all ? 1 : 0;
+    var ns6=document.getElementById&&!document.all ? 1 : 0;
+    var opera=window.opera ? 1 : 0;
+
+    /* 子メニューの表示・非表示切替 */
+    function openFolder(childObj, parentObj){
+        var child="";
+        var parent="";
+        var sw="/alfproduct/images/show.gif"; /* フォルダ表示時のアイコン画像 */
+        var hd="/alfproduct/images/hide.gif"; /* フォルダ非表示時のアイコン画像 */
+        if(ie || ns6 || opera){
+            child=ns6 ? document.getElementById(childObj).style : document.all(childObj).style;
+            parent=ns6 ? document.getElementById(parentObj) : document.all(parentObj);
+            if (child.display=="none"){
+                child.display="block";
+                parent.src=sw;
+            }else{
+                child.display="none";
+                parent.src=hd;
+            }
+        }
+    }
+</script>
+		<tr>
+<!-- style="background: none repeat scroll 0% 0% rgb(246, 246, 243);"-->
+			<th>カテゴリ</td>
+			<td colapan="3">
+				<ul style="list-style-type:none;">
+				<!--{foreach from=$arr_category item="row"}-->
+					<li>
+						<input type="checkbox" name="search_category[]" value="<!--{$row.term_id|escape}-->" id="arr_term_id<!--{$row.term_id|escape}-->" onclick="check_cat('<!--{$row.term_id|escape}-->');"<!--{if in_array($row.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row.term_id|escape}-->"><!--{$row.name|escape}--></label>&nbsp;&nbsp;
+						<!--{if $row.categorys|@count>0}--><img id="close_<!--{$row.term_id|escape}-->" src="/alfproduct/images/hide.gif" onclick="openFolder('open_<!--{$row.term_id|escape}-->', 'close_<!--{$row.term_id|escape}-->')" alt="" /><!--{/if}-->
+					</li>
+					<div id="open_<!--{$row.term_id|escape}-->" class="child" style="display:none;">
+					<ul style="margin-left:15px;list-style-type:none;">
+					<!--{foreach from=$row.categorys item="row2"}-->
+						<li>
+							→<input type="checkbox" name="search_category[]" value="<!--{$row2.term_id|escape}-->" id="arr_term_id<!--{$row2.term_id|escape}-->" onclick="check_cat('<!--{$row2.term_id|escape}-->');"<!--{if in_array($row2.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row2.term_id|escape}-->"><!--{$row2.name|escape}--></label>&nbsp;&nbsp;
+							<!--{if $row2.categorys|@count>0}--><img id="close_<!--{$row2.term_id|escape}-->" src="/alfproduct/images/hide.gif" onclick="openFolder('open_<!--{$row2.term_id|escape}-->', 'close_<!--{$row2.term_id|escape}-->')" alt="" /><!--{/if}-->
+						</li>
+						<div id="open_<!--{$row2.term_id|escape}-->" class="child" style="display:none;">
+						<ul style="margin-left:15px;list-style-type:none;">
+						<!--{foreach from=$row2.categorys item="row3"}-->
+							<li>
+								→→<input type="checkbox" name="search_category[]" value="<!--{$row3.term_id|escape}-->" id="arr_term_id<!--{$row3.term_id|escape}-->" onclick="check_cat('<!--{$row3.term_id|escape}-->');"<!--{if in_array($row3.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row3.term_id|escape}-->"><!--{$row3.name|escape}--></label>&nbsp;&nbsp;
+								<!--{if $row3.categorys|@count>0}--><img id="close_<!--{$row3.term_id|escape}-->" src="/alfproduct/images/hide.gif" onclick="openFolder('open_<!--{$row3.term_id|escape}-->', 'close_<!--{$row3.term_id|escape}-->')" alt="" /><!--{/if}-->
+							</li>
+							<div id="open_<!--{$row3.term_id|escape}-->" class="child" style="display:none;">
+							<ul style="margin-left:15px;list-style-type:none;">
+							<!--{foreach from=$row3.categorys item="row4"}-->
+								<li>
+									→→→<input type="checkbox" name="search_category[]" value="<!--{$row4.term_id|escape}-->" id="arr_term_id<!--{$row4.term_id|escape}-->" onclick="check_cat('<!--{$row4.term_id|escape}-->');"<!--{if in_array($row4.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row4.term_id|escape}-->"><!--{$row4.name|escape}--></label>&nbsp;&nbsp;
+									<!--{if $row4.categorys|@count>0}--><img id="close_<!--{$row4.term_id|escape}-->" src="/alfproduct/images/hide.gif" onclick="openFolder('open_<!--{$row4.term_id|escape}-->', 'close_<!--{$row4.term_id|escape}-->')" alt="" /><!--{/if}-->
+								</li>
+								<div id="open_<!--{$row4.term_id|escape}-->" class="child" style="display:none;">
+								<ul style="margin-left:15px;list-style-type:none;">
+								<!--{foreach from=$row4.categorys item="row5"}-->
+									<li>
+										→→→→<input type="checkbox" name="search_category[]" value="<!--{$row5.term_id|escape}-->" id="arr_term_id<!--{$row5.term_id|escape}-->" onclick="check_cat('<!--{$row5.term_id|escape}-->');"<!--{if in_array($row5.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row5.term_id|escape}-->"><!--{$row5.name|escape}--></label>&nbsp;&nbsp;
+									</li>
+								<!--{/foreach}-->
+								</ul>
+								</div>
+							<!--{/foreach}-->
+							</ul>
+							</div>
+						<!--{/foreach}-->
+						</ul>
+						</div>
+					<!--{/foreach}-->
+					</ul>
+					</div>
+				<!--{/foreach}-->
+				</ul>
+			</td>
+		</tr>
+		<script type="text/javascript">
+			var arr_cat_id = [];
+			var arr_cat_name = [];
+			var arr_par_id = [];
+			<!--{foreach from=$arr_cat_list item=val}-->
+				arr_cat_id[arr_cat_id.length] = "<!--{$val.term_id}-->";
+				arr_cat_name[arr_cat_name.length] = "<!--{$val.name}-->";
+				arr_par_id[arr_par_id.length] = "<!--{$val.parent}-->";
+			<!--{/foreach}-->
+			function check_cat(cat_id){
+				var temp_i = cat_id;
+				if (document.getElementById("arr_term_id"+cat_id).checked ===true){
+					while (temp_i!="0" && temp_i!="21" ){
+						for (var i=0;i<arr_cat_id.length;i++){
+							if(temp_i==arr_cat_id[i]){
+								//alert(temp_i + ":" + arr_par_id[i]);
+								if(document.getElementById("arr_term_id"+temp_i) != null){
+									document.getElementById("arr_term_id"+temp_i).checked = true;
+								}
+								temp_i = arr_par_id[i];
+							}
+						}
+					}
+				} else {
+					var select_cat_id = new Array(cat_id);
+					while(select_cat_id.length>0){
+						var select_par_id = new Array();
+						for (var i=0;i<select_cat_id.length;i++){
+							for (var n=0;n<arr_par_id.length;n++){
+								if (arr_par_id[n]==select_cat_id[i]){
+									select_par_id[select_par_id.length] = arr_cat_id[n];
+								} 
+							}
+						}
+						for (var i=0;i<select_par_id.length;i++){
+							if(document.getElementById("arr_term_id"+select_par_id[i]) != null){
+								document.getElementById("arr_term_id"+select_par_id[i]).checked = false;
+							}
+						}
+						select_cat_id = select_par_id;
+					}
+				}
+			}
+		</script>
+
+
+		<tr>
+			<th>公開期間</th>
+			<td colapan="3">
+				<input type="text" name="search_start_date" id="start_date" value="<!--{$search_start_date|escape}-->" readonly="" /> 
+				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.start_date.value='';">クリア</a>
+				～
+				<input type="text" name="search_end_date" id="end_date" value="<!--{$search_end_date|escape}-->" readonly="" /> 
+				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.end_date.value='';">クリア</a>
+			</td>
+		</tr>
+		<tr>
+			<th>公開状態</th>
+			<td colapan="3">
+				<input type="radio" name="search_open" value="0"<!--{if $search_open=="0" || $search_open==""}--> checked=checked<!--{/if}-->>指定無し&nbsp;&nbsp;
+				<input type="radio" name="search_open" value="1"<!--{if $search_open=="1"}--> checked=checked<!--{/if}-->>公開前&nbsp;&nbsp;
+				<input type="radio" name="search_open" value="2"<!--{if $search_open=="2"}--> checked=checked<!--{/if}-->>公開中&nbsp;&nbsp;
+				<input type="radio" name="search_open" value="3"<!--{if $search_open=="3"}--> checked=checked<!--{/if}-->>終了&nbsp;&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<th>講師名</th>
+			<td colspan = "3">
+				<input type="text" name="search_teacher" size="45" value="<!--{$search_teacher|escape}-->">
+			</td>
+		</tr>
+		<tr>
+			<th>有料・無料</th>
+			<td colspan = "3">
+				<input type="radio" name="search_free" value="0"<!--{if $search_free=="0" || $search_free==""}--> checked=checked<!--{/if}-->>指定無し&nbsp;&nbsp;
+				<input type="radio" name="search_free" value="1"<!--{if $search_free=="1"}--> checked=checked<!--{/if}-->>有料&nbsp;&nbsp;
+				<input type="radio" name="search_free" value="2"<!--{if $search_free=="2"}--> checked=checked<!--{/if}-->>無料&nbsp;&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<th>フリーワード</th>
+			<td colspan = "3">
+				<input type="text" name="search_word" size="45" value="<!--{$search_word|escape}-->">
+			</td>
+		</tr>
+	</table>
+	<div class="submit">
+		<input type='image' src='/alfproduct/images/btn_search.png' />
+	</div>
+</form>
+<br />
+
+<!--{if $disp_flg}-->
+	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
+	<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中）
+	<table class="list">
+		<form accept-charset="utf-8" method="get" name="list_form">
+			
+		</form>
+		<tr>
+			<th style="width:;">商品ID</th>
+			<th>商品名</th>
+			<th style="width:;">商品コード</th>
+			<th style="width:;">弁護士会</th>
+			<th style="width:;">実施日</th>
+			<th style="width:;">総受講者（受講完了者）</th>
+			<th style="width:;">受付期間</th>
+		</tr>
+		<!--{foreach from=$arr_list item="row"}-->
+		<!--{cycle values="0,1" assign="cycle_bg"}-->
+		<tr style="">
+			<!--{if $row.product_type_add=="1"}-->
+				<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
+			<!--{elseif $row.product_type_add=="2"}-->
+				<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
+			<!--{elseif $row.product_type_add=="3"}-->
+				<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
+			<!--{elseif $row.product_type_add=="4"}-->
+				<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
+			<!--{/if}-->
+			<td class="tdc"><!--{$row.product_name|escape}--></td>
+			<td class="tdc"><!--{$row.product_code|escape}--></td>
+			<td class="tdc">
+				<!--{*foreach from=$row.arr_sponsor item="row_sub"}-->
+					<!--{foreach from=$arr_bar_association item="row_bar_association"}-->
+						<!--{if $row_sub==$row_bar_association.id}-->
+							<!--{$row_bar_association.name|escape}-->
+						<!--{/if}-->
+					<!--{/foreach}-->
+				<!--{/foreach*}-->
+				<!--{$row.bar_association_branch_name|escape}-->
+			</td>
+			<td class="tdc"><!--{$row.dates|escape}--></td>
+			<td class="tdc">
+			<!--{if $row.product_type_add=="1"}-->
+				<!--{$row.product_type_add1_count|escape}-->
+				(<!--{$row.product_type_add1_end_count|escape}-->)名
+			<!--{elseif $row.product_type_add=="2"}-->
+				<!--{$row.product_type_add2_count|escape}-->
+				(<!--{$row.product_type_add2_end_count|escape}-->)名
+			<!--{elseif $row.product_type_add=="3"}-->
+				<!--{$row.product_type_add3_count|escape}-->
+				(<!--{$row.product_type_add3_end_count|escape}-->)名
+			<!--{elseif $row.product_type_add=="4"}-->
+			<!--{/if}-->
+			</td>
+			<td class="tdc">
+				<!--{$row.start_date|escape}-->
+				<!--{if $row.start_date=="" && $row.end_date==""}--><!--{else}-->～<!--{/if}-->
+				<!--{$row.end_date|escape}-->
+			</td>
+		</tr>
+		<!--{/foreach}-->
+		<tr>
+			<th class="pager" colspan="7">
+	<!--{$pager}-->
+			</th>
+		</tr>
+	</table>
+<!--{/if}-->

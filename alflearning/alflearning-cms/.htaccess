@@ -1,0 +1,111 @@
+<ifmodule mod_headers.c>
+    Header always edit Set-Cookie (.*) "$1; secure; SameSite=Lax"
+    Header always set X-Frame-Options "SAMEORIGIN"
+</ifmodule>
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+</IfModule>
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+AuthUserFile /srv/alflearning/alflearning-cms/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Please enter your ID and password"
+AuthType Basic
+require valid-user
+
+#Viz
+SetEnvIf X-Forwarded-For "^123\.226\.229\.81" allowed_access
+
+#ecutec
+#edutec-ginza
+SetEnvIf X-Forwarded-For "^114\.156\.71\.224" allowed_access
+#koyamen
+SetEnvIf X-Forwarded-For "^52\.194\.92\.65" allowed_access
+#ecutec-ikebukuro-yotsuya
+#SetEnvIf X-Forwarded-For "^123\.226\.231\.47" allowed_access
+#toyohumi
+SetEnvIf X-Forwarded-For "^36\.13\.166\.103" allowed_access
+#hanada
+#SetEnvIf X-Forwarded-For "^153\.124\.189\.163" allowed_access
+#dcheck
+SetEnvIf X-Forwarded-For "^117\.102\.217\.44" allowed_access
+
+#nichiben
+#nichiben-old
+#SetEnvIf X-Forwarded-For "^202\.32\.5\.243" allowed_access
+#nichiben-new1
+SetEnvIf X-Forwarded-For "^217\.178\.33\.228" allowed_access
+#nichiben-new2
+SetEnvIf X-Forwarded-For "^58\.13\.65\.242" allowed_access
+
+#ExC
+#ExC dish1
+#SetEnvIf X-Forwarded-For "^202\.19\.227\.118" allowed_access
+#ExC dish2
+#SetEnvIf X-Forwarded-For "^202\.19\.228\.118" allowed_access
+#ExC dev1
+SetEnvIf X-Forwarded-For "^121\.119\.246\.193" allowed_access
+#ExC dev2
+#SetEnvIf X-Forwarded-For "^60\.36\.184\.96" allowed_access
+#ExC dev3
+#SetEnvIf X-Forwarded-For "^118\.21\.142\.193" allowed_access
+
+#ExC secureFAT1
+SetEnvIf X-Forwarded-For "^180\.55\.103\.43"  allowed_access
+#ExC secureFAT2
+SetEnvIf X-Forwarded-For "^180\.55\.103\.42"  allowed_access
+#ExC secureFAT3
+SetEnvIf X-Forwarded-For "^180\.10\.247\.105" allowed_access
+#ExC secureFAT4
+SetEnvIf X-Forwarded-For "^180\.10\.247\.90"  allowed_access
+
+#NTT AT
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.64" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.65" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.66" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.67" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.68" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.69" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.70" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.71" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.72" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.73" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.74" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.75" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.76" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.77" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.78" allowed_access
+#SetEnvIf X-Forwarded-For "^180\.42\.54\.79" allowed_access
+
+#GMO-ASM1 /24
+SetEnvIf X-Forwarded-For "^124\.110\.208\."  allowed_access
+#GMO-ASM1 /25
+SetEnvIf X-Forwarded-For "^124\.110\.209\.(0|1[0-9]|2[0-9]|[3-9][0-9]|10[0-9]|11[0-9]|12[0-7])"  allowed_access
+
+
+SetEnvIf Request_URI ^/403\.html$ allowed_access
+
+order deny,allow
+deny from all
+allow from env=allowed_access
+
+ErrorDocument 403 /403.html
+<Files "403.html">
+    Require all granted
+    Satisfy Any
+</Files>
+
+Options  FollowSymLinks SymLinksIfOwnerMatch
+
+RewriteEngine on
+RewriteRule ^403\.html$ - [L]
+
+# ELBが付与するX-Forwarded-Protoヘッダを見てリダイレクト
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteCond $1 !^(info\.php|test\.php|index\.php|static|pma|alfproduct|js|css|jquery-ui|user_guide|.+\.gif$|.+\.jpg$|.+\.png$|.+\.js$)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+

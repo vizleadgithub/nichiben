@@ -1,0 +1,210 @@
+@import url("basic.css");
+
+body{
+	font-size		: 13px;
+	margin			: 0px;
+	color			: #222222;
+	background		: url("/static/image/background_outside.png");
+}
+
+A, A:active, A:hover{
+	color			: #00A4E2;
+}
+
+.error{
+	color				: #FF0000;
+	font-weight			: bold;
+	font-size			: 10pt;
+}
+
+.submit{
+	margin-top	: 10px;
+	text-align	: center;
+}
+	.submit INPUT{
+		margin	: 0px 15px;
+	}
+
+#footer {
+	width		: 1024px;
+	margin		: 10px auto 0px auto;
+	display		: block;
+	text-align	: center;
+	font-style	: italic;
+	font-size	: 14px;
+}
+
+TABLE.list{
+	width		: 790px;
+	margin-top	: 10px;
+}
+	TABLE.list TD, TABLE.list TH{
+		line-height	: 20px;
+	}
+	TABLE.list TH{
+		background	: #72726E;
+		color		: #FEFEFE;
+		text-align	: left;
+		padding		: 1px 3px;
+	}
+	TABLE.list TD.hover, TABLE.list TD.hover A{
+		background	: #00A4E2 !important;
+		color		: #FEFEFE;
+	}
+	TABLE.list TH.pager{
+		padding		: 0px;
+		text-align	: center;
+	}
+		TABLE.list TH.pager STRONG, TABLE.list TH.pager A{
+			text-decoration	: none;
+			display			: inline-block;
+			color			: #FEFEFE;
+			font-size		: 14px;
+			margin			: 5px;
+			vertical-align	: middle;
+		}
+		TABLE.list TH.pager STRONG{
+			background		: #00A4E2;
+			/*width			: 20px;*/
+			width			: auto;
+			min-width		: 20px;
+			text-align		: center;
+		}
+	TABLE.list TD{
+		cursor	: pointer;
+		padding	: 3px;
+	}
+
+TABLE.form{
+	width		: 790px;
+}
+	TABLE.form TD, TABLE.form TH{
+		padding	: 5px;
+	}
+
+UL.list{
+	margin-top	: 10px;
+}
+
+	UL.list LI{
+		margin-left		: 10px;
+		padding			: 5px 0px 1px 5px;
+		border-bottom	: 1px solid silver;
+	}
+
+		UL.list LI .list_title{
+			color		: #333333;
+			font-size	: 14px;
+			font-weight	: bold;
+		}
+		UL.list LI .list_title A{
+			color		: #00A4E2;
+			text-decoration	: none;
+		}
+		UL.list LI .list_caption{
+			background	: #868680;
+			color		: #FEFEFE;
+			margin		: 5px;
+			padding		: 5px;
+		}
+
+#select_all{
+	background-image	: url('/static/image/btn_select-release.png');
+	display		: block;
+	text-align	: center;
+	height		: 18px;
+	width		: 74px;
+	margin-top	: 10px;
+}
+
+/* 資料編集画面にて複数使用するため作成 */
+.select_all_affiliation{
+	background-image	: url('/static/image/btn_select-release.png');
+	display		: block;
+	text-align	: center;
+	height		: 18px;
+	width		: 74px;
+	margin-top	: 10px;
+}
+
+/* 公開期間外講座に属する授業 */
+.out_of_the_period{
+	color:darkgray;
+}
+
+/* 画面下、通知表示部分 */
+#notification_bottom_area{
+	position			: fixed;
+	left				: 0;
+	bottom				: 0;
+	width				: 100%;
+	height				: 120px;
+	overflow-y			: scroll;
+	background-image	: url('/static/image/background_notification.png');
+/*	background-color	: #696969;	*/
+/*	filter				: alpha(opacity=60);	*/	/* 背景透明度 IE用 */
+/*	-moz-opacity		: 0.6;					*/	/* 背景透明度 古いFirefox用 */
+/*	opacity				: 0.6;					*/	/* 背景透明度 Chrome, Firefox, Safari, Opera, 等の比較的新しいブラウザ用 */
+}
+	#notification_bottom_area #notification_list_area{
+		margin-top			: 16px;
+		margin				: auto;
+		width				: 800px;
+	}
+		#notification_bottom_area #notification_list_area li{
+			background-color		: black;
+			color					: #FFFFFF;
+			margin-top				: 6px;
+			margin-bottom			: 10px;
+			height					: auto;
+			width					: 800px;
+			border-radius			: 10px;		/* 四方角丸指定 CSS3 */
+			-moz-border-radius		: 10px;		/* 四方角丸指定 Firefox */
+			-webkit-border-radius	: 10px;		/* 四方角丸指定 Safari,Chrome */
+		}
+			#notification_bottom_area #notification_list_area li .date_area{
+				float					: left;
+				font-size				: 11px;
+				font-weight				: bold;
+				line-height				: 24px;
+				text-align				: center;
+				width					: 120px;
+			}
+			#notification_bottom_area #notification_list_area li .caption_area{
+				float					: left;
+				font-size				: 11px;
+				font-weight				: bold;
+				line-height				: 18px;
+				text-align				: left;
+				width					: 610px;
+				margin-bottom			: 2px;
+				margin-top				: 2px;
+			}
+			#notification_bottom_area #notification_list_area li .link_area{
+				float					: left;
+				width					: 44px;
+				margin					: 1px 0px 1px 26px;
+			}
+				#notification_bottom_area #notification_list_area li .link_area a{
+					background-image		: url('/static/image/btn_ok_check.png');
+					display					: block;
+					height					: 22px;
+				}
+				#notification_bottom_area #notification_list_area li .link_area a:link,
+				#notification_bottom_area #notification_list_area li .link_area a:visited{
+					background-position		: center top;
+				}
+				#notification_bottom_area #notification_list_area li .link_area a:hover, 
+				#notification_bottom_area #notification_list_area li .link_area a:active{
+					background-position		: center bottom;
+				}
+
+	/* 画面下、通知表示部分 リサイズのドラック部分*/
+	#notification_bottom_area .ui-resizable-n{
+		height: 10px;
+	/*	background-color: #2AB7EB;	*/
+		background-color	: #000000;
+		filter				: alpha(opacity=50);	/* 背景透明度 IE用 */
+		-moz-opacity		: 0.5;					/* 背景透明度 古いFirefox用 */
+		opacity				: 0.5;					/* 背景透明度 Chrome, Firefox, Safari, Opera, 等の比較的新しいブラウザ用 */
+	}

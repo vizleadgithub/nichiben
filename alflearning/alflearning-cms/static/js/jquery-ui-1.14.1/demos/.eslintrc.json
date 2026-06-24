@@ -1,0 +1,9 @@
+{
+	"root": true,
+
+	"extends": "../ui/.eslintrc.json",
+
+	"globals": {
+		"require": true
+	}
+}

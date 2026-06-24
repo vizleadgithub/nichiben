@@ -1,0 +1,718 @@
+<!--{$pankuzu}-->
+
+<div style="clear:both;margin:0;" class="detail_h2_1">
+	<h2><!--{$product_list.product_name|escape}-->詳細</h2>
+</div>
+<!--{*
+<div style="clear:both;">
+	<!--{$product_list.free_html_area1}-->
+</div>
+*}-->
+
+
+<!--{* eラーニング(既存カスタマイズ) *}-->
+<!--{if $product_list.product_type_add == 1}-->
+	<!--{* ------------------------------------未購入orパスポート無------------------------------------ *}-->
+	<!--{if $buy_flg}-->
+<div style="width:468px;float:left;clear:both;background-color:#fcfcfc;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
+
+		<div style="width:170px;float:left;text-align:center;">
+			<!--{* プレイヤー *}-->
+
+			<div id="rollover">
+				<!--{* 切り替え表示用の大きい画像 *}-->
+				<div style="width:155px;">
+					
+					<!--{if
+					($product_list.contents_contents1!='' && $product_list.contents_view_flg1)
+					|| ($product_list.contents_contents2!='' && $product_list.contents_view_flg2)
+					|| ($product_list.contents_contents3!='' && $product_list.contents_view_flg3)
+					|| ($product_list.contents_contents4!='' && $product_list.contents_view_flg4)
+					|| ($product_list.contents_contents5!='' && $product_list.contents_view_flg5)
+					|| ($product_list.contents_contents6!='' && $product_list.contents_view_flg6)
+					|| ($product_list.contents_contents7!='' && $product_list.contents_view_flg7)
+					|| ($product_list.contents_contents8!='' && $product_list.contents_view_flg8)
+					|| ($product_list.contents_contents9!='' && $product_list.contents_view_flg9)
+					|| ($product_list.contents_contents10!='' && $product_list.contents_view_flg10)
+					}-->
+						<div style="text-align:center;">
+
+						<!--{section name=contents_contents loop=$section_max_contents start=1}-->
+						<!--{assign var=ccno value=$smarty.section.contents_contents.index}-->
+						<!--{assign var=contents_contents_key value="contents_contents"|cat:$ccno}-->
+						<!--{assign var=contents_contents_name_key value="contents_contents"|cat:$ccno|cat:"_name"}-->
+						<!--{assign var=contents_thumbnail_key value="contents_thumbnail"|cat:$ccno}-->
+						<!--{assign var=contents_teacher_key value="contents_teacher"|cat:$ccno}-->
+						<!--{assign var=contents_start_date_key value="contents_start_date"|cat:$ccno}-->
+						<!--{assign var=contents_end_date_key value="contents_end_date"|cat:$ccno}-->
+						<!--{assign var=contents_memo_key value="contents_memo"|cat:$ccno}-->
+						<!--{assign var=contents_view_flg_key value="contents_view_flg"|cat:$ccno}-->
+						<!--{assign var=contents_free_time_key value="contents_free_time"|cat:$ccno}-->
+						<!--{assign var=video_thumbnail_key value="video_thumbnail"|cat:$ccno}-->
+						
+						<!--{if $product_list.$contents_contents_key!='' && $product_list.$contents_view_flg_key}-->
+							<!--{if $ccno != 1}-->
+								<hr style="clear:both; margin :10px auto; width:90%;" />
+							<!--{/if}-->
+							
+
+								<!--{if $product_list.$contents_thumbnail_key != ''}-->
+									<img src="/resize_image.php?image=<!--{$product_list.$contents_thumbnail_key|escape}-->&width=150&height=150" alt="" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start')" style="cursor:pointer;" />
+								<!--{elseif $product_list.$video_thumbnail_key != ''}-->
+									<img src="/resize_video_image.php?image=<!--{$product_list.$video_thumbnail_key|escape}-->&width=150&height=150" alt="" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start')" style="cursor:pointer;" />
+								<!--{else}-->
+									<img src="/resize_image.php?image=noimage.jpg&width=150&height=150" alt="" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start')" style="cursor:pointer;" />
+								<!--{/if}-->
+							
+						<!--{/if}-->
+						<!--{/section}-->
+						</div>
+					<!--{elseif $product_list.video_thumbnail1 != ''}-->
+						<img src="/resize_video_image.php?image=<!--{$product_list.video_thumbnail1|escape}-->&width=150&height=150" alt="" />
+					<!--{else}-->
+						<img src="/resize_image.php?image=noimage.jpg&width=150&height=150" alt="" />
+					<!--{/if}-->
+
+				</div>
+				
+			</div>
+		</div>
+		
+		<div style="width:290px;float:right;">
+			<div style="text-align:right;padding-top:10px;">
+				<!--{if $favorite_flg}-->
+				<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="act" value="regist" />
+				<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+					<input type="image" src="/img/list/favorite_btn.png" /><br />
+				</form>
+				<!--{/if}-->
+				<!--{if $favorite_icon_flg}-->
+				<img src="/img/list/favorite_btn_comp02.png" alt="お気に入り商品" />
+				<!--{/if}-->
+			</div>
+
+			<div class="detail_title" style="font-size:18px;color:#22730e;"><!--{$product_list.product_name|escape}--></div>
+
+			
+			<div style="text-align:right;">
+				<!--{foreach name=icon_loop from=$product_list.icon_img item=icon}-->
+				<!--{assign var=icon_cnt value=$smarty.foreach.icon_loop.iteration}-->
+					<!--{if $icon.src != ''}-->
+						<img src="/img/<!--{$icon.src|escape}-->" alt="<!--{$icon.alt|escape}-->" />
+						<!--{if $icon_cnt == 2}--><br /><!--{/if}-->
+					<!--{/if}-->
+				<!--{/foreach}-->
+			</div>
+			
+
+<table style="background-color:#F5F8EF;float:right;width:285px;">
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">講師名</th><td style="padding: 3px 10px;"><!--{$product_list.teacher|escape}--></td></tr>
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">掲載期間</th><td style="padding: 3px 10px;">
+				<!--{if $product_list.start_date!='' && $product_list.start_date!='0000-00-00 00:00:00' && $product_list.end_date!='' && $product_list.end_date!='0000-00-00 00:00:00'}-->
+					<!--{$product_list.disp_start_date|escape}-->～<!--{$product_list.disp_end_date|escape}-->
+				<!--{elseif $product_list.start_date!='' && $product_list.start_date!='0000-00-00 00:00:00'}-->
+					<!--{$product_list.disp_start_date|escape}-->～
+				<!--{elseif $product_list.end_date!='' && $product_list.end_date!='0000-00-00 00:00:00'}-->
+					～<!--{$product_list.disp_end_date|escape}-->
+				<!--{else}-->
+					常に公開
+				<!--{/if}-->
+			</td></tr>
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">総時間</th><td style="padding: 3px 10px;"><!--{$product_list.all_play_time|escape}--></td></tr>
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">価格</th><td style="padding: 3px 10px;"><!--{if $product_list.price_intax==0}-->無料<!--{else}--><!--{$product_list.price_intax|escape}-->円(税込)<!--{/if}--></td></tr>
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">備考</th><td style="padding: 3px 10px;"><!--{$product_list.memo|escape|nl2br}--></td></tr>
+</table>
+
+
+		</div>
+		<div style="clear:both;text-align:center;padding:20px;">
+			<form name="buyForm" action="http://<!--{php}-->echo $_SERVER['SERVER_NAME'];<!--{/php}-->/settlement/index.php" method="post" style="display:inline;">
+			<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+			<input type="hidden" name="hid_product_type_add" value="<!--{$product_list.product_type_add|escape}-->" />
+				<input type="image" src="/img/lecture/buy_btn.png" alt="購入する" /><br />
+			</form>
+		</div>
+		
+</div>
+
+	<!--{* ------------------------------------購入済みorパスポート有------------------------------------ *}-->
+	<!--{else}-->
+<div style="width:468px;float:left;clear:both;background-color:#fcfcfc;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
+		<div style="text-align:right;padding-top:10px;">
+			<!--{if $favorite_flg}-->
+			<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+			<input type="hidden" name="act" value="regist" />
+			<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+				<input type="image" src="/img/list/favorite_btn.png" /><br />
+			</form>
+			<!--{/if}-->
+			<!--{if $favorite_icon_flg}-->
+			<img src="/img/list/favorite_btn_comp02.png" alt="お気に入り商品" />
+			<!--{/if}-->
+		</div>
+
+		<div class="detail_title" style="font-size:18px;color:#22730e;"><!--{$product_list.product_name|escape}--></div>
+		
+		<div style="text-align:right;">
+			<!--{foreach name=icon_loop from=$product_list.icon_img item=icon}-->
+			<!--{assign var=icon_cnt value=$smarty.foreach.icon_loop.iteration}-->
+				<!--{if $icon.src != ''}-->
+					<img src="/img/<!--{$icon.src|escape}-->" alt="<!--{$icon.alt|escape}-->" />
+					<!--{if $icon_cnt == 2}--><br /><!--{/if}-->
+				<!--{/if}-->
+			<!--{/foreach}-->
+		</div>
+		
+		<center>
+		<table style="background-color:#F5F8EF;width:430px;">
+		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">講師名</th><td style="padding: 3px 10px;"><!--{$product_list.teacher|escape}--></td></tr>
+		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">掲載期間</th><td style="padding: 3px 10px;">
+			<!--{if $product_list.start_date!='' && $product_list.start_date!='0000-00-00 00:00:00' && $product_list.end_date!='' && $product_list.end_date!='0000-00-00 00:00:00'}-->
+				<!--{$product_list.disp_start_date|escape}-->～<!--{$product_list.disp_end_date|escape}-->
+			<!--{elseif $product_list.start_date!='' && $product_list.start_date!='0000-00-00 00:00:00'}-->
+				<!--{$product_list.disp_start_date|escape}-->～
+			<!--{elseif $product_list.end_date!='' && $product_list.end_date!='0000-00-00 00:00:00'}-->
+				～<!--{$product_list.disp_end_date|escape}-->
+			<!--{else}-->
+				常に公開
+			<!--{/if}-->
+		</td></tr>
+		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">総時間</th><td style="padding: 3px 10px;"><!--{$product_list.all_play_time|escape}--></td></tr>
+		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">価格</th><td style="padding: 3px 10px;"><!--{if $product_list.price_intax==0}-->無料<!--{else}--><!--{$product_list.price_intax|escape}-->円(税込)<!--{/if}--></td></tr>
+		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">備考</th><td style="padding: 3px 10px;"><!--{$product_list.memo|escape|nl2br}--></td></tr>
+		</table>
+		</center>
+
+		<br style="clear:both;" /><div style="height:3px;width:100%;border-top:solid 1px #F7F6F0;border-bottom:solid 1px #F7F6F0;margin:25px 0;clear:both;"></div>
+		
+		<div class="detail_title" style="font-size:14px;color:#22730e; text-align:center;">研修資料</div>
+		
+		<div style="text-align:center;padding:20px 0;">
+			<input type="image" src="/img/lecture/dl_btn.png" onClick="downloadPopup();">
+		</div>
+		
+		<div>
+			<!--{if
+			($product_list.contents_contents1!='' && $product_list.contents_view_flg1)
+			|| ($product_list.contents_contents2!='' && $product_list.contents_view_flg2)
+			|| ($product_list.contents_contents3!='' && $product_list.contents_view_flg3)
+			|| ($product_list.contents_contents4!='' && $product_list.contents_view_flg4)
+			|| ($product_list.contents_contents5!='' && $product_list.contents_view_flg5)
+			|| ($product_list.contents_contents6!='' && $product_list.contents_view_flg6)
+			|| ($product_list.contents_contents7!='' && $product_list.contents_view_flg7)
+			|| ($product_list.contents_contents8!='' && $product_list.contents_view_flg8)
+			|| ($product_list.contents_contents9!='' && $product_list.contents_view_flg9)
+			|| ($product_list.contents_contents10!='' && $product_list.contents_view_flg10)
+			}-->
+				<div style="height:3px;width:100%;border-top:solid 1px #F7F6F0;border-bottom:solid 1px #F7F6F0;margin:25px 0;clear:both;"></div>
+				<div class="detail_title" style="font-size:14px;color:#22730e; text-align:center;">研修パート一覧</div>
+				<div style="width:100%;border-top:solid 1px #000000;margin:5px 0;"></div>
+				
+				
+				<!--{section name=contents_contents loop=$section_max_contents start=1}-->
+				<!--{assign var=ccno value=$smarty.section.contents_contents.index}-->
+				<!--{assign var=contents_contents_key value="contents_contents"|cat:$ccno}-->
+				<!--{assign var=contents_contents_name_key value="contents_contents"|cat:$ccno|cat:"_name"}-->
+				<!--{assign var=contents_thumbnail_key value="contents_thumbnail"|cat:$ccno}-->
+				<!--{assign var=contents_teacher_key value="contents_teacher"|cat:$ccno}-->
+				<!--{assign var=contents_start_date_key value="contents_start_date"|cat:$ccno}-->
+				<!--{assign var=contents_end_date_key value="contents_end_date"|cat:$ccno}-->
+				<!--{assign var=contents_memo_key value="contents_memo"|cat:$ccno}-->
+				<!--{assign var=contents_view_flg_key value="contents_view_flg"|cat:$ccno}-->
+				<!--{assign var=contents_free_time_key value="contents_free_time"|cat:$ccno}-->
+				<!--{assign var=video_thumbnail_key value="video_thumbnail"|cat:$ccno}-->
+				<!--{assign var=video_duration_key value="video_duration"|cat:$ccno}-->
+				<!--{assign var=video_reading_key value="video_reading"|cat:$ccno}-->
+				<!--{assign var=video_view_flg_key value="video_view_flg"|cat:$ccno}-->
+				
+				<!--{if $product_list.$contents_contents_key!='' && $product_list.$contents_view_flg_key}-->
+
+					<center>
+					<table style="background-color:#F5F8EF;width:300px;">
+					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">タイトル</th><td style="padding: 3px 10px;"><!--{$ccno|escape}-->、<!--{$product_list.$contents_contents_name_key|escape}--></td></tr>
+					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">再生時間</th><td style="padding: 3px 10px;"><!--{$product_list.$video_duration_key|escape}--></td></tr>
+　　　					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">視聴済時間</th><td style="padding: 3px 10px;"><!--{if $product_list.$video_view_flg_key}--><!--{$product_list.$video_reading_key|escape}--><!--{else}-->未視聴<!--{/if}--></td></tr>
+					</table>
+					</center>
+<br />
+					<center>
+					<div class="detail_btn">
+						<img src="/img/lecture/play_btn_off.png" alt="初めから再生" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start')" style="cursor:pointer;" />
+						<!--{if $product_list.$video_view_flg_key}-->
+						<img src="/img/lecture/resume_btn_off.png" alt="続きから再生" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark')" style="cursor:pointer;" />
+						<!--{/if}-->
+					</div>
+					</center>
+				<!--{/if}-->
+				<!--{/section}-->
+			<!--{/if}-->
+		</div>
+		
+</div>
+	<!--{/if}-->
+	
+<!--{* 会場研修 *}-->
+<!--{elseif $product_list.product_type_add == 2}-->
+
+<div style="width:468px;float:left;clear:both;background-color:#fcfcfc;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
+	<div style="float:left;width:160px;height:180px;text-align:center;background-color:#8ebd55;padding:0;" class="thumb">
+		<img src="/img/list/list_img001.jpg" alt="会場研修">
+		<!--{if $product_list.thumbnail != ''}-->
+			<img src="/resize_image.php?image=<!--{$product_list.thumbnail|escape}-->&width=150&height=150" alt="" />
+		<!--{else}-->
+			<img src="/resize_image.php?image=noimage.jpg&width=150&height=150" alt="" />
+		<!--{/if}-->
+	</div>
+
+	<div>
+		<div style="text-align:right;">
+			<!--{if $favorite_flg}-->
+			<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+			<input type="hidden" name="act" value="regist" />
+			<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+				<input type="image" src="/img/list/favorite_btn.png" /><br />
+			</form>
+			<!--{/if}-->
+			<!--{if $favorite_icon_flg}-->
+			<img src="/img/list/favorite_btn_comp02.png" alt="お気に入り商品" />
+			<!--{/if}-->
+		</div>
+
+		<div class="detail_title" style="font-size:18px;color:#22730e; text-align:left;margin-left:180px;"><!--{$product_list.product_name|escape}--></div>
+		<table style="background-color:#F5F8EF;float:right;width:290px;">
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">講師名</th><td style="padding: 3px 10px;"><!--{$product_list.memo2|escape|nl2br}--></td></tr>
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">開催日時</th><td style="padding: 3px 10px;"><!--{$product_list.disp_dates|escape}--></td></tr>
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">単品単価</th><td style="padding: 3px 10px;"><!--{if $product_list.price_intax==0}-->無料<!--{else}--><!--{$product_list.price_intax|escape}-->円(税込)<!--{/if}--></td></tr>
+		</table>
+	</div>
+
+	<br style="clear:both;" /><div style="height:3px;width:100%;border-top:solid 1px #F7F6F0;border-bottom:solid 1px #F7F6F0;margin:25px 0;clear:both;"></div>
+
+		<!--{if $product_list.memo1 != ''}-->
+			■研修の内容<br />
+			<!--{$product_list.memo1|escape|nl2br}--><br /><br />
+		<!--{/if}-->
+		<!--{if $product_list.memo3 != ''}-->
+			■日時詳細<br />
+			<!--{$product_list.memo3|escape|nl2br}--><br /><br />
+		<!--{/if}-->
+		<!--{if $product_list.memo4 != ''}-->
+			■問い合わせ先<br />
+			<!--{$product_list.memo4|escape|nl2br}--><br /><br />
+		<!--{/if}-->
+		<!--{if $product_list.memo5 != ''}-->
+			■受講資格/他会員の受講等<br />
+			<!--{$product_list.memo5|escape|nl2br}--><br /><br />
+		<!--{/if}-->
+		<!--{if $product_list.contents != ''}-->
+			■備考<br />
+			<!--{$product_list.contents|escape|nl2br}-->
+		<!--{/if}-->
+	
+	<div id="search_info_area" style="padding-top:20px;">
+		<form name="search_info" action="<!--{$search_url}-->" method="post">
+		<input type="hidden" id="act" name="act" value="info_check" />
+			<div>
+				弁護士会を選択して申込をする
+			</div>
+			<div style="text-align:center;">
+				<!--{html_options name=bar_association_id options=$bar_association selected=$bar_association_id onchange="search_bar_association_branch()"}-->
+				<!--{html_options name=bar_association_branch_id options=$bar_association_branch selected=$bar_association_branch_id}-->
+				<br />
+				<input type="image" src="/img/lecture/confirm_btn.png" name="submit">
+				<!--<input type="submit" value="選択した研修会場の詳細情報を確認" />-->
+			</div>
+		</form>
+		<!--{if $bar_association_branch_info}-->
+			<div>
+				<table style="background-color:#F5F8EF;width:450px;">
+				<tr style=" border: 2px #FFFFFF solid;">
+				<th style="color:#663333;padding: 3px 10px;">弁護士会名</th><td style="padding: 3px 10px;"><!--{$bar_association_branch_info.bar_association_name|escape}--></ td>
+				<th style="color:#663333;padding: 3px 10px;">定員</th><td style="padding: 3px 10px;"><!--{$bar_association_branch_info.capacity|escape}-->名</ td>
+				</tr>
+				<tr style=" border: 2px #FFFFFF solid;">
+				<th style="color:#663333;padding: 3px 10px;">会場</th><td style="padding: 3px 10px;"><!--{$bar_association_branch_info.hall|escape}--></ td>
+				<th style="color:#663333;padding: 3px 10px;">受付</th><td style="padding: 3px 10px;"><!--{$bar_association_branch_info.receptionist_start_date|escape}-->～<!--{$bar_association_branch_info.receptionist_end_date|escape}--></ td>
+				</tr>
+				<tr style=" border: 2px #FFFFFF solid;">
+				<th style="color:#663333;padding: 3px 10px;">備考</th><td colspan="3" style="padding: 3px 10px;"><!--{$bar_association_branch_info.contents|escape|nl2br}--></td>
+				</tr>
+				</table>
+			</div>
+
+			<div style="text-align:center;">
+				詳細は、各弁護士会にお問い合わせください。
+			</div>
+			<!--{if $bar_association_branch_info.web_flg == 1}-->
+					<div style="clear:both;text-align:center;padding:20px;">
+					<!--{if $capacity_alert_flg}-->
+						<span style="color:red;">お申込み人数が定員に達したため、お申込みすることができません。</span>
+					<!--{else}-->
+						<!--{if $buy_flg}-->
+						<form name="buyForm" action="http://<!--{php}-->echo $_SERVER['SERVER_NAME'];<!--{/php}-->/settlement/index.php" method="post" style="display:inline;">
+						<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+						<input type="hidden" name="hid_product_type_add" value="<!--{$product_list.product_type_add|escape}-->" />
+						<input type="hidden" name="hid_bar_association_id" value="<!--{$bar_association_id|escape}-->" />
+						<input type="hidden" name="hid_bar_association_branch_id" value="<!--{$bar_association_branch_id|escape}-->" />
+							<input type="image" src="/img/btn/buy.png" alt="この研修に申し込む" /><br />
+						</form>
+
+						<!--{/if}-->
+					<!--{/if}-->
+					</div>
+			<!--{/if}-->
+		<!--{/if}-->	
+		<script type="text/javascript">
+		function search_bar_association_branch(){
+			document.getElementById("act").value = "search_branch";
+			document.search_info.submit();
+		}
+		</script>
+	</div>
+</div>
+	
+<!--{* 倫理代替措置研修 *}-->
+<!--{elseif $product_list.product_type_add == 3}-->
+<div style="width:468px;float:left;clear:both;background-color:#fcfcfc;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
+	<div class="detail_title" style="font-size:18px;color:#22730e; text-align:left;margin-left:180px;"><!--{$product_list.product_name|escape}--></div>
+	
+	<center>
+	<table style="background-color:#F5F8EF;width:430px;">
+	<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">講師名</th><td style="padding: 3px 10px;"><!--{$product_list.teacher|escape}--></td></tr>
+	<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">掲載期間</th><td style="padding: 3px 10px;">
+		<!--{if $product_list.start_date!='' && $product_list.start_date!='0000-00-00 00:00:00' && $product_list.end_date!='' && $product_list.end_date!='0000-00-00 00:00:00'}-->
+			<!--{$product_list.disp_start_date|escape}-->～<!--{$product_list.disp_end_date|escape}-->
+		<!--{elseif $product_list.start_date!='' && $product_list.start_date!='0000-00-00 00:00:00'}-->
+			<!--{$product_list.disp_start_date|escape}-->～
+		<!--{elseif $product_list.end_date!='' && $product_list.end_date!='0000-00-00 00:00:00'}-->
+			～<!--{$product_list.disp_end_date|escape}-->
+		<!--{else}-->
+			常に公開
+		<!--{/if}-->
+	</td></tr>
+	</center>
+
+	<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">備考</th><td style="padding: 3px 10px;"><!--{$product_list.memo|escape|nl2br}--></td></tr>
+	</table>
+
+	<br style="clear:both;" /><div style="height:3px;width:100%;border-top:solid 1px #F7F6F0;border-bottom:solid 1px #F7F6F0;margin:25px 0;clear:both;"></div>
+
+	<div class="detail_title" style="font-size:14px;color:#22730e; text-align:center;">研修資料</div>
+	
+	<div style="text-align:center;padding:20px 0;">
+		<input type="image" src="/img/lecture/dl_btn.png" onClick="downloadPopup();">
+		<!--<input type="button" value="資料一覧からダウンロード" onClick="downloadPopup();" />-->
+	</div>
+	
+	<div>
+		<!--{if
+		($product_list.contents_contents1!='')
+		|| ($product_list.contents_contents2!='')
+		|| ($product_list.contents_contents3!='')
+		|| ($product_list.contents_contents4!='')
+		|| ($product_list.contents_contents5!='')
+		|| ($product_list.contents_contents6!='')
+		|| ($product_list.contents_contents7!='')
+		|| ($product_list.contents_contents8!='')
+		|| ($product_list.contents_contents9!='')
+		|| ($product_list.contents_contents10!='')
+		}-->
+			<div style="height:3px;width:100%;border-top:solid 1px #F7F6F0;border-bottom:solid 1px #F7F6F0;margin:25px 0;clear:both;"></div>
+			<div class="detail_title" style="font-size:14px;color:#22730e; text-align:center;">研修パート一覧</div>
+			<div style="width:100%;border-top:solid 1px #000000;margin:5px 0;"></div>
+			
+			<!--{section name=contents_contents loop=$section_max_contents start=1}-->
+			<!--{assign var=ccno value=$smarty.section.contents_contents.index}-->
+			<!--{assign var=contents_contents_key value="contents_contents"|cat:$ccno}-->
+			<!--{assign var=contents_contents_name_key value="contents_contents"|cat:$ccno|cat:"_name"}-->
+			<!--{assign var=contents_thumbnail_key value="contents_thumbnail"|cat:$ccno}-->
+			<!--{assign var=contents_teacher_key value="contents_teacher"|cat:$ccno}-->
+			<!--{assign var=contents_start_date_key value="contents_start_date"|cat:$ccno}-->
+			<!--{assign var=contents_end_date_key value="contents_end_date"|cat:$ccno}-->
+			<!--{assign var=contents_memo_key value="contents_memo"|cat:$ccno}-->
+			<!--{assign var=contents_view_flg_key value="contents_view_flg"|cat:$ccno}-->
+			<!--{assign var=contents_free_time_key value="contents_free_time"|cat:$ccno}-->
+			<!--{assign var=video_thumbnail_key value="video_thumbnail"|cat:$ccno}-->
+			<!--{assign var=video_duration_key value="video_duration"|cat:$ccno}-->
+			<!--{assign var=video_reading_key value="video_reading"|cat:$ccno}-->
+			<!--{assign var=video_view_flg_key value="video_view_flg"|cat:$ccno}-->
+			
+			<!--{if $product_list.$contents_contents_key!=''}-->
+
+				<center>
+				<table style="background-color:#F5F8EF;width:300px;">
+				<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">タイトル</th><td style="padding: 3px 10px;"><!--{$ccno|escape}-->、<!--{$product_list.$contents_contents_name_key|escape}--></td></tr>
+				<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">再生時間</th><td style="padding: 3px 10px;"><!--{$product_list.$video_duration_key|escape}--></td></tr>
+　　　				<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">視聴済時間</th><td style="padding: 3px 10px;"><!--{if $product_list.$video_view_flg_key}--><!--{$product_list.$video_reading_key|escape}--><!--{else}-->未視聴<!--{/if}--></td></tr>
+				</table>
+				</center>
+<br />
+				<div class="detail_btn"><center>
+					<img src="/img/lecture/play_btn_off.png" alt="初めから再生" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start')" style="cursor:pointer;" />
+					<!--{if $product_list.$video_view_flg_key}-->
+					<img src="/img/lecture/resume_btn_off.png" alt="続きから再生" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark')" style="cursor:pointer;" /></center>
+					<!--{/if}-->
+				</div>
+			<!--{/if}-->
+			<!--{/section}-->
+		<!--{/if}-->
+	</div>
+	
+	<!--{if $all_view_flg}-->
+		<div style="width:100%;border-top:solid 1px #000000;margin:5px 0;"></div>
+		<center>
+		<table style="background-color:#F5F8EF;width:300px;">
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">倫理研修テスト</th><td style="padding: 3px 10px;">
+			<!--{if !$ethic_status}-->
+				未受講
+				<br /><a href="/ethic_treaning?pid=<!--{$pid|escape}-->">テストを受ける</a>
+			<!--{elseif $ethic_status === '1'}-->
+				受講中
+				<br /><a href="/ethic_treaning?pid=<!--{$pid|escape}-->">テストを受ける</a>
+			<!--{elseif $ethic_status >= '2'}-->
+				受講完了
+			<!--{/if}-->
+			</td></tr>
+		</table>
+		</center>
+		<!--{if $ethic_status === '3' || $ethic_status === '4' || $ethic_status === '5' || $ethic_status === '6'}-->
+		<center>
+		<table style="background-color:#F5F8EF;width:300px;">
+			<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">倫理研修再テスト</th><td style="padding: 3px 10px;">
+				<!--{if $ethic_status === '3'}-->
+					未受講
+					<br /><a href="/ethic_treaning/retry.php?pid=<!--{$pid|escape}-->">追試を受ける</a>
+				<!--{elseif $ethic_status === '4'}-->
+					受講中
+					<br /><a href="/ethic_treaning/retry.php?pid=<!--{$pid|escape}-->">追試を受ける</a>
+				<!--{elseif $ethic_status === '5' || $ethic_status === '6'}-->
+					受講完了
+				<!--{/if}-->
+			</td></tr>
+		</table>
+		</center>
+		<!--{/if}-->
+		<!--{if $ethic_status >= '2'}-->
+			<div style="text-align:center;width:100%;border-bottom:solid 1px #000000;margin:5px 0;">
+				<div class="detail_title" style="font-size:14px;color:#22730e; text-align:center;">受講結果</div>
+				<br /><a href="/ethic_treaning/result_history.php?pid=<!--{$pid|escape}-->"><img src="/img/lecture/result_btn.png" alt="受講結果を確認する" /></a>
+			</div>
+		<!--{/if}-->
+	<!--{else}-->
+		<div style="text-align:center;width:100%;margin:15px 0;color:red;">
+			すべての研修動画を視聴した後、倫理研修テストを受けることができるようになります。
+		</div>
+	<!--{/if}-->
+	
+</div>
+	
+<!--{* パスポート *}-->
+<!--{elseif $product_list.product_type_add == 4}-->
+<div style="width:468px;float:left;clear:both;background-color:#fcfcfc;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
+	<div style="width:168px;float:left;text-align:center;">
+		<!--{if $product_list.thumbnail != ''}-->
+			<img src="/resize_image.php?image=<!--{$product_list.thumbnail|escape}-->&width=150&height=150" alt="" />
+		<!--{else}-->
+			<img src="/resize_image.php?image=noimage.jpg&width=150&height=150" alt="" />
+		<!--{/if}-->
+	</div>
+	
+	<div style="width:300px;float:right;">
+		<div class="detail_title" style="font-size:14px;color:#22730e; text-align:center;"><!--{$product_list.product_name|escape}--></div>
+	<table style="background-color:#F5F8EF;float:right;width:290px;">
+		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">価格</th><td style="padding: 3px 10px;"><!--{if $product_list.price_intax==0}-->無料<!--{else}--><!--{$product_list.price_intax|escape}-->円(税込)<!--{/if}--></td></tr>
+		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;">備考</th><td style="padding: 3px 10px;"><!--{$product_list.memo|escape|nl2br}--></td></tr>
+	</table>
+	</div>
+	
+	<div style="clear:both;text-align:center;padding:20px;">
+		<!--{if !$passport_flg}-->
+		<form name="buyForm" action="http://<!--{php}-->echo $_SERVER['SERVER_NAME'];<!--{/php}-->/settlement/index.php" method="post" style="display:inline;">
+		<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+		<input type="hidden" name="hid_product_type_add" value="<!--{$product_list.product_type_add|escape}-->" />
+			<input type="image" src="/img/lecture/buy_btn.png" alt="購入する" /><br />
+		</form>
+		<!--{/if}-->
+	</div>
+</div>
+	
+<!--{/if}-->
+
+
+
+<!--{*
+<div style="clear:both;">
+	<!--{$product_list.free_html_area2}-->
+</div>
+*}-->
+
+<!--{*
+<div style="clear:both;" class="detail_h2_2">
+	<h2>おすすめ商品</h2>
+</div>
+<div style="clear:both;">
+	<ul style="list-style:none;margin:0;">
+	<!--{foreach name=recommend_products from=$arr_recommend_list item=recommend_products}-->
+		<li style="float:left;width:90px;padding:5px;text-align:center;<!--{if $smarty.foreach.recommend_products.index==5}-->clear:both;<!--{/if}-->">
+		<a href="/product/detail.php?pid=<!--{$recommend_products.product_id|escape}-->" alt="<!--{$recommend_products.product_name|escape}-->" title="<!--{$recommend_products.product_name|escape}-->"><img src="/resize_image.php?image=<!--{$recommend_products.thumbnail|escape}-->&width=90&height=90" alt="" /></a><br />
+		<a href="/product/detail.php?pid=<!--{$recommend_products.product_id|escape}-->" alt="<!--{$recommend_products.product_name|escape}-->" title="<!--{$recommend_products.product_name|escape}-->"><!--{$recommend_products.product_name|mb_truncate:14:"..."|escape}--></a><br />
+		<!--{$recommend_products.price_intax|escape}-->円(税込)
+		</li>
+	<!--{/foreach}-->
+	</ul>
+</div>
+*}-->
+
+<!--{*
+<div style="clear:both;">
+	<!--{$product_list.free_html_area3}-->
+</div>
+*}-->
+
+
+<div style="clear:both;" class="detail_h2_3">
+	<h3>関連商品</h3>
+</div>
+<!--{if empty($arr_related_list)}-->
+関連商品はありません。
+<!--{else}-->
+
+
+
+<div style="clear:both;">
+	<ul style="list-style:none;margin:0;">
+	<!--{foreach name=related_products from=$arr_related_list item=related_products}-->
+		<li style="float:left;width:90px;padding:5px;text-align:center;<!--{if $smarty.foreach.related_products.index==5}-->clear:both;<!--{/if}-->">
+		<!--{if $related_products.thumbnail != ''}-->
+			<a href="/product/detail.php?pid=<!--{$related_products.pid|escape}-->" alt="<!--{$related_products.name|escape}-->" title="<!--{$related_products.name|escape}-->"><img src="/resize_image.php?image=<!--{$related_products.thumbnail|escape}-->&width=90&height=90" alt="" /></a><br />
+		<!--{else}-->
+			<a href="/product/detail.php?pid=<!--{$related_products.pid|escape}-->" alt="<!--{$related_products.name|escape}-->" title="<!--{$related_products.name|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=90&height=90" alt="" /></a><br />
+		<!--{/if}-->
+		<a href="/product/detail.php?pid=<!--{$related_products.pid|escape}-->" alt="<!--{$related_products.name|escape}-->" title="<!--{$related_products.name|escape}-->"><!--{$related_products.name|mb_truncate:14:"..."|escape}--></a><br />
+		単品価格：<!--{$related_products.price_intax|escape}-->円<br />
+		受講期間：
+			<!--{if $related_products.start_date == '' && $related_products.end_date == ''}-->
+				常に公開
+			<!--{else}-->
+				<!--{$related_products.start_date|escape}-->～<!--{$related_products.end_date|escape}-->
+			<!--{/if}-->
+		</li>
+	<!--{/foreach}-->
+	</ul>
+</div>
+<!--{/if}-->
+
+<!--{* 動画視聴ボタン用form *}-->
+<form name="playerForm" action="#" method="post">
+<input type="hidden" name="pid" value="<!--{$pid}-->" />
+<input type="hidden" name="vid" id="hid_vid" value="" />
+<input type="hidden" name="ftn" id="hid_ftn" value="" />
+<input type="hidden" name="ccno" id="hid_ccno" value="" />
+<input type="hidden" name="view_btn" id="hid_view_btn" value="" />
+</form>
+
+<!--{* 資料ダウンロードボタン用form *}-->
+<form name="downloadForm" action="#" method="post">
+<input type="hidden" name="pid" value="<!--{$pid}-->" />
+<input type="hidden" name="cdname" id="hid_cdname" value="" />
+</form>
+
+<script type="text/javascript">
+<!--{* 動画の読み込みを遅延させるスクリプト(プレイヤー側が同時読み込みに非対応のため) *}-->
+<!--{*
+<!--{if !empty($arr_player_iframe)}-->
+	var loop = 0;
+	var iframe_html = new Array();
+	<!--{foreach name=player_iframe_js from=$arr_player_iframe.frame item=player_iframe}-->
+	iframe_html[<!--{$smarty.foreach.player_iframe_js.index}-->] = '<!--{$player_iframe}-->';
+	<!--{/foreach}-->
+
+	function printIFrame(){
+		if (jsIsset(iframe_html[loop])){
+			document.getElementById('iframe' + loop).innerHTML = iframe_html[loop];
+			if(loop < <!--{$player_iframe_count}-->){
+				loop += 1;
+				setTimeout("printIFrame()",2000);
+			}
+		}
+	}
+	function jsIsset( data ){
+	    return ( typeof( data ) != 'undefined' );
+	}
+	window.onLoad=printIFrame();
+<!--{/if}-->
+*}-->
+
+function playerFormSubmit(vid,ftn,ccno,view_btn){
+    window.open("about:blank","playerDisp","width=675,height=660,menubar=no,toolbar=no,scrollbars=yes,resizable=yes");
+<!--{*
+    <!--{if !empty($arr_player_iframe)}-->
+    <!--{foreach name=player_iframe_frame_no from=$arr_player_iframe.frame_no item=player_iframe_frame_no}-->
+    document.getElementById('playerFrame<!--{$player_iframe_frame_no}-->').contentWindow.ak_pause();
+    <!--{/foreach}-->
+    <!--{/if}-->
+*}-->
+    document.getElementById("hid_vid").value = vid;
+    document.getElementById("hid_ftn").value = ftn;
+    document.getElementById("hid_ccno").value = ccno;
+    document.getElementById("hid_view_btn").value = view_btn;
+    document.playerForm.target = "playerDisp";
+    document.playerForm.method = "post";
+    document.playerForm.action = "/player/index.php?term=pc";
+    document.playerForm.submit();
+}
+function playerEthicFormSubmit(vid,ftn,ccno,view_btn){
+    window.open("about:blank","playerDisp","width=675,height=660,menubar=no,toolbar=no,scrollbars=yes,resizable=yes");
+    document.getElementById("hid_vid").value = vid;
+    document.getElementById("hid_ftn").value = ftn;
+    document.getElementById("hid_ccno").value = ccno;
+    document.getElementById("hid_view_btn").value = view_btn;
+    document.playerForm.target = "playerDisp";
+    document.playerForm.method = "post";
+    document.playerForm.action = "/player/player_ethic.php?term=pc";
+    document.playerForm.submit();
+}
+function downloadFormSubmit(cdname){
+    document.getElementById("hid_cdname").value = cdname;
+    document.downloadForm.method = "post";
+    document.downloadForm.action = "download.php?PHPSESSID=<!--{php}-->echo session_id();<!--{/php}-->";
+    document.downloadForm.submit();
+}
+function downloadPopup(){
+    window.open("about:blank","documentDisp","width=675,height=800,menubar=no,toolbar=no,scrollbars=yes,resizable=yes");
+    document.downloadForm.target = "documentDisp";
+    document.downloadForm.method = "post";
+    document.downloadForm.action = "document.php?PHPSESSID=<!--{php}-->echo session_id();<!--{/php}-->";
+    document.downloadForm.submit();
+}
+
+<!--{*
+<!--{if !empty($arr_player_iframe)}-->
+$(window).unload(printIFrame());
+window.onunload = function(){printIFrame();}
+<!--{/if}-->
+*}-->
+</script>
+
+<!--{*
+<script type="text/javascript">
+/**
+ * Simple Rollover[single]
+ * @license The MIT License
+ */
+window.onload =function(){
+    var myImg = document.getElementById("thumb").getElementsByTagName("img");
+    var regrep = "&width=40&height=40";
+    var newimg = new Array();
+    for (var i = 0; i <myImg.length; i++) {
+        newimg[i] = new Image();
+        newimg[i].src = myImg[i].src;
+        myImg[i].onmouseover =function() {
+            var href = this.src.replace(regrep,"&width=180&height=100");
+                document.getElementById('rollover_view').src=href;
+        }
+    }
+}
+</script>
+*}-->

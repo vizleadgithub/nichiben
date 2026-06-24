@@ -1,0 +1,512 @@
+	<div style="clear:both;text-align:left;color:#4b3921;font-size:14px;">
+	<a href="/">TOP</a>
+	<img style="height:10px;" alt="＞" src="/img/c_ar_off.png">
+	<a href="search/">検索</a>
+	</div>
+
+	<hr />
+
+
+	<h2 class="search_title">検索</h2>
+
+	<form name="search_form" method="post" action="index.php#search_form">
+
+	<div style="border: solid 1px #22720E;padding: 1px;">
+	<table style="width:100%;" class="member_table">
+		<tr>
+			<th colspan="2" style="width:100px; background: url(/img/mushimegane.png)no-repeat 1% 50%; background-color:#22720E; color:#ffffff;text-align:left;vertical-align:top;padding:6px 5px 6px 30px;font-size:16px;">検索条件絞り込む</th>
+		</tr>
+		<tr>
+			<th style="width:100px;background-color:#22720E;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">研修種別</th>
+			<td style="padding:5px;">
+				<!--{html_checkboxes name='search_training' options=$arr_search_training selected=$search_training separator='<br />' onclick='checkDisabled()'}-->
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100px;background-color:#22720E;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">主催</th>
+			<td style="padding:5px;">
+				<!--{html_checkboxes name='search_sponsor' options=$arr_search_sponsor selected=$search_sponsor}-->
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100px;background-color:#22720E;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">キーワード</th>
+			<td style="padding:5px;">
+				<input type="text" name="search_keyword" value="<!--{$search_keyword|escape}-->">
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100px;background-color:#22720E;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">研修料金</th>
+			<td style="padding:5px;">
+				<input type="radio" name="search_price_free" id="search_price_free1" value="1" <!--{if $search_price_free=="1"}--> checked=checked <!--{/if}-->><label for="search_price_free1">指定無し</label>
+				<input type="radio" name="search_price_free" id="search_price_free2" value="2" <!--{if $search_price_free=="2"}--> checked=checked <!--{/if}-->><label for="search_price_free2">無料</label>
+				<input type="radio" name="search_price_free" id="search_price_free3" value="3" <!--{if $search_price_free=="3"}--> checked=checked <!--{/if}-->><label for="search_price_free3">有料</label>
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100px;background-color:#22720E;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">受講状況</th>
+			<td style="padding:5px;">
+				<!--{html_checkboxes name='search_state' options=$arr_search_state selected=$search_state}-->
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100px;background-color:#22720E;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">公開期間</th>
+			<td style="padding:5px;">
+				<input type="text" name="search_start_date" id="start_date" class="calendar" value="<!--{$search_start_date|escape}-->" size="9" readonly />
+				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.start_date.value='';">クリア</a>
+				～
+				<input type="text" name="search_end_date" id="end_date" class="calendar" value="<!--{$search_end_date|escape}-->" size="9" readonly />
+				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.end_date.value='';">クリア</a>
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100px;background-color:#22720E;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">カテゴリ</th>
+			<td style="padding:5px;">
+				<input type="button" value="全てにチェックを入れる" onClick="categoryAllCheck(1)" />
+				<input type="button" value="全てのチェックを外す" onClick="categoryAllCheck(0)" />
+				<br />
+				
+				<ul style="list-style-type:none;">
+				<!--{foreach from=$arr_category item="row"}-->
+					<li><input type="checkbox" name="search_category[]" value="<!--{$row.term_id|escape}-->" id="arr_term_id<!--{$row.term_id|escape}-->" onclick="check_cat('<!--{$row.term_id|escape}-->');"<!--{if in_array($row.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row.term_id|escape}-->"><!--{$row.name|escape}--></label>&nbsp;&nbsp;</li>
+					<ul style="margin-left:15px;list-style-type:none;">
+					<!--{foreach from=$row.categorys item="row2"}-->
+						<li>→<input type="checkbox" name="search_category[]" value="<!--{$row2.term_id|escape}-->" id="arr_term_id<!--{$row2.term_id|escape}-->" onclick="check_cat('<!--{$row2.term_id|escape}-->');"<!--{if in_array($row2.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row2.term_id|escape}-->"><!--{$row2.name|escape}--></label>&nbsp;&nbsp;</li>
+						<ul style="margin-left:15px;list-style-type:none;">
+						<!--{foreach from=$row2.categorys item="row3"}-->
+							<li>→→<input type="checkbox" name="search_category[]" value="<!--{$row3.term_id|escape}-->" id="arr_term_id<!--{$row3.term_id|escape}-->" onclick="check_cat('<!--{$row3.term_id|escape}-->');"<!--{if in_array($row3.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row3.term_id|escape}-->"><!--{$row3.name|escape}--></label>&nbsp;&nbsp;</li>
+							<ul style="margin-left:15px;list-style-type:none;">
+							<!--{foreach from=$row3.categorys item="row4"}-->
+								<li>→→→<input type="checkbox" name="search_category[]" value="<!--{$row4.term_id|escape}-->" id="arr_term_id<!--{$row4.term_id|escape}-->" onclick="check_cat('<!--{$row4.term_id|escape}-->');"<!--{if in_array($row4.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row4.term_id|escape}-->"><!--{$row4.name|escape}--></label>&nbsp;&nbsp;</li>
+								<ul style="margin-left:15px;list-style-type:none;">
+								<!--{foreach from=$row4.categorys item="row5"}-->
+									<li>→→→→<input type="checkbox" name="search_category[]" value="<!--{$row5.term_id|escape}-->" id="arr_term_id<!--{$row5.term_id|escape}-->" onclick="check_cat('<!--{$row5.term_id|escape}-->');"<!--{if in_array($row5.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row5.term_id|escape}-->"><!--{$row5.name|escape}--></label>&nbsp;&nbsp;</li>
+								<!--{/foreach}-->
+								</ul>
+							<!--{/foreach}-->
+							</ul>
+						<!--{/foreach}-->
+						</ul>
+					<!--{/foreach}-->
+					</ul>
+				<!--{/foreach}-->
+				</ul>
+			</td>
+		</tr>
+		<script type="text/javascript">
+			var arr_cat_id = [];
+			var arr_cat_name = [];
+			var arr_par_id = [];
+			<!--{foreach from=$arr_cat_list item=val}-->
+				arr_cat_id[arr_cat_id.length] = "<!--{$val.term_id}-->";
+				arr_cat_name[arr_cat_name.length] = "<!--{$val.name}-->";
+				arr_par_id[arr_par_id.length] = "<!--{$val.parent}-->";
+			<!--{/foreach}-->
+			function check_cat(cat_id){
+				var temp_i = cat_id;
+				if (document.getElementById("arr_term_id"+cat_id).checked ===true){
+					while (temp_i!="0" && temp_i!="21" ){
+						for (var i=0;i<arr_cat_id.length;i++){
+							if(temp_i==arr_cat_id[i]){
+								//alert(temp_i + ":" + arr_par_id[i]);
+								if(document.getElementById("arr_term_id"+temp_i) != null){
+									document.getElementById("arr_term_id"+temp_i).checked = true;
+								}
+								temp_i = arr_par_id[i];
+							}
+						}
+					}
+				} else {
+					var select_cat_id = new Array(cat_id);
+					while(select_cat_id.length>0){
+						var select_par_id = new Array();
+						for (var i=0;i<select_cat_id.length;i++){
+							for (var n=0;n<arr_par_id.length;n++){
+								if (arr_par_id[n]==select_cat_id[i]){
+									select_par_id[select_par_id.length] = arr_cat_id[n];
+								} 
+							}
+						}
+						for (var i=0;i<select_par_id.length;i++){
+							if(document.getElementById("arr_term_id"+select_par_id[i]) != null){
+								document.getElementById("arr_term_id"+select_par_id[i]).checked = false;
+							}
+						}
+						select_cat_id = select_par_id;
+					}
+				}
+			}
+			
+			function categoryAllCheck(flg){
+				if (flg==1){
+					var str = 'check';
+				} else {
+					var str = '';
+				}
+				for(var count=0; count<document.search_form.elements["search_category[]"].length; count++){
+					document.search_form.elements["search_category[]"][count].checked = str;
+				}
+			}
+			
+			function checkDisabled(){
+				if (document.getElementsByName("search_training[]").item(0).checked === true && document.getElementsByName("search_training[]").item(1).checked === true){
+					for(var count=0; count<document.search_form.elements["search_sponsor[]"].length; count++){
+						document.search_form.elements["search_sponsor[]"][count].disabled = false;
+					}
+					for(var count=0; count<document.search_form.elements["search_state[]"].length; count++){
+						document.search_form.elements["search_state[]"][count].disabled = false;
+					}
+					
+				} else if (document.getElementsByName("search_training[]").item(0).checked === false && document.getElementsByName("search_training[]").item(1).checked === false){
+					for(var count=0; count<document.search_form.elements["search_sponsor[]"].length; count++){
+						document.search_form.elements["search_sponsor[]"][count].disabled = true;
+					}
+					for(var count=0; count<document.search_form.elements["search_state[]"].length; count++){
+						document.search_form.elements["search_state[]"][count].disabled = true;
+					}
+					
+				}  else {
+					if (document.getElementsByName("search_training[]").item(0).checked === true){
+						for(var count=0; count<document.search_form.elements["search_sponsor[]"].length; count++){
+							document.search_form.elements["search_sponsor[]"][count].disabled = true;
+						}
+					} else {
+						for(var count=0; count<document.search_form.elements["search_sponsor[]"].length; count++){
+							document.search_form.elements["search_sponsor[]"][count].disabled = false;
+						}
+					}
+					
+					if (document.getElementsByName("search_training[]").item(1).checked === true){
+						for(var count=0; count<document.search_form.elements["search_state[]"].length; count++){
+							document.search_form.elements["search_state[]"][count].disabled = true;
+						}
+					} else {
+						for(var count=0; count<document.search_form.elements["search_state[]"].length; count++){
+							document.search_form.elements["search_state[]"][count].disabled = false;
+						}
+					}
+				}
+			}
+			
+			window.onload = checkDisabled();
+		</script>
+	</table>
+	</div>
+
+	<table style="width:100%;">
+		<tr>
+			<td style="padding:5px;text-align:center;width:100%;">
+				<input type="image" src="/img/btn/search.png" name="btn_submit" value="　検索　">
+			</td>
+		</tr>
+	</table>
+
+	</form>
+
+
+<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+<!--{*
+<!-- 検索条件 -->
+<div style="clear:both;border:dotted 1px #cccccc; padding:10px; margin-bottom:10px;">
+	<h2>検索条件</h2>
+	<hr />
+<!--{if (is_array($arr_keyword) && $arr_keyword|@count>0) || (is_array($search_category) && $arr_search_category_disp|@count>0) }-->
+	<!--{if is_array($arr_search_category_disp) && $arr_search_category_disp|@count>0}-->
+		<table><tr><td>
+		カテゴリ：</td><td>
+		<!--{foreach from=$arr_search_category_disp item="row"}-->
+			<!--{$row|escape}--><br>
+		<!--{/foreach}-->
+		</td></tr></table>
+		<br>
+	<!--{/if}-->
+	<!--{if is_array($arr_keyword) && $arr_keyword|@count>0}-->
+	<hr style="margin-bottom:5px;" />
+		キーワード：
+		<!--{foreach from=$arr_keyword item="row"}-->
+			<!--{$row|escape}-->&nbsp;&nbsp;
+		<!--{/foreach}-->
+		<br>
+	<!--{/if}-->
+	<!--{if is_array($arr_keyword) && $arr_keyword|@count>0}-->
+		無料・有料：
+		<!--{if $search_price_free=="1"}-->指定無し<!--{/if}-->
+		<!--{if $search_price_free=="2"}-->無料<!--{/if}-->
+		<!--{if $search_price_free=="3"}-->有料<!--{/if}-->
+		<br>
+	<!--{/if}-->
+<!--{else}-->
+	全件表示<br>
+<!--{/if}-->
+</div>
+*}-->
+<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+
+<!--{if $disp_flg}-->
+<div style="clear:both;border:hidden 0px #ffffff;">
+<!--{if !empty($arr_list)}-->
+
+
+
+	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+	<!-- 改ページ -->
+	<div class="pager">
+		<div style="text-align:left; float:left;width:244px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:244px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+
+
+	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+	<!-- 一覧表示件数 -->
+	<div class="list_title" style="border:solid 1px #f3f3f3;border-bottom:solid 2px #f3f3f3;height:115px;">
+		<h2>講座一覧</h2>
+		<div class="selects">
+			<form name="form_selects">
+				<script type="text/javascript">
+				<!--
+				function sort_exe(){
+					location.href = "" + "?pcid=<!--{$pcid}-->&pagemax=" + document.form_selects.pagemax.options[document.form_selects.pagemax.selectedIndex].value + "&page=1&sort=" + document.form_selects.sort.options[document.form_selects.sort.selectedIndex].value;
+				}
+				// -->
+				</script>
+				<span style="position:relative;bottom:5px;right:10px;">
+				<!--{html_options name=sort options=$sort_select selected=$sort}-->に
+				<select name="pagemax">
+					<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+					<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+					<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+					<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+				</select>件ずつ
+				<a href="javascript:void(0);" onClick="sort_exe()"><img src="/img/list/permutation_btn.png" alt="並替え" style="position:relative;top:8px;" /></a>
+				</span>
+			</form>
+			<div style="padding-top:15px;text-align:center;">
+弁護士会主催研修は、各弁護士会からの情報に基づいています。<br />
+詳細は各弁護士会にお問い合わせください。
+			</div>
+		</div>
+	</div>
+	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+
+
+
+
+	<!--{foreach from=$arr_list item="row"}-->
+	<div class="list_box" style="width:468px;float:left;clear:both;background-color:#ffffff;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
+	<!--{* e-ラーニング *}-->
+	<!--{if $row.product_type_add == 1}-->
+		<div style="float:left;width:160px;height:115px;text-align:center;background-color:#99e5fd;padding:0;" class="thumb">
+			<img src="/img/list/list_img002.jpg" alt="eラーニング" />
+			<!--{if $row.thumbnail_flg == 1}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{elseif $row.thumbnail_flg == 2}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_video_image.php?image=<!--{$row.video_thumbnail}-->&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{/if}-->
+			
+			<div style="position:relative;top:8px;right:5px;background-color:#ffffff;width:170px;height:20px;padding-top:10px;">
+			<!--{foreach name=icon_loop from=$row.icon_img item=icon}-->
+			<!--{assign var=icon_cnt value=$smarty.foreach.icon_loop.iteration}-->
+				<img src="/img/<!--{$icon.src|escape}-->" alt="<!--{$icon.alt|escape}-->" />
+				<!--{if $icon_cnt == 2}--><br /><!--{/if}-->
+			<!--{/foreach}-->
+			</div>
+		</div>
+		
+		<div>
+			<div style="text-align:right;">
+			<!--{if $row.favorite_flg}-->
+				<form name="favoriteForm" action="https://<!--{php}-->echo $_SERVER['SERVER_NAME'];<!--{/php}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="act" value="regist" />
+				<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
+					<input type="image" src="/img/list/favorite_btn.png" /><br />
+				</form>
+			<!--{/if}-->
+			<!--{if $row.favorite_icon_flg}-->
+				<img src="/img/list/favorite_btn_comp01.png" alt="お気に入り登録済" />
+			<!--{/if}-->
+			</div>
+		</div>
+		
+		<div style="text-align:left;margin-left:180px;">
+			<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:#523d26;font-size:14px;font-weight:bold;"><!--{$row.product_name|escape}--></a>
+		</div>
+		
+		<div style="float:right;width:290px">
+			<table>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">講師名</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.teacher|escape}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">総時間</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.all_play_time|escape}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">単品価格</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{if $row.price_intax==0}-->無料<!--{else}--><!--{$row.price_intax|escape}-->円(税込)<!--{/if}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">掲載期間</th>
+					<td style="text-align:left;vertical-align:top;width:210px;">
+						<!--{if $row.start_date!='' && $row.start_date!='0000-00-00 00:00:00' && $row.end_date!='' && $row.end_date!='0000-00-00 00:00:00'}-->
+							<!--{$row.disp_start_date|escape}-->～<!--{$row.disp_end_date|escape}-->
+						<!--{elseif $row.start_date!='' && $row.start_date!='0000-00-00 00:00:00'}-->
+							<!--{$row.disp_start_date|escape}-->～
+						<!--{elseif $row.end_date!='' && $row.end_date!='0000-00-00 00:00:00'}-->
+							～<!--{$row.disp_end_date|escape}-->
+						<!--{else}-->
+							常に公開
+						<!--{/if}-->
+					</td>
+				</tr>
+			</table>
+			<div style="float:right;width:460px;padding:5px;">
+				<div style="text-align:left;width:100%;">
+					<!--{$row.memo|escape|nl2br}-->
+				</div>
+				<div style="text-align:right;width:100%;">
+					<img src="/img/list/ic_2ar.png" alt="" style="position:relative;top:5px;" />
+					<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:57462e;font-size:14px;">商品詳細へ</a>
+				</div>
+			</div>
+		</div>
+		
+	<!--{* 会場研修 *}-->
+	<!--{elseif $row.product_type_add == 2}-->
+		<div style="float:left;width:160px;height:115px;text-align:center;background-color:#8ebd55;padding:0;" class="thumb">
+			<img src="/img/list/list_img001.jpg" alt="会場研修" />
+			<!--{if $row.thumbnail != ""}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{/if}-->
+			<div style="position:relative;top:20px;">
+				<!--{$row.icon|escape}-->
+			</div>
+		</div>
+		
+		<div>
+			<div style="text-align:right;">
+			<!--{if $row.favorite_flg}-->
+				<form name="favoriteForm" action="https://<!--{php}-->echo $_SERVER['SERVER_NAME'];<!--{/php}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="act" value="regist" />
+				<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
+					<input type="image" src="/img/list/favorite_btn.png" /><br />
+				</form>
+			<!--{/if}-->
+			<!--{if $row.favorite_icon_flg}-->
+				<img src="/img/list/favorite_btn_comp02.png" alt="お気に入り登録済" />
+			<!--{/if}-->
+			</div>
+		</div>
+		
+		<div style="text-align:left;margin-left:180px;">
+			<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:#523d26;font-size:14px;font-weight:bold;"><!--{$row.product_name|escape}--></a>
+		</div>
+		
+		<div style="float:right;width:290px">
+			<table>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">講師名</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.memo2|escape|nl2br}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">主催</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.disp_sponsor}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">単品価格</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{if $row.price_intax==0}-->無料<!--{else}--><!--{$row.price_intax|escape}-->円(税込)<!--{/if}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">受付期間</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.disp_start_date|escape}-->～<!--{$row.disp_end_date|escape}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">研修開催日</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.disp_dates|escape}--></td>
+				</tr>
+			</table>
+			<div style="float:right;width:460px;padding:5px;">
+				<div style="text-align:left;width:100%;">
+					<!--{$row.memo|escape|nl2br}-->
+				</div>
+				<div style="text-align:right;width:100%;">
+					<img src="/img/list/ic_2ar.png" alt="" style="position:relative;top:5px;" />
+					<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:57462e;font-size:14px;">商品詳細へ</a>
+				</div>
+			</div>
+		</div>
+		
+	<!--{* 情報なし(ここに入ることはない想定) *}-->
+	<!--{else}-->
+		講座及び研修情報が存在しません。
+	<!--{/if}-->
+	
+	
+	
+<!--{*
+		<div style="float:left;width:100px;text-align:center;" class="thumb">
+			<!--{if $row.thumbnail==''}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=100&height=100" alt="" /></a>
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=100&height=100" alt="" /></a>
+			<!--{/if}-->
+		</div>
+
+		<div style="float:right;width:385px">
+			<table>
+				<tr>
+					<th colspan="2" style="text-align:left;vertical-align:top;color: #47A6D4;" class="title"><a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color: #47A6D4;"><!--{$row.product_name|escape}--></a></th>
+				</tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">講師</th>
+					<td style="text-align:left;vertical-align:top;"><!--{$row.teacher|escape}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">再生時間</th>
+					<td style="text-align:left;vertical-align:top;"><!--{$row.play_time|escape}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">視聴期間</th>
+					<td style="text-align:left;vertical-align:top;"><!--{if $row.open_period==0}-->購入日から無期限<!--{else}-->購入日から<!--{$row.open_period|escape}-->日間<!--{/if}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">価格</th>
+					<td style="text-align:left;vertical-align:top;"><!--{if $row.price_intax==0}-->無料<!--{else}--><!--{$row.price_intax|escape}-->円(税込)<!--{/if}--></td>
+				<tr>
+				<tr>
+					<td colspan="2" style="text-align:left;vertical-align:top;"><!--{$row.memo|mb_truncate:120:"..."|escape|nl2br}--></td>
+				<tr>
+			</table>
+			<div style="float:right;width:300px;text-align:right;padding:5px;">
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->">→商品詳細へ</a>
+			</div>
+		</div>
+*}-->
+		
+		<div style="text-align:center;">
+			<img src="/img/list/dotline.png" alt="" style="width:100%;" />
+		</div>
+	</div>
+	<!--{/foreach}-->
+	
+	<div class="pager">
+		<div style="text-align:left; float:left;width:244px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:244px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+<!--{else}-->
+	該当商品はありません。
+<!--{/if}-->
+</div>
+<!--{/if}-->

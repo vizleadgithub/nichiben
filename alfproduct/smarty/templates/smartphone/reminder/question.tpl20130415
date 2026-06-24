@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>パスワードを忘れた方へ</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<form name="remineder_form" method="post" action="conf.php">
+	<!--{foreach from=$arr_err item="err"}-->
+	<div class="error"><!--{$err}--></div>
+	<!--{/foreach}-->
+	<input type="hidden" name="input_mail" value="<!--{$input_mail|escape}-->">
+	<!--{$input_question|escape}--></br>
+	<input type="text" name="input_answer" value="<!--{$input_answer|escape}-->"><br>
+	<input type="submit" name="btn_submit" value="送信">
+</form>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+/vendor
+/alflearning/alflearning-cms/application/logs/*.php
+/alflearning/alflearning-cms/pma
+*.log
+
+/secure_report

@@ -1,0 +1,191 @@
+<script type="text/javascript">
+function buy_exe(){
+	//document.formSettlement.btn_submit.disabled = true;
+	
+	var payment_type = '';
+	for (var i=0; i<document.formSettlement.payment_type.length; i++){
+		if (document.formSettlement.payment_type[i].checked){
+			payment_type = document.formSettlement.payment_type[i].value;
+		}
+	}
+	
+	<!--{if $smarty.session.user.presence_passport == 1}-->
+		payment_type = 'pp';
+	<!--{/if}-->
+	
+	if (payment_type != ''){
+		//new $pop( 'order_regist.php?pid='+document.formSettlement.pid.value+'&payment_type='+payment_type+'&temp_date='+document.formSettlement.temp_date.value+'&temp_no='+document.formSettlement.temp_no.value, { type: 'iframe', title: '', width: 500, height: 480, modal: true, nomove: true, close: false, varName: 'payment_win' } ); return false;
+		document.formSettlement.action = 'order_regist.php?pid='+document.formSettlement.pid.value+'&payment_type='+payment_type+'&temp_date='+document.formSettlement.temp_date.value+'&temp_no='+document.formSettlement.temp_no.value;
+		document.formSettlement.submit();
+	} else {
+		alert('決済方法を選択してください');
+	}
+}
+function buy_close(){
+	document.formSettlement.btn_submit.disabled = true;
+	location.href = "/mypage/buy_list.php";
+	payment_win.close();
+}
+function buy__close(){
+	payment_win.close();
+	document.formSettlement.btn_submit.disabled = false;
+}
+</script>
+<form name="formSettlement" method="post" action="#">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+<input type="hidden" name="temp_date" value="<!--{$temp_date|escape}-->" />
+<input type="hidden" name="temp_no" value="<!--{$temp_no|escape}-->" />
+<input type="hidden" name="check" value="1"  />
+
+<!--{if $err_msg != ''}-->
+<div style="clear:both;padding:10px 0;color:red;">
+<!--{$err_msg|escape}-->
+</div>
+<!--{/if}-->
+
+<!--{*
+		<div id="single_title">
+			<h3>購入内容確認</h3>
+			<h6>buy confirm</h6>
+		</div>
+
+
+<div style="clear:both;padding:10px 0; ">
+下記ご購入内容で送信してもよろしいでしょうか？<br />
+よろしければ、一番下の「購入する」ボタンをクリックしてください。
+</div>
+
+<div style="clear:both;">購入商品</div>
+<div style="clear:both;">
+	<div style="width:200px;float:left;">
+		<img src="/resize_image.php?image=<!--{$arr_list.thumbnail|escape}-->&width=180&height=180" alt="" />
+	</div>
+	<div style="width:500px;float:right;">
+		<div class="detail_title" style="margin:0;"><!--{$arr_list.product_name|escape}--></div>
+		<div>講師名：<!--{$arr_list.teacher|escape}--></div>
+		<div>公開日：
+			<!--{if $arr_list.start_date!='' && $arr_list.start_date!='0000-00-00 00:00:00' && $arr_list.end_date!='' && $arr_list.end_date!='0000-00-00 00:00:00'}-->
+				<!--{$arr_list.disp_start_date|escape}-->～<!--{$arr_list.disp_end_date|escape}-->
+			<!--{elseif $arr_list.start_date!='' && $arr_list.start_date!='0000-00-00 00:00:00'}-->
+				<!--{$arr_list.disp_start_date|escape}-->～
+			<!--{elseif $arr_list.end_date!='' && $arr_list.end_date!='0000-00-00 00:00:00'}-->
+				～<!--{$arr_list.disp_end_date|escape}-->
+			<!--{else}-->
+				常に公開
+			<!--{/if}-->
+		</div>
+		<div>視聴期間：<!--{if $arr_list.open_period==0}-->無制限<!--{else}-->購入から<!--{$arr_list.open_period|escape}-->日間<!--{/if}--></div>
+		<div>再生時間：<!--{$arr_list.play_time|escape}--></div>
+		<div>価格：<!--{$arr_list.price|escape}-->円(税込)</div>
+	</div>
+</div>
+*}-->
+
+<div style="clear:both; padding-top:20px;">購入内容</div>
+
+<!--{if $smarty.session.user.presence_passport == 1 && !empty($cart)}-->
+<div style="color:red">パスポートを所持しているため、合計金額は0円となります。</div>
+<!--{/if}-->
+
+<div style="padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; border-top-color: #47a6d4; border-right-color: #47a6d4; border-bottom-color: #47a6d4; border-left-color: #47a6d4; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid;">
+	<!--{if !empty($cart)}-->
+	<table style="width:100%;">
+		<tr>
+			<th style="text-align: left; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-right:dotted 1px #000000; border-bottom:solid 1px #000000;">削除</th>
+			<th style="text-align: left; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-bottom:solid 1px #000000;">商品名</th>
+			<th style="text-align: left; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-bottom:solid 1px #000000;">小計(税込)</th>
+		</tr>
+		<!--{foreach from=$cart item=val key=key}-->
+		<tr>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-right:dotted 1px #000000; border-bottom:solid 1px #000000;"><a href="?mode=delete&pid=<!--{$key}-->">削除</a></td>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-bottom:solid 1px #000000;"><!--{$val.product_name|escape}--></td>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-bottom:solid 1px #000000;"><!--{$val.price|escape}-->円</td>
+		</tr>
+		<!--{/foreach}-->
+		<tr>
+			<td>&nbsp;</td>
+			<th style="text-align: right; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-right:dotted 1px #000000;">合計(税込)</th>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"><!--{$cart_total_price|escape}-->円</td>
+		</tr>
+	</table>
+	<!--{else}-->
+	カートは空です。
+	<!--{/if}-->
+</div>
+
+
+<!--{*
+<div style="clear:both; padding-top:20px;">購入金額</div>
+<div style="padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; border-top-color: #47a6d4; border-right-color: #47a6d4; border-bottom-color: #47a6d4; border-left-color: #47a6d4; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid;">
+	<table style="width:100%;">
+		<tr>
+			<th style="width: 500px; text-align: left; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-right:dotted 1px #000000; border-bottom:solid 1px #000000;">単価（税込）</th>
+			<th style="text-align: left; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-bottom:solid 1px #000000;">小計(税込)</th>
+		</tr>
+		<tr>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-right:dotted 1px #000000; border-bottom:solid 1px #000000;"><!--{$arr_list.price|escape}-->円</td>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-bottom:solid 1px #000000;"><!--{$arr_list.subtotal|escape}-->円</td>
+		</tr>
+		<tr>
+			<th style="text-align: right; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-right:dotted 1px #000000; border-bottom:solid 1px #000000;">手数料</th>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-bottom:solid 1px #000000;"><!--{$arr_list.commission|escape}-->円</td>
+		</tr>
+		<tr>
+			<th style="text-align: right; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-right:dotted 1px #000000;">合計</th>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"><!--{$arr_list.total|escape}-->円</td>
+		</tr>
+	</table>
+</div>
+*}-->
+
+
+<!--{if !empty($cart)}-->
+	<!--{if $smarty.session.user.presence_passport == 1}-->
+		<input type="hidden" name="payment_type" value="" />
+		
+		<div style="clear:both; padding-top:20px;">
+		研修パスポートが適用されています。申込手続きを完了する場合は「購入手続へ」のボタンを押すと申込が完了します。<br />
+		研修の申込を追加する場合は「買い物を続ける」ボタンを押してください。
+		</div>
+	<!--{else}-->
+		<div style="clear:both; padding-top:20px;">決済方法</div>
+		<div style="clear:both;border:solid 1px #47a6d4;">
+			<div style="margin:5px;">
+				<input type="radio" name="payment_type" value="1" id="payment_type_1" checked=checked><label for="payment_type_1">クレジットカード決済(VISA・Master・JCB)</label>
+				<br />※研修パスポート・eラーニングは本サイトの購入手続き完了後、即時ご利用いただけます。
+			</div>
+			<div style="margin:5px;">
+				<input type="radio" name="payment_type" value="12" id="payment_type_12"><label for="payment_type_12">銀行振り込み</label>
+				<br />※本サイトの購入手続き完了後、10日以内に購入金額の合計額をお振込ください。当会がご入金を確認した後にご利用可能となります。
+				<br/>お急ぎの場合はクレジットカード決済をご利用ください。
+			</div>
+			<div style="margin:5px;">
+				なお、本サイトの購入手続完了後に決済方法を変更することはできません。
+			</div>
+
+
+		<!--{*
+		<input type="radio" name="payment_type" value="2" id="payment_type_2"><label for="payment_type_2">モバイルSuica決済</label>
+		<input type="radio" name="payment_type" value="3" id="payment_type_3"><label for="payment_type_3">楽天Edy決済</label>
+		<input type="radio" name="payment_type" value="4" id="payment_type_4"><label for="payment_type_4">コンビニ決済</label>
+		<input type="radio" name="payment_type" value="5" id="payment_type_5"><label for="payment_type_5">Pay-easy</label>
+		<input type="radio" name="payment_type" value="6" id="payment_type_6"><label for="payment_type_6">PayPal</label>
+		<input type="radio" name="payment_type" value="7" id="payment_type_7"><label for="payment_type_7">iDネット</label>
+		<input type="radio" name="payment_type" value="8" id="payment_type_8"><label for="payment_type_8">WebMoney</label>
+		<input type="radio" name="payment_type" value="9" id="payment_type_9"><label for="payment_type_9">auかんたん決済</label>
+		<input type="radio" name="payment_type" value="10" id="payment_type_10"><label for="payment_type_10">ドコモケータイ払い</label>
+		<input type="radio" name="payment_type" value="11" id="payment_type_11"><label for="payment_type_11">ソフトバンクケータイ支払い</label>
+		*}-->
+
+		</div>
+	<!--{/if}-->
+<!--{/if}-->
+
+<div class="pop0" style="clear:both; padding: 10px 0px 20px 230px;">
+<a href="<!--{$back_url|escape}-->"><img src="/img/btn/back.png" alt="戻る" /></a>
+<!--{if !empty($cart)}-->
+	<input type="button" class="btn_buy btnCursor" value="購入する" name="btn_submit" onclick="buy_exe()" style="margin-left:10px;" />
+<!--{/if}-->
+</div>
+
+</form>

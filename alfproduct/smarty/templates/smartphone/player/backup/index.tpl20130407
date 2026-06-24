@@ -1,0 +1,195 @@
+<!--{if $view_flg}-->
+	<script type="text/javascript">
+	var ak_initialized_param = "<!--{$arr_chapter_list.ak_initialized_param|escape}-->";
+	var bookmark_time_sec = "<!--{$bookmark_time_sec|escape}-->";
+	
+	function ak_initialized() {
+		if (ak_initialized_param!=""){
+		    ak_setSeek(0, [ak_initialized_param]);
+		}
+		if (bookmark_time_sec!=0){
+		    ak_playAndSeek(0, bookmark_time_sec);
+		}
+	}
+
+	function ak_event(type, idx, time) {
+		if (type == "timeupdate") {
+			<!--{* // しおりを記憶 *}-->
+			<!--{if $user_id!='' && $video_id!=''}-->
+				var url = "bookmark.php";
+				var data = {};
+				data["student_id"] = <!--{$user_id}-->;
+				data["movie_id"] = <!--{$video_id}-->;
+				data["time"] = time;
+				
+				$.ajax({
+					type		: "GET",
+					cache		: false,
+					url			: url,
+					data		: data,
+					success		: function(res){
+						<!--{* // console.log(res); *}-->
+					},
+					error		: function(XMLHttpRequest, textStatus, errorThrown) {
+						<!--{* // console.log("error:"+XMLHttpRequest); *}-->
+					}
+				});
+			<!--{/if}-->
+			
+			<!--{* // 有料動画の無料範囲が設定されているか判断(秒をセットする) *}-->
+			<!--{if $contents_free_time!='0'}-->
+				if (idx == 0 && time >= <!--{$contents_free_time|escape}-->) {
+					alfplayer().stop();
+					
+					<!--{* // ブックマークの削除 *}-->
+					var url = "bookmark_delete.php";
+					var data = {};
+					data["student_id"] = <!--{$user_id}-->;
+					data["movie_id"] = <!--{$video_id}-->;
+					
+					$.ajax({
+						type		: "GET",
+						cache		: false,
+						url			: url,
+						data		: data,
+						success		: function(res){
+							<!--{* // console.log(res); *}-->
+						},
+						error		: function(XMLHttpRequest, textStatus, errorThrown) {
+							<!--{* // console.log("error:"+XMLHttpRequest); *}-->
+						}
+					});
+					
+					alert("続きは、有料になります。");
+				}
+			<!--{/if}-->
+
+			<!--{* // リストのどこを再生しているか *}-->
+			$('.idxall').each(function(index){
+				var id_all = $(this).attr('id');
+				$('#'+id_all).text("");
+			});
+
+			var seeks = [];
+			var seeks_id = [];
+			$('.idx'+idx).each(function(index){
+				var id = $(this).attr('id');
+				var id_time = id.replace("seek"+idx+"_", "");
+				seeks.push(id);
+				seeks_id.push(id_time);
+			});
+
+			for (var i = seeks.length - 1; i >= 0; i--) {
+				if (time >= seeks_id[i]) {
+					$('#'+seeks[i]).text("○");
+					break;
+				}
+			}
+			
+		} else if (type == "complete"){
+			<!--{* // ブックマークの削除 *}-->
+			var url = "bookmark_delete.php";
+			var data = {};
+			data["student_id"] = <!--{$user_id}-->;
+			data["movie_id"] = <!--{$video_id}-->;
+			
+			$.ajax({
+				type		: "GET",
+				cache		: false,
+				url			: url,
+				data		: data,
+				success		: function(res){
+					<!--{* // console.log(res); *}-->
+				},
+				error		: function(XMLHttpRequest, textStatus, errorThrown) {
+					<!--{* // console.log("error:"+XMLHttpRequest); *}-->
+				}
+			});
+			
+		}
+	}
+	
+	function ak_play() {
+	    if (typeof(alfplayer) == "function") {
+	        alfplayer().play();
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_play();
+	        }, 1000);
+	    }
+	}
+
+	function ak_playRate(rate) {
+	    if (typeof(alfplayer) == "function") {
+	        alfplayer().setPlayRate(rate);
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_playRate(rate);
+	        }, 1000);
+	    }
+	}
+
+	function ak_playAndSeek(idx, time) {
+	    if (typeof(alfplayer) == "function") {
+	        alfplayer().playAndSeek(idx, time);
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_playAndSeek(idx, time);
+	        }, 1000);
+	    }
+	}
+
+	function ak_setSeek(idx, seeks) {
+	    if (typeof(alfplayer) == "function") {
+	        alfplayer().setSeek(idx, seeks);
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_setSeek(idx, seeks);
+	        }, 1000);
+	    }
+	}
+
+	function ak_pause() {
+	    if (typeof(alfplayer) == "function") {
+	        alfplayer().pause();
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_pause();
+	        }, 1000);
+	    }
+	}
+	
+	
+	
+	function buy_exe(){
+	    window.opener.document.buyForm.submit();
+	    window.close();
+	}
+	</script>
+	
+	<!--{$player}-->
+	
+	<!--{if !empty($arr_chapter_list)}-->
+	<ul style="list-style:none;width:600px;height:5em;overflow:auto;">
+	<!--{foreach name=chapter_list from=$arr_chapter_list item=val}-->
+		<li><!--{* 0はチャプターリストの番号 *}-->
+			<a href="#" onClick="ak_playAndSeek(0, <!--{$val.chapter_time_sec|escape}-->);return false;"><!--{$val.chapter_time|escape}--></a>&nbsp;<!--{$val.chapter_name|escape}-->
+			<span id="seek0_<!--{$val.chapter_time_sec|escape}-->" class="idxall idx0"></span>
+		</li>
+	<!--{/foreach}-->
+	</ul>
+	<!--{/if}-->
+	
+<!--{else}-->
+	エラーが発生しました。<br />
+<!--{/if}-->
+
+<input type="button" value="閉じる" onclick="window.close();" />
+<!--{if !$buy_flg}-->
+<input type="button" value="購入する" onclick="buy_exe();" />
+<!--{/if}-->

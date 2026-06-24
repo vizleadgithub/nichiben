@@ -1,0 +1,73 @@
+<div style="width:100%;">
+	<form name="form_inquiry" method="post" action="conf.php">
+
+		<span style="color:#ff6666;">
+		※お問い合わせいただく前に・・・<br>
+		・「よくある質問」を確認し、回答が見つからない場合のみお問い合わせください。<br>
+		・学習内容の相談や質問につきましては、回答を差し控えさせていただきます。<br>
+		</span>
+		<br>
+		お問い合わせ内容を入力し、「送信する」ボタンをクリックしてください。
+
+		<hr>
+
+		<!--{foreach from=$arr_err item="err"}-->
+		<div class="error" style="color:#ff6666;">※<!--{$err}--></div>
+		<!--{/foreach}-->
+
+		<div style="border: solid 1px #47a6d4;padding: 1px;">
+		<table style="width:100%;" class="member_table">
+			<!--{* ====================================================================== *}-->
+			<tr>
+				<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">お名前<font color="red">※必須</font></th>
+				<td style="padding:5px;"><input size="30" type="text" name="input_name" value="<!--{$input_name|escape}-->" style="width:260px;" /></td>
+			</tr>
+			<!--{* 
+			<tr>
+				<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">会社名</th>
+				<td style="padding:5px;"><input size="30" type="text" name="input_company" value="<!--{$input_company|escape}-->" style="width:260px;" /></td>
+			</tr>
+			<tr>
+				<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">部署名</th>
+				<td style="padding:5px;"><input size="30" type="text" name="input_post" value="<!--{$input_post|escape}-->" style="width:260px;" /></td>
+			</tr>
+			<tr>
+				<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">お電話番号（半角）<font color="red">※必須</font></th>
+				<td style="padding:5px;"><input size="30" type="text" name="input_tel" value="<!--{$input_tel|escape}-->" style="width:260px;" /></td>
+			</tr>
+			 *}-->
+			<tr>
+				<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">Email（半角）<font color="red">※必須</font></th>
+				<td style="padding:5px;"><input size="30" type="text" name="input_mail" value="<!--{$input_mail|escape}-->" style="width:260px;" /></td>
+			</tr>
+			<!--{* ====================================================================== *}-->
+		</table>
+		</div>
+
+		<hr>
+
+		<div style="border: solid 1px #47a6d4;padding: 1px;">
+		<table style="width:100%;" class="member_table">
+			<!--{* ====================================================================== *}-->
+			<tr>
+				<th style="background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">お問い合わせ内容<font color="red">※必須</font><th>
+			</tr>
+			<tr>
+
+				<td><textarea name="input_comment" cols="40" rows="5" style="width:480px;height:260px;"><!--{$input_comment|escape}--></textarea></td>
+			</tr>
+			<!--{* ====================================================================== *}-->
+		</table>
+		</div>
+
+		<hr>
+
+		<table style="width:100%;">
+			<tr>
+				<td style="padding:5px;text-align:center;">
+					<input type="image" src="/img/btn/submit.png" name="btn_submit" alt="送信する" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

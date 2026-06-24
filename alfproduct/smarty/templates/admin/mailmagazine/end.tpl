@@ -1,0 +1,16 @@
+<div class="toolbar clearfix">
+	<a class="btn_seach selected" href="index.php?search=new"><span>検索</span></a>
+	<a class="btn_add" href="edit.php"><span>新規登録</span></a>
+</div>
+
+
+	<h2>配信内容を更新</h2>
+	<table class="form">
+		<tr>
+			<td style="text-align:center;" colspan="2" align="center">正常に完了しました</td>
+		</tr>
+		<tr>
+			<td style="text-align:center;" colspan="2" align="center"><a href="index.php">戻る</a></td>
+		</tr>
+	</table>
+<br />

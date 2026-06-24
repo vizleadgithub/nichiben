@@ -1,0 +1,79 @@
+<!--{include file='mypage/side_menu.tpl'}-->
+<div style="float:right;width:700px;">
+	<div>
+		購入済み動画一覧
+		<script type="text/javascript">
+		<!--
+		function select_serch_buy_date(){
+			location.href = "" + "?search_buy_date=" + document.form_serach_buy_date.search_buy_date.options[document.form_serach_buy_date.search_buy_date.selectedIndex].value;
+		}
+		// -->
+		</script>
+		<form name="form_serach_buy_date">
+		<select name="search_buy_date" onChange="select_serch_buy_date()">
+		   <!--{html_options values=$arr_select_box_value output=$arr_select_box_text selected=$search_buy_date}-->
+		</select>
+		</form>
+	</div>
+
+
+
+
+
+<!--{if !empty($arr_list)}-->
+	<div style="width:100%;" class="pager">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中）
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+
+
+
+
+	<div style="width:100%;">
+		<div style="text-align:right; float:right;width:245px;">
+			<script type="text/javascript">
+			<!--
+			function select_pagemax(){
+				location.href = "" + "?pagemax=" + document.form_pagemax.pagemax.options[document.form_pagemax.pagemax.selectedIndex].value;
+			}
+			// -->
+			</script>
+			<form name="form_pagemax">
+			<select name="pagemax" onChange="select_pagemax()">
+				<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+				<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+				<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+				<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+			</select>件ずつ表示
+			</form>
+		</div>
+	</div>
+	
+	<table style="width:100%;" class="member_table" cellspacing="0" cellpadding="0">
+		<tr>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;">日付</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;">購入講座名</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;">動画概要</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;">詳細</th>
+		</tr>
+		<!--{foreach from=$arr_list item=val}-->
+		<tr>
+			<td style="border:solid 1px #999999;padding:5px;">購入日<br /><!--{$val.create_date|escape}--></td>
+			<td style="border:solid 1px #999999;padding:5px;" rowspan="2"><!--{$val.product_name|escape}--></td>
+			<td style="border:solid 1px #999999;padding:5px;" rowspan="2"><!--{$val.play_time|escape}--><br /><!--{$val.price|escape}-->円</td>
+			<td style="border:solid 1px #999999;padding:5px;" rowspan="2"><a href="/product/detail.php?pid=<!--{$val.product_id|escape}-->">詳細</a></td>
+		</tr>
+		<tr>
+			<td style="border:solid 1px #999999;padding:5px;">視聴終了日<br /><!--{if $val.open_period==0}-->視聴制限なし<!--{else}--><!--{$val.view_end_date|escape}--><!--{/if}--></td>
+		</tr>
+		<!--{/foreach}-->
+	</table>
+	
+<!--{else}-->
+	該当する動画はありません。
+<!--{/if}-->
+</div>

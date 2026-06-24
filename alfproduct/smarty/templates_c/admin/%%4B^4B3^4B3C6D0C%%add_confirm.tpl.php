@@ -1,0 +1,407 @@
+<?php /* Smarty version 2.6.31, created on 2025-02-07 07:30:34
+         compiled from /srv/alfproduct/smarty/templates/admin/product_live/add_confirm.tpl */ ?>
+<?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', '/srv/alfproduct/smarty/templates/admin/product_live/add_confirm.tpl', 36, false),array('modifier', 'nl2br', '/srv/alfproduct/smarty/templates/admin/product_live/add_confirm.tpl', 160, false),array('modifier', 'cat', '/srv/alfproduct/smarty/templates/admin/product_live/add_confirm.tpl', 331, false),)), $this); ?>
+<script type="text/javascript">
+function formSubmit(formName, formAction, formAct){
+  document.getElementById("act").value = formAct;
+  document.forms[formName].action = formAction;
+  document.forms[formName].submit();
+}
+function searchButton(formAct){
+	window.open(formAct, "", "scrollbars=yes,width=1024,height=980");
+}
+</script>
+<style type="text/css">
+#bar_association_main_title{
+  background-color:#fde9d9 !important;
+  border-top:solid 1px #000000;
+  font-weight:bold;
+}
+.bar_association_title{
+  background-color:#dbe5f1 !important;
+  border-top:solid 1px #000000;
+  border-bottom:solid 1px #000000;
+}
+</style>
+
+<h2>商品の内容を確認</h2>
+
+<form name="form1" action="#" method="post">
+<input type="hidden" name="act" id="act" value="" />
+
+<?php $_from = $this->_tpl_vars['arr_input']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['key'] => $this->_tpl_vars['item']):
+?>
+	<?php if ($this->_tpl_vars['key'] == 'bar_association_sponsor'): ?>
+	<?php elseif ($this->_tpl_vars['key'] == 'bar_association_sponsor_unselect'): ?>
+	<?php elseif ($this->_tpl_vars['key'] == 'bar_association_target'): ?>
+	<?php elseif ($this->_tpl_vars['key'] == 'bar_association_target_unselect'): ?>
+	<?php elseif ($this->_tpl_vars['key'] == 'arr_term_id'): ?>
+	<?php else: ?>
+		<input type="hidden" name="<?php echo $this->_tpl_vars['key']; ?>
+" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+	<?php endif; ?>
+<?php endforeach; endif; unset($_from); ?>
+
+<?php $_from = $this->_tpl_vars['arr_term_id']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['item']):
+?>
+<input type="hidden" name="arr_term_id[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+<?php endforeach; endif; unset($_from); ?>
+
+<?php $_from = $this->_tpl_vars['arr_input']['bar_association_sponsor']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['key'] => $this->_tpl_vars['item']):
+?>
+<input type="hidden" name="bar_association_sponsor[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['key'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+<?php endforeach; endif; unset($_from); ?>
+<?php $_from = $this->_tpl_vars['arr_input']['bar_association_sponsor_unselect']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['key'] => $this->_tpl_vars['item']):
+?>
+<input type="hidden" name="bar_association_sponsor_unselect[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['key'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+<?php endforeach; endif; unset($_from); ?>
+
+<?php $_from = $this->_tpl_vars['arr_input']['bar_association_target']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['key'] => $this->_tpl_vars['item']):
+?>
+<input type="hidden" name="bar_association_target[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['key'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+<?php endforeach; endif; unset($_from); ?>
+<?php $_from = $this->_tpl_vars['arr_input']['bar_association_target_unselect']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['key'] => $this->_tpl_vars['item']):
+?>
+<input type="hidden" name="bar_association_target_unselect[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['key'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+<?php endforeach; endif; unset($_from); ?>
+
+
+<?php $_from = $this->_tpl_vars['arr_input']['arr_term_id']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['key'] => $this->_tpl_vars['item']):
+?>
+<input type="hidden" name="arr_term_id[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['key'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+<?php endforeach; endif; unset($_from); ?>
+
+
+
+<table class="form">
+	<?php if (isset ( $this->_tpl_vars['arr_input']['mid'] )): ?>
+	<tr>
+		<th style="vertical-align:middle;">商品ID</th>
+		<td>
+			<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['mid'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+
+			<input type="hidden" name="mid" id="mid" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['mid'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+		</td>
+	</tr>
+	<?php endif; ?>
+	<tr>
+		<th style="vertical-align:middle;width:200px;">研修種別</th>
+		<td>
+			<?php echo $this->_tpl_vars['mtb_live_training_type'][$this->_tpl_vars['arr_input']['training_kind_flg']]; ?>
+
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">倫理研修</th>
+		<td>
+			<?php if ($this->_tpl_vars['arr_input']['ethic_flg'] == '0'): ?>倫理研修対象としない<?php endif; ?>
+			<?php if ($this->_tpl_vars['arr_input']['ethic_flg'] == '1'): ?>倫理研修対象とする<?php endif; ?>
+		</td>
+	</tr>
+	<?php if ($this->_tpl_vars['nichibenren_flg']): ?>
+	<tr>
+		<th style="vertical-align:middle;">Web申込</th>
+		<td>
+			<?php if ($this->_tpl_vars['arr_input']['web_flg'] == '0'): ?>受け付けない(情報の表示のみ)<?php endif; ?>
+			<?php if ($this->_tpl_vars['arr_input']['web_flg'] == '1'): ?>受け付ける<?php endif; ?>
+		</td>
+	</tr>
+	<?php endif; ?>
+	<tr>
+		<th style="vertical-align:middle;">公開開始日</th>
+		<td><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['live_start_date'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">受付期間</th>
+		<td><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['start_date'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+&nbsp;～&nbsp;<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['end_date'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">受講料振り込み期限</th>
+		<td><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['limit_date'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">開催日</th>
+		<td><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['dates'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">受講票ダウンロード</th>
+		<td>
+			<?php if ($this->_tpl_vars['arr_input']['download_flg'] == '1'): ?>可<?php endif; ?>
+			<?php if ($this->_tpl_vars['arr_input']['download_flg'] == '0'): ?>不可<?php endif; ?>
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">主催</th>
+		<td>
+			<?php $_from = $this->_tpl_vars['arr_input']['bar_association_sponsor']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['key'] => $this->_tpl_vars['item']):
+?>
+			・<?php echo ((is_array($_tmp=$this->_tpl_vars['item'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+<br />
+			<input type="hidden" name="bar_association_sponsor[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['key'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+			<?php endforeach; endif; unset($_from); ?>
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">受講対象者</th>
+		<td>
+			<?php echo $this->_tpl_vars['mtb_live_target_flg'][$this->_tpl_vars['arr_input']['target_flg']]; ?>
+
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">受講対象</th>
+		<td>
+			<?php if ($this->_tpl_vars['arr_input']['all_bar_association_target'] != ""): ?>
+				すべての弁護士会を対象とする
+			<?php else: ?>
+				<?php $_from = $this->_tpl_vars['arr_input']['bar_association_target']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['key'] => $this->_tpl_vars['item']):
+?>
+				・<?php echo ((is_array($_tmp=$this->_tpl_vars['item'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+<br />
+				<input type="hidden" name="bar_association_target[]" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['key'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+" />
+				<?php endforeach; endif; unset($_from); ?>
+			<?php endif; ?>
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">研修名</th>
+		<td><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['product_name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</td>
+	</tr>
+	<?php if ($this->_tpl_vars['nichibenren_flg']): ?>
+	<tr>
+		<th style="vertical-align:middle;">商品コード</th>
+		<td><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['product_code'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</td>
+	</tr>
+	<?php endif; ?>
+	<tr>
+		<th style="vertical-align:middle;">研修の内容</th>
+		<td><?php echo ((is_array($_tmp=((is_array($_tmp=$this->_tpl_vars['arr_input']['memo1'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)))) ? $this->_run_mod_handler('nl2br', true, $_tmp) : smarty_modifier_nl2br($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">講義タイトル、講師名</th>
+		<td><?php echo ((is_array($_tmp=((is_array($_tmp=$this->_tpl_vars['arr_input']['memo2'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)))) ? $this->_run_mod_handler('nl2br', true, $_tmp) : smarty_modifier_nl2br($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">日時詳細</th>
+		<td><?php echo ((is_array($_tmp=((is_array($_tmp=$this->_tpl_vars['arr_input']['memo3'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)))) ? $this->_run_mod_handler('nl2br', true, $_tmp) : smarty_modifier_nl2br($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">定員</th>
+		<td><?php if ($this->_tpl_vars['arr_input']['capacity'] == 9999): ?>制限なし<?php else: ?><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['capacity'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+<?php endif; ?></td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">単品料金(税込)</th>
+		<td><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['price'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">問い合わせ先</th>
+		<td><?php echo ((is_array($_tmp=((is_array($_tmp=$this->_tpl_vars['arr_input']['memo4'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)))) ? $this->_run_mod_handler('nl2br', true, $_tmp) : smarty_modifier_nl2br($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">受講資格/他会員の受講等</th>
+		<td><?php echo ((is_array($_tmp=((is_array($_tmp=$this->_tpl_vars['arr_input']['memo5'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)))) ? $this->_run_mod_handler('nl2br', true, $_tmp) : smarty_modifier_nl2br($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">備考</th>
+		<td><?php echo ((is_array($_tmp=((is_array($_tmp=$this->_tpl_vars['arr_input']['contents'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)))) ? $this->_run_mod_handler('nl2br', true, $_tmp) : smarty_modifier_nl2br($_tmp)); ?>
+</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">商品カテゴリ</th>
+		<td>
+
+			<ul style="list-style-type:none;">
+			<?php $_from = $this->_tpl_vars['arr_category']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['row']):
+?>
+				<?php if (in_array ( $this->_tpl_vars['row']['term_id'] , $this->_tpl_vars['arr_input']['arr_term_id'] )): ?><li><?php echo ((is_array($_tmp=$this->_tpl_vars['row']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+&nbsp;&nbsp;</li><?php endif; ?>
+				<ul style="margin-left:15px;list-style-type:none;">
+				<?php $_from = $this->_tpl_vars['row']['categorys']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['row2']):
+?>
+					<?php if (in_array ( $this->_tpl_vars['row2']['term_id'] , $this->_tpl_vars['arr_input']['arr_term_id'] )): ?><li>→<?php echo ((is_array($_tmp=$this->_tpl_vars['row2']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+&nbsp;&nbsp;</li><?php endif; ?>
+					<ul style="margin-left:15px;list-style-type:none;">
+					<?php $_from = $this->_tpl_vars['row2']['categorys']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['row3']):
+?>
+						<?php if (in_array ( $this->_tpl_vars['row3']['term_id'] , $this->_tpl_vars['arr_input']['arr_term_id'] )): ?><li>→→<?php echo ((is_array($_tmp=$this->_tpl_vars['row3']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+&nbsp;&nbsp;</li><?php endif; ?>
+						<ul style="margin-left:15px;list-style-type:none;">
+						<?php $_from = $this->_tpl_vars['row3']['categorys']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['row4']):
+?>
+							<?php if (in_array ( $this->_tpl_vars['row4']['term_id'] , $this->_tpl_vars['arr_input']['arr_term_id'] )): ?><li>→→→<?php echo ((is_array($_tmp=$this->_tpl_vars['row4']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+&nbsp;&nbsp;</li><?php endif; ?>
+							<ul style="margin-left:15px;list-style-type:none;">
+							<?php $_from = $this->_tpl_vars['row4']['categorys']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['row5']):
+?>
+								<?php if (in_array ( $this->_tpl_vars['row5']['term_id'] , $this->_tpl_vars['arr_input']['arr_term_id'] )): ?><li>→→→→<?php echo ((is_array($_tmp=$this->_tpl_vars['row5']['name'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+&nbsp;&nbsp;</li><?php endif; ?>
+							<?php endforeach; endif; unset($_from); ?>
+							</ul>
+						<?php endforeach; endif; unset($_from); ?>
+						</ul>
+					<?php endforeach; endif; unset($_from); ?>
+					</ul>
+				<?php endforeach; endif; unset($_from); ?>
+				</ul>
+			<?php endforeach; endif; unset($_from); ?>
+			</ul>
+
+		</td>
+	</tr>
+	<tr>
+		<th style="vertical-align:middle;">商品メイン画像</th>
+		<td>
+			<?php if ($this->_tpl_vars['arr_input']['thumbnail'] == ''): ?>
+				未設定
+			<?php else: ?>
+				<img src="/alfproduct/resize_image.php?image=<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input']['thumbnail'])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+&width=240&height=180" alt="" />
+			<?php endif; ?>
+		</td>
+	</tr>
+	
+	<?php if ($this->_tpl_vars['nichibenren_flg']): ?>
+	<tr>
+		<th colspan="2" id="bar_association_main_title">実施弁護士会</th>
+	</tr>
+	<?php $_from = $this->_tpl_vars['arr_bar_association']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['val']):
+?>
+		<tr>
+			<td colspan="2" class="bar_association_title"><?php echo $this->_tpl_vars['val']['name']; ?>
+</td>
+		</tr>
+		<?php $_from = $this->_tpl_vars['val']['branch_info']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['branch']):
+?>
+		<?php $this->assign('branch_id', $this->_tpl_vars['branch']['id']); ?>
+		<?php $this->assign('capacity', ((is_array($_tmp='capacity')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_tpl_vars['branch_id']) : smarty_modifier_cat($_tmp, $this->_tpl_vars['branch_id']))); ?>
+		<?php $this->assign('hall', ((is_array($_tmp='hall')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_tpl_vars['branch_id']) : smarty_modifier_cat($_tmp, $this->_tpl_vars['branch_id']))); ?>
+		<?php $this->assign('receptionist_start_date', ((is_array($_tmp='receptionist_start_date')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_tpl_vars['branch_id']) : smarty_modifier_cat($_tmp, $this->_tpl_vars['branch_id']))); ?>
+		<?php $this->assign('receptionist_end_date', ((is_array($_tmp='receptionist_end_date')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_tpl_vars['branch_id']) : smarty_modifier_cat($_tmp, $this->_tpl_vars['branch_id']))); ?>
+		<?php $this->assign('dates', ((is_array($_tmp='dates')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_tpl_vars['branch_id']) : smarty_modifier_cat($_tmp, $this->_tpl_vars['branch_id']))); ?>
+		<?php $this->assign('web_flg', ((is_array($_tmp='web_flg')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_tpl_vars['branch_id']) : smarty_modifier_cat($_tmp, $this->_tpl_vars['branch_id']))); ?>
+		<?php $this->assign('contents', ((is_array($_tmp='contents')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_tpl_vars['branch_id']) : smarty_modifier_cat($_tmp, $this->_tpl_vars['branch_id']))); ?>
+		<?php $this->assign('entry_number', ((is_array($_tmp='entry_number')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_tpl_vars['branch_id']) : smarty_modifier_cat($_tmp, $this->_tpl_vars['branch_id']))); ?>
+		<?php if (( $this->_tpl_vars['arr_input'][$this->_tpl_vars['capacity']] !== "" && $this->_tpl_vars['arr_input'][$this->_tpl_vars['hall']] !== "" && $this->_tpl_vars['arr_input'][$this->_tpl_vars['receptionist_start_date']] !== "" && $this->_tpl_vars['arr_input'][$this->_tpl_vars['receptionist_end_date']] !== "" && $this->_tpl_vars['arr_input'][$this->_tpl_vars['dates']] !== "" && $this->_tpl_vars['arr_input'][$this->_tpl_vars['web_flg']] !== "" ) || $this->_tpl_vars['arr_input'][$this->_tpl_vars['web_flg']] === '2'): ?>
+		<tr>
+			<td>
+				<?php echo $this->_tpl_vars['branch']['name']; ?>
+
+			</td>
+			<td>
+				定員：<?php if ($this->_tpl_vars['arr_input'][$this->_tpl_vars['capacity']] == 9999): ?>制限なし<?php else: ?><?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input'][$this->_tpl_vars['capacity']])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+<?php endif; ?><br />
+				会場：<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input'][$this->_tpl_vars['hall']])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+<br />
+				受付：<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input'][$this->_tpl_vars['receptionist_start_date']])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+&nbsp;～&nbsp;<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input'][$this->_tpl_vars['receptionist_end_date']])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+<br />
+				実施日：<?php echo $this->_tpl_vars['arr_input'][$this->_tpl_vars['dates']]; ?>
+<br />
+				<?php if ($this->_tpl_vars['nichibenren_flg']): ?>
+				Web申込：<?php if ($this->_tpl_vars['arr_input'][$this->_tpl_vars['web_flg']] === '1'): ?>WEB申込可(研修を実施する)<?php endif; ?><?php if ($this->_tpl_vars['arr_input'][$this->_tpl_vars['web_flg']] === '0'): ?>WEB申込不可(研修を実施する)<?php endif; ?><?php if ($this->_tpl_vars['arr_input'][$this->_tpl_vars['web_flg']] === '2'): ?>研修を実施しない<?php endif; ?><br />
+				<?php endif; ?>
+				<?php if (isset ( $this->_tpl_vars['arr_input']['mid'] )): ?>
+				現状申込数：<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input'][$this->_tpl_vars['entry_number']])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+<br />
+				<?php endif; ?>
+				備考：<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input'][$this->_tpl_vars['contents']])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+
+			</td>
+		</tr>
+		<?php endif; ?>
+		<?php endforeach; endif; unset($_from); ?>
+	<?php endforeach; endif; unset($_from); ?>
+	<?php endif; ?>
+	
+<?php unset($this->_sections['related_products']);
+$this->_sections['related_products']['name'] = 'related_products';
+$this->_sections['related_products']['loop'] = is_array($_loop=$this->_tpl_vars['section_related_products']) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$this->_sections['related_products']['start'] = (int)1;
+$this->_sections['related_products']['show'] = true;
+$this->_sections['related_products']['max'] = $this->_sections['related_products']['loop'];
+$this->_sections['related_products']['step'] = 1;
+if ($this->_sections['related_products']['start'] < 0)
+    $this->_sections['related_products']['start'] = max($this->_sections['related_products']['step'] > 0 ? 0 : -1, $this->_sections['related_products']['loop'] + $this->_sections['related_products']['start']);
+else
+    $this->_sections['related_products']['start'] = min($this->_sections['related_products']['start'], $this->_sections['related_products']['step'] > 0 ? $this->_sections['related_products']['loop'] : $this->_sections['related_products']['loop']-1);
+if ($this->_sections['related_products']['show']) {
+    $this->_sections['related_products']['total'] = min(ceil(($this->_sections['related_products']['step'] > 0 ? $this->_sections['related_products']['loop'] - $this->_sections['related_products']['start'] : $this->_sections['related_products']['start']+1)/abs($this->_sections['related_products']['step'])), $this->_sections['related_products']['max']);
+    if ($this->_sections['related_products']['total'] == 0)
+        $this->_sections['related_products']['show'] = false;
+} else
+    $this->_sections['related_products']['total'] = 0;
+if ($this->_sections['related_products']['show']):
+
+            for ($this->_sections['related_products']['index'] = $this->_sections['related_products']['start'], $this->_sections['related_products']['iteration'] = 1;
+                 $this->_sections['related_products']['iteration'] <= $this->_sections['related_products']['total'];
+                 $this->_sections['related_products']['index'] += $this->_sections['related_products']['step'], $this->_sections['related_products']['iteration']++):
+$this->_sections['related_products']['rownum'] = $this->_sections['related_products']['iteration'];
+$this->_sections['related_products']['index_prev'] = $this->_sections['related_products']['index'] - $this->_sections['related_products']['step'];
+$this->_sections['related_products']['index_next'] = $this->_sections['related_products']['index'] + $this->_sections['related_products']['step'];
+$this->_sections['related_products']['first']      = ($this->_sections['related_products']['iteration'] == 1);
+$this->_sections['related_products']['last']       = ($this->_sections['related_products']['iteration'] == $this->_sections['related_products']['total']);
+?>
+	<tr>
+		<th style="vertical-align:middle;">関連商品<?php echo $this->_sections['related_products']['index']; ?>
+</th>
+		<td>
+			<?php $this->assign('related_products_name_key', ((is_array($_tmp=((is_array($_tmp='related_products')) ? $this->_run_mod_handler('cat', true, $_tmp, $this->_sections['related_products']['index']) : smarty_modifier_cat($_tmp, $this->_sections['related_products']['index'])))) ? $this->_run_mod_handler('cat', true, $_tmp, '_name') : smarty_modifier_cat($_tmp, '_name'))); ?>
+			<?php if ($this->_tpl_vars['arr_input'][$this->_tpl_vars['related_products_name_key']] == ''): ?>
+				未設定
+			<?php else: ?>
+				<?php echo ((is_array($_tmp=$this->_tpl_vars['arr_input'][$this->_tpl_vars['related_products_name_key']])) ? $this->_run_mod_handler('escape', true, $_tmp) : smarty_modifier_escape($_tmp)); ?>
+
+			<?php endif; ?>
+		</td>
+	</tr>
+<?php endfor; endif; ?>
+
+</table>
+
+<div class="submit">
+	<input type="image" src="/alfproduct/images/btn_back.png" onclick="formSubmit('form1', 'add.php', 'back');return false;" />
+	<input type="image" src="/alfproduct/images/btn_ok.png" onclick="formSubmit('form1', 'add.php', 'complete');return false;" />
+</div>
+</form>
+<a name="page_bottom"></a>

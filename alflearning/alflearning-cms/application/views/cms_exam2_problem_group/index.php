@@ -1,0 +1,98 @@
+<?php
+	$this->lang->load('common');
+	$this->lang->load('msg');
+?>
+<?php
+	$data['callview'] = "exam2";
+	$this->load->view('header/header',$data);?>
+</head>
+
+<body class="<?= getenv('URL_SERVICE'); ?>">
+	<?php 
+		$this->load->view('header/body_header', array());
+	?>
+
+	<div id="wrapper">
+		<h1 class="claerfix">
+			<div class="title"><?= $this->lang->line_or_def('common_heading_exam2','アンケート管理') ?></div>
+			<div class="comment"><?= $this->lang->line_or_def('msg_exam2_comment','アンケートを管理します') ?></div>
+		</h1>
+
+		<div id="main">
+			<? $this->load->view('cms_exam2_problem_group/_submenu', array(
+				'selected'	=> 'exam2_problem_group',
+			));?>
+
+			<div id="contents_main">
+				<div class="toolbar clearfix">
+					<a class="btn_seach selected" href="/cms_exam2_problem_group/"><span><?= $this->lang->line_or_def('common_search','検索') ?></span></a>
+					<a class="btn_add" href="/cms_exam2_problem_group/newdata"><span><?= $this->lang->line_or_def('common_new_registration','新規登録') ?></span></a>
+				</div>
+
+				<h2><?= $this->lang->line_or_def('msg_search','検索する内容を入力してください') ?></h2>
+
+				<?=form_open("cms_exam2_problem_group", array('method'=>'post'))?>
+					<table class="form">
+						<tr>
+							<th width="160"><?= $this->lang->line_or_def('common_exam2_problem_group_name','設問グループ名') ?></th>
+							<td>
+								<input type="text" name="s_exam2_problem_group_name" size="45" value="<?=set_value('s_exam2_problem_group_name',$s_exam2_problem_group_name)?>">
+							</td>
+						</tr>
+						<tr>
+							<th><?= $this->lang->line_or_def('common_exam2_problem_name','設問名') ?></th>
+							<td>
+								<?=form_dropdown('s_exam2_problem_id',$exam2_problem_dropdown,set_value('s_exam2_problem_id',$s_exam2_problem_id));?>
+							</td>
+						</tr>
+						<? if( $this->config->item('language') != 'alfsales' ): ?>
+						<tr>
+							<th><?= $this->lang->line_or_def('common_id','ID') ?></th>
+							<td >
+								<input type="text" name="s_id" size="10" value="<?=set_value('s_id',$s_id)?>">
+							</td>
+						</tr>
+						<? endif; ?>
+						<tr>
+							<th><?= $this->lang->line_or_def('common_freeword','フリーワード') ?></th>
+							<td >
+								<input type="text" name="s_free_word" size="45" value="<?=set_value('s_free_word',$s_free_word)?>">
+							</td>
+						</tr>
+					</table>
+					<div class="submit">
+						<input type='image' src='/static/image/btn_search.png' />
+					</div>
+				</form>
+				<br />
+
+				<div id="list">
+					<table class="list">
+						<tr>
+							<th style="width:76px;"><?= $this->lang->line_or_def('common_id','ID') ?></th>
+							<th><?= $this->lang->line_or_def('common_exam2_problem_group_name' ,'設問グループ名') ?></th>
+							<th style="width:100px;"><?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?></th>
+						</tr>
+						<?php $line=0;?>
+						<?php if(isset($exam2_problem_group_list)) { ?>
+							<?php foreach($exam2_problem_group_list as $exam2_problem_group) { ?>
+								<?php $line++;?>
+								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
+									<td><a href="/cms_exam2_problem_group/detail/<?= $exam2_problem_group['exam2_problem_group_id']; ?>/"><?=$exam2_problem_group['exam2_problem_group_id']?></td>
+									<td><?=$exam2_problem_group['exam2_problem_group_name']?></td>
+									<td><?=$exam2_problem_group['exam2_problem_count']?></td>
+								</tr>
+							<?php } ?>
+						<?php } ?>
+						<tr>
+							<th class="pager" colspan="4"><?=$pagination?></th>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<?php $this->load->view('header/body_footer');?>
+</body>
+</html>

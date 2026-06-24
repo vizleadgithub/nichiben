@@ -1,0 +1,14 @@
+<!--{include file='mypage/side_menu.tpl'}-->
+<div style="float:right;width:720px;">
+
+<!--{if $err_flag}-->
+	エラーが発生しました。<br />大変お手数ですが、再度会員登録をお願いいたします。
+	
+<!--{else}-->
+	登録情報の変更が完了しました。<br>
+	<br>
+	<a href="/">TOPへ戻る</a>
+	
+<!--{/if}-->
+
+</div>

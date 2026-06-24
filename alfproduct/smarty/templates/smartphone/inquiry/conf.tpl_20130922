@@ -1,0 +1,81 @@
+<div style="width:100%;">
+
+	<span style="color:#ff6666;">
+	※お問い合わせいただく前に・・・<br>
+	・「よくある質問」を確認し、回答が見つからない場合のみお問い合わせください。<br>
+	・学習内容の相談や質問につきましては、回答を差し控えさせていただきます。<br>
+	</span>
+	<br>
+	お問い合わせ内容を確認し、「送信する」ボタンをクリックしてください。
+
+	<hr>
+
+	<div style="border: solid 1px #47a6d4;padding: 1px;">
+	<table style="width:100%;" class="member_table">
+		<tr>
+			<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">お名前<font color="red">※必須</font></td>
+			<td style="padding:5px;"><!--{$input_name|escape}--></td>
+		</tr>
+		<!--{*
+		<tr>
+			<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">会社名</td>
+			<td style="padding:5px;"><!--{$input_company|escape}--></td>
+		</tr>
+		<tr>
+			<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">部署名</td>
+			<td style="padding:5px;"><!--{$input_post|escape}--></td>
+		</tr>
+		<tr>
+			<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">お電話番号（半角）<font color="red">※必須</font></td>
+			<td style="padding:5px;"><!--{$input_tel|escape}--></td>
+		</tr>
+		 *}-->
+		<tr>
+			<th style="width:200px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">Email（半角）<font color="red">※必須</font></td>
+			<td style="padding:5px;"><!--{$input_mail|escape}--></td>
+		</tr>
+	</table>
+	</div>
+
+	<hr>
+
+	<div style="border: solid 1px #47a6d4;padding: 1px;">
+	<table style="width:100%;" class="member_table">
+		<tr>
+			<th style="background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">お問い合わせ内容<font color="red">※必須</font></th>
+		</tr>
+		<tr>
+			<td style="padding:5px;"><!--{$input_comment|escape|nl2br}--></td>
+		</tr>
+	</table>
+	</div>
+
+	<hr>
+
+	<table style="width:100%;">
+		<tr>
+			<td style="padding:5px;text-align:right;width:50%;">
+				<form name="form_inquiry_back" method="post" action="index.php">
+					<input type="hidden" name="input_name" value="<!--{$input_name|escape}-->" />
+					<input type="hidden" name="input_company" value="<!--{$input_company|escape}-->" />
+					<input type="hidden" name="input_post" value="<!--{$input_post|escape}-->" />
+					<input type="hidden" name="input_tel" value="<!--{$input_tel|escape}-->" />
+					<input type="hidden" name="input_mail" value="<!--{$input_mail|escape}-->" />
+					<input type="hidden" name="input_comment" value="<!--{$input_comment|escape}-->" />
+					<input type="image" src="/img/btn/back.png" name="btn_submit" alt="戻る" />
+				</form>
+			</td>
+			<td style="padding:5px;text-align:left;width:50%;">
+				<form name="form_inquiry_submit" method="post" action="send.php">
+					<input type="hidden" name="input_name" value="<!--{$input_name|escape}-->" />
+					<input type="hidden" name="input_company" value="<!--{$input_company|escape}-->" />
+					<input type="hidden" name="input_post" value="<!--{$input_post|escape}-->" />
+					<input type="hidden" name="input_tel" value="<!--{$input_tel|escape}-->" />
+					<input type="hidden" name="input_mail" value="<!--{$input_mail|escape}-->" />
+					<input type="hidden" name="input_comment" value="<!--{$input_comment|escape}-->" />
+					<input type="image" src="/img/btn/submit.png" name="btn_submit" alt="送信する" />
+				</form>
+			</td>
+		</tr>
+	</table>
+</div>

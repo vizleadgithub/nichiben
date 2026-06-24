@@ -1,0 +1,47 @@
+<!--{include file='mypage/side_menu.tpl'}-->
+<div style="float:right;width:700px;">
+	<div>
+		<div id="single_title">
+			<h3>会員情報確認</h3>
+			<h6>video list</h6>
+		</div>
+	</div>
+このページはあなたの会員情報を表示しています。<br />
+氏名・登録番号・登録年月日・所属弁護士会・料金・研修パスポート料金・研修パスポートの有無はご自身で変更ができません。<br />
+メールアドレス・メールマガジンの受信について変更する場合は右下のボタンをクリックして会員専用ページで変更してください。<br />
+<br />
+<table>
+	<tr>
+		<th>氏名</th>
+		<td><!--{$user_info.student_name|escape}--></td>
+	</tr>
+	<tr>
+		<th>登録番号</th>
+		<td><!--{$user_info.lawyer_number|escape}--></td>
+	</tr>
+	<tr>
+		<th>登録年月日</th>
+		<td><!--{$user_info.regist_date|escape}--></td>
+	</tr>
+	<tr>
+		<th>所属弁護士会</th>
+		<td><!--{$mtb_bar_association[$user_info.bar_association_id]|escape}--></td>
+	</tr>
+	<tr>
+		<th>研修パスポート料金</th>
+		<td><!--{$user_info.target_passport|escape}--></td>
+	</tr>
+	<tr>
+		<th>研修パスポートの有無</th>
+		<td><!--{if $user_info.presence_passport==1}-->有<!--{else}-->無&nbsp;&nbsp;&nbsp;<input type="button" value="研修パスポートのご案内" /><!--{/if}--></td>
+	</tr>
+	<tr>
+		<th>メールアドレス</th>
+		<td><!--{$user_info.student_email|escape}--></td>
+	</tr>
+	<tr>
+		<th>メールマガジンの受信</th>
+		<td><!--{if $user_info.mailmagazine_flg==1}-->有<!--{else}-->無<!--{/if}-->&nbsp;&nbsp;&nbsp;会員専用ページで情報を変更する→<input type="button" value="会員専用ページ" /></td>
+	</tr>
+</table>
+</div>

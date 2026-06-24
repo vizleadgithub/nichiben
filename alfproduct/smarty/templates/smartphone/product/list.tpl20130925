@@ -1,0 +1,280 @@
+<!--{if $pcid=="all"}-->
+	<div style="clear:both;text-align:left;color:#4b3921;font-size:14px;">
+	<a href="/">TOP</a>&nbsp;
+	<img src="/img/c_ar_off.png" alt="＞" style="height:10px;" />&nbsp;
+	全講座一覧
+	</div>
+<!--{else}-->
+	<!--{$pankuzu}-->
+<!--{/if}-->
+
+<div style="text-align:right;">
+	<a href="/product/list_recommend.php"><img src="/img/list/recommend.png" alt="おすすめ講座" /></a>
+</div>
+
+<!--{if !empty($arr_list)}-->
+	<div class="pager">
+		<div style="text-align:left; float:left;width:244px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中）
+		</div>
+		<div style="text-align:right; float:right;width:244px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+
+
+<div class="list_title" style="border:solid 1px #f3f3f3;border-bottom:solid 2px #f3f3f3;height:115px;">
+	<h2>講座一覧</h2>
+	<div class="selects">
+		<form name="form_selects">
+			<script type="text/javascript">
+			<!--
+			function sort_exe(){
+				location.href = "" + "?pcid=<!--{$pcid}-->&pagemax=" + document.form_selects.pagemax.options[document.form_selects.pagemax.selectedIndex].value + "&page=1&sort=" + document.form_selects.sort.options[document.form_selects.sort.selectedIndex].value;
+			}
+			// -->
+			</script>
+			<span style="position:relative;bottom:5px;right:10px;">
+			<!--{html_options name=sort options=$sort_select selected=$sort}-->に
+			<select name="pagemax">
+				<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+				<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+				<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+				<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+			</select>件ずつ
+			<a href="javascript:void(0);" onClick="sort_exe()"><img src="/img/list/permutation_btn.png" alt="並替え" style="position:relative;top:8px;" /></a>
+			</span>
+		</form>
+		<div style="padding-top:15px;text-align:center;">
+弁護士会主催研修は、各弁護士会からの情報に基づいています。<br />
+詳細は各弁護士会にお問い合わせください。
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+	<!--{foreach from=$arr_list item="row"}-->
+	<div class="list_box" style="width:468px;float:left;clear:both;background-color:#ffffff;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
+	<!--{* e-ラーニング *}-->
+	<!--{if $row.product_type_add == 1}-->
+		<div style="float:left;width:160px;height:115px;text-align:center;background-color:#99e5fd;padding:0;" class="thumb">
+			<img src="/img/list/list_img002.jpg" alt="eラーニング" />
+			<!--{if $row.thumbnail_flg == 1}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{elseif $row.thumbnail_flg == 2}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_video_image.php?image=<!--{$row.video_thumbnail}-->&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{/if}-->
+			
+			<div style="position:relative;top:8px;right:5px;background-color:#ffffff;width:170px;height:20px;padding-top:10px;">
+			<!--{foreach name=icon_loop from=$row.icon_img item=icon}-->
+			<!--{assign var=icon_cnt value=$smarty.foreach.icon_loop.iteration}-->
+				<img src="/img/<!--{$icon.src|escape}-->" alt="<!--{$icon.alt|escape}-->" />
+				<!--{if $icon_cnt == 2}--><br /><!--{/if}-->
+			<!--{/foreach}-->
+			</div>
+		</div>
+		
+		<div>
+			<div style="text-align:right;">
+			<!--{if $row.favorite_flg}-->
+				<form name="favoriteForm" action="https://<!--{php}-->echo $_SERVER['SERVER_NAME'];<!--{/php}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="act" value="regist" />
+				<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
+					<input type="image" src="/img/list/favorite_btn.png" /><br />
+				</form>
+			<!--{/if}-->
+			<!--{if $row.favorite_icon_flg}-->
+				<img src="/img/list/favorite_btn_comp01.png" alt="お気に入り登録済" />
+			<!--{/if}-->
+			</div>
+		</div>
+		
+		<div style="text-align:left;margin-left:180px;">
+			<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:#523d26;font-size:14px;font-weight:bold;"><!--{$row.product_name|escape}--></a>
+		</div>
+		
+		<div style="float:right;width:290px">
+			<table>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">講師名</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.teacher|escape}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">総時間</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.all_play_time|escape}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">単品価格</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{if $row.price_intax==0}-->無料<!--{else}--><!--{$row.price_intax|escape}-->円(税込)<!--{/if}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">掲載期間</th>
+					<td style="text-align:left;vertical-align:top;width:210px;">
+						<!--{if $row.start_date!='' && $row.start_date!='0000-00-00 00:00:00' && $row.end_date!='' && $row.end_date!='0000-00-00 00:00:00'}-->
+							<!--{$row.disp_start_date|escape}-->～<!--{$row.disp_end_date|escape}-->
+						<!--{elseif $row.start_date!='' && $row.start_date!='0000-00-00 00:00:00'}-->
+							<!--{$row.disp_start_date|escape}-->～
+						<!--{elseif $row.end_date!='' && $row.end_date!='0000-00-00 00:00:00'}-->
+							～<!--{$row.disp_end_date|escape}-->
+						<!--{else}-->
+							常に公開
+						<!--{/if}-->
+					</td>
+				</tr>
+			</table>
+			<div style="float:right;width:460px;padding:5px;">
+				<div style="text-align:left;width:100%;">
+					<!--{$row.memo|escape|nl2br}-->
+				</div>
+				<div style="text-align:right;width:100%;">
+					<img src="/img/list/ic_2ar.png" alt="" style="position:relative;top:5px;" />
+					<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:57462e;font-size:14px;">商品詳細へ</a>
+				</div>
+			</div>
+		</div>
+		
+	<!--{* 会場研修 *}-->
+	<!--{elseif $row.product_type_add == 2}-->
+		<div style="float:left;width:160px;height:115px;text-align:center;background-color:#8ebd55;padding:0;" class="thumb">
+			<img src="/img/list/list_img001.jpg" alt="会場研修" />
+			<!--{if $row.thumbnail != ""}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{/if}-->
+			<div style="position:relative;top:20px;">
+				<!--{$row.icon|escape}-->
+			</div>
+		</div>
+		
+		<div>
+			<div style="text-align:right;">
+			<!--{if $row.favorite_flg}-->
+				<form name="favoriteForm" action="https://<!--{php}-->echo $_SERVER['SERVER_NAME'];<!--{/php}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="act" value="regist" />
+				<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
+					<input type="image" src="/img/list/favorite_btn.png" /><br />
+				</form>
+			<!--{/if}-->
+			<!--{if $row.favorite_icon_flg}-->
+				<img src="/img/list/favorite_btn_comp02.png" alt="お気に入り登録済" />
+			<!--{/if}-->
+			</div>
+		</div>
+		
+		<div style="text-align:left;margin-left:180px;">
+			<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:#523d26;font-size:14px;font-weight:bold;"><!--{$row.product_name|escape}--></a>
+		</div>
+		
+		<div style="float:right;width:290px">
+			<table>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">講師名</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.memo2|escape|nl2br}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">主催</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.disp_sponsor}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">単品価格</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{if $row.price_intax==0}-->無料<!--{else}--><!--{$row.price_intax|escape}-->円(税込)<!--{/if}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">受付期間</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.disp_start_date|escape}-->～<!--{$row.disp_end_date|escape}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">研修開催日</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.disp_dates|escape}--></td>
+				</tr>
+			</table>
+			<div style="float:right;width:460px;padding:5px;">
+				<div style="text-align:left;width:100%;">
+					<!--{$row.memo|escape|nl2br}-->
+				</div>
+				<div style="text-align:right;width:100%;">
+					<img src="/img/list/ic_2ar.png" alt="" style="position:relative;top:5px;" />
+					<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:57462e;font-size:14px;">商品詳細へ</a>
+				</div>
+			</div>
+		</div>
+		
+	<!--{* 情報なし(ここに入ることはない想定) *}-->
+	<!--{else}-->
+		講座及び研修情報が存在しません。
+	<!--{/if}-->
+	
+	
+	
+<!--{*
+		<div style="float:left;width:100px;text-align:center;" class="thumb">
+			<!--{if $row.thumbnail==''}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=100&height=100" alt="" /></a>
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=100&height=100" alt="" /></a>
+			<!--{/if}-->
+		</div>
+
+		<div style="float:right;width:385px">
+			<table>
+				<tr>
+					<th colspan="2" style="text-align:left;vertical-align:top;color: #47A6D4;" class="title"><a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color: #47A6D4;"><!--{$row.product_name|escape}--></a></th>
+				</tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">講師</th>
+					<td style="text-align:left;vertical-align:top;"><!--{$row.teacher|escape}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">再生時間</th>
+					<td style="text-align:left;vertical-align:top;"><!--{$row.play_time|escape}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">視聴期間</th>
+					<td style="text-align:left;vertical-align:top;"><!--{if $row.open_period==0}-->購入日から無期限<!--{else}-->購入日から<!--{$row.open_period|escape}-->日間<!--{/if}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">価格</th>
+					<td style="text-align:left;vertical-align:top;"><!--{if $row.price_intax==0}-->無料<!--{else}--><!--{$row.price_intax|escape}-->円(税込)<!--{/if}--></td>
+				<tr>
+				<tr>
+					<td colspan="2" style="text-align:left;vertical-align:top;"><!--{$row.memo|mb_truncate:120:"..."|escape|nl2br}--></td>
+				<tr>
+			</table>
+			<div style="float:right;width:300px;text-align:right;padding:5px;">
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->">→商品詳細へ</a>
+			</div>
+		</div>
+*}-->
+		
+		<div style="text-align:center;">
+			<img src="/img/list/dotline.png" alt="" style="width:100%;" />
+		</div>
+	</div>
+	<!--{/foreach}-->
+
+
+
+	<div class="pager">
+		<div style="text-align:left; float:left;width:244px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:244px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+<!--{else}-->
+	該当商品はありません。
+<!--{/if}-->
+
+<!--{php}-->
+// おすすめ講座
+include RECCOMEND_BLOCK_PATH;
+<!--{/php}-->

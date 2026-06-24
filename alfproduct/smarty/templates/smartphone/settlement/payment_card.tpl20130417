@@ -1,0 +1,133 @@
+<html dir="ltr" lang="ja">
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="description" content="真の法律家・行政官を育成する 「伊藤塾」" />
+<meta name="keywords" content="真の法律家・行政官を育成する 「伊藤塾」" />
+<meta charset="UTF-8" />
+<title>伊藤塾</title>
+<script type="text/javascript">
+function payment_close(){
+	parent.buy__close();
+}
+</script>
+<style type="text/css">
+th.table_name{
+	text-align:right;
+	width:160px;
+	color:#79BEDF;
+	font-size: 14px;
+}
+td.table_data{
+	text-align:left;
+	width:240px;
+	padding-left: 30px;
+	font-size: 14px;
+}
+.btn_close{
+ background: url(/img/close_b2.gif)no-repeat ;
+ width:133px;
+ height:30px;
+ border:0px;
+ text-indent: -9999px;
+}
+.btn_submit{
+ background: url(/img/account_btn2.gif)no-repeat ;
+ width:200px;
+ height:30px;
+ border:0px;
+ text-indent: -9999px;
+}
+</style>
+</head>
+<body style="overflow : hidden ;background-color: #F1F8FE;padding: 0px;margin: 0px;">
+	<!--{if $err_flg}-->
+		<table order="0" style="margin-top:100px;">
+			<tr>
+				<td style="width:400px;text-align:center;" class="table_data"><span style="color:#ff0000;">決済に失敗しました。<br />お手数ですが再度ご購入をお願いいたします。<br /></span><td>
+			</tr>
+			<tr>
+				<td style="width:400px;text-align:center;font-size: 14px;" colspan="2"><br /><br /><br />
+					<span style="color:#ff6666;font-size: 14px;">下記「閉じる」ボタンをクリックしてください。</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:400px;text-align:center;" class="table_data">
+					<form name="form_payment">
+					<input type="button" value="閉じる" onclick="payment_close();" class="btn_close" style="cursor: pointer;" />
+					</form>
+				</td>
+			</tr>
+		</table>
+		<!--{*<input type="button" value="閉じる" onclick="window.close();" />*}-->
+		<!--{*
+			決済エラー<br>
+			<form name="form_payment" method="post" action="#">
+			注文番号：<!--{$order_no|escape}--><br>
+			購入金額：<!--{$total|escape}-->円<br>
+			カード番号:<input type="text" name="card_no" value="<!--{$card_no|escape}-->"><br>
+			カード有効期限:<input type="text" name="expire_y" value="<!--{$expire_y|escape}-->" size="4">年　<input type="text" name="expire_m" value="<!--{$expire_m|escape}-->" size="4">月<br>
+			<input type="submit" name="btn_submit" value="Submit" class="btn_close" >
+			</form>
+		*}-->
+	<!--{else}-->
+
+		<form name="form_payment" method="post" action="#">
+		<table order="1" style="margin-top:20px;">
+			<tr>
+				<th class="table_name">注文番号：</th><td class="table_data"><!--{$order_no|escape}--><td>
+			</tr>
+			<tr>
+				<th class="table_name">購入金額：</th><td class="table_data"><!--{$total|escape}-->円<td>
+			</tr>
+			<tr>
+				<th class="table_name">カード番号:</th><td class="table_data"><input type="text" name="card_no" value="" style="width:200px;"><td>
+			</tr>
+			<tr>
+				<th class="table_name">カード有効期限:</th><td class="table_data"><input type="text" name="expire_y" value="" size="4" maxlength="2">年（西暦下2桁）　
+				<select name="expire_m">
+					<option value="">--</option>
+					<option value="01">01</option>
+					<option value="02">02</option>
+					<option value="03">03</option>
+					<option value="04">04</option>
+					<option value="05">05</option>
+					<option value="06">06</option>
+					<option value="07">07</option>
+					<option value="08">08</option>
+					<option value="09">09</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+				</select>月<td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;">
+						<img src="/img/card_logo.png">
+				</td>
+			</tr>
+		</table>
+<div style="color: #666666;font-size: 12px;margin-left:50px;">
+クレジットカード情報の取扱について<br>
+・利用目的　：お支払い代金決済のため<br>
+・取 得 者　：伊藤塾（株式会社法学館）<br>
+・提 供 先　：決済代行会社（GMOペイメントゲートウェイ株式会社）<br>
+・保存期間　：精算手続き完了まで（カード情報を登録した場合を除く）<br>
+<br>
+<span style="color:#ff6666;">以上の内容で間違いなければ、下記「購入完了」ボタンをクリックしてください。</span>
+</div>
+		<table>
+			<tr>
+				<td style="width:180px;text-align:right;">
+					<input type="button" value="閉じる" onclick="payment_close();" class="btn_close btnCursor" style="cursor: pointer;" />
+				</td>
+				<td style="width:40px;">&nbsp;</td>
+				<td style="width:180px;text-align:left;">
+					<input type="submit" name="btn_submit" value="決定" class="btn_submit btnCursor" style="cursor: pointer;">
+				</td>
+			</tr>
+		</table>
+		</form>
+	<!--{/if}-->
+
+	</body>
+</html>

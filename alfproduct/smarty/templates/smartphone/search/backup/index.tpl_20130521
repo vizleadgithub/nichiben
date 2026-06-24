@@ -1,0 +1,273 @@
+	<div class="pankuzu" style="clear:both;text-align:left;">
+	<a href="/">TOP</a>
+	 ＞ 
+	<a href="/search/">検索</a>
+	</div>
+
+	<hr />
+
+
+
+
+	
+	<h2 class="search_title">検索</h2>
+
+	<form name="search_form" method="post" action="index.php#search_form">
+
+	<div style="border: solid 1px #47a6d4;padding: 1px;">
+	<table style="width:100%;" class="member_table">
+		<tr>
+			<th colspan="2" style="width:140px; background: url(/img/mushimegane.png)no-repeat 1% 50%; background-color:#47a6d4; color:#ffffff;text-align:left;vertical-align:top;padding:6px 5px 6px 30px;font-size:16px;">検索条件絞り込む</th>
+		</tr>
+		<tr>
+			<th style="width:140px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">カテゴリ</th>
+			<td style="padding:5px;">
+				<ul style="list-style-type:none;">
+				<!--{foreach from=$arr_category item="row"}-->
+					<li><input type="checkbox" name="search_category[]" value="<!--{$row.term_id|escape}-->" id="arr_term_id<!--{$row.term_id|escape}-->" onclick="check_cat('<!--{$row.term_id|escape}-->');"<!--{if in_array($row.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row.term_id|escape}-->"><!--{$row.name|escape}--></label>&nbsp;&nbsp;</li>
+					<ul style="margin-left:15px;list-style-type:none;">
+					<!--{foreach from=$row.categorys item="row2"}-->
+						<li>→<input type="checkbox" name="search_category[]" value="<!--{$row2.term_id|escape}-->" id="arr_term_id<!--{$row2.term_id|escape}-->" onclick="check_cat('<!--{$row2.term_id|escape}-->');"<!--{if in_array($row2.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row2.term_id|escape}-->"><!--{$row2.name|escape}--></label>&nbsp;&nbsp;</li>
+						<ul style="margin-left:15px;list-style-type:none;">
+						<!--{foreach from=$row2.categorys item="row3"}-->
+							<li>→→<input type="checkbox" name="search_category[]" value="<!--{$row3.term_id|escape}-->" id="arr_term_id<!--{$row3.term_id|escape}-->" onclick="check_cat('<!--{$row3.term_id|escape}-->');"<!--{if in_array($row3.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row3.term_id|escape}-->"><!--{$row3.name|escape}--></label>&nbsp;&nbsp;</li>
+							<ul style="margin-left:15px;list-style-type:none;">
+							<!--{foreach from=$row3.categorys item="row4"}-->
+								<li>→→→<input type="checkbox" name="search_category[]" value="<!--{$row4.term_id|escape}-->" id="arr_term_id<!--{$row4.term_id|escape}-->" onclick="check_cat('<!--{$row4.term_id|escape}-->');"<!--{if in_array($row4.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row4.term_id|escape}-->"><!--{$row4.name|escape}--></label>&nbsp;&nbsp;</li>
+								<ul style="margin-left:15px;list-style-type:none;">
+								<!--{foreach from=$row4.categorys item="row5"}-->
+									<li>→→→→<input type="checkbox" name="search_category[]" value="<!--{$row5.term_id|escape}-->" id="arr_term_id<!--{$row5.term_id|escape}-->" onclick="check_cat('<!--{$row5.term_id|escape}-->');"<!--{if in_array($row5.term_id,$search_category)}--> checked="checked"<!--{/if}--> ><label for="arr_term_id<!--{$row5.term_id|escape}-->"><!--{$row5.name|escape}--></label>&nbsp;&nbsp;</li>
+								<!--{/foreach}-->
+								</ul>
+							<!--{/foreach}-->
+							</ul>
+						<!--{/foreach}-->
+						</ul>
+					<!--{/foreach}-->
+					</ul>
+				<!--{/foreach}-->
+				</ul>
+			</td>
+		</tr>
+		<script type="text/javascript">
+			var arr_cat_id = [];
+			var arr_cat_name = [];
+			var arr_par_id = [];
+			<!--{foreach from=$arr_cat_list item=val}-->
+				arr_cat_id[arr_cat_id.length] = "<!--{$val.term_id}-->";
+				arr_cat_name[arr_cat_name.length] = "<!--{$val.name}-->";
+				arr_par_id[arr_par_id.length] = "<!--{$val.parent}-->";
+			<!--{/foreach}-->
+			function check_cat(cat_id){
+				var temp_i = cat_id;
+				if (document.getElementById("arr_term_id"+cat_id).checked ===true){
+					while (temp_i!="0" && temp_i!="21" ){
+						for (var i=0;i<arr_cat_id.length;i++){
+							if(temp_i==arr_cat_id[i]){
+								//alert(temp_i + ":" + arr_par_id[i]);
+								if(document.getElementById("arr_term_id"+temp_i) != null){
+									document.getElementById("arr_term_id"+temp_i).checked = true;
+								}
+								temp_i = arr_par_id[i];
+							}
+						}
+					}
+				} else {
+					var select_cat_id = new Array(cat_id);
+					while(select_cat_id.length>0){
+						var select_par_id = new Array();
+						for (var i=0;i<select_cat_id.length;i++){
+							for (var n=0;n<arr_par_id.length;n++){
+								if (arr_par_id[n]==select_cat_id[i]){
+									select_par_id[select_par_id.length] = arr_cat_id[n];
+								} 
+							}
+						}
+						for (var i=0;i<select_par_id.length;i++){
+							if(document.getElementById("arr_term_id"+select_par_id[i]) != null){
+								document.getElementById("arr_term_id"+select_par_id[i]).checked = false;
+							}
+						}
+						select_cat_id = select_par_id;
+					}
+				}
+			}
+		</script>
+		<tr>
+			<th style="width:140px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">キーワード</th>
+			<td style="padding:5px;">
+				<input type="text" name="search_keyword" value="<!--{$search_keyword|escape}-->">
+			</td>
+		</tr>
+		<tr><a name="search_form"></a>
+			<th style="width:140px;background-color:#47a6d4;color:#ffffff;text-align:left;vertical-align:top;padding:5px;">無料・有料</th>
+			<td style="padding:5px;">
+				<input type="radio" name="search_price_free" id="search_price_free1" value="1" <!--{if $search_price_free=="1"}--> checked=checked <!--{/if}-->><label for="search_price_free1">指定無し</label>
+				<input type="radio" name="search_price_free" id="search_price_free2" value="2" <!--{if $search_price_free=="2"}--> checked=checked <!--{/if}-->><label for="search_price_free2">無料</label>
+				<input type="radio" name="search_price_free" id="search_price_free3" value="3" <!--{if $search_price_free=="3"}--> checked=checked <!--{/if}-->><label for="search_price_free3">有料</label>
+			</td>
+		</tr>
+	</table>
+	</div>
+
+	<table style="width:100%;">
+		<tr>
+			<td style="padding:5px;text-align:center;width:100%;">
+				<input type="image" src="/img/btn/search.png" name="btn_submit" value="　検索　">
+			</td>
+		</tr>
+	</table>
+
+	</form>
+
+
+<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+<!-- 検索条件 -->
+<div style="clear:both;border:dotted 1px #cccccc; padding:10px; margin-bottom:10px;">
+	<h2>検索条件</h2>
+	<hr />
+<!--{if (is_array($arr_keyword) && $arr_keyword|@count>0) || (is_array($search_category) && $search_category|@count>0) }-->
+	<!--{if is_array($search_category) && $search_category|@count>0}-->
+		カテゴリ：
+		<!--{foreach from=$arr_category item="row"}-->
+			<!--{if in_array($row.term_id,$search_category)}--><!--{$row.name|escape}-->&nbsp;&nbsp;<!--{/if}-->
+			<!--{foreach from=$row.categorys item="row2"}-->
+				<!--{if in_array($row2.term_id,$search_category)}--><!--{$row2.name|escape}-->&nbsp;&nbsp;<!--{/if}-->
+				<!--{foreach from=$row2.categorys item="row3"}-->
+					<!--{if in_array($row3.term_id,$search_category)}--><!--{$row3.name|escape}-->&nbsp;&nbsp;<!--{/if}-->
+					<!--{foreach from=$row3.categorys item="row4"}-->
+						<!--{if in_array($row4.term_id,$search_category)}--><!--{$row4.name|escape}-->&nbsp;&nbsp;<!--{/if}-->
+						<!--{if in_array($row4.term_id,$search_category)}--><!--{$row3.name|escape}-->&nbsp;&nbsp;<!--{/if}-->
+						<!--{foreach from=$row4.categorys item="row5"}-->
+							<!--{if in_array($row5.term_id,$search_category)}--><!--{$row5.name|escape}-->&nbsp;&nbsp;<!--{/if}-->
+						<!--{/foreach}-->
+
+					<!--{/foreach}-->
+				<!--{/foreach}-->
+			<!--{/foreach}-->
+		<!--{/foreach}-->
+		<br>
+	<!--{/if}-->
+	<!--{if is_array($arr_keyword) && $arr_keyword|@count>0}-->
+	<hr style="margin-bottom:5px;" />
+		キーワード：
+		<!--{foreach from=$arr_keyword item="row"}-->
+			<!--{$row|escape}-->&nbsp;&nbsp;
+		<!--{/foreach}-->
+		<br>
+	<!--{/if}-->
+	<!--{if is_array($arr_keyword) && $arr_keyword|@count>0}-->
+		無料・有料：
+		<!--{if $search_price_free=="1"}-->指定無し<!--{/if}-->
+		<!--{if $search_price_free=="2"}-->無料<!--{/if}-->
+		<!--{if $search_price_free=="3"}-->有料<!--{/if}-->
+		<br>
+	<!--{/if}-->
+<!--{else}-->
+	全件表示<br>
+<!--{/if}-->
+</div>
+<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+
+
+<div style="clear:both;border:hidden 0px #ffffff;">
+<!--{if !empty($arr_list)}-->
+
+
+
+	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+	<!-- 改ページ -->
+	<div class="pager">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+
+
+	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+	<!-- 一覧表示件数 -->
+	<div class="list_title2">
+		<h2>検索結果</h2>
+		<div style="text-align:right; float:right;width:495px;" class="selects">
+			<script type="text/javascript">
+			<!--
+			function select_pagemax(){
+				location.href = "" + "?pagemax=" + document.form_pagemax.pagemax.options[document.form_pagemax.pagemax.selectedIndex].value + "&page=1#search_form";
+			}
+			// -->
+			</script>
+			<form name="form_pagemax">
+			<select name="pagemax" onChange="select_pagemax()">
+				<!--<option value="1"<!--{if $page_max==1}--> selected=selected<!--{/if}-->>1</option>-->
+				<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+				<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+				<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+				<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+			</select>件ずつ表示
+			</form>
+		</div>
+	</div>
+	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
+
+
+
+
+	<!--{foreach from=$arr_list item="row"}-->
+	<div class="list_box" style="width:500px;float:left;clear:both;">
+
+		<div style="float:left;width:100px;text-align:center;" class="thumb">
+			<!--{if $row.thumbnail==''}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=100&height=100" alt="" /></a>
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=100&height=100" alt="" /></a>
+			<!--{/if}-->
+		</div>
+
+		<div style="float:right;width:385px">
+			<table>
+				<tr>
+					<th colspan="2" style="text-align:left;vertical-align:top;color: #47A6D4;" class="title"><a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color: #47A6D4;"><!--{$row.product_name|escape}--></a></th>
+				</tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">講師</th>
+					<td style="text-align:left;vertical-align:top;"><!--{$row.teacher|escape}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">再生時間</th>
+					<td style="text-align:left;vertical-align:top;"><!--{$row.play_time|escape}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">視聴期間</th>
+					<td style="text-align:left;vertical-align:top;"><!--{if $row.open_period==0}-->購入日から無期限<!--{else}-->購入日から<!--{$row.open_period|escape}-->日間<!--{/if}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">価格</th>
+					<td style="text-align:left;vertical-align:top;"><!--{if $row.price==0}-->無料<!--{else}--><!--{$row.price|escape}-->円(税込)<!--{/if}--></td>
+				<tr>
+				<tr>
+					<td colspan="2" style="text-align:left;vertical-align:top;"><!--{$row.memo|mb_truncate:120:"..."|escape|nl2br}--></td>
+				<tr>
+			</table>
+			<div style="float:right;width:300px;text-align:right;padding:5px;">
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->">→商品詳細へ</a>
+			</div>
+		</div>
+	</div>
+	<!--{/foreach}-->
+	
+	<div class="pager">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+<!--{else}-->
+	該当商品はありません。
+<!--{/if}-->
+</div>

@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+/* 初期化 */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td{
+	margin			: 0;
+	padding			: 0;
+	border			: 0;
+	font-weight		: inherit;
+	font-style		: inherit;
+	font-size		: 100%;
+	font-family		: inherit;
+	vertical-align	: baseline;
+	font-family		: 'MeiryoKe_PGothic', 'メイリオ', 'Meiryo', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'Osaka', Arial, 'ＭＳ Ｐゴシック', sans-serif;
+	font-size-adjust: none;
+	font-stretch	: normal;
+	font-style		: normal;
+	font-variant	: normal;
+	font-weight		: normal;
+	line-height		: 1.22;
+}
+
+input, textarea, select{
+	margin			: 0;
+	padding			: 0;
+	font-weight		: inherit;
+	font-style		: inherit;
+	font-size		: 100%;
+	font-family		: inherit;
+	vertical-align	: baseline;
+	font-family		: 'MeiryoKe_PGothic', 'メイリオ', 'Meiryo', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'Osaka', Arial, 'ＭＳ Ｐゴシック', sans-serif;
+	font-size-adjust: none;
+	font-stretch	: normal;
+	font-style		: normal;
+	font-variant	: normal;
+	font-weight		: normal;
+	line-height		: 1.22;
+	vertical-align	: middle;
+}
+
+a{
+	vertical-align	: middle;
+}
+
+body{
+	background		: #fff;
+	margin			: 1.5em 0;
+}
+table{
+	border-collapse	: collapse;
+	border-spacing	: 0;
+}
+caption, th, td{
+	text-align		: left;
+	font-weight		: 400;
+}
+blockquote:before, blockquote:after, q:before, q:after{
+	content			: ”";
+}
+blockquote, q{
+	quotes			: ”" “”;
+}
+a img{
+	border			: none;
+}
+ul, li{
+	list-style-type: none;
+}
+
+.clear{
+	clear	: both;
+	margin	: 0px;
+	padding	: 0px;
+	height	: 0px;
+}
+
+/* For modern browsers */
+.clearfix:before, .clearfix:after {
+	content:"";
+	display:block;
+	overflow:hidden;
+	}
+	.clearfix:after { clear: both;}

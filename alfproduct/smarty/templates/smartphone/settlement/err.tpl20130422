@@ -1,0 +1,64 @@
+<html dir="ltr" lang="ja" style="overflow-x: hidden;overflow: hidden;width:500px;">
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="description" content="真の法律家・行政官を育成する 「伊藤塾」" />
+<meta name="keywords" content="真の法律家・行政官を育成する 「伊藤塾」" />
+<meta charset="UTF-8" />
+<title>伊藤塾</title>
+<script type="text/javascript">
+function payment_close(){
+	parent.buy_close();
+}
+</script>
+<style type="text/css">
+th.table_name{
+	text-align:right;
+	width:160px;
+	color:#79BEDF;
+	font-size: 14px;
+}
+td.table_data{
+	text-align:left;
+	width:240px;
+	padding-left: 60px;
+	font-size: 14px;
+}
+.btn_close{
+ background: url(/img/close_b2.gif)no-repeat ;
+ width:133px;
+ height:30px;
+ border:0px;
+ text-indent: -9999px;
+}
+.btn_submit{
+ background: url(/img/account_btn2.gif)no-repeat ;
+ width:200px;
+ height:30px;
+ border:0px;
+ text-indent: -9999px;
+}
+</style>
+</head>
+<body style="overflow:hidden;background-color: #F1F8FE;padding: 0px;margin: 0px;width:500px;">
+		<div style="color:#999999; font-weight:bold; font-size:14px;padding-top:5px;padding-left:5px;text-align:center;width:440px;">決済の失敗</div>
+		<hr style="border: 1px dotted #999999;width:480px;float:left;">
+		<table order="0" style="margin-top:100px;">
+			<tr>
+				<td style="width:400px;text-align:center;font-size: 14px;"><span style="color:#ff0000;">決済に失敗しました。<br />お手数ですが再度ご購入をお願いいたします。<br /></span><td>
+			</tr>
+			<tr>
+				<td style="width:400px;text-align:center;font-size: 14px;" colspan="2"><br /><br /><br />
+					<span style="color:#ff6666;font-size: 14px;">下記「閉じる」ボタンをクリックしてください。</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:400px;text-align:center;">
+					<form name="form_payment">
+					<input type="button" value="閉じる" onclick="payment_close();" class="btn_close" style="cursor: pointer;" />
+					</form>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
+

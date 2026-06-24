@@ -1,0 +1,19 @@
+<!--{include file='mypage/side_menu.tpl'}-->
+<div style="float:right;width:720px;">
+		<div id="single_title" style="margin-bottom:20px;">
+			<h3>退会手続き</h3>
+			<h6>refusal</h6>
+		</div>
+
+
+		<div style="border: solid 1px #47a6d4;padding: 5px;text-align:center;">
+			<div style="padding:10px; text-align:left;">
+		退会手続きが完了いたしました。<br>
+		またのご利用を心よりお待ち申し上げます。<br>
+			</div>
+		<br>
+		<a href="/"><img src="/img/btn/topback.png" alt="TOPページへ" /></a><br>
+		<br>
+		</div>
+
+</div>

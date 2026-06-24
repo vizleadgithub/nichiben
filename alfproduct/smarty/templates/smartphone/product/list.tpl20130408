@@ -1,0 +1,83 @@
+<!--{$pankuzu}-->
+
+<div style="clear:both;border:solid 1px #000000;">
+	商品一覧
+</div>
+
+<!--{if !empty($arr_list)}-->
+	<div style="width:500px;">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+	<div style="width:500px;">
+		<div style="text-align:right; float:right;width:245px;">
+			<script type="text/javascript">
+			<!--
+			function select_pagemax(){
+				location.href = "" + "?pcid=<!--{$pcid}-->&pagemax=" + document.form_pagemax.pagemax.options[document.form_pagemax.pagemax.selectedIndex].value;
+			}
+			// -->
+			</script>
+			<form name="form_pagemax">
+			<select name="pagemax" onChange="select_pagemax()">
+				<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+				<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+				<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+				<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+			</select>件ずつ表示
+			</form>
+		</div>
+	</div>
+	
+	<!--{foreach from=$arr_list item="row"}-->
+	<div style="width:500px;float:left;clear:both;">
+		<div style="float:left;width:190px;text-align:center;">
+			<!--{if $row.thumbnail==''}-->
+				サムネイル画像なし
+			<!--{else}-->
+				<img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=180&height=180" alt="" />
+			<!--{/if}-->
+		</div>
+		<div style="float:right;width:300px">
+			<table>
+				<tr>
+					<th colspan="2" style="text-align:left;vertical-align:top;"><!--{$row.product_name|escape}--></th>
+				</tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">講師</th>
+					<td style="text-align:left;vertical-align:top;"><!--{$row.teacher|escape}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">再生時間</th>
+					<td style="text-align:left;vertical-align:top;"><!--{$row.play_time|escape}--></td>
+				<tr>
+				<tr>
+					<th style="width:80px;text-align:left;vertical-align:top;">視聴期間</th>
+					<td style="text-align:left;vertical-align:top;"><!--{if $row.open_period==0}-->購入日から無期限<!--{else}-->購入日から<!--{$row.open_period|escape}-->日間<!--{/if}--></td>
+				<tr>
+				<tr>
+					<td colspan="2" style="text-align:left;vertical-align:top;"><!--{$row.memo|mb_truncate:120:"..."|escape|nl2br}--></td>
+				<tr>
+			</table>
+			<div style="float:right;width:300px;text-align:right;">
+				・・・<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->">商品詳細へ</a>
+			</div>
+		</div>
+	</div>
+	<!--{/foreach}-->
+	
+	<div style="width:500px;">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+<!--{else}-->
+	該当商品はありません。
+<!--{/if}-->

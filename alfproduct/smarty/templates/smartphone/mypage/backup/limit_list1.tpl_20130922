@@ -1,0 +1,127 @@
+<!--{include file='mypage/side_menu.tpl'}-->
+<div style="float:right;width:700px;">
+	<div>
+		<div id="single_title">
+			<h3>掲載終了間近の講座(購入済み)</h3>
+			<h6>video list</h6>
+		</div>
+		<script type="text/javascript">
+		<!--
+		function select_serch_buy_date(){
+			location.href = "" + "?search_buy_date=" + document.form_serach_buy_date.search_buy_date.options[document.form_serach_buy_date.search_buy_date.selectedIndex].value;
+		}
+		// -->
+		</script>
+<!--{*
+		<div style="padding:5px;">
+		<form name="form_serach_buy_date">
+		<select name="search_buy_date" onChange="select_serch_buy_date()">
+		   <!--{html_options values=$arr_select_box_value output=$arr_select_box_text selected=$search_buy_date}-->
+		</select><span style="padding-left:5px;">購入月で絞り込む</span>
+		</form>
+		</div>
+*}-->
+	</div>
+
+
+	<div>
+このページは間もなく掲載終了を予定している講座の一覧を表示しています。
+	</div>
+
+	<div style="text-align:center;padding:20px;">
+		<a href="/mypage/limit_list1.php">購入済み</a>　　　
+		<a href="/mypage/limit_list2.php">受講中研修</a>　　　
+		<a href="/mypage/limit_list3.php">お気に入り</a>
+	</div>
+
+<!--{if !empty($arr_list)}-->
+	<div style="width:98.5%;" class="pager">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中）
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+
+
+
+
+	<div style="width:100%;">
+		<div style="text-align:right; float:right;width:245px;padding:5px;">
+			<script type="text/javascript">
+			<!--
+			function select_pagemax(){
+				location.href = "" + "?pagemax=" + document.form_pagemax.pagemax.options[document.form_pagemax.pagemax.selectedIndex].value;
+			}
+			// -->
+			</script>
+			<form name="form_pagemax">
+			<select name="pagemax" onChange="select_pagemax()">
+				<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+				<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+				<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+				<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+			</select>件ずつ表示
+			</form>
+		</div>
+	</div>
+	
+	<table style="width:100%;" class="member_table" cellspacing="0" cellpadding="0">
+		<tr>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;text-align:center;">受講状況</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;text-align:center;">掲載期限</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;text-align:center;">講座名</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;text-align:center;">詳細</th>
+		</tr>
+		<!--{foreach from=$arr_list item=val}-->
+		<!--{* eラーニング *}-->
+		<!--{if $val.product_type_add == 1}-->
+			<tr>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;">最終受講日<br /><!--{$val.diap_reading_date|escape}--></td>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;" rowspan="2"><!--{$val.end_date|escape}--></td>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;" rowspan="2"><!--{$val.product_name|escape}--></td>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;" rowspan="2"><a href="/product/detail.php?pid=<!--{$val.product_id|escape}-->">講座詳細へ</a></td>
+			</tr>
+			<tr>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;">受講率<br /><!--{$val.disp_complete|escape}--></td>
+			</tr>
+			
+		<!--{* 会場研修 *}-->
+		<!--{elseif $val.product_type_add == 2}-->
+			<tr>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;">-</td>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;"><!--{$val.end_date|escape}--></td>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;"><!--{$val.product_name|escape}--></td>
+				<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;"><a href="/product/detail.php?pid=<!--{$val.product_id|escape}-->">講座詳細へ</a></td>
+			</tr>
+		<!--{/if}-->
+		<!--{/foreach}-->
+	
+	<!--{*
+		<tr>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;">日付</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;">購入講座名</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;">動画概要</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;">詳細</th>
+		</tr>
+		<!--{foreach from=$arr_list item=val}-->
+		<tr>
+			<td style="border:solid 1px #999999;padding:5px;">購入日<br /><!--{$val.create_date|escape}--></td>
+			<td style="border:solid 1px #999999;padding:5px;" rowspan="2"><!--{$val.product_name|escape}--></td>
+			<td style="border:solid 1px #999999;padding:5px;" rowspan="2"><!--{$val.play_time|escape}--><br /><!--{$val.price|escape}-->円</td>
+			<td style="border:solid 1px #999999;padding:5px;" rowspan="2">
+				<!--{if $val.view_end_ymd>=$ymd || $val.open_period==0}--><a href="/product/detail.php?pid=<!--{$val.product_id|escape}-->">詳細</a><!--{else}-->視聴期限切れ<!--{/if}-->
+			</td>
+		</tr>
+		<tr>
+			<td style="border:solid 1px #999999;padding:5px;">視聴終了日<br /><!--{if $val.open_period==0}-->視聴制限なし<!--{else}--><!--{$val.view_end_date|escape}--><!--{/if}--></td>
+		</tr>
+		<!--{/foreach}-->
+	*}-->
+	</table>
+	
+<!--{else}-->
+	該当する動画はありません。
+<!--{/if}-->
+</div>

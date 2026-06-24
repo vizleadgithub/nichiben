@@ -1,0 +1,37 @@
+<!--{include file='mypage/side_menu.tpl'}-->
+<div style="float:right;width:720px;">
+		<div id="single_title" style="margin-bottom:20px;">
+			<h3>退会手続き</h3>
+			<h6>refusal</h6>
+		</div>
+
+
+
+	<form name="form1" action="refusal.php" method="post">
+	<input type="hidden" name="action" value="complete" />
+		会員を退会された場合には、現在保存されている購入履歴等、<br>
+		すべての情報が削除されますがよろしいでしょうか？<br>
+
+		<div style="border: solid 1px #47a6d4;padding: 50px;text-algin:center;">
+			<a onmouseout="chgImg('/img/btn/btn_refuse_not.jpg','refuse_not');" onmouseover="chgImg('/img/btn/btn_refuse_not_on.jpg','refuse_not');" href="refusal.php"><!--
+				--><img id="refuse_not" name="refuse_not" alt="いいえ、退会しません" src="/img/btn/btn_refuse_not.jpg"><!--
+			--></a>
+
+			<input id="refuse_do" type="image" name="refuse_do" alt="はい、退会します" src="/img/btn/btn_refuse_do.jpg" onmouseout="chgImgImageSubmit('/img/btn/btn_refuse_do.jpg',this);" onmouseover="chgImgImageSubmit('/img/btn/btn_refuse_do_on.jpg',this);">
+		</div>
+
+		<script type="text/javascript" >
+		function chgImg(fileName,img){
+			if (typeof(img) == "object") {
+				img.src = fileName;
+			} else {
+				document.images[img].src = fileName;
+			}
+		}
+		function chgImgImageSubmit(fileName,imgObj){
+			imgObj.src = fileName;
+		}
+		</script>
+	</form>
+
+</div>

@@ -1,0 +1,323 @@
+<style type="text/css">
+ul#player_list{
+list-style:none;
+width:640px;
+height:120px;
+overflow:auto;
+padding:0;
+margin:10px;
+border:1px solid #d9d9d9;
+}
+#player_list li{
+
+}
+#player_list li a{
+background-color:#f0f0ef;
+padding:0px 0px 0px 20px;
+display:block;
+color:#666666;
+	text-decoration: none;
+font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+
+}
+
+#player_list li a:hover{
+background: url(/img/ar3.png)no-repeat 1% 50%;
+background-color:#d9d9d9;
+}
+#player_list li a:active{
+background: url(/img/ar3.png)no-repeat 1% 50%;
+background-color:#d9d9d9;
+}
+
+.time{font-weight:bold;font-size:12px;}
+.chapter_name{margin-left:30px;font-size:12px;}
+</style>
+
+<!--{if $view_flg}-->
+	<script type="text/javascript">
+	var ak_initialized_param = "<!--{$arr_chapter_list.ak_initialized_param|escape}-->";
+	var bookmark_time_sec = "<!--{$bookmark_time_sec|escape}-->";
+	
+	<!--{* // 初期化 *}-->
+	function ak_initialized() {
+		if (ak_initialized_param!=""){
+		    ak_setSeek(0, [ak_initialized_param]);
+		}
+		<!--{if $view_btn=='start'}-->
+			ak_playAndSeek(0, 0);
+		<!--{elseif $view_btn=='bookmark'}-->
+	    	ak_playAndSeek(0, bookmark_time_sec);
+	    <!--{/if}-->
+	}
+	
+	var ak_eventStaus = null;
+	function ak_initialized_jw() {
+		if (typeof(jwplayer) == "function") {
+			jwplayer().onPlay(function(){
+				if (ak_eventTime != null) { clearTimeout(ak_eventTime); }
+				if (ak_eventStaus != "Idle") {
+					ak_eventStaus = "Play";
+					ak_eventTime = ak_event("timeupdate", 0, jwplayer().getPosition());
+				}
+				else {
+					ak_eventStaus = "Play";
+					ak_eventTime = ak_event("timeupdate", 0, 0);
+				}
+			});
+			jwplayer().onPause(function(){
+				if (ak_eventTime != null) { clearTimeout(ak_eventTime); }
+				ak_eventStaus = "Pause";
+			});
+			jwplayer().onIdle(function(){
+				ak_eventStaus = "Idle";
+			});
+			jwplayer().onComplete(function(){
+				ak_eventStaus = "Complete";
+				ak_eventTime = ak_event("complete", 0, jwplayer().getPosition());
+			});
+			
+			if (bookmark_time_sec!=0){
+			    ak_playAndSeek(0, bookmark_time_sec);
+			}
+			return;
+		}
+		else if (typeof(alfplayer) == "function") {
+			return;
+		}
+		
+        setTimeout(function(){
+            ak_initialized_jw();
+        }, 1000);
+	}
+	
+	var ak_eventTime = null;
+	function ak_event(type, idx, time) {
+		if (ak_eventTime != null) { clearTimeout(ak_eventTime); }
+		
+		<!--{* // 再生時間が変わった *}-->
+		if (type == "timeupdate") {
+			<!--{* // しおりを記憶 *}-->
+			<!--{if $user_id!='' && $video_id!=''}-->
+				var url = "bookmark.php";
+				var data = {};
+				data["student_id"] = "<!--{$user_id}-->";
+				data["movie_id"] = "<!--{$video_id}-->";
+				data["time"] = time;
+				
+				$.ajax({
+					type		: "GET",
+					cache		: false,
+					url			: url,
+					data		: data,
+					success		: function(res){
+						<!--{* // console.log(res); *}-->
+					},
+					error		: function(XMLHttpRequest, textStatus, errorThrown) {
+						<!--{* // console.log("error:"+XMLHttpRequest); *}-->
+					}
+				});
+			<!--{/if}-->
+			
+			<!--{* // 有料動画の無料範囲が設定されているか判断(秒をセットする) *}-->
+			<!--{if $contents_free_time!='0' && !$buy_flg}-->
+				if (idx == 0 && time >= <!--{$contents_free_time|escape}-->) {
+					
+					<!--{* // 無料商品の場合は最後まで閲覧可能 *}-->
+					<!--{if !$free_product_flg}-->
+						if (typeof(jwplayer) == "function") {
+							if (ak_eventStaus == "Play") {
+								jwplayer().stop();
+								if (confirm("続きは有料になります。購入しますか？")){
+									buy_exe();
+								} else {
+									window.close();
+								}
+							}
+						}
+						else if (typeof(alfplayer) == "function") {
+							alfplayer().stop();
+							if (confirm("続きは有料になります。購入しますか？")){
+								buy_exe();
+							} else {
+								window.close();
+							}
+						}
+					<!--{/if}-->
+					
+					<!--{* // ブックマークの削除 *}-->
+					<!--{if $user_id!='' && $video_id!=''}-->
+						var url = "bookmark_delete.php";
+						var data = {};
+						data["student_id"] = "<!--{$user_id}-->";
+						data["movie_id"] = "<!--{$video_id}-->";
+						
+						$.ajax({
+							type		: "GET",
+							cache		: false,
+							url			: url,
+							data		: data,
+							success		: function(res){
+								<!--{* // console.log(res); *}-->
+							},
+							error		: function(XMLHttpRequest, textStatus, errorThrown) {
+								<!--{* // console.log("error:"+XMLHttpRequest); *}-->
+							}
+						});
+					<!--{/if}-->
+					
+					
+				}
+			<!--{/if}-->
+			
+			<!--{* // リストのどこを再生しているか *}-->
+			$('.idxall').each(function(index){
+				var id_all = $(this).attr('id');
+				$('#'+id_all).text("");
+			});
+			
+			var seeks = [];
+			var seeks_id = [];
+			$('.idx'+idx).each(function(index){
+				var id = $(this).attr('id');
+				var id_time = id.replace("seek"+idx+"_", "");
+				seeks.push(id);
+				seeks_id.push(id_time);
+			});
+			
+			<!--{* // 再生位置の背景色変更 *}-->
+			for (var i = seeks.length - 1; i >= 0; i--) {
+				if (time >= seeks_id[i] && time <= seeks_id[i + 1]) {
+					$('#'+seeks[i]).text("○");
+					break;
+				}
+			}
+			
+		}
+		
+		<!--{* // 再生終了 *}-->
+		else if (type == "complete"){
+			<!--{* // ブックマークの削除 *}-->
+			<!--{if $user_id!='' && $video_id!=''}-->
+				var url = "bookmark_delete.php";
+				var data = {};
+				data["student_id"] = "<!--{$user_id}-->";
+				data["movie_id"] = "<!--{$video_id}-->";
+				
+				$.ajax({
+					type		: "GET",
+					cache		: false,
+					url			: url,
+					data		: data,
+					success		: function(res){
+						<!--{* // console.log(res); *}-->
+					},
+					error		: function(XMLHttpRequest, textStatus, errorThrown) {
+						<!--{* // console.log("error:"+XMLHttpRequest); *}-->
+					}
+				});
+			<!--{/if}-->
+		}
+		
+		if (typeof(jwplayer) == "function") {
+			if (ak_eventStaus == "Play") {
+		        ak_eventTime = setTimeout(function(){
+		            ak_event(type, idx, jwplayer().getPosition());
+		        }, 500);
+			}
+		}
+	}
+	
+	function ak_play() {
+	    if (typeof(jwplayer) == "function") {
+	        jwplayer().play();
+	    }
+	    else if (typeof(alfplayer) == "function") {
+	        alfplayer().play();
+	    }
+	    else {
+	        setTimeout(function(){
+	            ak_play();
+	        }, 1000);
+	    }
+	}
+	
+	function ak_playRate(rate) {
+	    if (typeof(alfplayer) == "function") {
+	        alfplayer().setPlayRate(rate);
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_playRate(rate);
+	        }, 1000);
+	    }
+	}
+	
+	function ak_playAndSeek(idx, time) {
+	    if (typeof(jwplayer) == "function") {
+	        jwplayer().seek(time);
+	    }
+	    else if (typeof(alfplayer) == "function") {
+	        alfplayer().playAndSeek(idx, time);
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_playAndSeek(idx, time);
+	        }, 1000);
+	    }
+	}
+	
+	function ak_setSeek(idx, seeks) {
+	    if (typeof(alfplayer) == "function") {
+	        alfplayer().setSeek(idx, seeks);
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_setSeek(idx, seeks);
+	        }, 1000);
+	    }
+	}
+	
+	function ak_pause() {
+	    if (typeof(jwplayer) == "function") {
+	        jwplayer().stop();
+	    }
+	    else if (typeof(alfplayer) == "function") {
+	        alfplayer().pause();
+	    }
+	    else{
+	        setTimeout(function(){
+	            ak_pause();
+	        }, 1000);
+	    }
+	}
+	
+	
+	<!--{* // 以下、alfstreamと関連のないスクリプト *}-->
+	function buy_exe(){
+	    window.opener.document.buyForm.submit();
+	    window.close();
+	}
+	</script>
+	
+	<!--{$player}-->
+	
+	<!--{if !empty($arr_chapter_list)}-->
+	<ul id="player_list">
+	<!--{foreach name=chapter_list from=$arr_chapter_list item=val}-->
+		<li><!--{* 0はチャプターリストの番号 *}--><span id="seek0_<!--{$val.chapter_time_sec|escape}-->" class="idxall idx0"></span>
+			<a href="#" onClick="ak_playAndSeek(0, <!--{$val.chapter_time_sec|escape}-->);return false;"><span class="time"><!--{$val.chapter_time|escape}--></span>&nbsp;<span class="chapter_name"><!--{$val.chapter_name|escape}--></span></a>
+			
+		</li>
+	<!--{/foreach}-->
+	</ul>
+	<!--{/if}-->
+	
+<!--{else}-->
+	エラーが発生しました。<br />
+<!--{/if}-->
+
+<input type="button" value="閉じる" onclick="window.close();" />
+<!--{if !$buy_flg}-->
+<input type="button" value="購入する" onclick="buy_exe();" />
+<!--{/if}-->

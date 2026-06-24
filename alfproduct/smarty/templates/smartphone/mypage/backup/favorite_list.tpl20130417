@@ -1,0 +1,131 @@
+<!--{include file='mypage/side_menu.tpl'}-->
+<div style="float:right;width:700px;">
+
+
+<div style="clear:both;border:solid 0px #000000;">
+<!--{if !empty($arr_list)}-->
+	<div style="width:100%;" class="pager">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+
+
+
+	<div id="mypage">
+		<h2>お気に入り一覧</h2>
+
+		<div style="width:100%;">
+			<div style="text-align:right; float:right;width:245px;">
+				<script type="text/javascript">
+				<!--
+				function select_pagemax(){
+					location.href = "" + "?pagemax=" + document.form_pagemax.pagemax.options[document.form_pagemax.pagemax.selectedIndex].value;
+				}
+				// -->
+				</script>
+				<form name="form_pagemax">
+				<select name="pagemax" onChange="select_pagemax()">
+					<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+					<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+					<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+					<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+				</select>件ずつ表示
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<!--{foreach from=$arr_list item="row"}-->
+	<div class="list_box" style="width:700px;float:left;clear:both;">
+		<div style="float:left;width:190px;text-align:center;height:200px;">
+			<!--{if $row.thumbnail==''}-->
+				サムネイル画像なし
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=180&height=180" alt="" /></a>
+			<!--{/if}-->
+		</div>
+		<div style="float:right;width:500px;text-align:center;">
+			<div style="float:left;width:380px; border: solid 0px #000000;height:100%;">
+				<table>
+					<tr>
+						<th colspan="2" style="text-align:left;vertical-align:top;"><a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_name|escape}--></a></th>
+					</tr>
+					<tr>
+						<th style="width:80px;text-align:left;vertical-align:top;">講師</th>
+						<td style="text-align:left;vertical-align:top;"><!--{$row.teacher|escape}--></td>
+					</tr>
+					<tr>
+						<th style="width:80px;text-align:left;vertical-align:top;">再生時間</th>
+						<td style="text-align:left;vertical-align:top;"><!--{$row.play_time|escape}--></td>
+					</tr>
+					<tr>
+						<th style="width:80px;text-align:left;vertical-align:top;">視聴期間</th>
+						<td style="text-align:left;vertical-align:top;"><!--{if $row.open_period==0}-->購入日から無期限<!--{else}-->購入日から<!--{$row.open_period|escape}-->日間<!--{/if}--></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align:left;vertical-align:top;"><!--{$row.memo|mb_truncate:120:"..."|escape|nl2br}--></td>
+					</tr>
+				</table>
+				<div style="float:right;width:300px;text-align:right;">
+					・・・<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->">商品詳細へ</a>
+				</div>
+			</div>
+			<div style="float:right;width:100px;height:100%;">
+				<table style="border: solid 0px #000000;height:100%;">
+				<tr>
+					<td>
+					<form name="form_up<!--{$row.product_id|escape}-->" action="favorite.php" method="post">
+					<input type="hidden" name="action" value="up" />
+					<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
+					<!--<input type="submit" value="↑" />-->
+					<a href="javascript:void(0);" onclick="document.form_up<!--{$row.product_id|escape}-->.submit();"><img src="/img/btn/up_btn.png" alt="上へ" /></a>
+					</form>
+					</td>
+					<td>
+					<form name="form_down<!--{$row.product_id|escape}-->" action="favorite.php" method="post">
+					<input type="hidden" name="action" value="down" />
+					<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
+					<!--<input type="submit" value="↓" />-->
+					<a href="javascript:void(0);" onclick="document.form_down<!--{$row.product_id|escape}-->.submit();"><img src="/img/btn/dn_btn.png" alt="下へ" /></a>
+					
+					</form>
+				</td>
+				</tr>
+				<tr>
+				<td colspan="2">お気に入りから<br>
+					<form name="form_delete<!--{$row.product_id|escape}-->" action="favorite.php" method="post">
+					<input type="hidden" name="action" value="delete" />
+					<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
+					<!--<input type="submit" value="削除" />-->
+					<a href="javascript:void(0);" onclick="document.form_delete<!--{$row.product_id|escape}-->.submit();"><img src="/img/btn/delete.png" alt="削除" /></a>
+					</form>
+				</td>
+				</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--{/foreach}-->
+	
+	<div style="width:100%;">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+<!--{else}-->
+	お気に入りはありません。
+<!--{/if}-->
+</div>
+</div>

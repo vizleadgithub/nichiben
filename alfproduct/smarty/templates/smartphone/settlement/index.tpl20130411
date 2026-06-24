@@ -1,0 +1,85 @@
+<script type="text/javascript">
+function buy_exe(){
+	//document.formSettlement.btn_submit.disabled = true;
+	new $pop( 'order_regist.php?pid='+document.formSettlement.pid.value+'&payment_type='+document.formSettlement.payment_type.value+'&temp_date='+document.formSettlement.temp_date.value+'&temp_no='+document.formSettlement.temp_no.value, { type: 'iframe', title: '', width: 500, height: 400, modal: true, nomove: true, close: false, varName: 'payment_win' } ); return false;
+}
+function buy_close(){
+	document.formSettlement.btn_submit.disabled = true;
+	location.href = "/mypage/buy_list.php";
+	payment_win.close();
+}
+function buy__close(){
+	payment_win.close();
+	document.formSettlement.btn_submit.disabled = false;
+}
+</script>
+<form name="formSettlement" method="post" action="#">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+<input type="hidden" name="temp_date" value="<!--{$temp_date|escape}-->" />
+<input type="hidden" name="temp_no" value="<!--{$temp_no|escape}-->" />
+
+<div style="clear:both;">購入商品</div>
+<div style="clear:both;">
+	<div style="width:200px;float:left;">
+		<img src="/resize_image.php?image=<!--{$arr_list.thumbnail|escape}-->&width=180&height=180" alt="" />
+	</div>
+	<div style="width:400px;float:right;">
+		<div>
+		<!--{$arr_list.product_name|escape}-->&nbsp;
+		<!--{if $arr_list.start_date!='' && $arr_list.start_date!='0000-00-00 00:00:00' && $arr_list.end_date!='' && $arr_list.end_date!='0000-00-00 00:00:00'}-->
+			<!--{$arr_list.start_date|escape}-->～<!--{$arr_list.end_date|escape}-->
+		<!--{elseif $arr_list.start_date!='' && $arr_list.start_date!='0000-00-00 00:00:00'}-->
+			<!--{$arr_list.start_date|escape}-->～
+		<!--{elseif $arr_list.end_date!='' && $arr_list.end_date!='0000-00-00 00:00:00'}-->
+			～<!--{$arr_list.end_date|escape}-->
+		<!--{/if}-->
+		</div>
+		<div>再生時間：<!--{$arr_list.play_time|escape}--></div>
+		<div><!--{$arr_list.memo|escape}--></div>
+	</div>
+</div>
+
+<div style="clear:both; padding-top:20px;">購入金額</div>
+<div style="padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; border-top-color: #47a6d4; border-right-color: #47a6d4; border-bottom-color: #47a6d4; border-left-color: #47a6d4; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid;">
+	<table style="width:100%;">
+		<tr>
+			<th style="width: 500px; text-align: left; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-right:dotted 1px #000000; border-bottom:solid 1px #000000;">単価（税込）</th>
+			<th style="text-align: left; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-bottom:solid 1px #000000;">小計(税込)</th>
+		</tr>
+		<tr>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-right:dotted 1px #000000; border-bottom:solid 1px #000000;"><!--{$arr_list.price|escape}-->円</td>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-bottom:solid 1px #000000;"><!--{$arr_list.subtotal|escape}-->円</td>
+		</tr>
+		<tr>
+			<th style="text-align: right; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-right:dotted 1px #000000; border-bottom:solid 1px #000000;">手数料</th>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-bottom:solid 1px #000000;"><!--{$arr_list.commission|escape}-->円</td>
+		</tr>
+		<tr>
+			<th style="text-align: right; color: #ffffff; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; vertical-align: top; background-color: rgb(71, 166, 212); border-right:dotted 1px #000000;">合計</th>
+			<td style="padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;"><!--{$arr_list.total|escape}-->円</td>
+		</tr>
+	</table>
+</div>
+
+<div style="clear:both; padding-top:20px;">決済方法</div>
+<div style="clear:both;">
+<input type="radio" name="payment_type" value="1" id="payment_type_1" checked=checked><label for="payment_type_1">カード決済</label>
+<!--{*
+<input type="radio" name="payment_type" value="2" id="payment_type_2"><label for="payment_type_2">モバイルSuica決済</label>
+<input type="radio" name="payment_type" value="3" id="payment_type_3"><label for="payment_type_3">楽天Edy決済</label>
+<input type="radio" name="payment_type" value="4" id="payment_type_4"><label for="payment_type_4">コンビニ決済</label>
+<input type="radio" name="payment_type" value="5" id="payment_type_5"><label for="payment_type_5">Pay-easy</label>
+<input type="radio" name="payment_type" value="6" id="payment_type_6"><label for="payment_type_6">PayPal</label>
+<input type="radio" name="payment_type" value="7" id="payment_type_7"><label for="payment_type_7">iDネット</label>
+<input type="radio" name="payment_type" value="8" id="payment_type_8"><label for="payment_type_8">WebMoney</label>
+<input type="radio" name="payment_type" value="9" id="payment_type_9"><label for="payment_type_9">auかんたん決済</label>
+<input type="radio" name="payment_type" value="10" id="payment_type_10"><label for="payment_type_10">ドコモケータイ払い</label>
+<input type="radio" name="payment_type" value="11" id="payment_type_11"><label for="payment_type_11">ソフトバンクケータイ支払い</label>
+*}-->
+</div>
+
+<div style="clear:both; padding-top:10px;">
+<a href="<!--{$back_url|escape}-->">戻る</a>
+<input type="button" name="btn_submit" value="購入する" onclick="buy_exe()" />
+</div>
+</form>

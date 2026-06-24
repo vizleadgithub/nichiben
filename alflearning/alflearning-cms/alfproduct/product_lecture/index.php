@@ -1,0 +1,608 @@
+<?php
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//include(dirname(__FILE__) ."./../../module/module.php");
+include("/srv/alfproduct/module/module.php");
+$objDbConnect = new DbConnect();
+$objAdminPager = new AdminPager();
+$template = new Template();
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$objAlfSession = new AlfSession();
+$arr_session = $objAlfSession->session_check();
+if(!$arr_session){
+	header("Location: /?backurl=".$_SERVER['PHP_SELF']);
+	exit();
+}
+
+// 日弁連フラグ
+$login_bar_association_id = $arr_session["cms_master.login.bar_association_id"];
+if ($login_bar_association_id == 1){
+	$nichibenren_flg = true;  // 日弁連
+} else {
+	$nichibenren_flg = false; // 日弁連以外の弁護士会
+}
+$template->assign('nichibenren_flg', $nichibenren_flg);
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$sql = "SELECT";
+$sql.= "  T1.term_id,";
+$sql.= "  T1.name,";
+$sql.= "  T2.parent";
+$sql.= " FROM";
+$sql.= "  wp_terms AS T1";
+$sql.= "   JOIN";
+$sql.= "  wp_term_taxonomy AS T2";
+$sql.= "   ON T1.term_id = T2.term_id";
+$sql.= "";
+$sql.= " ORDER BY T1.slug ASC";
+$ret = $objDbConnect->query_fetch_arr($sql);
+$template->assign('arr_cat_list', $ret);
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$sql = "SELECT wp_term_taxonomy.term_id,wp_term_taxonomy.parent,wp_terms.name FROM wp_term_taxonomy left join wp_terms on wp_term_taxonomy.term_id=wp_terms.term_id where taxonomy='category' and parent='21' ORDER BY wp_terms.slug ASC ";
+$arr_category = $objDbConnect->query_fetch_arr($sql);
+for($i=0;$i<count($arr_category);$i++){
+	$temp = array();
+	$sql = "SELECT wp_term_taxonomy.term_id,wp_term_taxonomy.parent,wp_terms.name FROM wp_term_taxonomy left join wp_terms on wp_term_taxonomy.term_id=wp_terms.term_id where taxonomy='category' and parent='".$arr_category[$i]["term_id"]."' ORDER BY wp_terms.slug ASC";
+	$temp = $objDbConnect->query_fetch_arr($sql);
+	if(0<count($temp)){
+		$arr_category[$i]["categorys"] = $temp;
+		for($n=0;$n<count($temp);$n++){
+			$temp2 = array();
+			$sql = "SELECT wp_term_taxonomy.term_id,wp_term_taxonomy.parent,wp_terms.name FROM wp_term_taxonomy left join wp_terms on wp_term_taxonomy.term_id=wp_terms.term_id where taxonomy='category' and parent='".$temp[$n]["term_id"]."' ORDER BY wp_terms.slug ASC";
+			$temp2 = $objDbConnect->query_fetch_arr($sql);
+			if(0<count($temp2)){
+				$arr_category[$i]["categorys"][$n]["categorys"] = $temp2;
+				for($m=0;$m<count($temp2);$m++){
+					$temp3 = array();
+					$sql = "SELECT wp_term_taxonomy.term_id,wp_term_taxonomy.parent,wp_terms.name FROM wp_term_taxonomy left join wp_terms on wp_term_taxonomy.term_id=wp_terms.term_id where taxonomy='category' and parent='".$temp2[$m]["term_id"]."' ORDER BY wp_terms.slug ASC";
+					$temp3 = $objDbConnect->query_fetch_arr($sql);
+					if(0<count($temp3)){
+						$arr_category[$i]["categorys"][$n]["categorys"][$m]["categorys"] = $temp3;
+					} else {
+						$arr_category[$i]["categorys"][$n]["categorys"][$m]["categorys"] = [];
+					}
+				}
+			} else {
+				$arr_category[$i]["categorys"][$n]["categorys"] = [];
+			}
+		}
+		
+	} else {
+		$arr_category[$i]["categorys"] = [];
+	}
+}
+$template->assign('arr_category', $arr_category);
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// 弁護士会のテーブルから取得する(主催弁護士会)
+$sql = "select * from mtb_bar_association ";
+$arr_bar_association = $objDbConnect->query_fetch_arr($sql);
+// 弁護士会のテーブルから取得する(受講対象)
+if ($nichibenren_flg){
+	$sql = "select * from mtb_bar_association ";
+} else {
+	$sql = "select * from mtb_bar_association where id = '$login_bar_association_id'";
+}
+$arr_bar_association2 = $objDbConnect->query_fetch_arr($sql);
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$search_product_name = "";
+$search_product_code = "";
+$search_start_date = "";
+$search_end_date = "";
+$search_category = array();
+$search_open = "0";
+$search_teacher = "";
+$search_free = "0";
+$search_word = "";
+$search_bar_association = "";
+$search_bar_association2 = "";
+
+if( isset($_GET["search"]) && $_GET["search"]=="new" ){
+} else {
+	if( isset($_SESSION["product_lecture.search_product_name"]) && !empty($_SESSION["product_lecture.search_product_name"]) ){
+		$search_product_name = $_SESSION["product_lecture.search_product_name"];
+	}
+	if( isset($_SESSION["product_lecture.search_product_code"]) && !empty($_SESSION["product_lecture.search_product_code"]) ){
+		$search_product_code = $_SESSION["product_lecture.search_product_code"];
+	}
+	if( isset($_SESSION["product_lecture.search_start_date"]) && !empty($_SESSION["product_lecture.search_start_date"]) ){
+		$search_start_date = $_SESSION["product_lecture.search_start_date"];
+	}
+	if( isset($_SESSION["product_lecture.search_end_date"]) && !empty($_SESSION["product_lecture.search_end_date"]) ){
+		$search_end_date = $_SESSION["product_lecture.search_end_date"];
+	}
+	if( isset($_SESSION["product_lecture.search_category"]) && !empty($_SESSION["product_lecture.search_category"]) ){
+		$search_category = $_SESSION["product_lecture.search_category"];
+	}
+	if( isset($_SESSION["product_lecture.search_open"]) && !empty($_SESSION["product_lecture.search_open"]) ){
+		$search_open = $_SESSION["product_lecture.search_open"];
+	}
+	if( isset($_SESSION["product_lecture.search_teacher"]) && !empty($_SESSION["product_lecture.search_teacher"]) ){
+		$search_teacher = $_SESSION["product_lecture.search_teacher"];
+	}
+	if( isset($_SESSION["product_lecture.search_free"]) && !empty($_SESSION["product_lecture.search_free"]) ){
+		$search_free = $_SESSION["product_lecture.search_free"];
+	}
+	if( isset($_SESSION["product_lecture.search_word"]) && !empty($_SESSION["product_lecture.search_word"]) ){
+		$search_word = $_SESSION["product_lecture.search_word"];
+	}
+	if( isset($_SESSION["product_lecture.search_bar_association"]) && !empty($_SESSION["product_lecture.search_bar_association"]) ){
+		$search_bar_association = $_SESSION["product_lecture.search_bar_association"];
+	}
+	if( isset($_SESSION["product_lecture.search_bar_association2"]) && !empty($_SESSION["product_lecture.search_bar_association2"]) ){
+		$search_bar_association2 = $_SESSION["product_lecture.search_bar_association2"];
+	}
+}
+if( $_SERVER["REQUEST_METHOD"] == "POST" ){
+	$search_product_name = trim($_POST["search_product_name"]);
+	$search_product_code = trim($_POST["search_product_code"]);
+	$search_start_date = trim($_POST["search_start_date"]);
+	$search_end_date = trim($_POST["search_end_date"]);
+	$search_category = array_filter(($_POST["search_category"]??[]), 'strlen');
+	$search_open = trim($_POST["search_open"]);if($search_open == ""){$search_open = "0";}
+	$search_teacher = trim($_POST["search_teacher"]);
+	$search_free = trim($_POST["search_free"]);if($search_free == ""){$search_free = "0";}
+	$search_word = trim($_POST["search_word"]);
+	$search_bar_association = trim($_POST["search_bar_association"]);
+	$search_bar_association2 = trim($_POST["search_bar_association2"]);
+
+	$_SESSION["product_lecture.search_product_name"] = $search_product_name;
+	$_SESSION["product_lecture.search_product_code"] = $search_product_code;
+	$_SESSION["product_lecture.search_start_date"] = $search_start_date;
+	$_SESSION["product_lecture.search_end_date"] = $search_end_date;
+	$_SESSION["product_lecture.search_category"] = $search_category;
+	$_SESSION["product_lecture.search_open"] = $search_open;
+	$_SESSION["product_lecture.search_teacher"] = $search_teacher;
+	$_SESSION["product_lecture.search_free"] = $search_free;
+	$_SESSION["product_lecture.search_word"] = $search_word;
+	$_SESSION["product_lecture.search_bar_association"] = $search_bar_association;
+	$_SESSION["product_lecture.search_bar_association2"] = $search_bar_association2;
+
+	$_SESSION["product_lecture.page"] = 1;
+	$_GET["page"] = 1;
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$page = 1;
+if( isset($_SESSION["product_lecture.page"]) && !empty($_SESSION["product_lecture.page"]) ){
+	$page = $_SESSION["product_lecture.page"];
+}
+if( isset($_GET["page"]) && !empty($_GET["page"]) && is_numeric($_GET["page"]) ){
+	$page = $_GET["page"];
+	$_SESSION["product_lecture.page"] = $page;
+}
+$objAdminPager->setNowPage( $page );
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/*
+$select_cat = array();
+$prev_select_cat = array();
+if( 0<count($search_category) ){
+	for($i=0;$i<count($search_category);$i++){
+		$select_cat[] = $search_category[$i];
+	}
+
+	while( count($select_cat)!=count($prev_select_cat) ){
+		$cat_where = implode(",",$select_cat);
+		$sql = "SELECT term_id,parent FROM wp_term_taxonomy where taxonomy='category' and term_id<>'21' and term_id<>'0' and term_id<>'' and ( term_id in (".$cat_where.") or parent in(".$cat_where.") )";
+		$arr_cat = $objDbConnect->query_fetch_arr($sql);
+		$prev_select_cat = $select_cat;
+		$select_cat = array();
+		for($i=0;$i<count($arr_cat);$i++){
+			$select_cat[] = $arr_cat[$i]["term_id"];
+		}
+	}
+}
+*/
+//var_dump( $select_cat );
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$sql = "select TP.product_id from ((tbl_product TP LEFT JOIN tbl_product_add TPA ON (TP.product_id = TPA.product_id)) LEFT JOIN tbl_product_live_training TPLT ON (TP.product_id = TPLT.product_id)) LEFT JOIN rel_product_bar_association RPBA ON (TP.product_id = RPBA.product_id) where TP.del_flg=0";
+
+// 会場研修のみ
+$where = " and TPA.product_type_add = 2";
+
+// 倫理対象商品は検索に含めない
+$where .= " and TPLT.ethic_flg=0 ";
+
+// 最初はヒットさせない？
+if (!$_POST && !isset($_GET["page"])) {
+	$where .= " and TP.del_flg=-1 ";
+}
+
+// 日弁連以外は自会受講対象しか見れない
+if (!$nichibenren_flg){
+	$where .= " and TPLT.target LIKE '%|$login_bar_association_id|%'";
+}
+
+if( $search_product_name != "" ){
+	$where.= " and ( TP.product_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_product_name)."%' ) ";
+}
+if( $search_product_code != "" ){
+	$where.= " and ( TP.product_code like '%".mysqli_real_escape_string($objDbConnect->connect,$search_product_code)."%' ) ";
+}
+if( $search_start_date != "" && $search_end_date != "" ){
+	$where.= " and (RPBA.dates>='".$search_start_date."' AND RPBA.dates<='".$search_end_date."') ";
+} elseif( $search_start_date != "" ){
+	$where.= " and (RPBA.dates>='".$search_start_date."') ";
+} elseif( $search_end_date != "" ){
+	$where.= " and (RPBA.dates<='".$search_end_date."') ";
+}
+$cat_where = "";
+if( count($search_category)!=0 ){
+	for($i=0;$i<count($search_category);$i++){
+		$sql_sub = "SELECT wp_term_taxonomy.term_id,wp_term_taxonomy.parent FROM wp_term_taxonomy where taxonomy='category' and parent='".mysqli_real_escape_string($objDbConnect->connect, $search_category[$i])."'";
+		$temp = $objDbConnect->query_fetch_arr($sql_sub);
+		if( count($temp)==0 ){
+			$temp_arr_cat[] = $search_category[$i];
+		} else {
+			$add_cat = 1;
+			for($n=0;$n<count($temp);$n++){
+				for($m=0;$m<count($search_category);$m++){
+					if( $temp[$n]["term_id"]==$search_category[$m] ){
+						$add_cat = 0;
+					}
+				}
+			}
+			if( $add_cat==1 ){
+				$temp_arr_cat[] = $search_category[$i];
+			}
+		}
+	}
+	for($i=0;$i<count($temp_arr_cat);$i++){
+		if($cat_where !="" ){ $cat_where.= " OR "; }
+		$cat_where.= " concat(',',TP.term_id,',') LIKE '%,".$temp_arr_cat[$i].",%' ";
+	}
+	if($cat_where !="" ){
+		$where.= " and ( ";
+		$where.= $cat_where;
+		$where.= " ) ";
+	}
+}
+if( $search_open == "1" ){//公開前
+	$where.= " and (TP.start_date>'".date("Y:m:d H-i-s")."') ";
+}
+if( $search_open == "2" ){//公開中
+	$where.= " and ( ('".date("Y:m:d H-i-s")."' between  TP.start_date and TP.end_date) OR ('".date("Y:m:d H-i-s")."'>=TP.start_date AND TP.end_date IS NULL) OR ('".date("Y:m:d H-i-s")."'<=TP.end_date AND TP.end_date IS NULL) OR ('".date("Y:m:d H-i-s")."'<=TP.end_date AND '".date("Y:m:d H-i-s")."'>=TP.start_date) OR (TP.start_date IS NULL AND TP.end_date IS NULL) ) ";
+}
+if( $search_open == "3" ){//終了
+	$where.= " and (TP.end_date<'".date("Y:m:d H-i-s")."') ";
+}
+if( $search_teacher != "" ){
+	$where.= " and ( TP.teacher like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher1 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher2 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher3 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher4 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher5 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher6 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher7 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher8 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher9 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' OR TP.contents_teacher10 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_teacher)."%' ) ";
+}
+if( $search_free == "1" ){//有料
+	$where.= " and ( TP.price>'0' ) ";
+}
+if( $search_free == "2" ){//無料
+	$where.= " and ( TP.price='0' ) ";
+}
+if( $search_word != "" ){
+	$where.= " and ( ";
+	$where.= " TP.product_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%' OR TP.product_code like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%' OR TP.memo like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%' OR TP.play_time like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%' OR TP.teacher like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents1_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents2_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents3_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents4_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents5_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents6_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents7_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents8_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents9_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents10_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents11_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents12_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents13_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents14_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents15_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents16_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents17_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents18_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents19_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents20_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents21_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents22_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents23_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents24_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_contents25_name like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo1 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo2 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo3 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo4 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo5 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo6 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo7 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo8 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo9 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo10 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo11 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo12 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo13 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo14 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo15 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo16 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo17 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo18 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo19 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo20 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo21 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo22 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo23 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo24 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_memo25 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher1 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher2 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher3 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher4 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher5 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher6 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher7 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher8 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher9 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher10 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher11 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher12 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher13 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher14 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher15 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher16 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher17 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher18 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher19 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher20 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher21 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher22 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher23 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher24 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= " OR TP.contents_teacher25 like '%".mysqli_real_escape_string($objDbConnect->connect,$search_word)."%'";
+	$where.= "  ) ";
+}
+
+// 主要弁護士会の検索条件を入れる
+if( $search_bar_association != "" ){
+	$where.= " and RPBA.bar_association_id = '".mysqli_real_escape_string($objDbConnect->connect,$search_bar_association)."' AND RPBA.atype IN (1,2)";
+}
+
+// 受講対象の検索条件を入れる
+if( $search_bar_association2 != "" ){
+	$where.= " and TPLT.target LIKE '%|".mysqli_real_escape_string($objDbConnect->connect,$search_bar_association2)."|%'";
+}
+
+$group = ' GROUP BY TP.product_id';
+
+// echo "[".$sql.$where.$group.$order.$offset."]";
+
+$all_count = 0;
+$ret = $objDbConnect->query_fetch_arr($sql.$where.$group);
+//$objAdminPager->setPageMax(1);
+if ($ret){
+	$all_count = count($ret);
+} else {
+	$all_count = 0;
+}
+$objAdminPager->setListMax($all_count);
+$objAdminPager->setPagerUrl("?page=");
+$pager = $objAdminPager->getPager();
+$offset = $objAdminPager->getOffset();
+$order = " ORDER BY TP.product_id DESC ";
+$sql = "select TP.product_id,TP.product_name,DATE_FORMAT(TP.start_date,'%Y/%m/%d %H:%i') as start_date,DATE_FORMAT(TP.end_date,'%Y/%m/%d %H:%i') as end_date,DATE_FORMAT(TPLT.live_start_date,'%Y/%m/%d') as live_start_date from ((tbl_product TP LEFT JOIN tbl_product_add TPA ON (TP.product_id = TPA.product_id)) LEFT JOIN tbl_product_live_training TPLT ON (TP.product_id = TPLT.product_id)) LEFT JOIN rel_product_bar_association RPBA ON (TP.product_id = RPBA.product_id) where TP.del_flg=0 ";
+
+//echo "[".$sql.$where.$group.$order.$offset."]";
+
+$ret = $objDbConnect->query_fetch_arr($sql.$where.$group.$order.$offset);
+//var_dump($ret);
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// 商品情報（弁護士会）を取得
+foreach ($ret as $ke => $va) {
+	$sql2 = "
+SELECT 
+ MBA.*, 
+ RPBA.capacity, 
+ RPBA.hall, 
+ DATE_FORMAT(RPBA.receptionist_start_date, '%Y年%m月%d日') AS receptionist_start_date, 
+ DATE_FORMAT(RPBA.receptionist_end_date, '%Y年%m月%d日') AS receptionist_end_date, 
+ RPBA.contents, 
+ DATE_FORMAT(RPBA.dates, '%Y/%m/%d') AS dates 
+FROM 
+ rel_product_bar_association RPBA 
+ INNER JOIN mtb_bar_association MBA ON (RPBA.bar_association_id = MBA.id) 
+WHERE 
+ RPBA.product_id = '".mysqli_real_escape_string($objDbConnect->connect,$va["product_id"])."' 
+ AND RPBA.atype IN (1,2) 
+ORDER BY 
+ RPBA.atype, 
+ MBA.id 
+	 ";
+	$ret2 = $objDbConnect->query_fetch_arr($sql2);
+	$ret[$ke]['bar_association'] = $ret2;
+
+	/*
+	$sql3 = "
+SELECT 
+ group_concat( mtb_bar_association_branch.bar_association_branch_name separator '<br>') as branch_list 
+FROM 
+ rel_product_bar_association_branch 
+ LEFT JOIN mtb_bar_association_branch ON rel_product_bar_association_branch.bar_association_branch_id=mtb_bar_association_branch.bar_association_branch_id 
+WHERE 
+ rel_product_bar_association_branch.product_id = '".mysqli_real_escape_string($objDbConnect->connect,$va["product_id"])."' 
+	 ";
+//var_dump($sql3);
+	$ret3 = $objDbConnect->query_fetch_arr($sql3);
+	$ret[$ke]['branch_list'] = $ret3[0]["branch_list"];
+	*/
+
+
+	// 受講対象の弁護士会支部情報を取得
+	$all_entry_number = 0;
+	$all_entry_number_passport = 0;
+	$all_attend_number = 0;
+	$all_attend_number_passport = 0;
+	$arr_list2 = array();
+	$pid = $va["product_id"];
+	$sql = "
+	SELECT 
+	  target 
+	FROM 
+	  tbl_product_live_training 
+	WHERE 
+	  product_id = '".mysqli_real_escape_string($objDbConnect->connect,$pid)."' ";
+	$res = $objDbConnect->query_fetch($sql);
+
+	//var_dump($res);
+
+	if ($res){
+		$str_target = str_replace('|', ',', trim($res['target'], '|'));
+
+
+		// 旧データの確認
+		if ($pid <= 19233) {
+			$product_id_old = $pid - 10000;
+
+			$sql_association_branch_id = array();
+
+			$sql = "
+			SELECT
+			  bar_association_branch_id
+			FROM
+			  import_kenshu_count
+			WHERE
+			  KENSHU_ID = '$product_id_old'
+			";
+			$association_branch_id = array();
+			$res = $objDbConnect->query_fetch_arr($sql);
+			if ($res) {
+				foreach ($res as $k1 => $v1) {
+					$sql_association_branch_id[] = $v1["bar_association_branch_id"];
+				}
+			}
+
+			$sql = "";
+			$sql.= "SELECT";
+			$sql.= "  T1.bar_association_branch_id,";
+			$sql.= "  T1.bar_association_branch_name,";
+			$sql.= "  T2.name AS bar_association_name,";
+			$sql.= "  DATE_FORMAT(T3.receptionist_end_date, '%Y/%m/%d') AS limit_date,";
+			$sql.= "  T3.web_flg,";
+			$sql.= "  T3.capacity";
+			$sql.= " FROM";
+			$sql.= "  mtb_bar_association_branch AS T1";
+			$sql.= "    INNER JOIN";
+			$sql.= "  mtb_bar_association AS T2";
+			$sql.= "      ON T1.bar_association_id = T2.id";
+			$sql.= "    INNER JOIN";
+			// $sql.= "  ( SELECT * FROM rel_product_bar_association_branch WHERE product_id = '".mysqli_real_escape_string($objDbConnect->connect,$pid)."' ) AS T3";
+			$sql.= "  ( SELECT * FROM rel_product_bar_association_branch WHERE product_id = '".mysqli_real_escape_string($objDbConnect->connect,$pid)."' AND bar_association_branch_id IN ('".implode(",", $sql_association_branch_id)."' )) AS T3";
+			$sql.= "      ON T1.bar_association_branch_id = T3.bar_association_branch_id";
+			$sql.= " WHERE";
+			if ($nichibenren_flg){
+			$sql.= "  T1.bar_association_id IN ($str_target)";
+			} else {
+			$sql.= "  T1.bar_association_id = '$login_bar_association_id'";
+			}
+			$sql.= "  AND T3.web_flg IS NOT NULL ";
+			$sql.= " ORDER BY";
+			$sql.= "  T1.bar_association_branch_id ASC, T1.rank ASC";
+		} else {
+			$sql = "";
+			$sql.= "SELECT";
+			$sql.= "  T1.bar_association_branch_id,";
+			$sql.= "  T1.bar_association_branch_name,";
+			$sql.= "  T2.name AS bar_association_name,";
+			$sql.= "  DATE_FORMAT(T3.receptionist_end_date, '%Y/%m/%d') AS limit_date,";
+			$sql.= "  T3.web_flg,";
+			$sql.= "  T3.capacity";
+			$sql.= " FROM";
+			$sql.= "  mtb_bar_association_branch AS T1";
+			$sql.= "    INNER JOIN";
+			$sql.= "  mtb_bar_association AS T2";
+			$sql.= "      ON T1.bar_association_id = T2.id";
+			$sql.= "    LEFT JOIN";
+			$sql.= "  ( SELECT * FROM rel_product_bar_association_branch WHERE product_id = '".mysqli_real_escape_string($objDbConnect->connect,$pid)."' ) AS T3";
+			$sql.= "      ON T1.bar_association_branch_id = T3.bar_association_branch_id";
+			$sql.= " WHERE";
+			if ($nichibenren_flg){
+			$sql.= "  T1.bar_association_id IN ($str_target)";
+			} else {
+			$sql.= "  T1.bar_association_id = '$login_bar_association_id'";
+			}
+			$sql.= "  AND T3.web_flg IS NOT NULL ";
+			$sql.= "  AND T3.web_flg <>'2' ";
+			$sql.= " ORDER BY";
+			$sql.= "  T1.bar_association_branch_id ASC, T1.rank ASC";
+		}
+
+		$res = $objDbConnect->query_fetch_arr($sql);
+		if ($res){
+			foreach ($res as $key => $val){
+				$ret[$ke]['branch_list'] .= $val['bar_association_branch_name']."<br>";
+				//var_dump($val['bar_association_branch_name']);
+			}
+		}
+
+	}
+
+
+
+
+
+
+
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$template->admin_title("講座管理");
+$template->admin_comment("講座の参加情報を管理します。");
+
+if ($nichibenren_flg){
+$sidemenu_html ='<ul>
+<li class="selected"><a href="/alfproduct/product_lecture/index.php" style="font-size:13px">会場研修申込状況</a></li>
+<li><a href="/alfproduct/product_lecture2/index.php" style="font-size:13px">会場倫理研修状況</a></li>
+<li><a href="/alfproduct/product_lecture_ethics/index.php" style="font-size:13px">倫理代替措置研修状況</a></li>
+</ul>';
+} else {
+$sidemenu_html ='<ul>
+<li class="selected"><a href="/alfproduct/product_lecture/index.php" style="font-size:13px">会場研修申込状況</a></li>
+<li><a href="/alfproduct/product_lecture2/index.php" style="font-size:13px">会場倫理研修状況</a></li>
+</ul>';
+}
+$template->admin_sidemenu($sidemenu_html);
+
+$temp_bar_association_id = $arr_session["cms_master.login.bar_association_id"];
+$temp_bar_association_name = "管理者";
+if( $temp_bar_association_id>1 ){
+	$sql  = '';
+	$sql .= "SELECT  id ";
+	$sql .= "       ,(CASE WHEN id = 1 THEN name ELSE concat(name, '弁護士会') END) AS name ";
+	$sql .= " FROM mtb_bar_association ";
+	$sql .= " WHERE id = ".intval($temp_bar_association_id)." ";
+	$headret = $objDbConnect->query_fetch($sql);
+	if( isset($headret["name"]) ){
+		$temp_bar_association_name = '【'.$headret["name"].'】';
+	}
+}
+if($arr_session["cms_master.login.teacher_auth"]["school_admin"]==1){
+	$template->admin_name($arr_session["cms_master.login.teacher_name"].$temp_bar_association_name);
+} else {
+	$template->admin_name($arr_session["cms_master.login.teacher_name"].$temp_bar_association_name);
+}
+$template->admin_school($arr_session["cms_master.login.school_name"]);
+
+$template->assign('page', $page);
+$template->assign('search_product_name', $search_product_name);
+$template->assign('search_product_code', $search_product_code);
+$template->assign('search_start_date', $search_start_date);
+$template->assign('search_end_date', $search_end_date);
+$template->assign('search_category', $search_category);
+$template->assign('search_open', $search_open);
+$template->assign('search_teacher', $search_teacher);
+$template->assign('search_free', $search_free);
+$template->assign('search_word', $search_word);
+$template->assign('search_bar_association', $search_bar_association);
+$template->assign('search_bar_association2', $search_bar_association2);
+$template->assign('arr_bar_association', $arr_bar_association);
+$template->assign('arr_bar_association2', $arr_bar_association2);
+
+$template->assign('pager', $pager);
+$template->assign('arr_list', $ret);
+
+$template->assign('all_count', $all_count);
+$template->assign('list_start', $objAdminPager->getOffsetStart());
+$template->assign('list_end', $objAdminPager->getOffsetEnd());
+
+$template->assign('page_name', 'product_lecture');
+$template->admin_layout('product_lecture/index.tpl');
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+?>

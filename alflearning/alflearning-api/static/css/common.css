@@ -1,0 +1,122 @@
+@import url("basic.css");
+
+body, PRE{
+	color				: #333;
+	font-size			: 12px
+}
+
+a{
+	text-decoration		: none;
+}
+
+a:hover{
+	color				: #00a4e2;
+}
+
+a img{
+	border				: none;
+}
+
+.wrapper{
+	width				: 1000px;
+	margin				: 0px auto;
+}
+
+H1{
+	font-size			: 17px;
+	font-weight			: bold;
+	border-left			: 15px solid green;
+	border-bottom		: 1px solid silver;
+	padding				: 3px 10px;
+	margin				: 15px 0px 10px 0px;
+}
+
+H2{
+	text-align			: center;
+	font-size			: 14px;
+	height				: 23px;
+	line-height			: 23px;
+	margin				: 5px 0px 5px 0px;
+
+	background			: #6AF5AF;
+	background			: -webkit-gradient(linear,left top,left bottom,from(#A0F7CB),to(#6AF5AF));
+	background			: -webkit-linear-gradient(top,#A0F7CB,#6AF5AF);
+	background			: -moz-linear-gradient(top,#A0F7CB,#6AF5AF);
+	background			: -ms-linear-gradient(top,#A0F7CB,#6AF5AF);
+	background			: -o-linear-gradient(top,#A0F7CB,#6AF5AF);
+}
+
+H3{
+}
+
+.wrapper > UL{
+}
+
+.wrapper > UL > LI{
+	padding				: 10px;
+	border				: 1px solid silver;
+}
+
+	FORM LABEL{
+		font-weight			: bold;
+		display				: block;
+		margin				: 10px 0px 3px 0px;
+	}
+
+	FORM INPUT[type="text"]{
+		width				: 40%;
+		height				: 25px;
+		margin				: 0px 0px 0px 5px;
+		line-height			: 25px;
+		text-indent			: 10px;
+		display				: block;
+		font-size			: 15px;
+		color				: #666666;
+		background			: #EBEBEB;
+
+		border					: 2px solid #DFDFDF;
+		-webkit-border-radius	: 5px 5px 5px 5px;
+		-moz-border-radius		: 5px 5px 5px 5px;
+		border-radius			: 5px 5px 5px 5px;
+	}
+		FORM INPUT[type="text"]:focus{
+			border			: 2px solid #76CEFF;
+			width			: 970px;
+
+		    -webkit-transition: all 0.3s ease;
+		    -moz-transition: all 0.3s ease;
+		    -o-transition: all 0.3s ease;
+		    transition: all  0.3s ease;
+		}
+
+	FORM INPUT[type="submit"]{
+		display			: block;
+		margin			: 10px auto 0px auto;
+		background		: #606060;
+		color			: #F0F0F0;
+		padding			: 3px 40px;
+
+		border					: 1px solid #606060;
+		-webkit-border-radius	: 12px 12px 12px 12px;
+		-moz-border-radius		: 12px 12px 12px 12px;
+		border-radius			: 12px 12px 12px 12px;
+	}
+		FORM INPUT[type="submit"]:hover{
+			border			: 1px solid #606060;
+			background		: #F0F0F0;
+			color			: #606060;
+			cursor			: pointer;
+		}
+
+	FORM INPUT[type="radio"]{
+		margin			: 0px 3px 0px 5px;
+		vertical-align	: top;
+	}
+
+	FORM SELECT{
+		border	: 1px solid silver;
+	}
+		FORM SELECT OPTION{
+			border		: 1px solid silver;
+			padding		: 0px 5px;
+		}

@@ -1,0 +1,25 @@
+<script type="text/javascript">
+	function reminder_window(){
+		window.open("/reminder/", "reminder_window", "width=500,height=400,status=0,resizable=0,scrollbars=0,toolbar=0,menubar=0,location=0");	
+	}
+</script>
+
+<div style="text-align:center;">
+	<p>
+		会員登録がお済みの方<br />
+		<form name="form1" action="/login/login.php?back_url=<!--{$back_url|escape}-->" method="post">
+		<input type="hidden" name="action" value="execute" />
+			メールアドレス<input type="text" name="email" /><br />
+			パスワード<input type="password" name="password" /><br />
+			<input type="submit" value="ログイン" />
+		</form>
+		<br />
+		パスワードを忘れた方は<a href="javascript:void(0)" onclick="reminder_window();return false;">こちら</a>
+		<br />
+		メールアドレスを忘れた方は<a href="/inquiry/">お問い合わせページ</a>
+	</p>
+	<p>
+		まだ会員登録されていない方<br />
+		<a href="/member/regist.php">会員登録をする</a>
+	</p>
+</div>

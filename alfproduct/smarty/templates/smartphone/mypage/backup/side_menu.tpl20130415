@@ -1,0 +1,8 @@
+<!--<div style="width:210px;clear:both;">-->
+	<ul style="float:left;width:200px;border-left: solid 1px #47a6d4;padding: 1px;border-right: solid 1px #47a6d4;padding: 1px;">
+		<li class="lc_subtitle" style="border-top: 1px dotted #999999;"><a href="/mypage/buy_list.php">購入済み動画一覧</a></li>
+		<li class="lc_subtitle"><a href="/mypage/favorite_list.php">お気に入り</a></li>
+		<li class="lc_subtitle"><a href="/mypage/edit.php">登録情報変更</a></li>
+		<li class="lc_subtitle"><a href="/logout/logout.php">ログアウト</a></li>
+	</ul>
+<!--</div>-->

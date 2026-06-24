@@ -1,0 +1,235 @@
+<!--{$pankuzu}-->
+
+<div style="clear:both;border:solid 1px #000000;">
+	<!--{$product_list.product_name|escape}-->詳細
+</div>
+
+<div style="clear:both;">
+	<!--{$product_list.free_html_area1}-->
+</div>
+
+<div style="width:200px;float:left;text-align:center;">
+	<!--{* プレイヤー *}-->
+	<ul style="list-style:none;">
+	<!--{section name=player_iframe_disp loop=$player_iframe_count start=0}-->
+		<li id="iframe<!--{$smarty.section.player_iframe_disp.index}-->" style="width:185px;padding-bottom:5px;">動画の読み込み中です・・・</li>
+	<!--{/section}-->
+	</ul>
+	
+	<!--{* 切り替え表示用の大きい画像 *}-->
+	<div style="width:185px;">
+		<img src="/resize_image.php?image=<!--{$product_list.thumbnail|escape}-->&width=180&height=135" alt="" />
+	</div>
+	
+	<div style="width:185px;">
+		<!--{* 商品メイン画像 *}-->
+		<img src="/resize_image.php?image=<!--{$product_list.thumbnail|escape}-->&width=45&height=45" alt="" />
+		
+		<!--{* 商品サブ画像 *}-->
+		<!--{section name=thumbnail_sub loop=$section_max_product_sub_image start=1}-->
+		<!--{assign var=thumbnail_sub_key value="thumbnail"|cat:$smarty.section.thumbnail_sub.index}-->
+			<!--{if $product_list.$thumbnail_sub_key!=''}-->
+			<img src="/resize_image.php?image=<!--{$product_list.$thumbnail_sub_key|escape}-->&width=45&height=45" alt="" />
+			<!--{/if}-->
+		<!--{/section}-->
+		
+		<!--{section name=contents_thumbnail loop=$section_max_contents start=1}-->
+		<!--{assign var=contents_thumbnail_key value="contents_thumbnail"|cat:$smarty.section.contents_thumbnail.index}-->
+			<!--{* コンテンツ設定サムネイル画像 *}-->
+			<!--{if $product_list.$contents_thumbnail_key!=''}-->
+			<img src="/resize_image.php?image=<!--{$product_list.$contents_thumbnail_key|escape}-->&width=45&height=45" alt="" />
+			<!--{/if}-->
+			
+			<!--{* コンテンツ取得サムネイル画像 *}-->
+			<!--{if isset($arr_player_thumbnail.$contents_thumbnail_key)}-->
+				<!--{foreach name=arr_player_thumbnail from=$arr_player_thumbnail.$contents_thumbnail_key item=video_thumbnail}-->
+					<img src="/resize_video_image.php?image=<!--{$video_thumbnail.p180|escape}-->&width=45&height=45" alt="" />
+				<!--{/foreach}-->
+			<!--{/if}-->
+		<!--{/section}-->
+	</div>
+</div>
+
+<div style="width:300px;float:right;">
+	<div><!--{$product_list.product_name|escape}--></div>
+	<div>講師名：<!--{$product_list.teacher|escape}--></div>
+	<div>公開日：
+		<!--{if $product_list.start_date!='' && $product_list.start_date!='0000-00-00 00:00:00' && $product_list.end_date!='' && $product_list.end_date!='0000-00-00 00:00:00'}-->
+			<!--{$product_list.start_date|escape}-->～<!--{$product_list.end_date|escape}-->
+		<!--{elseif $product_list.start_date!='' && $product_list.start_date!='0000-00-00 00:00:00'}-->
+			<!--{$product_list.start_date|escape}-->～
+		<!--{elseif $product_list.end_date!='' && $product_list.end_date!='0000-00-00 00:00:00'}-->
+			～<!--{$product_list.end_date|escape}-->
+		<!--{else}-->
+			常に公開
+		<!--{/if}-->
+	</div>
+	<div>視聴期間：<!--{if $product_list.open_period==0}-->無制限<!--{else}-->購入から<!--{$product_list.open_period|escape}-->日間<!--{/if}--></div>
+	<div>再生時間：<!--{$product_list.play_time|escape}--></div>
+	<div>価格：<!--{$product_list.price_intax|escape}-->円(税込)</div>
+	<div>【商品説明】<br />
+		<!--{$product_list.memo|escape}-->
+	</div>
+	
+	<div>
+		再生可能講座
+	</div>
+	<!--{section name=contents_contents loop=$section_max_contents start=1}-->
+	<!--{assign var=ccno value=$smarty.section.contents_contents.index}-->
+	<!--{assign var=contents_contents_key value="contents_contents"|cat:$ccno}-->
+	<!--{assign var=contents_contents_name_key value="contents_contents"|cat:$ccno|cat:"_name"}-->
+	<!--{assign var=contents_thumbnail_key value="contents_thumbnail"|cat:$ccno}-->
+	<!--{assign var=contents_teacher_key value="contents_teacher"|cat:$ccno}-->
+	<!--{assign var=contents_start_date_key value="contents_start_date"|cat:$ccno}-->
+	<!--{assign var=contents_end_date_key value="contents_end_date"|cat:$ccno}-->
+	<!--{assign var=contents_memo_key value="contents_memo"|cat:$ccno}-->
+	<!--{assign var=contents_view_flg_key value="contents_view_flg"|cat:$ccno}-->
+	<!--{assign var=contents_free_time_key value="contents_free_time"|cat:$ccno}-->
+	
+	<!--{if $product_list.$contents_contents_key!='' && $product_list.$contents_view_flg_key}-->
+		<div style="clear:both;">
+			<div style="width:100px;float:left;">
+				<img src="/resize_image.php?image=<!--{$product_list.$contents_thumbnail_key|escape}-->&width=90&height=90" alt="" />
+			</div>
+			<div style="width:200px;float:right;">
+				<div><!--{$product_list.$contents_contents_name_key|escape}--></div>
+				<div>講師名：<!--{$product_list.$contents_teacher_key|escape}--></div>
+				<div>公開日：
+					<!--{if $product_list.$contents_start_date_key!='' && $product_list.$contents_start_date_key!='0000-00-00 00:00:00' && $product_list.$contents_end_date_key!='' && $product_list.$contents_end_date_key!='0000-00-00 00:00:00'}-->
+						<!--{$product_list.$contents_start_date_key|escape}-->～<!--{$product_list.$contents_end_date_key|escape}-->
+					<!--{elseif $product_list.$contents_start_date_key!='' && $product_list.$contents_start_date_key!='0000-00-00 00:00:00'}-->
+						<!--{$product_list.$contents_start_date_key|escape}-->～
+					<!--{elseif $product_list.$contents_end_date_key!='' && $product_list.$contents_end_date_key!='0000-00-00 00:00:00'}-->
+						～<!--{$product_list.$contents_end_date_key|escape}-->
+					<!--{else}-->
+						常に公開
+					<!--{/if}-->
+				</div>
+				<div><!--{$product_list.$contents_memo_key|escape}--></div>
+				<div>
+					<input type="button" value="再生する" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->')" />
+				</div>
+				<!--{if $download_flg}-->
+				<!--{section name=contents_download loop=$section_max_contents_download start=1}-->
+				<!--{assign var=cdno value=$smarty.section.contents_download.index}-->
+				<!--{assign var=contents_download_key value="contents_download"|cat:$ccno|cat:"_"|cat:$cdno}-->
+					<!--{if $product_list.$contents_download_key!=''}-->
+					<div>
+						<input type="button" value="資料<!--{$cdno}-->ダウンロード" onclick="downloadFormSubmit('<!--{$contents_download_key}-->')" />
+					</div>
+					<!--{/if}-->
+				<!--{/section}-->
+				<!--{/if}-->
+			</div>
+		</div>
+	<!--{/if}-->
+	<!--{/section}-->
+</div>
+
+<div style="clear:both;text-align:center;">
+	<!--{if $buy_flg}-->
+	<form name="buyForm" action="/settlement/index.php" method="post">
+	<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+		<input type="submit" value="購入する" /><br />
+	</form>
+	<!--{/if}-->
+	<!--{if $favorite_flg}-->
+	<form name="favoriteForm" action="/mypage/favorite.php" method="post">
+	<input type="hidden" name="action" value="regist" />
+	<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
+		<input type="submit" value="お気に入り登録する" /><br />
+	</form>
+	<!--{/if}-->
+	<a href="<!--{$back_url}-->">戻る</a>
+</div>
+
+<div style="clear:both;">
+	<!--{$product_list.free_html_area2}-->
+</div>
+
+<div style="clear:both;border:solid 1px #000000;">
+	おすすめ商品
+</div>
+<div style="clear:both;">
+	<ul style="list-style:none;margin:0;">
+	<!--{foreach name=recommend_products from=$arr_recommend_list item=recommend_products}-->
+		<li style="float:left;width:90px;padding:5px;text-align:center;<!--{if $smarty.foreach.recommend_products.index==5}-->clear:both;<!--{/if}-->">
+		<a href="/product/detail.php?pid=<!--{$recommend_products.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$recommend_products.thumbnail|escape}-->&width=90&height=90" alt="" /></a><br />
+		<!--{$recommend_products.product_name|escape}--><br />
+		<!--{$recommend_products.price_intax|escape}-->円(税込)
+		</li>
+	<!--{/foreach}-->
+	</ul>
+</div>
+
+<div style="clear:both;">
+	<!--{$product_list.free_html_area3}-->
+</div>
+
+<div style="clear:both;border:solid 1px #000000;">
+	関連商品
+</div>
+<!--{if empty($arr_related_list)}-->
+関連商品はありません。
+<!--{else}-->
+<div style="clear:both;">
+	<ul style="list-style:none;margin:0;">
+	<!--{foreach name=related_products from=$arr_related_list item=related_products}-->
+		<li style="float:left;width:90px;padding:5px;text-align:center;<!--{if $smarty.foreach.related_products.index==5}-->clear:both;<!--{/if}-->">
+		<a href="/product/detail.php?pid=<!--{$related_products.pid|escape}-->"><img src="/resize_image.php?image=<!--{$related_products.thumbnail|escape}-->&width=90&height=90" alt="" /></a><br />
+		<!--{$related_products.name|escape}--><br />
+		<!--{$related_products.price_intax|escape}-->円(税込)
+		</li>
+	<!--{/foreach}-->
+	</ul>
+</div>
+<!--{/if}-->
+
+<!--{* 動画視聴ボタン用form *}-->
+<form name="playerForm" action="#" method="post">
+<input type="hidden" name="pid" value="<!--{$pid}-->" />
+<input type="hidden" name="vid" id="hid_vid" value="" />
+<input type="hidden" name="ftn" id="hid_ftn" value="" />
+</form>
+
+<!--{* 資料ダウンロードボタン用form *}-->
+<form name="downloadForm" action="contents_download.php" method="post">
+<input type="hidden" name="pid" value="<!--{$pid}-->" />
+<input type="hidden" name="cdname" id="hid_cdname" value="" />
+</form>
+
+<script type="text/javascript">
+<!--{* 動画の読み込みを遅延させるスクリプト(プレイヤー側が同時読み込みに非対応のため) *}-->
+<!--{if !empty($arr_player_iframe)}-->
+	var loop = 0;
+	var iframe_html = new Array();
+	<!--{foreach name=player_iframe_js from=$arr_player_iframe item=player_iframe}-->
+	iframe_html[<!--{$smarty.foreach.player_iframe_js.index}-->] = '<!--{$player_iframe}-->';
+	<!--{/foreach}-->
+
+	function printIFrame(){
+		document.getElementById('iframe' + loop).innerHTML = iframe_html[loop];
+		if(loop <= <!--{$player_iframe_count}-->){
+			loop += 1;
+			setTimeout("printIFrame()",2000);
+		}
+	}
+	window.onload=printIFrame();
+<!--{/if}-->
+
+function playerFormSubmit(vid,ftn){
+    window.open("about:blank","playerDisp","width=670,height=650,menubar=no,toolbar=no,scrollbars=yes");
+    document.getElementById("hid_vid").value = vid;
+    document.getElementById("hid_ftn").value = ftn;
+    document.playerForm.target = "playerDisp";
+    document.playerForm.method = "post";
+    document.playerForm.action = "/player/index.php";
+    document.playerForm.submit();
+}
+function downloadFormSubmit(cdname){
+    document.getElementById("hid_cdname").value = cdname;
+    document.downloadForm.method = "post";
+    document.downloadForm.action = "download.php";
+    document.downloadForm.submit();
+}
+</script>

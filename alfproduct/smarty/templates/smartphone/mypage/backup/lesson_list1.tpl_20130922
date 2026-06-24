@@ -1,0 +1,80 @@
+<!--{include file='mypage/side_menu.tpl'}-->
+<div style="float:right;width:700px;">
+	<div>
+		<div id="single_title">
+			<h3>受講履歴(e-ラーニング)</h3>
+			<h6>video list</h6>
+		</div>
+	</div>
+
+
+	<div>
+このページはあなたがこれまで受講した日弁連及び弁護士会主催の講座を表示しています。<br />
+なお、弁護士会が主催した研修については、弁護士会からの報告に基づき表示していますので予めご了承下さい。
+	</div>
+
+	<div style="text-align:center;padding:20px;">
+		<a href="/mypage/lesson_list1.php">e-ラーニング</a>　　　
+		<a href="/mypage/lesson_list2.php">会場研修</a>
+	</div>
+
+<!--{if !empty($arr_list)}-->
+	<div style="width:98.5%;" class="pager">
+		<div style="text-align:left; float:left;width:245px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中）
+		</div>
+		<div style="text-align:right; float:right;width:245px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+
+
+
+
+	<div style="width:100%;">
+		<div style="text-align:right; float:right;width:100%;padding:5px;">
+			<form name="form_selects">
+				<script type="text/javascript">
+				<!--
+				function sort_exe(){
+					location.href = "" + "?pagemax=" + document.form_selects.pagemax.options[document.form_selects.pagemax.selectedIndex].value + "&page=1&sort=" + document.form_selects.sort.options[document.form_selects.sort.selectedIndex].value;
+				}
+				// -->
+				</script>
+				<!--{html_options name=sort options=$sort_select selected=$sort}-->に
+				<select name="pagemax">
+					<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+					<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+					<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+					<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+				</select>件ずつ
+				<input type="button" value="表示" onClick="sort_exe()" />
+			</form>
+		</div>
+	</div>
+	
+	<table style="width:100%;" class="member_table" cellspacing="0" cellpadding="0">
+		<tr>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;text-align:center;vertical-align:middle;">受講状況</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;text-align:center;vertical-align:middle;">受講開始日/終了日</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;text-align:center;vertical-align:middle;">講座名</th>
+			<th style="border:solid 1px #999999;background-color: #CEE6F6;padding:5px;text-align:center;vertical-align:middle;">詳細</th>
+		</tr>
+		<!--{foreach from=$arr_list item=val}-->
+		<tr>
+			<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;">最終受講日<br /><!--{$val.reading_date|escape}--></td>
+			<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;">開始日<br /><!--{$val.regist_at|escape}--></td>
+			<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;" rowspan="2"><!--{$val.product_name|escape}--></td>
+			<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;" rowspan="2"><a href="/product/detail.php?pid=<!--{$val.product_id|escape}-->">講座詳細へ</a></td>
+		</tr>
+		<tr>
+			<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;">受講率<br /><!--{if $val.all_complete_flg}-->完了<!--{else}--><!--{$val.max_percent|escape}-->％<!--{/if}--></td>
+			<td style="border:solid 1px #999999;padding:5px;text-align:center;vertical-align:middle;">終了日<br /><!--{if $val.all_complete_flg}--><!--{$val.complete_date|escape}--><!--{else}-->-<!--{/if}--></td>
+		</tr>
+		<!--{/foreach}-->
+	</table>
+	
+<!--{else}-->
+	受講中の研修はありません。
+<!--{/if}-->
+</div>

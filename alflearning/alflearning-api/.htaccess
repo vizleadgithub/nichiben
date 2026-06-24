@@ -1,0 +1,5 @@
+Options  FollowSymLinks SymLinksIfOwnerMatch
+
+RewriteEngine on
+RewriteCond $1 !^(index\.php|static|static_conference)
+RewriteRule ^(.*)$ /index.php/$1 [L]

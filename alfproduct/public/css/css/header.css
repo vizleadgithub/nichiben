@@ -1,0 +1,162 @@
+#header {
+	background		: white;
+}
+	#header #header_top{
+		width			: 1024px;
+		margin-left		: auto;
+		margin-right	: auto;
+	}
+		#header #header_top IMG.logo{
+			float		: left;
+		}
+		#header .header_top_right{
+			position		: relative;
+		    float			: left;
+		    height			: 70px;
+		    width			: 860px;
+		    border-bottom	: 1px solid silver;
+		}
+			#header .header_top_right .login_teacher_name{
+				bottom		: 30px;
+				color		: #00A4E2;
+				font-size	: 14px;
+				position	: absolute;
+			}
+			#header .header_top_right .login_school_name{
+				bottom		: 5px;
+				font-size	: 19px;
+				font-weight	: bold;
+				position	: absolute;
+			}
+			#header .header_top_right .logout{
+				position	: absolute;
+				right		: 10px;
+				bottom		: 5px;
+			}
+
+	#header #header_navi{
+		background		: url('/alfproducts/admin/images/background_gnavi.gif');
+		height			: 35px;
+	}
+
+	#header #header_navi UL{
+		height				: 35px;
+		margin-left			: auto;
+		margin-right		: auto;
+		width				: 1024px;
+	}
+
+		#header #header_navi UL LI{
+			width		: 84px;
+			height		: 35px;
+			line-height	: 35px;
+			float		: left;
+		}
+			#header #header_navi UL LI > A > IMG{
+				width				: 16px;
+				vertical-align		: middle;
+				margin-right		: 3px;
+			}
+			#header #header_navi UL LI A{
+				background-image	: url('/alfproducts/admin/images/tab_gnavi.gif');
+				display				: block;
+				text-align			: center;
+				height				: 35px;
+				line-height			: 42px;
+				font-size			: 12px;
+				font-weight			: bold;
+				text-decoration		: none;
+			}
+			#header #header_navi UL LI A:link, #header #header_navi UL LI A:visited{
+				color				: #ffffff;
+				background-position	: center bottom;
+			}
+			#header #header_navi UL LI A:hover, #header #header_navi UL LI A:active {
+				color				: #333333;
+				background-position	: center top;
+			}
+			#header #header_navi UL LI.selected a {
+				color				: #333333;
+				background-position	: center top;
+			}
+
+
+/*
+#header img{
+	padding: 5px 5px 5px 5px;
+	vertical-align: middle;
+}
+#header .logo{
+	text-align: left;
+	float: left;
+}
+#header .logout{
+	font-weight: bolder;
+	font-size: 17px;
+	text-align: right;
+	padding: 20px 20px 0px 0px;
+}
+#login_teacher_name {
+	font-size: 12px;
+	color: #00A4E2;
+	margin-left: 46px;
+	font-weight: bold;
+}
+#login_school_name {
+	font-size: 12px;
+	color: #333333;
+	margin-left: 36px;
+	font-weight: bold;
+}
+#navi_btn ul {
+	width:1024px;
+	margin-left: auto;
+	margin-right: auto;
+	list-style: none;
+	padding-left	: 10px;
+}
+
+#navi_btn li {
+	width: 84px;
+	height: 35px;
+	line-height: 35px;
+	float:left;
+}
+
+#navi_btn a{
+	background-image: url('/alfproducts/admin/images/tab_gnavi.gif');
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	height: 35px;
+	line-height: 42px;
+	font-size: 12px;
+	font-weight:bold;
+}
+
+#navi_btn a:link{
+	color: #ffffff;
+	background-position: center bottom;
+}
+#navi_btn a:visited{
+	color: #ffffff;
+	background-position: center bottom;
+}
+
+#navi_btn a:hover,a:active {
+	color: #333333;
+	background-position: center top;
+}
+
+#navi_btn li#now a {
+	color: #333333;
+	background-position: center top;
+}
+
+#navi_btn li#blank {
+	text-decoration: none;
+	display: block;
+	height: 35px;
+	text-align: center;
+}
+*/

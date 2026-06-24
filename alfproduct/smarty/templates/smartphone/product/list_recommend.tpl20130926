@@ -1,0 +1,143 @@
+<!--{$pankuzu}-->
+
+
+
+<!--{if !empty($arr_list)}-->
+	<div class="pager">
+		<div style="text-align:left; float:left;width:240px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:240px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+
+
+
+<div class="list_title" style="border:solid 1px #f3f3f3;border-bottom:solid 2px #f3f3f3;">
+	<h2>講座一覧</h2>
+	<div class="selects">
+		<form name="form_selects">
+			<script type="text/javascript">
+			<!--
+			function sort_exe(){
+				location.href = "" + "?pcid=<!--{$pcid}-->&pagemax=" + document.form_selects.pagemax.options[document.form_selects.pagemax.selectedIndex].value + "&page=1&sort=" + document.form_selects.sort.options[document.form_selects.sort.selectedIndex].value;
+			}
+			// -->
+			</script>
+			<span style="position:relative;bottom:5px;right:10px;">
+			<!--{html_options name=sort options=$sort_select selected=$sort}-->に
+			<select name="pagemax">
+				<option value="5"<!--{if $page_max==5}--> selected=selected<!--{/if}-->>5</option>
+				<option value="10"<!--{if $page_max==10}--> selected=selected<!--{/if}-->>10</option>
+				<option value="20"<!--{if $page_max==20}--> selected=selected<!--{/if}-->>20</option>
+				<option value="40"<!--{if $page_max==40}--> selected=selected<!--{/if}-->>40</option>
+			</select>件ずつ
+			<a href="javascript:void(0);" onClick="sort_exe()"><img src="/img/list/permutation_btn.png" alt="並替え" style="position:relative;top:8px;" /></a>
+			</span>
+		</form>
+	</div>
+</div>
+
+
+
+
+
+
+
+	
+	<!--{foreach from=$arr_list item="row"}-->
+	<div class="list_box" style="width:468px;float:left;clear:both;background-color:#ffffff;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
+		<div style="float:left;width:160px;height:115px;text-align:center;background-color:#99e5fd;padding:0;" class="thumb">
+			<img src="/img/list/list_img002.jpg" alt="eラーニング" />
+			<!--{if $row.thumbnail_flg == 1}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail}-->&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{elseif $row.thumbnail_flg == 2}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_video_image.php?image=<!--{$row.video_thumbnail}-->&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{else}-->
+				<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=155&height=85" alt="" style="margin-top:5px;" /></a>
+			<!--{/if}-->
+			
+			<div style="position:relative;top:8px;right:5px;background-color:#ffffff;width:170px;height:20px;padding-top:10px;">
+			<!--{foreach name=icon_loop from=$row.icon_img item=icon}-->
+			<!--{assign var=icon_cnt value=$smarty.foreach.icon_loop.iteration}-->
+				<img src="/img/<!--{$icon.src|escape}-->" alt="<!--{$icon.alt|escape}-->" />
+				<!--{if $icon_cnt == 2}--><br /><!--{/if}-->
+			<!--{/foreach}-->
+			</div>
+		</div>
+
+		<div>
+			<div style="text-align:right;">
+			<!--{if $row.favorite_flg}-->
+				<form name="favoriteForm" action="https://<!--{php}-->echo $_SERVER['SERVER_NAME'];<!--{/php}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="act" value="regist" />
+				<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
+					<input type="image" src="/img/list/favorite_btn.png" /><br />
+				</form>
+			<!--{/if}-->
+			<!--{if $row.favorite_icon_flg}-->
+				<img src="/img/list/favorite_btn_comp01.png" alt="お気に入り登録済" />
+			<!--{/if}-->
+			</div>
+		</div>
+		
+		<div style="text-align:left;margin-left:180px;">
+			<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:#523d26;font-size:14px;font-weight:bold;"><!--{$row.product_name|escape}--></a>
+		</div>
+
+		<div style="float:right;width:290px">
+			<table>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">講師名</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.teacher|escape}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">総時間</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{$row.all_play_time|escape}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">単品価格</th>
+					<td style="text-align:left;vertical-align:top;width:210px;"><!--{if $row.price_intax==0}-->無料<!--{else}--><!--{$row.price_intax|escape}-->円(税込)<!--{/if}--></td>
+				</tr>
+				<tr style="background-color:#f5f8ef;">
+					<th style="width:60px;text-align:left;vertical-align:top;color:#492323;">掲載期間</th>
+					<td style="text-align:left;vertical-align:top;width:210px;">
+						<!--{if $row.start_date!='' && $row.start_date!='0000-00-00 00:00:00' && $row.end_date!='' && $row.end_date!='0000-00-00 00:00:00'}-->
+							<!--{$row.disp_start_date|escape}-->～<!--{$row.disp_end_date|escape}-->
+						<!--{elseif $row.start_date!='' && $row.start_date!='0000-00-00 00:00:00'}-->
+							<!--{$row.disp_start_date|escape}-->～
+						<!--{elseif $row.end_date!='' && $row.end_date!='0000-00-00 00:00:00'}-->
+							～<!--{$row.disp_end_date|escape}-->
+						<!--{else}-->
+							常に公開
+						<!--{/if}-->
+					</td>
+				</tr>
+			</table>
+			<div style="float:right;width:460px;padding:5px;">
+				<div style="text-align:left;width:100%;">
+					<!--{$row.memo|escape|nl2br}-->
+				</div>
+				<div style="text-align:right;width:100%;">
+					<img src="/img/list/ic_2ar.png" alt="" style="position:relative;top:5px;" />
+					<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->" style="color:57462e;font-size:14px;">商品詳細へ</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--{/foreach}-->
+
+
+
+	<div class="pager">
+		<div style="text-align:left; float:left;width:240px;">
+			<!--{$list_start|escape}-->～<!--{$list_end|escape}-->件を表示中（全<!--{$all_count|escape}-->件中） 
+		</div>
+		<div style="text-align:right; float:right;width:240px;">
+			<!--{$pager}-->
+		</div>
+	</div>
+<!--{else}-->
+	該当商品はありません。
+<!--{/if}-->

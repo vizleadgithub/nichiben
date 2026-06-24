@@ -1,0 +1,127 @@
+#wrapper {
+	width			: 1024px;
+	color			: #333333;
+	text-align		: left;
+	margin-left		: auto;
+	margin-right	: auto;
+}
+
+#wrapper H1 {
+	background	: url("/static/image/background_title.png") no-repeat;
+	width		: 1024px;
+	height		: 60px;
+}
+	#wrapper H1 .title{
+	    float		: left;
+	    font-size	: 17px;
+	    font-weight	: bold;
+	    line-height	: 52px;
+	    text-align	: center;
+	    width		: 182px;
+	}
+	#wrapper H1 .comment{
+	    float		: left;
+	    font-size	: 13px;
+	    line-height	: 52px;
+	    text-align	: center;
+	}
+
+#wrapper #main{
+	background		: url("/static/image/background_inside.png");
+    margin			: auto;
+    width			: 980px;
+    padding-bottom	: 10px;
+}
+
+	#wrapper #main .toolbar{
+		margin-top	: 10px;
+	}
+
+		#wrapper #main .toolbar A.btn_list,
+		#wrapper #main .toolbar A.btn_seach,
+		#wrapper #main .toolbar A.btn_add
+		{
+			display			: block;
+			height			: 18px;
+			float			: left;
+			margin-right	: 10px;
+		}
+		#wrapper #main .toolbar A.btn_list:hover,
+		#wrapper #main .toolbar A.btn_seach:hover,
+		#wrapper #main .toolbar A.btn_add:hover
+		{
+			background-position	: 0px -18px;
+		}
+		#wrapper #main .toolbar A.btn_list SPAN,
+		#wrapper #main .toolbar A.btn_seach SPAN,
+		#wrapper #main .toolbar A.btn_add SPAN
+		{
+			display		: none;
+		}
+		#wrapper #main .toolbar A.btn_list.selected,
+		#wrapper #main .toolbar A.btn_seach.selected,
+		#wrapper #main .toolbar A.btn_add.selected
+		{
+			background-position	: 0px -18px;
+		}
+
+		#wrapper #main .toolbar A.btn_list{
+			background	: url('/static/image/abtn_list.png') no-repeat;
+			width		: 54px;
+		}
+		#wrapper #main .toolbar A.btn_seach{
+			background	: url('/static/image/abtn_search.png') no-repeat;
+			width		: 54px;
+		}
+		#wrapper #main .toolbar A.btn_add{
+			background	: url('/static/image/abtn_add_new.png') no-repeat;
+			width		: 74px;
+		}
+
+	#wrapper #main H2{
+	    background		: none repeat scroll 0 0 #72726E;
+	    color			: #FEFEFE;
+	    line-height		: 25px;
+	    margin-top		: 10px;
+	    padding-left	: 5px;
+   	}
+
+	#wrapper #main H3{
+		text-align		: center;
+		font-weight		: bold;
+	    margin-top		: 10px;
+	    font-size		: 14px;
+   	}
+
+	#wrapper #main #menu_sub{
+		float	: left;
+		width	: 160px;
+	}
+		#wrapper #main #menu_sub UL LI{
+			float			: left;
+			width			: 160px;
+			height			: 40px;
+			background		: url("/static/image/ic_arrow.gif") 5px center no-repeat;
+		}
+			#wrapper #main #menu_sub UL LI A, #wrapper #main #menu_sub UL LI A:hover, #wrapper #main #menu_sub UL LI A:active{
+				color			: #333333;
+				text-decoration	: none;
+			}
+			#wrapper #main #menu_sub UL LI A{
+			margin-left	: 15px;
+				display			: block;
+				height			: 40px;
+				line-height		: 40px;
+				font-weight		: bold;
+				font-size		: 17px;
+			}
+			#wrapper #main #menu_sub UL LI.selected{
+				background		: url("/static/image/ic_arrow.gif") 5px center no-repeat white;
+			}
+
+	#wrapper #main #contents_main{
+		float			: left;
+		background		: white;
+		width			: 790px;
+		padding			: 0px 10px 10px 10px;;
+	}

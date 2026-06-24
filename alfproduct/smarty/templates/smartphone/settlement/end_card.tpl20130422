@@ -1,0 +1,83 @@
+<html dir="ltr" lang="ja">
+<head>
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="description" content="真の法律家・行政官を育成する 「伊藤塾」" />
+<meta name="keywords" content="真の法律家・行政官を育成する 「伊藤塾」" />
+<meta charset="UTF-8" />
+<title>伊藤塾</title>
+<script type="text/javascript">
+function payment_close(){
+	parent.buy_close();
+}
+</script>
+<style type="text/css">
+th.table_name{
+	text-align:right;
+	width:160px;
+	color:#79BEDF;
+	font-size: 14px;
+}
+td.table_data{
+	text-align:left;
+	width:240px;
+	padding-left: 30px;
+	font-size: 14px;
+}
+.btn_close{
+ background: url(/img/close_b2.gif)no-repeat ;
+ width:133px;
+ height:30px;
+ border:0px;
+ text-indent: -9999px;
+}
+.btn_submit{
+ background: url(/img/account_btn2.gif)no-repeat ;
+ width:200px;
+ height:30px;
+ border:0px;
+ text-indent: -9999px;
+}
+
+.btn input:hover {
+opacity:0.7;
+filter: alpha(opacity=70);        /* ie lt 8 */
+-ms-filter: "alpha(opacity=70)";  /* ie 8 */
+-moz-opacity:0.7;                 /* FF lt 1.5, Netscape */
+-khtml-opacity: 0.7;              /* Safari 1.x */
+}
+</style>
+</head>
+<body style="overflow:hidden;background-color: #F1F8FE;padding: 0px;margin: 0px;width:500px;">
+		<div style="color:#999999; font-weight:bold; font-size:14px;padding-top:5px;padding-left:5px;text-align:center;width:440px;">カード決済の完了</div>
+		<hr style="border: 1px dotted #999999;width:480px;float:left;">
+		<table order="0" style="margin-top:100px;width:480px;">
+			<tr>
+				<td style="width:400px;text-align:center;font-size: 14px;" colspan="2"><span style="color:#3333ff;">決済が完了しました。<br /></span><td>
+			</tr>
+			<tr>
+				<td style="width:400px;text-align:center;font-size: 14px;" colspan="2"><br /><br /><td>
+			</tr>
+			<tr>
+				<th class="table_name">注文番号：</th><td class="table_data"><!--{$order_no|escape}--><td>
+			</tr>
+			<!--{*
+			<tr>
+				<td class="table_name" style="width:200px;text-align:center;">決済ID：</td><td class="table_data"><!--{$order_id|escape}--></td>
+			</tr>
+			*}-->
+			<tr>
+				<td style="width:400px;text-align:center;font-size: 14px;" colspan="2"><br /><br /><br />
+					<span style="color:#ff6666;font-size: 14px;">下記「閉じる」ボタンをクリックしてください。</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:400px;text-align:center;" colspan="2" class="btn">
+					<form name="form_payment">
+					<input type="button" value="閉じる" onclick="payment_close();" class="btn_close" style="cursor: pointer;" />
+					</form>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
+
