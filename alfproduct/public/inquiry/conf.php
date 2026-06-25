@@ -95,6 +95,7 @@ $template->assign('input_comment',	 $input_comment);
 if(0<count($arr_err)){
 	$template->layout('inquiry/form.tpl');
 } else {
+	$template->assign('csrf_token', csrf_token_get());
 	$template->layout('inquiry/conf.tpl');
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

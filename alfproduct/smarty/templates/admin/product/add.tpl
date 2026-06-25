@@ -36,6 +36,7 @@ function contentsOpen(contentsNo){
 <!--{/if}-->
 <form name="form1" action="add.php" method="post" enctype="multipart/form-data">
 <input type="hidden" name="act" id="act" value="confirm" />
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 
 <table class="form">
 	<!--{if isset($arr_input.mid)}-->

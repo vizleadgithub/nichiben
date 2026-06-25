@@ -84,10 +84,11 @@ $disp_flg = false; // 初回表示フラグ
 
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
+	csrf_token_verify();
 	//print("<!--[".$_SERVER["REQUEST_METHOD"]."]-->\n");
 	//$msg_flg  = true;
 	$disp_flg = true;
-	
+
 	$search_type = $_POST["search_type"];
 	$search_category = array_filter((is_array($_POST["search_category"]) ? $_POST["search_category"] : []), 'strlen');
 	$search_keyword = array_filter(
@@ -1113,6 +1114,7 @@ $template->assign('disp_flg', $disp_flg);
 
 //$template->assign('pankuzu', get_product_pankuzu($pcid));
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout('search/index.tpl');
 $objDbConnect->close();
 exit();

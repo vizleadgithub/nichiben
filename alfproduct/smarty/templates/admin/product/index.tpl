@@ -6,6 +6,7 @@
 <h2>検索する内容を入力してください</h2>
 
 <form action="#" accept-charset="utf-8" method="post" name="search_form">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<table class="form">
 		<tr>
 			<th>商品名</th>

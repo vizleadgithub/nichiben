@@ -12,6 +12,7 @@ $input_mail = "";
 $input_comment = "";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
+	csrf_token_verify();
 	$input_lawyer_number	 = trim($_POST["input_lawyer_number"]);
 	$input_name	 = trim($_POST["input_name"]);
 	//$input_company	 = trim($_POST["input_company"]);

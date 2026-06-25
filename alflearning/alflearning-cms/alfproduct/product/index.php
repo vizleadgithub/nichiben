@@ -122,6 +122,7 @@ if( isset($_GET["search"]) && $_GET["search"]=="new" ){
 	}
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
+	csrf_token_verify();
 	$search_product_name = isset($_POST["search_product_name"]) ? $_POST["search_product_name"] : "" ;
 	$search_product_code = isset($_POST["search_product_code"]) ? $_POST["search_product_code"] : "" ;
 	$search_start_date = isset($_POST["search_start_date"]) ? $_POST["search_start_date"] : "" ;
@@ -399,6 +400,7 @@ $template->assign('list_start', $objAdminPager->getOffsetStart());
 $template->assign('list_end', $objAdminPager->getOffsetEnd());
 
 $template->assign('page_name', 'product');
+$template->assign('csrf_token', csrf_token_get());
 $template->admin_layout('product/index.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ?>

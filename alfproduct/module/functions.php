@@ -3194,4 +3194,21 @@ function create_sso_transaction_id(){
 	//return sha1(uniqid(mt_rand(), true));
 	return date("YmdHis").mt_rand(0, 9).mt_rand(0, 9).mt_rand(0, 9);
 }
+
+function csrf_token_get(): string {
+	if (empty($_SESSION['csrf_token'])) {
+		$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+	}
+	return $_SESSION['csrf_token'];
+}
+
+function csrf_token_verify(): void {
+	$stored = $_SESSION['csrf_token'] ?? '';
+	$posted = $_POST['csrf_token'] ?? '';
+	if (empty($stored) || !hash_equals($stored, $posted)) {
+		http_response_code(403);
+		exit;
+	}
+	$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 ?>

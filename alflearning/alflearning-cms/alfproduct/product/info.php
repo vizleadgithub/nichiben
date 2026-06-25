@@ -246,6 +246,7 @@ if(!isset($_POST['act'])){
 	$template->assign('arr_input', $arr_input);
 	$template->assign('arr_term_id', $arr_term_id);
 	$template->assign('term_name', $term_name);
+	$template->assign('csrf_token', csrf_token_get());
 	$template->admin_layout('product/info.tpl');
 	
 // 削除

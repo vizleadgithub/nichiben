@@ -59,6 +59,7 @@
 				<tr>
 					<td style="padding:5px;text-align:right;width:50%;">
 						<form name="form_inquiry_back" method="post" action="index.php">
+							<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 							<input type="hidden" name="input_lawyer_number" value="<!--{$input_lawyer_number|escape}-->" />
 							<input type="hidden" name="input_name" value="<!--{$input_name|escape}-->" />
 							<input type="hidden" name="input_company" value="<!--{$input_company|escape}-->" />
@@ -71,6 +72,7 @@
 					</td>
 					<td style="padding:5px;text-align:left;width:50%;">
 						<form name="form_inquiry_submit" method="post" action="send.php">
+							<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 							<input type="hidden" name="input_lawyer_number" value="<!--{$input_lawyer_number|escape}-->" />
 							<input type="hidden" name="input_name" value="<!--{$input_name|escape}-->" />
 							<input type="hidden" name="input_company" value="<!--{$input_company|escape}-->" />

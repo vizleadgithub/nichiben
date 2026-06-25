@@ -14,6 +14,7 @@ function searchButton(formAct){
 <form name="form1" action="#" method="post">
 
 	<input type="hidden" name="act" id="act" value="" />
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<!--{foreach from=$arr_input item=item key=key}-->
 		<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
 	<!--{/foreach}-->

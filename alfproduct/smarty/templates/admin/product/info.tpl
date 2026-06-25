@@ -21,6 +21,7 @@ function exam2Button(formAct){
 <h2>商品の内容を確認</h2>
 
 <form name="form1" action="#" method="post">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<input type="hidden" name="mid" id="mid" value="<!--{$mid}-->" />
 	<input type="hidden" name="act" id="act" value="" />
 
