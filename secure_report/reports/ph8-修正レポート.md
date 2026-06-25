@@ -11,7 +11,7 @@
 
 | 項目 | 値 |
 |------|-----|
-| 修正ファイル数 | 13 |
+| 修正ファイル数 | 15 |
 | 追加関数数 | 2（`csrf_token_get()` / `csrf_token_verify()`） |
 | 対象指摘 | CMS-M-04, CMS-M-05, STU-M-04, STU-M-05 |
 
@@ -249,6 +249,8 @@ form_inquiry_submit（送信ボタン）:
 | `alfproduct/public/inquiry/conf.php` | assign |
 | `alfproduct/smarty/templates/default/inquiry/conf.tpl` | hidden フィールド追加（2 フォーム） |
 | `alfproduct/public/inquiry/send.php` | verify |
+| `alfproduct/smarty/templates/smartphone/search/index.tpl` | hidden フィールド追加（SP 版） |
+| `alfproduct/smarty/templates/smartphone/inquiry/conf.tpl` | hidden フィールド追加（SP 版・2 フォーム） |
 
 ---
 

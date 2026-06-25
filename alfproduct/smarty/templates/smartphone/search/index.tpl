@@ -460,6 +460,7 @@
 <!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 <!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 <form name="search_form" method="post" action="index.php?search=new#main">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 
 
 	<div style="border: solid 1px #a1c873;padding: 1px;">
