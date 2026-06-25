@@ -8,9 +8,6 @@ $template = new Template();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objAlfSession = new AlfSession();
 $arr_session = $objAlfSession->session_check();
-print("<!--[");
-var_dump($arr_session);
-print("]-->");
 
 if(!$arr_session){
 	header("Location: /?backurl=".$_SERVER['PHP_SELF']);
