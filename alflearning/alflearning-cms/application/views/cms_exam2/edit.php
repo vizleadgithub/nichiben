@@ -398,13 +398,13 @@
 			/* アンケートに所属する受講者情報の取得 */
 			<?php if( isset($exam2['exam2_students']) ) {
 				foreach( $exam2['exam2_students'] as $lecture) { ?>
-					students_checked[<?=$lecture; ?>] = true;
+					students_checked[<?= htmlspecialchars( $lecture, ENT_QUOTES, 'UTF-8') ?>] = true;
 			<?php } } ?>
 			
 			/* 講座に所属する受講者・設問の表示（初期表示） */
 			<?php $cource_id_list = implode('-', $exam2['exam2_lectures']); ?>
-			//ajax_search_cource_students("<?= $cource_id_list; ?>");
-			ajax_search_cource_exam2_problems("<?= $cource_id_list; ?>");
+			//ajax_search_cource_students("<?= htmlspecialchars( $cource_id_list, ENT_QUOTES, 'UTF-8') ?>");
+			ajax_search_cource_exam2_problems("<?= htmlspecialchars( $cource_id_list, ENT_QUOTES, 'UTF-8') ?>");
 			
 			/* チェックボックスと全選択ボタン連動（受講者） */
 			$('#student_list').click(function (){
@@ -1170,7 +1170,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="exam2_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="exam2_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($exam2['exam2_lectures']) ) {
 														foreach( $exam2['exam2_lectures'] as $lecture) { 
@@ -1184,7 +1184,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -1311,13 +1311,13 @@
 													<?php foreach( $exam2_problems_list as $exam2_problem ): ?>
 														<?php if($exam2_problem['exam2_problem_id'] == $exam2_problem_id): ?>
 															<li>
-																<input type="hidden" name="exam2_problems[]" value=<?=$exam2_problem['exam2_problem_id']?> />
+																<input type="hidden" name="exam2_problems[]" value=<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8') ?> />
 																<div class="problem_name">
 																
 																<? if( getenv('URL_SERVICE')=='mitemo' ): ?>
-																	[No<?=$exam2_problem['exam2_problem_id']?>] <?=$exam2_problem['exam2_problem_name']?> [<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>:<?=$exam2_problem['answer_point']?>]
+																	[No<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8') ?>] <?= htmlspecialchars( $exam2_problem['exam2_problem_name'], ENT_QUOTES, 'UTF-8') ?> [<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>:<?= htmlspecialchars( $exam2_problem['answer_point'], ENT_QUOTES, 'UTF-8') ?>]
 																<? else: ?>
-																	[No<?=$exam2_problem['exam2_problem_id']?>] <?=$exam2_problem['exam2_problem_name']?> [<?= $this->lang->line_or_def('common_management_teacher','管理講師') ?>:<?=$exam2_problem['teacher_name']?>] [<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>:<?=$exam2_problem['answer_point']?>]
+																	[No<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8') ?>] <?= htmlspecialchars( $exam2_problem['exam2_problem_name'], ENT_QUOTES, 'UTF-8') ?> [<?= $this->lang->line_or_def('common_management_teacher','管理講師') ?>:<?= htmlspecialchars( $exam2_problem['teacher_name'], ENT_QUOTES, 'UTF-8') ?>] [<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>:<?= htmlspecialchars( $exam2_problem['answer_point'], ENT_QUOTES, 'UTF-8') ?>]
 																<? endif; ?>
 																
 																</div>

@@ -82,7 +82,7 @@
 				</h2>
 
 				<?=form_open("cms_student/commit")?>
-					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= $elm_message.'(code:'.$elm_stat.')'; ?></div><? endif; ?>
+					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= htmlspecialchars( $elm_message, ENT_QUOTES, 'UTF-8').'(code:'.htmlspecialchars( $elm_stat, ENT_QUOTES, 'UTF-8').')'; ?></div><? endif; ?>
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_','氏名') ?></th>
@@ -106,7 +106,7 @@
 										<?php if($mtb_lawyer_division[$student['lawyer_division']] == ''): ?>
 											<?= 'その他'; ?><? //= '－'; ?>
 										<?php else: ?>
-											<?= $mtb_lawyer_division[$student['lawyer_division']]; ?>
+											<?= htmlspecialchars( $mtb_lawyer_division[$student['lawyer_division']], ENT_QUOTES, 'UTF-8') ?>
 										<?php endif; ?>
 
 									<?php else: ?>
@@ -127,7 +127,7 @@
 							<td>
 								<?php if(isset($student['bar_association_id'])): ?>
 									<?php if( isset($mtb_bar_association[$student['bar_association_id']]) ): ?>
-										<?= $mtb_bar_association[$student['bar_association_id']]; ?>
+										<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8') ?>
 									<?php else: ?>
 										<?= ''; ?>
 									<?php endif; ?>
@@ -137,14 +137,14 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_','登録年月日') ?></th>
 							<td>
-								<?=$student['regist_date']?>
+								<?= htmlspecialchars( $student['regist_date'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_','パスポートの有効期限') ?></th>
 							<td>
 								<? if($student['presence_passport']==1): ?>
-									<?=$student['exp_date_passport']?>
+									<?= htmlspecialchars( $student['exp_date_passport'], ENT_QUOTES, 'UTF-8') ?>
 								<? else: ?>
 									－
 								<? endif; ?>
@@ -159,7 +159,7 @@
 								<? endif; ?>
 							</th>
 							<td>
-								<?=$student['target_passport']?>
+								<?= htmlspecialchars( $student['target_passport'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
@@ -173,7 +173,7 @@
 							<td>
 								<?php if(isset($student['mailmagazine_flg'])): ?>
 									<?php if( isset($mtb_mailmagazine_flg[$student['mailmagazine_flg']]) ): ?>
-										<?= $mtb_mailmagazine_flg[$student['mailmagazine_flg']]; ?>
+										<?= htmlspecialchars( $mtb_mailmagazine_flg[$student['mailmagazine_flg']], ENT_QUOTES, 'UTF-8') ?>
 									<?php else: ?>
 										<?= ''; ?>
 									<?php endif; ?>

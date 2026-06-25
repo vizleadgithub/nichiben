@@ -441,7 +441,7 @@ function datesChange(){
 	</tr>
 	<!--{foreach from=$arr_bar_association item=val}-->
 		<tr>
-			<td colspan="4" class="bar_association_title"><!--{$val.name}--></td>
+			<td colspan="4" class="bar_association_title"><!--{$val.name|escape}--></td>
 		</tr>
 		<!--{foreach from=$val.branch_info item=branch}-->
 		<!--{assign var=branch_id value=$branch.id scope="global"}-->
@@ -455,7 +455,7 @@ function datesChange(){
 		<!--{assign var=entry_number value='entry_number'|cat:$branch_id}-->
 		<tr>
 			<td>
-				<!--{$branch.name}-->
+				<!--{$branch.name|escape}-->
 			</td>
 			<td>
 				定員<span style="color:red;">※</span>：<input type="text" name="<!--{$capacity}-->" value="<!--{$arr_input.$capacity|escape}-->" maxlength="4" /><br />

@@ -69,24 +69,24 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_date','日付') ?></th>
 							<td>
-								<?=$information['information_date']?>
+								<?= htmlspecialchars( $information['information_date'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_title','タイトル') ?></th>
 							<td>
-								<?=$information['information_title']?>
+								<?= htmlspecialchars( $information['information_title'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td><?= nl2br($information['information_caption']); ?>
+							<td><?= nl2br( htmlspecialchars( $information['information_caption'], ENT_QUOTES, 'UTF-8') ) ?>
 							</td>
 						</tr>
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_tag','タグ') ?></th>
-							<td ><?=$information['information_tags']?></td>
+							<td ><?= htmlspecialchars( $information['information_tags'], ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 
 						<?php if($this->libauth->get_teacher_id() == -1): ?>
@@ -113,7 +113,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_public_period','公開期間') ?></th>
 							<td >
-								<?=$information['information_open']?><?= $this->lang->line_or_def('common_range','～') ?><?=$information['information_close']?>
+								<?= htmlspecialchars( $information['information_open'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $information['information_close'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 					</table>

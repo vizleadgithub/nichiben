@@ -363,22 +363,22 @@
 								<tr>
 									<th>&bull;&nbsp;Api Key</th>
 									<td colspan=3>
-										<input type="hidden" name="outside_elearningmanager_api_key" value="<?=$school['contract_param_outside_elearningmanager']['api_key']?>">
+										<input type="hidden" name="outside_elearningmanager_api_key" value="<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_key'], ENT_QUOTES, 'UTF-8') ?>">
 										<?php if($school['contract_param_outside_elearningmanager']['api_key']==''): ?>
 											-
 										<?php else: ?>
-											<?=$school['contract_param_outside_elearningmanager']['api_key']?>
+											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_key'], ENT_QUOTES, 'UTF-8') ?>
 										<?php endif; ?>
 									</td>
 								</tr>
 								<tr>
 									<th>&bull;&nbsp;Api URL</th>
 									<td colspan=3>
-										<input type="hidden" name="outside_elearningmanager_api_url" value="<?=$school['contract_param_outside_elearningmanager']['api_url']?>">
+										<input type="hidden" name="outside_elearningmanager_api_url" value="<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_url'], ENT_QUOTES, 'UTF-8') ?>">
 										<?php if($school['contract_param_outside_elearningmanager']['api_url']==''): ?>
 											-
 										<?php else: ?>
-											<?=$school['contract_param_outside_elearningmanager']['api_url']?>
+											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_url'], ENT_QUOTES, 'UTF-8') ?>
 										<?php endif; ?>
 									</td>
 								</tr>

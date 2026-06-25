@@ -7,7 +7,7 @@
 	$this->load->view('header/header',$data);?>
 </head>
 
-<body class="<?= getenv('URL_SERVICE'); ?>">
+<body class="<?= htmlspecialchars( getenv('URL_SERVICE'), ENT_QUOTES, 'UTF-8') ?>">
 	<?php 
 		$this->load->view('header/body_header', array());
 	?>
@@ -78,9 +78,9 @@
 							<?php foreach($exam2_problem_group_list as $exam2_problem_group) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam2_problem_group/detail/<?= $exam2_problem_group['exam2_problem_group_id']; ?>/"><?=$exam2_problem_group['exam2_problem_group_id']?></td>
-									<td><?=$exam2_problem_group['exam2_problem_group_name']?></td>
-									<td><?=$exam2_problem_group['exam2_problem_count']?></td>
+									<td><a href="/cms_exam2_problem_group/detail/<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><?= htmlspecialchars( $exam2_problem_group['exam2_problem_count'], ENT_QUOTES, 'UTF-8') ?></td>
 								</tr>
 							<?php } ?>
 						<?php } ?>

@@ -19,13 +19,13 @@
 		<? if($selected == 'info_detail'): ?>
 			<? if(isset($tags['タグなし'])):$tagKey = 'タグなし';unset($tags['タグなし']) ?>
 				<li class="<?= ($select_tag === $tagKey ? 'selected_sub' : 'sub'); ?>" >
-					<a href="/admin_top/info_detail/<?= urlencode($tagKey) ?>" style="margin-left: 25px;"><?= $tagKey ?></a>
+					<a href="/admin_top/info_detail/<?= urlencode($tagKey) ?>" style="margin-left: 25px;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?></a>
 				</li>
 			<? endif; ?>
 			
 			<? foreach($tags as $tagKey => $cnt): ?>
 				<li class="<?= ($select_tag === $tagKey ? 'selected_sub' : 'sub'); ?>" >
-					<a href="/admin_top/info_detail/<?= urlencode($tagKey) ?>" style="margin-left: 25px;"><?= $tagKey ?></a>
+					<a href="/admin_top/info_detail/<?= urlencode($tagKey) ?>" style="margin-left: 25px;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?></a>
 				</li>
 			<? endforeach; ?>
 		<? endif; ?>

@@ -263,7 +263,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="exam2_problem_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="exam2_problem_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($exam2_problem['exam2_problem_lectures']) ) {
 														foreach( $exam2_problem['exam2_problem_lectures'] as $lecture) { 
@@ -277,7 +277,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -314,9 +314,9 @@
 														}
 													}
 												?>
-												<input type="checkbox" name="exam2_problem_groups[]" id="groups_<?=$exam2_problem_group['exam2_problem_group_id']?>" value=<?=$exam2_problem_group['exam2_problem_group_id']?> <?= $checked_flag ?> />
-												<label for="groups_<?=$exam2_problem_group['exam2_problem_group_id']?>">
-													<?=$exam2_problem_group['exam2_problem_group_name']?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?=$exam2_problem_group['exam2_problem_count'];?>]
+												<input type="checkbox" name="exam2_problem_groups[]" id="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?> <?= $checked_flag ?> />
+												<label for="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>">
+													<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8') ?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?=$exam2_problem_group['exam2_problem_count'];?>]
 												</label>
 											</li>
 										<?php endforeach; ?>
@@ -361,7 +361,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="exam2_problem_lectures_ex[]" id="lectures_<?=$cource['cource_id']?>_ex" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="exam2_problem_lectures_ex[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>_ex" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($exam2_problem['exam2_problem_lectures']) ) {
 														foreach( $exam2_problem['exam2_problem_lectures'] as $lecture) { 
@@ -375,7 +375,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>_ex"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>_ex"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -411,9 +411,9 @@
 														}
 													}
 												?>
-												<input type="checkbox" name="exam2_problem_groups_ex[]" id="groups_<?=$exam2_problem_group['exam2_problem_group_id']?>_ex" value=<?=$exam2_problem_group['exam2_problem_group_id']?> <?= $checked_flag ?> />
-												<label for="groups_<?=$exam2_problem_group['exam2_problem_group_id']?>_ex">
-													<?=$exam2_problem_group['exam2_problem_group_name']?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?=$exam2_problem_group['exam2_problem_count'];?>]
+												<input type="checkbox" name="exam2_problem_groups_ex[]" id="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>_ex" value=<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?> <?= $checked_flag ?> />
+												<label for="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>_ex">
+													<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8') ?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?=$exam2_problem_group['exam2_problem_count'];?>]
 												</label>
 											</li>
 										<?php endforeach; ?>

@@ -33,7 +33,7 @@
 				<h2><?= $this->lang->line_or_def('msg_report_month_select','表示する月を選択してください') ?></h2>
 				<ul>
 					<? foreach($monthList as $month): ?>
-						<li><? if($month == $selectMonth): ?><?= $month; ?><? else: ?><a href="/cms_report/cms_book_library/<?= $month; ?>"><?= $month; ?></a><? endif; ?></li>
+						<li><? if($month == $selectMonth): ?><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?><? else: ?><a href="/cms_report/cms_book_library/<?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?></a><? endif; ?></li>
 					<? endforeach; ?>
 				</ul>
 				<div class="clear"></div>
@@ -45,7 +45,7 @@
 							'serviceKey'	=> 'book_library',
 						));
 					?>
-					<h3><?= $this->lang->line_or_def('msg_report_this_month','今月分') ?>&nbsp;<?= date('[Y年m月d日 H時i分s秒更新]', $contractParam['updated_at']); ?></h3>
+					<h3><?= $this->lang->line_or_def('msg_report_this_month','今月分') ?>&nbsp;<?= htmlspecialchars( date('[Y年m月d日 H時i分s秒更新]', $contractParam['updated_at']), ENT_QUOTES, 'UTF-8') ?></h3>
 					<table class="list">
 						<tr>
 							<th width="140">対象</th>
@@ -56,24 +56,24 @@
 						</tr>
 						<tr>
 							<th>転送量（バイト）</th>
-							<td><?= ($contractParam['contract'] == 'fixation' ? '月額課金' : 'その他'); ?></td>
-							<td><?= ConvertUnit($contractParam['stream'], 2); ?></td>
-							<td><?= ConvertUnit($contractParam['stream_now'], 2); ?></td>
+							<td><?= htmlspecialchars( ($contractParam['contract'] == 'fixation' ? '月額課金' : 'その他'), ENT_QUOTES, 'UTF-8') ?></td>
+							<td><?= htmlspecialchars( ConvertUnit($contractParam['stream'], 2), ENT_QUOTES, 'UTF-8') ?></td>
+							<td><?= htmlspecialchars( ConvertUnit($contractParam['stream_now'], 2), ENT_QUOTES, 'UTF-8') ?></td>
 							<? if($contractParam['stream'] - $contractParam['stream_now'] < 0): ?>
 								<td style="color:red;font-weight:bold;">オーバーしています</td>
 							<? else: ?>
-								<td><?= ConvertUnit($contractParam['stream'] - $contractParam['stream_now'], 2); ?></td>
+								<td><?= htmlspecialchars( ConvertUnit($contractParam['stream'] - $contractParam['stream_now'], 2), ENT_QUOTES, 'UTF-8') ?></td>
 							<? endif; ?>
 						</tr>
 						<tr>
 							<th>ストレージ使用量（バイト）</th>
-							<td><?= ($contractParam['contract'] == 'fixation' ? '月額課金' : 'その他'); ?></td>
-							<td><?= ConvertUnit($contractParam['strage'], 2); ?></td>
-							<td><?= ConvertUnit($contractParam['strage_now'], 2); ?></td>
+							<td><?= htmlspecialchars( ($contractParam['contract'] == 'fixation' ? '月額課金' : 'その他'), ENT_QUOTES, 'UTF-8') ?></td>
+							<td><?= htmlspecialchars( ConvertUnit($contractParam['strage'], 2), ENT_QUOTES, 'UTF-8') ?></td>
+							<td><?= htmlspecialchars( ConvertUnit($contractParam['strage_now'], 2), ENT_QUOTES, 'UTF-8') ?></td>
 							<? if($contractParam['strage'] - $contractParam['strage_now'] < 0): ?>
 								<td style="color:red;font-weight:bold;">オーバーしています</td>
 							<? else: ?>
-								<td><?= ConvertUnit($contractParam['strage'] - $contractParam['strage_now'], 2); ?></td>
+								<td><?= htmlspecialchars( ConvertUnit($contractParam['strage'] - $contractParam['strage_now'], 2), ENT_QUOTES, 'UTF-8') ?></td>
 							<? endif; ?>
 						</tr>
 					</table>
@@ -87,9 +87,9 @@
 					</tr>
 					<? foreach($reports as $date => $report): ?>
 						<tr>
-							<td><?= $date; ?></td>
-							<td><?= (isset($report['stream']) ? ConvertUnit($report['stream'], 2) : '-'); ?></td>
-							<td><?= (isset($report['strage']) ? ConvertUnit($report['strage'], 2) : '-'); ?></td>
+							<td><?= htmlspecialchars( $date, ENT_QUOTES, 'UTF-8') ?></td>
+							<td><?= htmlspecialchars( (isset($report['stream']) ? ConvertUnit($report['stream'], 2) : '-'), ENT_QUOTES, 'UTF-8') ?></td>
+							<td><?= htmlspecialchars( (isset($report['strage']) ? ConvertUnit($report['strage'], 2) : '-'), ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 					<? endforeach; ?>
 				</table>

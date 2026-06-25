@@ -298,14 +298,14 @@ function searchButton(formAct){
 	<!--{foreach from=$branch_info key=branch_id item=branch}-->
 		<tr>
 			<td>
-				<!--{$branch.bar_association_branch_name}-->
+				<!--{$branch.bar_association_branch_name|escape}-->
 			</td>
 			<td>
 				<!--{if ($branch.capacity!="" && $branch.hall!="" && $branch.receptionist_start_date!="" && $branch.receptionist_end_date!="" && $branch.dates!="") || $branch.web_flg=="2"}-->
 					定員：<!--{if $branch.capacity==9999}-->制限なし<!--{else}--><!--{$branch.capacity|escape}--><!--{/if}--><br />
 					会場：<!--{$branch.hall|escape}--><br />
 					受付：<!--{$branch.receptionist_start_date|escape}-->&nbsp;～&nbsp;<!--{$branch.receptionist_end_date|escape}--><br />
-					実施日：<!--{$branch.dates}--><br />
+					実施日：<!--{$branch.dates|escape}--><br />
 					Web申込：<!--{if $branch.web_flg==='1'}-->WEB申込可(研修を実施する)<!--{/if}--><!--{if $branch.web_flg==='0'}-->WEB申込不可(研修を実施する)<!--{/if}--><!--{if $branch.web_flg==='2'}-->研修を実施しない<!--{/if}--><br />
 					現状申込数：<!--{$branch.entry_number|escape}--><br />
 					備考：<!--{$branch.contents|escape}-->

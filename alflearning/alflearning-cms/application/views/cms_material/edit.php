@@ -134,7 +134,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="material_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="material_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($material['material_lectures']) ) {
 														foreach( $material['material_lectures'] as $lecture) { 
@@ -148,7 +148,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -203,7 +203,7 @@
 						<tr>
 							<th style="vertical-align: middle;"><?= $this->lang->line_or_def('common_thumbnail','サムネイル') ?></th>
 							<td>
-								<img src="/file_container/get_material_thubmnail/<?= $material['material_id']; ?>/" alt="" style="height: 200px; padding: 1px;background-color:black;"/>
+								<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>" alt="" style="height: 200px; padding: 1px;background-color:black;"/>
 							</td>
 						</tr>
 						<?php } ?>

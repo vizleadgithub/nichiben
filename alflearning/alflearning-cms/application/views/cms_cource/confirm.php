@@ -69,21 +69,21 @@
 					<tr>
 						<th width="160px"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 						<td >
-							<?=$cource['cource_name']?>
+							<?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?>
 						</td>
 					<tr>
 						<th><?= $this->lang->line_or_def('common_public_period','公開期間') ?></th>
 						<td >
-							<?=$cource['cource_open']?><?= $this->lang->line_or_def('common_range','～') ?><?=$cource['cource_close']?>
+							<?= htmlspecialchars( $cource['cource_open'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $cource['cource_close'], ENT_QUOTES, 'UTF-8') ?>
 						</td>
 					</tr>
 					<tr>
 						<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-						<td ><?=nl2br($cource['cource_caption']); ?></td>
+						<td ><?= nl2br( htmlspecialchars( $cource['cource_caption'], ENT_QUOTES, 'UTF-8') ) ?></td>
 					</tr>
 					<tr>
 						<th><?= $this->lang->line_or_def('common_note','備考') ?></th>
-						<td ><?=nl2br($cource['cource_note']); ?></td>
+						<td ><?= nl2br( htmlspecialchars( $cource['cource_note'], ENT_QUOTES, 'UTF-8') ) ?></td>
 					</tr>
 
 					<tr>
@@ -91,7 +91,7 @@
 							<?= $this->lang->line_or_def('common_student','受講者') ?>
 							<div style="text-align:center;">[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($cource['lecture_students']); ?>]</div>
 						</th>
-						<td ><?= $cource['lecture_students_name']; ?></td>
+						<td ><?= htmlspecialchars( $cource['lecture_students_name'], ENT_QUOTES, 'UTF-8') ?></td>
 					</tr>
 
 <? $user_auths = $this->session->userdata; ?>
@@ -102,7 +102,7 @@
 							<?= $this->lang->line_or_def('common_material','資料') ?>
 							<div style="text-align:center;">[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($cource['lecture_materials']); ?>]</div>
 						</th>
-						<td ><?= $cource['lecture_materials_name']; ?></td> 
+						<td ><?= htmlspecialchars( $cource['lecture_materials_name'], ENT_QUOTES, 'UTF-8') ?></td>
 					</tr>
 <? endif; ?>
 
@@ -112,7 +112,7 @@
 							<?= $this->lang->line_or_def('common_book_library','図書室') ?>
 							<div style="text-align:center;">[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($cource['lecture_book_librarys']); ?>]</div>
 						</th>
-						<td ><?= $cource['lecture_book_librarys_name']; ?></td>
+						<td ><?= htmlspecialchars( $cource['lecture_book_librarys_name'], ENT_QUOTES, 'UTF-8') ?></td>
 					</tr>
 <? endif; ?>
 
@@ -122,7 +122,7 @@
 							<?= $this->lang->line_or_def('common_video','ビデオ') ?>
 							<div style="text-align:center;">[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($cource['lecture_videos']); ?>]</div>
 						</th>
-						<td ><?= $cource['lecture_videos_name']; ?></td>
+						<td ><?= htmlspecialchars( $cource['lecture_videos_name'], ENT_QUOTES, 'UTF-8') ?></td>
 					</tr>
 <? endif; ?>
 

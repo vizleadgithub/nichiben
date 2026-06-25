@@ -190,12 +190,12 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam2_name','アンケート名') ?></th>
 							<td>
-								<?= $exam2['exam2_name']; ?>
+								<?= htmlspecialchars( $exam2['exam2_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
-							<td ><?= $exam2['teacher_name']; ?>
+							<td ><?= htmlspecialchars( $exam2['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 
@@ -225,28 +225,28 @@
 												}
 											?>
 											<li class="confirm_ul_li_line" <?= ($exam2['exam2_answer_latest_flag'][$id]==0) ? 'name="not_latest"' : 'name="latest"' ; ?>>
-												<input type="hidden" name="answer_no[]" value='<?= $exam2['answer_no'][$id]; ?>' />
-												<div class="confirm_ul_li_div_detail" style="width:150px;"><?= $exam2['answer_date'][$id]; ?></div>
-												<div class="confirm_ul_li_div_detail" style="width:230px;"><?= $exam2['answer_student_name'][$id]; ?></div>
+												<input type="hidden" name="answer_no[]" value='<?= htmlspecialchars( $exam2['answer_no'][$id], ENT_QUOTES, 'UTF-8') ?>' />
+												<div class="confirm_ul_li_div_detail" style="width:150px;"><?= htmlspecialchars( $exam2['answer_date'][$id], ENT_QUOTES, 'UTF-8') ?></div>
+												<div class="confirm_ul_li_div_detail" style="width:230px;"><?= htmlspecialchars( $exam2['answer_student_name'][$id], ENT_QUOTES, 'UTF-8') ?></div>
 												<? if($exam2['answer_point_total'][$id] != $exam2['new_answer_point_total'][$id]): ?>
 													<div class="confirm_ul_li_div_detail" style="width : 150px;">
-														<?= $exam2['answer_point_total'][$id]; ?>/<?= $exam2['max_answer_point']; ?>
+														<?= htmlspecialchars( $exam2['answer_point_total'][$id], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $exam2['max_answer_point'], ENT_QUOTES, 'UTF-8') ?>
 														-&gt;
-														<?= $exam2['new_answer_point_total'][$id]; ?>/<?= $exam2['max_answer_point']; ?>
+														<?= htmlspecialchars( $exam2['new_answer_point_total'][$id], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $exam2['max_answer_point'], ENT_QUOTES, 'UTF-8') ?>
 													</div>
 												<? else: ?>
 													<div class="confirm_ul_li_div_detail" style="width : 150px;color : #999999;">
-														<?= $exam2['answer_point_total'][$id]; ?>/<?= $exam2['max_answer_point']; ?>
+														<?= htmlspecialchars( $exam2['answer_point_total'][$id], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $exam2['max_answer_point'], ENT_QUOTES, 'UTF-8') ?>
 													</div>
 												<? endif; ?>
 												<div style="clear:both;"></div>
 												
-												<div id="exam2_answer_detail_<?= $id; ?>" class="detail_area">
+												<div id="exam2_answer_detail_<?= htmlspecialchars( $id, ENT_QUOTES, 'UTF-8') ?>" class="detail_area">
 													<?php if(!empty($exam2_answer[$id]['exam2_answer_id'][0])): ?>
 														<ul>
 														<?php foreach($exam2_answer[$id]['exam2_answer_id'] as $id2 => $values): ?>
 															<li class="confirm_ul_li_line_dotted">
-																<input type="hidden" name="exam2_answer_id[]" value='<?= $exam2_answer[$id]['exam2_answer_id'][$id2]; ?>' />
+																<input type="hidden" name="exam2_answer_id[]" value='<?= htmlspecialchars( $exam2_answer[$id]['exam2_answer_id'][$id2], ENT_QUOTES, 'UTF-8') ?>' />
 																<div class="detail_title">
 																	<? $temp = $this->lang->line_or_def('common_exam2_answer','解答') ?>
 																	<?php if($exam2_answer[$id]['answer_kind'][$id2]==1): ?>
@@ -256,35 +256,35 @@
 																	<?php elseif($exam2_answer[$id]['answer_kind'][$id2]==3): ?>
 																		<? $temp .= "[".$this->lang->line_or_def('common_free_exam2_answer','フリー回答')."]"; ?>
 																	<?php endif; ?>
-																	<?= $temp; ?>
+																	<?= htmlspecialchars( $temp, ENT_QUOTES, 'UTF-8') ?>
 																</div>
 																<div class="detail_values">
-																	<?= $exam2_answer[$id]['exam2_answer_contents'][$id2]; ?>
+																	<?= htmlspecialchars( $exam2_answer[$id]['exam2_answer_contents'][$id2], ENT_QUOTES, 'UTF-8') ?>
 																</div>
 																<div class="detail_answer">
 																	<? if( ($exam2_answer[$id]['new_exam2_answer_mark'][$id2]>-1) && ($exam2_answer[$id]['exam2_answer_mark'][$id2] != $exam2_answer[$id]['new_exam2_answer_mark'][$id2]) ):?>
 																		<div class="exam2_answer_mark">
-																			<?= $exam2_answer_mark_list[ $exam2_answer[$id]['exam2_answer_mark'][$id2] ]; ?>
+																			<?= htmlspecialchars( $exam2_answer_mark_list[ $exam2_answer[$id]['exam2_answer_mark'][$id2] ], ENT_QUOTES, 'UTF-8') ?>
 																			-&gt;
-																			<?= $exam2_answer_mark_list[ $exam2_answer[$id]['new_exam2_answer_mark'][$id2] ]; ?>
+																			<?= htmlspecialchars( $exam2_answer_mark_list[ $exam2_answer[$id]['new_exam2_answer_mark'][$id2] ], ENT_QUOTES, 'UTF-8') ?>
 																		</div>
 																	<? else: ?>
 																		<div class="exam2_answer_mark" style="color : #999999;"> 
-																			<?= $exam2_answer_mark_list[ $exam2_answer[$id]['exam2_answer_mark'][$id2] ]; ?>
+																			<?= htmlspecialchars( $exam2_answer_mark_list[ $exam2_answer[$id]['exam2_answer_mark'][$id2] ], ENT_QUOTES, 'UTF-8') ?>
 																		</div>
 																	<? endif;?>
 																	
 																	<? if( ($exam2_answer[$id]['new_exam2_answer_point'][$id2]>-1) && ($exam2_answer[$id]['exam2_answer_point'][$id2] != $exam2_answer[$id]['new_exam2_answer_point'][$id2]) ):?>
 																		<div class="exam2_answer_point">
 																			<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>&nbsp;:&nbsp;
-																			<?= $exam2_answer[$id]['exam2_answer_point'][$id2]; ?>
+																			<?= htmlspecialchars( $exam2_answer[$id]['exam2_answer_point'][$id2], ENT_QUOTES, 'UTF-8') ?>
 																			-&gt;
-																			<?= $exam2_answer[$id]['new_exam2_answer_point'][$id2]; ?>
+																			<?= htmlspecialchars( $exam2_answer[$id]['new_exam2_answer_point'][$id2], ENT_QUOTES, 'UTF-8') ?>
 																		</div>
 																	<? else: ?>
 																		<div class="exam2_answer_point" style="color: #999999;">
 																			<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>&nbsp;:&nbsp;
-																			<?= $exam2_answer[$id]['exam2_answer_point'][$id2]; ?>
+																			<?= htmlspecialchars( $exam2_answer[$id]['exam2_answer_point'][$id2], ENT_QUOTES, 'UTF-8') ?>
 																		</div>
 																	<? endif;?>
 																</div>
@@ -294,7 +294,7 @@
 																	$exam2_answer_data .= '/'.$exam2_answer[$id]['new_exam2_answer_mark'][$id2];
 																	$exam2_answer_data .= '/'.$exam2_answer[$id]['new_exam2_answer_point'][$id2];
 																?>
-																<input type="hidden" name="exam2_answer_data[]" value='<?= $exam2_answer_data; ?>'> 
+																<input type="hidden" name="exam2_answer_data[]" value='<?= htmlspecialchars( $exam2_answer_data, ENT_QUOTES, 'UTF-8') ?>'> 
 																<div style="clear:both;"></div>
 															</li>
 														<?php endforeach; ?>

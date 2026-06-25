@@ -38,7 +38,7 @@
 				<h2><?= $this->lang->line_or_def('msg_school_select','学校を選択してください') ?></h2>
 
 				<?=validation_errors('<div class="error">', '</div>') ?>
-				<div class="error"><?=$error_msg?></div>
+				<div class="error"><?= htmlspecialchars( $error_msg, ENT_QUOTES, 'UTF-8') ?></div>
 				<?=form_open("school_select/select")?>
 					<table class="form">
 						<tr>
@@ -47,7 +47,7 @@
 								<ul>
 									<? if($school_list): ?>
 									<? foreach($school_list as $school): ?>
-										<? if($school['contract'] == 'fixation'): ?><li><input type="radio" name="school_id" value="<?= $school['school_id']; ?>" /><?= $school['school_name']; ?></li><? endif; ?>
+										<? if($school['contract'] == 'fixation'): ?><li><input type="radio" name="school_id" value="<?= htmlspecialchars( $school['school_id'], ENT_QUOTES, 'UTF-8') ?>" /><?= htmlspecialchars( $school['school_name'], ENT_QUOTES, 'UTF-8') ?></li><? endif; ?>
 									<? endforeach; ?>
 									<? endif; ?>
 								</ul>
@@ -59,7 +59,7 @@
 								<ul>
 									<? if($school_list): ?>
 									<? foreach($school_list as $school): ?>
-										<? if($school['contract'] == 'demo'): ?><li><input type="radio" name="school_id" value="<?= $school['school_id']; ?>" /><?= $school['school_name']; ?></li><? endif; ?>
+										<? if($school['contract'] == 'demo'): ?><li><input type="radio" name="school_id" value="<?= htmlspecialchars( $school['school_id'], ENT_QUOTES, 'UTF-8') ?>" /><?= htmlspecialchars( $school['school_name'], ENT_QUOTES, 'UTF-8') ?></li><? endif; ?>
 									<? endforeach; ?>
 									<? endif; ?>
 								</ul>
@@ -71,7 +71,7 @@
 								<ul>
 									<? if($school_list): ?>
 									<? foreach($school_list as $school): ?>
-										<? if($school['contract'] == 'presentation'): ?><li><input type="radio" name="school_id" value="<?= $school['school_id']; ?>" /><?= $school['school_name']; ?></li><? endif; ?>
+										<? if($school['contract'] == 'presentation'): ?><li><input type="radio" name="school_id" value="<?= htmlspecialchars( $school['school_id'], ENT_QUOTES, 'UTF-8') ?>" /><?= htmlspecialchars( $school['school_name'], ENT_QUOTES, 'UTF-8') ?></li><? endif; ?>
 									<? endforeach; ?>
 									<? endif; ?>
 								</ul>

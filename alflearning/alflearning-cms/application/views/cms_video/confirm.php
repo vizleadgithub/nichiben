@@ -77,10 +77,10 @@
 							<th style="width:160px;"><?= $this->lang->line_or_def('common_file_name','ファイル名') ?></th>
 							<td>
 								<?php if($video['video_logic_name'] == ""): ?>
-									<?=$video['video_name']?>
+									<?= htmlspecialchars( $video['video_name'], ENT_QUOTES, 'UTF-8') ?>
 								<?php endif; ?>
 								<?php if($video['video_logic_name'] != ""): ?>
-									<?=$video['video_logic_name']?>
+									<?= htmlspecialchars( $video['video_logic_name'], ENT_QUOTES, 'UTF-8') ?>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -135,7 +135,7 @@
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_tag','タグ') ?></th>
-							<td ><?=$video['video_tags']?></td>
+							<td ><?= htmlspecialchars( $video['video_tags'], ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 
 						<?php if($this->Modelschoolcontract->enableService(array('serviceKey'=>'book_library'))): ?>
@@ -154,11 +154,11 @@
 											<?php foreach($video['exclusive_tag'] as $ino => $exclusive_tag): ?>
 												<?php if(!empty($exclusive_tag )): ?>
 													<tr id="exclusive_<?= $ino; ?>">
-														<td style="vertical-align: middle;width: 150px;"><?= $exclusive_tag  ?></td>
+														<td style="vertical-align: middle;width: 150px;"><?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8') ?></td>
 														<td style="vertical-align: middle;width: 230px;">
 															<?php foreach($book_library_exclusive as $ino2 => $temp2): ?>
 																<?php if($ino2 == $video['exclusive_book_library'][$ino]): ?>
-																	<?= $temp2; ?>
+																	<?= htmlspecialchars( $temp2, ENT_QUOTES, 'UTF-8') ?>
 																	<?php break; ?>
 																<?php endif; ?>
 															<?php endforeach; ?>
@@ -229,9 +229,9 @@
 									<?php foreach($history_data as $history) { ?>
 									<tr style="border: 1px #808080 solid; border-style: none none solid none ;	">
 										<td width=" 50px"><?= $history['student_id'] ?></td>
-										<td width="250px"><?= $history['student_name'] ?></td>
+										<td width="250px"><?= htmlspecialchars( $history['student_name'], ENT_QUOTES, 'UTF-8') ?></td>
 										<td width="100px"><?= $history['percent'] ?>%</td>
-										<td width="150px"><?= $history['reading_date'] ?></td>
+										<td width="150px"><?= htmlspecialchars( $history['reading_date'], ENT_QUOTES, 'UTF-8') ?></td>
 									</tr>
 									<?php } ?>
 								</table>

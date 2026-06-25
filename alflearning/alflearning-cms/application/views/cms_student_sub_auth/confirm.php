@@ -71,13 +71,13 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_name','名前') ?></th>
 							<td>
-								<?=$student['student_name']?>
+								<?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_','弁護士番号') ?></th>
 							<td>
-								<?=$student['lawyer_number']?>
+								<?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
@@ -85,7 +85,7 @@
 							<td>
 								<?php if(isset($student['bar_association_id'])): ?>
 									<?php if( isset($mtb_bar_association[$student['bar_association_id']]) ): ?>
-										<?= $mtb_bar_association[$student['bar_association_id']]; ?>
+										<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8') ?>
 									<?php else: ?>
 										<?= ''; ?>
 									<?php endif; ?>
@@ -95,25 +95,25 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_','登録年') ?></th>
 							<td>
-								<?=$student['regist_date']?>
+								<?= htmlspecialchars( $student['regist_date'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_','対象パスポート') ?></th>
 							<td>
-								<?=$student['target_passport']?>
+								<?= htmlspecialchars( $student['target_passport'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_','パスポートの有無') ?></th>
 							<td>
-								<?=$student['presence_passport']?>
+								<?= htmlspecialchars( $student['presence_passport'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?></th>
 							<td>
-								<?=$student['student_email']?>
+								<?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
@@ -121,7 +121,7 @@
 							<td>
 								<?php if(isset($student['mailmagazine_flg'])): ?>
 									<?php if( isset($mtb_mailmagazine_flg[$student['mailmagazine_flg']]) ): ?>
-										<?= $mtb_mailmagazine_flg[$student['mailmagazine_flg']]; ?>
+										<?= htmlspecialchars( $mtb_mailmagazine_flg[$student['mailmagazine_flg']], ENT_QUOTES, 'UTF-8') ?>
 									<?php else: ?>
 										<?= ''; ?>
 									<?php endif; ?>
@@ -133,7 +133,7 @@
 							<td>
 								<?php if(isset($student['ethic_training'])): ?>
 									<?php if( isset($mtb_ethic_training[$student['ethic_training']]) ): ?>
-										<?= $mtb_ethic_training[$student['ethic_training']]; ?>
+										<?= htmlspecialchars( $mtb_ethic_training[$student['ethic_training']], ENT_QUOTES, 'UTF-8') ?>
 									<?php else: ?>
 										<?= ''; ?>
 									<?php endif; ?>
@@ -145,7 +145,7 @@
 							<td>
 								<?php if(isset($student['sub_auth_ethic_training'])): ?>
 									<?php if( isset($mtb_sub_auth_ethic_training[$student['sub_auth_ethic_training']]) ): ?>
-										<?= $mtb_sub_auth_ethic_training[$student['sub_auth_ethic_training']]; ?>
+										<?= htmlspecialchars( $mtb_sub_auth_ethic_training[$student['sub_auth_ethic_training']], ENT_QUOTES, 'UTF-8') ?>
 									<?php else: ?>
 										<?= ''; ?>
 									<?php endif; ?>

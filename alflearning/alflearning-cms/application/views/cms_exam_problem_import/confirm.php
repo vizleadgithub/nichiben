@@ -180,7 +180,7 @@
 				<? if( getenv('URL_SERVICE') != 'mitemo' ): ?>
 					<tr>
 						<th width="160"><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
-						<td ><?= $exam_problem['teacher_name']; ?>
+						<td ><?= htmlspecialchars( $exam_problem['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 						</td>
 					</tr>
 				<? endif; ?>
@@ -196,7 +196,7 @@
 										if($flg){	?>
 											,
 										<?php } ?>
-										<?=$name?>
+										<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8') ?>
 									<?php
 										$flg = TRUE;
 									}
@@ -204,18 +204,18 @@
 							?>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<th><?= $this->lang->line_or_def('common_exam_problem_group','設問グループ') ?></th>
 						<td >
 							<?php
 								$flg = FALSE;
 								if( isset($exam_problem['exam_problem_groups_name']) ) {
-									foreach( $exam_problem['exam_problem_groups_name'] as $name) { 
+									foreach( $exam_problem['exam_problem_groups_name'] as $name) {
 										if($flg){	?>
 											,
 										<?php } ?>
-										<?=$name?>
+										<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8') ?>
 									<?php
 										$flg = TRUE;
 									}

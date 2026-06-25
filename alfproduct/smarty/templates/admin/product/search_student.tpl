@@ -26,7 +26,7 @@
 				<select name="search_bar_association_id">
 					<option value="">--</option>
 					<!--{foreach from=$bar_association_list item="row"}-->
-						<option value="<!--{$row.id}-->" <!--{if $row.id==$search_bar_association_id}--> selected<!--{/if}-->><!--{$row.name}--></option>
+						<option value="<!--{$row.id}-->" <!--{if $row.id==$search_bar_association_id}--> selected<!--{/if}-->><!--{$row.name|escape}--></option>
 					<!--{/foreach}-->
 				</select>
 			</td>
@@ -51,8 +51,8 @@
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_id}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_name}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="search_set.php?gid=<!--{$gid|urlencode}-->&id=<!--{$row.student_id|urlencode}-->&name=<!--{$row.student_name|urlencode}-->&comment=">選択</a></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_name|escape}--></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="search_set.php?gid=<!--{$gid|urlencode}-->&id=<!--{$row.student_id|urlencode}-->&name=<!--{$row.student_name|urlencode|escape}-->&comment=">選択</a></td>
 	</tr>
 	<!--{/foreach}-->
 	<tr>

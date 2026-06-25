@@ -41,12 +41,12 @@
 							foreach($classes as $class) { 
 						?>
 								<tr>
-									<td><?=$class['class_id']?></td>
+									<td><?= htmlspecialchars( $class['class_id'], ENT_QUOTES, 'UTF-8') ?></td>
 									<td><?=date("m/d H:i", strtotime($class['class_open']))?></td>
-									<td><?=$class['cource_name']?></td>
+									<td><?= htmlspecialchars( $class['cource_name'], ENT_QUOTES, 'UTF-8') ?></td>
 									<td><?= date("H:i", strtotime($class['class_close']) - strtotime($class['class_open']) - 32400); ?></td>
-									<td><?=$class['teacher_name']?></td>
-									<td><?= $this->lang->line_or_def('common_last','あと') ?><?=$class['fixed_number']?><?= $this->lang->line_or_def('common_people','人') ?></td>
+									<td><?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><?= $this->lang->line_or_def('common_last','あと') ?><?= htmlspecialchars( $class['fixed_number'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_people','人') ?></td>
 									<td><?= (strtotime($class['class_open']) < time() ? $this->lang->line_or_def('common_class_now','授業中') : $this->lang->line_or_def('common_still','未')); ?></td>
 								</tr>
 					<?php

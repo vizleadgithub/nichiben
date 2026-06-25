@@ -538,7 +538,7 @@ function exam2Button(formAct){
 		<tr>
 			<th style="vertical-align:middle;"></th>
 			<td>
-				<a href="javascript:void(0);" onclick="exam2Button('/cms_exam2/exam2_set_list?product_id=<!--{$mid}-->&exam2_id=<!--{$arr_input.exam2_id}-->');">アンケートのレビュー表示</a>
+				<a href="javascript:void(0);" onclick="exam2Button('/cms_exam2/exam2_set_list?product_id=<!--{$mid}-->&exam2_id=<!--{$arr_input.exam2_id|escape}-->');">アンケートのレビュー表示</a>
 			</td>
 		</tr>
 	<!--{/if}-->

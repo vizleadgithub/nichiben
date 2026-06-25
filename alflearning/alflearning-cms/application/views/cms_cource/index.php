@@ -95,9 +95,9 @@
 						<?php foreach($cource_list as $cource) { ?>
 							<?php $line++;?>
 							<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-								<td class="tdc"><a href="/cms_cource/detail/<?= $cource['cource_id'] ?>"><?= $cource['cource_id'] ?></td>
-								<td class="tdc"><?=$cource['cource_name']?></td>
-								<td class="tdc"><?=$cource['cource_open']?><?= $this->lang->line_or_def('common_range','～') ?><?=$cource['cource_close']?></td>
+								<td class="tdc"><a href="/cms_cource/detail/<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td class="tdc"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td class="tdc"><?= htmlspecialchars( $cource['cource_open'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $cource['cource_close'], ENT_QUOTES, 'UTF-8') ?></td>
 							</tr>
 						<?php } ?>
 					<?php } ?>

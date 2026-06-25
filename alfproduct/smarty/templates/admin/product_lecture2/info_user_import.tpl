@@ -74,7 +74,7 @@ function formSubmit(formName, mode){
 *}-->
 
 <div style="color:red;">
-<!--{$err_msg}-->
+<!--{$err_msg|escape}-->
 </div>
 
 <table class="list">

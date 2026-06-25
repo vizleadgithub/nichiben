@@ -54,10 +54,10 @@
 					<?php if(isset($information_list)) { ?>
 						<?php foreach($information_list as $information) { ?>
 							<tr style="" >
-								<td class="tdc"><a href="/cms_information/detail/<?= $information['ID'] ?>"><?=$information['ID']?>
+								<td class="tdc"><a href="/cms_information/detail/<?= htmlspecialchars( $information['ID'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $information['ID'], ENT_QUOTES, 'UTF-8') ?>
 								</td>
 								<td class="tdc"><?= date("Y/m/d", strtotime($information['post_date']))?></td>
-								<td class="tdc"><?=$information['post_title']?></td>
+								<td class="tdc"><?= htmlspecialchars( $information['post_title'], ENT_QUOTES, 'UTF-8') ?></td>
 							</tr>
 						<?php } ?>
 					<?php } ?>

@@ -191,7 +191,7 @@
 				<select name="search_bar_association">
 					<option value="">--------------------</option>
 				<!--{foreach from=$arr_bar_association item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$search_bar_association}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->"<!--{if $row.id==$search_bar_association}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -204,7 +204,7 @@
 					<option value="">--------------------</option>
 				<!--{/if}-->
 				<!--{foreach from=$arr_bar_association2 item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$search_bar_association2}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->"<!--{if $row.id==$search_bar_association2}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -238,7 +238,7 @@
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_name|mb_truncate:60:"..."|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->">
 			<!--{foreach from=$row.bar_association item="row2"}-->
-				<!--{$row2.name}--><br>
+				<!--{$row2.name|escape}--><br>
 			<!--{/foreach}-->
 		</td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->">

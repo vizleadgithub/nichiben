@@ -105,12 +105,12 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam_problem_group_name','設問グループ名') ?></th>
 							<td>
-								<?=$exam_problem_group['exam_problem_group_name']?>
+								<?= htmlspecialchars( $exam_problem_group['exam_problem_group_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td style="word-break: break-all;"><?=nl2br($exam_problem_group['exam_problem_group_caption']); ?></td>
+							<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam_problem_group['exam_problem_group_caption'], ENT_QUOTES, 'UTF-8') ) ?></td>
 						</tr>
 						<tr>
 							<th>
@@ -119,7 +119,7 @@
 									[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($exam_problem_group['position_exam_problems']); ?>]
 								</div>
 							</th>
-							<td ><?= $exam_problem_group['position_exam_problems_name']; ?></td>
+							<td ><?= htmlspecialchars( $exam_problem_group['position_exam_problems_name'], ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 					</table>
 					<div class="submit">

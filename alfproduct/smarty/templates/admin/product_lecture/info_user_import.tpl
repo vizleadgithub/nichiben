@@ -47,21 +47,21 @@ function formSubmit(formName, mode){
 		<tr>
 			<th>開催会</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.bar_association_name}-->
+				<!--{$arr_input_2.bar_association_name|escape}-->
 				&nbsp;
-				<!--{$arr_input_2.bar_association_branch_name}-->
+				<!--{$arr_input_2.bar_association_branch_name|escape}-->
 			</td>
 		</tr>
 		<tr>
 			<th>研修名</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.product_name}-->
+				<!--{$arr_input_2.product_name|escape}-->
 			</td>
 		</tr>
 		<tr>
 			<th>研修実施日</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.dates}-->
+				<!--{$arr_input_2.dates|escape}-->
 			</td>
 		</tr>
 		<tr>
@@ -73,7 +73,7 @@ function formSubmit(formName, mode){
 		<tr>
 			<th>定員</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.entry_number|number_format}--> / <!--{$arr_input_2.capacity|number_format}--> 人
+				<!--{$arr_input_2.entry_number|number_format|escape}--> / <!--{$arr_input_2.capacity|number_format|escape}--> 人
 			</td>
 		</tr>
 		<tr>
@@ -115,7 +115,7 @@ function formSubmit(formName, mode){
 *}-->
 
 <div style="color:red;">
-<!--{$err_msg}-->
+<!--{$err_msg|escape}-->
 </div>
 
 <table class="list">
@@ -167,9 +167,9 @@ function formSubmit(formName, mode){
 		<!--{foreach from=$arr_list item="row"}-->
 		<!--{cycle values="0,1" assign="cycle_bg"}-->
 		<tr style="">
-			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.lawyer_number}--></td>
-			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_name}--></td>
-			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.bar_association_name}--></td>
+			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.lawyer_number|escape}--></td>
+			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_name|escape}--></td>
+			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.bar_association_name|escape}--></td>
 			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.entry_date}--></td>
 			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.take_date}--></td>
 		</tr>
@@ -182,7 +182,7 @@ function formSubmit(formName, mode){
 
 <!--{if $res_msg != ""}-->
 <div>
-	<!--{$res_msg}-->
+	<!--{$res_msg|escape}-->
 </div>
 <!--{/if}-->
 

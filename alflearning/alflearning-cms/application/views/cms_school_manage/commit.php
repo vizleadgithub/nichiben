@@ -37,19 +37,19 @@
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_school_name','学校名') ?></th>
-							<td width="400"><?= $school_name ?></td>
+							<td width="400"><?= htmlspecialchars( $school_name, ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_teacher_name','講師名') ?></th>
-							<td><?= $teacher_name ?></td>
+							<td><?= htmlspecialchars( $teacher_name, ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?></th>
-							<td><?= $teacher_email ?></td>
+							<td><?= htmlspecialchars( $teacher_email, ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_password','パスワード') ?></th>
-							<td><?= $teacher_password ?></td>
+							<td><?= htmlspecialchars( $teacher_password, ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 					</table>
 				<?php endif ?>

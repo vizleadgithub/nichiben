@@ -69,12 +69,12 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_group_name','グループ名') ?></th>
 							<td>
-								<?=$student_group['student_group_name']?>
+								<?= htmlspecialchars( $student_group['student_group_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td ><?=nl2br($student_group['student_group_caption']); ?></td>
+							<td ><?= nl2br( htmlspecialchars( $student_group['student_group_caption'], ENT_QUOTES, 'UTF-8') ) ?></td>
 						</tr>
 						<tr>
 							<th>
@@ -83,7 +83,7 @@
 									[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($student_group['position_students']); ?>]
 								</div>
 							</th>
-							<td ><?= $student_group['position_students_name']; ?></td>
+							<td ><?= htmlspecialchars( $student_group['position_students_name'], ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 					</table>
 					<div class="submit">

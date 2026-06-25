@@ -81,14 +81,14 @@
 							<?php foreach($exam_problem_list as $exam_problem) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam_problem/detail/<?= $exam_problem['exam_problem_id']; ?>/"><?=$exam_problem['exam_problem_id']?></td>
-									<td style="word-wrap:break-word;"><?=$exam_problem['exam_problem_name']?></td>
+									<td><a href="/cms_exam_problem/detail/<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam_problem['exam_problem_name'], ENT_QUOTES, 'UTF-8') ?></td>
 <?php if(false){ ?>
 									<td>
 										<?= (getenv('URL_SERVICE')=='mitemo')? "": $exam_problem['teacher_name']; ?>
 									</td>
 <?php } ?>
-									<td><?=$exam_problem['answer_point']?></td>
+									<td><?= htmlspecialchars( $exam_problem['answer_point'], ENT_QUOTES, 'UTF-8') ?></td>
 								</tr>
 							<?php } ?>
 						<?php } ?>

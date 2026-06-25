@@ -199,7 +199,7 @@
 				<?=form_open("cms_student/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
 					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.$error_msg.'</div>' : ''); ?>
-					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= $elm_message.'(code:'.$elm_stat.')'; ?></div><? endif; ?>
+					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= htmlspecialchars( $elm_message, ENT_QUOTES, 'UTF-8').'(code:'.htmlspecialchars( $elm_stat, ENT_QUOTES, 'UTF-8').')'; ?></div><? endif; ?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $student['update_flg'])?>'>
 					<input type=hidden name=student_id value='<?=set_value('student_id', $student['student_id'])?>'>
 					<input type=hidden name=student_password_change value='<?=set_value('student_password_change', $student['student_password_change'])?>'>
@@ -279,7 +279,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="student_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="student_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($student['student_lectures']) ) {
 														foreach( $student['student_lectures'] as $lecture) { 
@@ -293,7 +293,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -530,8 +530,8 @@
 										}
 									?>
 									<li>
-										<input id="mailmagazine_category_<?= $index; ?>" type="checkbox" value="<?= $index; ?>" name="mailmagazine_ids_array[]" <?= $selected; ?>>
-										<label for="mailmagazine_category_<?= $index; ?>"><?= $value; ?></label>
+										<input id="mailmagazine_category_<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" type="checkbox" value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" name="mailmagazine_ids_array[]" <?= $selected; ?>>
+										<label for="mailmagazine_category_<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $value, ENT_QUOTES, 'UTF-8') ?></label>
 									</li>
 								<?php endforeach; ?>
 								</ul>
@@ -556,8 +556,8 @@
 										}
 									?>
 									<li>
-										<input id="media_category_<?= $index; ?>" type="checkbox" value="<?= $index; ?>" name="media_id_array[]" <?= $selected; ?>>
-										<label for="media_category_<?= $index; ?>"><?= $value; ?></label>
+										<input id="media_category_<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" type="checkbox" value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" name="media_id_array[]" <?= $selected; ?>>
+										<label for="media_category_<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $value, ENT_QUOTES, 'UTF-8') ?></label>
 									</li>
 								<?php endforeach; ?>
 								</ul>

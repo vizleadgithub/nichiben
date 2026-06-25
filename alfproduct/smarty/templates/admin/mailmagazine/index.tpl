@@ -20,7 +20,7 @@
 		<tr>
 			<th>フリーワード</th>
 			<td colspan = "3">
-				<input type="text" name="search_keyword" size="45" value="<!--{$search_keyword}-->">
+				<input type="text" name="search_keyword" size="45" value="<!--{$search_keyword|escape}-->">
 			</td>
 		</tr>
 		<tr>
@@ -137,7 +137,7 @@
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="info.php?mid=<!--{$row.mailmagazine_id}-->"><!--{$row.mailmagazine_id}--></a></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.mail_title}--></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.mail_title|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{if $row.submit_status=="2"}-->配信済<!--{elseif $row.submit_status=="1"}-->配信中<!--{else}-->未配信<!--{/if}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.submit_datetime}--></td>
 	</tr>

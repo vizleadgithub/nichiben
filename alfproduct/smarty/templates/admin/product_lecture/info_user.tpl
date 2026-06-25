@@ -104,15 +104,15 @@ function formSubmitFpFix(formName, mode, pid, aid){
 		<tr>
 			<th>開催会</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.bar_association_name}-->
+				<!--{$arr_input_2.bar_association_name|escape}-->
 				&nbsp;
-				<!--{$arr_input_2.bar_association_branch_name}-->
+				<!--{$arr_input_2.bar_association_branch_name|escape}-->
 			</td>
 		</tr>
 		<tr>
 			<th>研修名</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.product_name}-->
+				<!--{$arr_input_2.product_name|escape}-->
 			</td>
 		</tr>
 		<tr>

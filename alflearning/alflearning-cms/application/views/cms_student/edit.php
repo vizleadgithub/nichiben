@@ -279,7 +279,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="student_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="student_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($student['student_lectures']) ) {
 														foreach( $student['student_lectures'] as $lecture) { 
@@ -293,7 +293,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -530,8 +530,8 @@
 										}
 									?>
 									<li>
-										<input id="mailmagazine_category_<?= $index; ?>" type="checkbox" value="<?= $index; ?>" name="mailmagazine_ids_array[]" <?= $selected; ?>>
-										<label for="mailmagazine_category_<?= $index; ?>"><?= $value; ?></label>
+										<input id="mailmagazine_category_<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" type="checkbox" value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" name="mailmagazine_ids_array[]" <?= htmlspecialchars( $selected, ENT_QUOTES, 'UTF-8') ?>>
+										<label for="mailmagazine_category_<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $value, ENT_QUOTES, 'UTF-8') ?></label>
 									</li>
 								<?php endforeach; ?>
 								</ul>
@@ -556,8 +556,8 @@
 										}
 									?>
 									<li>
-										<input id="media_category_<?= $index; ?>" type="checkbox" value="<?= $index; ?>" name="media_id_array[]" <?= $selected; ?>>
-										<label for="media_category_<?= $index; ?>"><?= $value; ?></label>
+										<input id="media_category_<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" type="checkbox" value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" name="media_id_array[]" <?= htmlspecialchars( $selected, ENT_QUOTES, 'UTF-8') ?>>
+										<label for="media_category_<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $value, ENT_QUOTES, 'UTF-8') ?></label>
 									</li>
 								<?php endforeach; ?>
 								</ul>

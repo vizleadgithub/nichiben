@@ -286,7 +286,7 @@ function searchButton(formAct){
 	<tr>
 		<th style="vertical-align:middle;">倫理研修問題</th>
 		<td>
-			<!--{$ethic_group[$arr_input.ethic_group_id]}-->
+			<!--{$ethic_group[$arr_input.ethic_group_id]|escape}-->
 		</td>
 	</tr>
 	

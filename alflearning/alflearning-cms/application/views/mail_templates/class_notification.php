@@ -1,10 +1,10 @@
 このメールは、ALFラーニングから自動送信にて送られています
 
-<?= $student['student_name']; ?>さん
+<?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8') ?>さん
 ALFラーニングをご利用いただきありがとうございます。
 
-<?= $class['teacher_name']; ?>講師による授業
-「<?= $class['class_name']; ?>」
+<?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8') ?>講師による授業
+「<?= htmlspecialchars( $class['class_name'], ENT_QUOTES, 'UTF-8') ?>」
 <? if($nextStr == 'week'): ?>
 が１週間後に控えておりますので、ご連絡させて頂きます
 <? elseif($nextStr == 'day'): ?>
@@ -15,7 +15,7 @@ ALFラーニングをご利用いただきありがとうございます。
 
 ――――――――――――――――――――――――――――――――
 ●授業名
-<?= $class['class_name']; ?>
+<?= htmlspecialchars( $class['class_name'], ENT_QUOTES, 'UTF-8') ?>
 
 
 ●開催予定日時
@@ -23,7 +23,7 @@ ALFラーニングをご利用いただきありがとうございます。
 
 
 ●授業内容
-<?= $class['class_caption']; ?>
+<?= htmlspecialchars( $class['class_caption'], ENT_QUOTES, 'UTF-8') ?>
 
 ――――――――――――――――――――――――――――――――
 

@@ -44,7 +44,7 @@ function formSubmit(formName, mode){
 		<tr>
 			<th>研修名</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.product_name}-->
+				<!--{$arr_input_2.product_name|escape}-->
 			</td>
 		</tr>
 	</table>
@@ -58,7 +58,7 @@ function formSubmit(formName, mode){
 
 <!--{if $res_msg != ""}-->
 <div style="color:red;">
-	<!--{$res_msg}-->
+	<!--{$res_msg|escape}-->
 </div>
 <!--{/if}-->
 

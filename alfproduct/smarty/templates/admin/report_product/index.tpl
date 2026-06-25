@@ -18,7 +18,7 @@
 			<th>商品種別</th>
 			<td>
 				<!--{foreach from=$arr_product_type_add item="row"}-->
-					<input type="checkbox" name="search_product_type_add[]" value="<!--{$row.id}-->" id="search_product_type_add_<!--{$row.id}-->"<!--{if in_array($row.id,$search_product_type_add)}--> checked="checked"<!--{/if}-->><label for="search_product_type_add_<!--{$row.id}-->"><!--{$row.name}--></label>&nbsp;
+					<input type="checkbox" name="search_product_type_add[]" value="<!--{$row.id}-->" id="search_product_type_add_<!--{$row.id}-->"<!--{if in_array($row.id,$search_product_type_add)}--> checked="checked"<!--{/if}-->><label for="search_product_type_add_<!--{$row.id}-->"><!--{$row.name|escape}--></label>&nbsp;
 				<!--{/foreach}-->
 			</td>
 		</tr>
@@ -28,7 +28,7 @@
 				<select name="search_association">
 					<option value=""></option>
 				<!--{foreach from=$arr_bar_association item="row"}-->
-					<option value="<!--{$row.id}-->" <!--{if $row.id==$search_association}--> selected<!--{/if}--> ><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->" <!--{if $row.id==$search_association}--> selected<!--{/if}--> ><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>

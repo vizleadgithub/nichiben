@@ -39,7 +39,7 @@
 				<h2><?= $this->lang->line_or_def('msg_report_month_select','表示する月を選択してください') ?></h2>
 				<ul>
 					<? foreach($monthList as $month): ?>
-						<li><? if($month == $selectMonth): ?><span><?= $month; ?></span><? else: ?><a href="/cms_report/cms_class/<?= $month; ?>"><?= $month; ?></a><? endif; ?></li>
+						<li><? if($month == $selectMonth): ?><span><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?></span><? else: ?><a href="/cms_report/cms_class/<?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?></a><? endif; ?></li>
 					<? endforeach; ?>
 				</ul>
 				<div class="clear"></div>
@@ -100,11 +100,11 @@
 						</tr>
 						<? foreach($thisMonth['classList'] as $_thisMonth): ?>
 							<tr>
-								<td><?= $_thisMonth['class_id']; ?></td>
-								<td><?= $_thisMonth['class_name']; ?></td>
+								<td><?= htmlspecialchars( $_thisMonth['class_id'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td><?= htmlspecialchars( $_thisMonth['class_name'], ENT_QUOTES, 'UTF-8') ?></td>
 								<td><?= date("Y-m-d H:i", strtotime($_thisMonth['class_open'])); ?></td>
 								<td><?= Sec2Disp((strtotime($_thisMonth['class_close']) - strtotime($_thisMonth['class_open'])), array('dd' => false)); ?></td>
-								<td><?= $_thisMonth['student_num']; ?>人</td>
+								<td><?= htmlspecialchars( $_thisMonth['student_num'], ENT_QUOTES, 'UTF-8') ?>人</td>
 								<td><?= Sec2Disp((strtotime($_thisMonth['class_close']) - strtotime($_thisMonth['class_open'])) * $_thisMonth['student_num'], array('dd' => false)); ?></td>
 							</tr>
 						<? endforeach; ?>
@@ -122,17 +122,17 @@
 					</tr>
 					<? foreach($reports['reportList'] as $year_month => $report): ?>
 						<tr>
-							<td><?= $year_month; ?></td>
-							<td><?= (isset($report['class']) && $report['class'] ? $report['class'] : '-'); ?></td>
-							<td><?= (isset($report['student']) && $report['student'] ? $report['student'] : '-'); ?></td>
+							<td><?= htmlspecialchars( $year_month, ENT_QUOTES, 'UTF-8') ?></td>
+							<td><?= htmlspecialchars( (isset($report['class']) && $report['class'] ? $report['class'] : '-'), ENT_QUOTES, 'UTF-8') ?></td>
+							<td><?= htmlspecialchars( (isset($report['student']) && $report['student'] ? $report['student'] : '-'), ENT_QUOTES, 'UTF-8') ?></td>
 							<td><?= (isset($report['time']) && $report['time'] ? Sec2Disp($report['time'], array('dd' => false)) : '-'); ?></td>
 							<td><?= (isset($report['strage']) && $report['strage'] ? ConvertUnit($report['strage'], 2) : '-'); ?></td>
 						</tr>
 					<? endforeach; ?>
 					<tr>
 						<th><?= $this->lang->line_or_def('msg_report_total','合計') ?></th>
-						<th><?= (isset($reports['total']['class']) && $reports['total']['class'] ? $reports['total']['class'] : '-'); ?></th>
-						<th><?= (isset($reports['total']['student']) && $reports['total']['student'] ? $reports['total']['student'] : '-'); ?></th>
+						<th><?= htmlspecialchars( (isset($reports['total']['class']) && $reports['total']['class'] ? $reports['total']['class'] : '-'), ENT_QUOTES, 'UTF-8') ?></th>
+						<th><?= htmlspecialchars( (isset($reports['total']['student']) && $reports['total']['student'] ? $reports['total']['student'] : '-'), ENT_QUOTES, 'UTF-8') ?></th>
 						<th><?= (isset($reports['total']['time']) && $reports['total']['time'] ? Sec2Disp($reports['total']['time'], array('dd' => false)) : '-'); ?></th>
 						<th>-</th>
 					</tr>

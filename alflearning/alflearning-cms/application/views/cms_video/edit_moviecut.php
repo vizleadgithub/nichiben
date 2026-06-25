@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	$this->lang->load('common');
 	$this->lang->load('msg');
 ?>
@@ -309,7 +309,7 @@
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_file','ファイル') ?></th>
 							<td>
-								[ビデオID:<?= $video['video_id']; ?>] <?= $video['video_logic_name']; ?> を使用
+								[ビデオID:<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?>] <?= htmlspecialchars( $video['video_logic_name'], ENT_QUOTES, 'UTF-8') ?> を使用
 								<input type=hidden name=local_file value='temp_local_file'>
 							</td>
 						</tr>
@@ -340,7 +340,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?=$cource['cource_id']?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -377,7 +377,7 @@
 										<div style=" margin-top: 5px;line-height:20px;"><?= $this->lang->line_or_def('common_registered_tag','登録済みタグ') ?>&nbsp;:&nbsp;
 											<?php foreach($tags_dropdown as $tagKey => $cnt) { ?>
 												<? if(($tagKey !== 'タグなし') && ($tagKey !== '') ): ?>
-													<a href="#" onclick="set_tag('<?= $tagKey; ?>');return false;"><?= $tagKey; ?></a>&nbsp;&nbsp;
+													<a href="#" onclick="set_tag('<?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?>');return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?></a>&nbsp;&nbsp;
 												<? endif; ?>
 											<?php } ?>
 										</div>
@@ -402,9 +402,9 @@
 										
 
 										<?php foreach($video['exclusive_tag'] as $ino => $exclusive_tag): ?>
-											<tr sytle="height:100px;" id="exclusive_<?= $ino; ?>">
+											<tr sytle="height:100px;" id="exclusive_<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8') ?>">
 												<td style="vertical-align: middle;text-align: center;">
-													<input type=text name="exclusive_tag[]" maxlength="256" size="15" value='<?= $exclusive_tag  ?>'><!--   -->
+													<input type=text name="exclusive_tag[]" maxlength="256" size="15" value='<?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8') ?>'><!--   -->
 												</td>
 												
 												<td style="vertical-align: middle;text-align: center;">
@@ -447,9 +447,9 @@
 
 												<td style="vertical-align: middle;text-align: center;">
 													<?php if($video['exclusive_status'][$ino] == 0): ?>
-														<input type="checkbox" value="<?= $ino; ?>" name="exclusive_status[]" checked>
+														<input type="checkbox" value="<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8') ?>" name="exclusive_status[]" checked>
 													<?php else: ?>
-														<input type="checkbox" value="<?= $ino; ?>" name="exclusive_status[]" >
+														<input type="checkbox" value="<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8') ?>" name="exclusive_status[]" >
 													<?php endif; ?>
 												</td>
 
@@ -531,7 +531,7 @@
 									</div>
 
 									<div style="float:left;line-height : 28px;margin-left: 50px;">
-										<?= $this->lang->line_or_def('common_reproduction_time','再生時間') ?> / <?= $video['video_time']; ?>
+										<?= $this->lang->line_or_def('common_reproduction_time','再生時間') ?> / <?= htmlspecialchars( $video['video_time'], ENT_QUOTES, 'UTF-8') ?>
 									</div>
 
 								</div>

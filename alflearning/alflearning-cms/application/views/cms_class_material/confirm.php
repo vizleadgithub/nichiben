@@ -25,9 +25,9 @@
 			<div id="contents_main">
 				<div class="toolbar clearfix"></div>
 				<?=form_open("cms_class_material/class_material_upload_exec")?>
-					<input type=hidden name=class_id value='<?= $class_id ?>'>
-					<input type=hidden name=delete_check_list value='<?= $delete_check_list ?>'>
-					<input type=hidden name=insert_check_list value='<?= $insert_check_list ?>'>
+					<input type=hidden name=class_id value='<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>'>
+					<input type=hidden name=delete_check_list value='<?= htmlspecialchars( $delete_check_list, ENT_QUOTES, 'UTF-8') ?>'>
+					<input type=hidden name=insert_check_list value='<?= htmlspecialchars( $insert_check_list, ENT_QUOTES, 'UTF-8') ?>'>
 
 					<?php if(isset($class_material_list)) { ?>
 						<h3><?= $this->lang->line_or_def('msg_class_material_del_confirm','授業から削除する資料') ?></h3>
@@ -47,13 +47,13 @@
 											<?= $this->lang->line_or_def('common_deletion','削除') ?>
 										</td>
 										<td style="vertical-align: middle;width: 147px;">
-											<img src="/file_container/get_class_material_thubmnail/<?=$class_id?>/<?=$class_material['teacher_id']?>/<?=$class_material['student_id']?>/<?=$class_material['class_material_id']?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
+											<img src="/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
 										</td>
 										<td style="vertical-align: middle;width: 97px;">
-											<?=$class_material['class_material_id']?>
+											<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>
 										</td>
 										<td style="vertical-align: middle;width: 410px;word-wrap:break-word;">
-											<?=$class_material['material_logic_name']?>
+											<?= htmlspecialchars( $class_material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?>
 										</td>
 									</tr>
 								<?php } ?>
@@ -80,16 +80,16 @@
 											<?= $this->lang->line_or_def('common_registration','登録') ?>
 										</td>
 										<td style="vertical-align: middle;width: 133px;">
-											<img src="/file_container/get_material_thubmnail/<?=$material['material_id']?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
+											<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
 										</td>
 										<td style="vertical-align: middle;width: 82px;">
-											<?=$material['material_id']?>
+											<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>
 										</td>
 										<td style="vertical-align: middle;width:301px;word-wrap:break-word;">
-											<?=$material['material_logic_name']?>
+											<?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?>
 										</td>
 										<td style="vertical-align: middle;width: 147px;">
-											<?=$material['teacher_name']?>
+											<?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 										</td>
 									</tr>
 								<?php } ?>
@@ -98,7 +98,7 @@
 					<?php } ?>
 
 					<div class="submit">
-						<input type='image' src='/static/image/btn_back.png' onClick='location.href = "/cms_class_material/material_select/<?= $class_id ?>";return false;' />
+						<input type='image' src='/static/image/btn_back.png' onClick='location.href = "/cms_class_material/material_select/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>";return false;' />
 						<input type="image" src="/static/image/btn_ok.png" />
 					</div>
 				</form>

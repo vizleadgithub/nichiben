@@ -22,7 +22,7 @@ function delete_live_training_product_id(){
 <!--{if !empty($err_msg)}-->
 <div class="error">
 <!--{foreach from=$err_msg item=msg}-->
-	<!--{$msg}--><br />
+	<!--{$msg|escape}--><br />
 <!--{/foreach}-->
 </div>
 <!--{/if}-->

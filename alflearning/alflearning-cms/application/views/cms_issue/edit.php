@@ -198,7 +198,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="issue_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="issue_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($issue['issue_lectures']) ) {
 														foreach( $issue['issue_lectures'] as $lecture) { 
@@ -212,7 +212,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -263,15 +263,15 @@
 										<tr>
 											<td style="vertical-align: middle;text-align: center;">
 												<input type="hidden" name="issue_temp_id[]" value='<?=set_value('issue_temp_id[]', $issue['issue_temp_id'][$id] ); ?>'>
-												<input type="text" name="issue_temp_logic_name[]" maxlength="256" size="20" value='<?= $value; ?>'>
+												<input type="text" name="issue_temp_logic_name[]" maxlength="256" size="20" value='<?= htmlspecialchars( $value, ENT_QUOTES, 'UTF-8') ?>'>
 											</td>
 											<td style="vertical-align: middle;text-align: center;">
 												<input type="hidden" name="issue_temp_name[]" value='<?=set_value('issue_temp_name[]', $issue['issue_temp_name'][$id] ); ?>'>
 												<? if($issue['issue_temp_id'][$id] < 0): ?>
-													<input type="file" name="issue_temp_file_<?= $id; ?>" size="30" value=''>
+													<input type="file" name="issue_temp_file_<?= htmlspecialchars( $id, ENT_QUOTES, 'UTF-8') ?>" size="30" value=''>
 												<? else: ?>
 													<? $thumbnailName = $issue['issue_temp_name'][$id] ?>
-													<img src="/file_container/get_issue_template_thubmnail/<?= $this->libauth->get_school_id(); ?>/<?= $issue['issue_id']; ?>/<?= $issue['issue_temp_id'][$id]; ?>/<?= $issue['issue_temp_name'][$id]; ?>/" alt="" style="height: 64px; padding:1px;background-color:white;"/ name="">
+													<img src="/file_container/get_issue_template_thubmnail/<?= $this->libauth->get_school_id(); ?>/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/<?= $issue['issue_temp_id'][$id]; ?>/<?= htmlspecialchars( $issue['issue_temp_name'][$id], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 64px; padding:1px;background-color:white;"/ name="">
 												<? endif; ?>
 											</td>
 											<td style="vertical-align: middle;text-align: center;">

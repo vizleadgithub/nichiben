@@ -391,7 +391,7 @@ $config['encryption_key'] = 'aktKoltl234lLutka8993Saki234Dfsl';
 //$config['sess_driver'] = 'files';
 $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_samesite'] = 'Lax';
+$config['sess_samesite'] = 'Strict';
 $config['sess_expiration'] = 7200;
 //$config['sess_save_path'] = NULL;
 $config['sess_save_path'] = "ci_sessions";
@@ -421,7 +421,7 @@ $config['cookie_domain']	= '';
 $config['cookie_path']		= '/';
 $config['cookie_secure']	= FALSE;
 $config['cookie_httponly'] 	= FALSE;
-$config['cookie_samesite'] 	= 'Lax';
+$config['cookie_samesite'] 	= 'Strict';
 
 /*
 |--------------------------------------------------------------------------

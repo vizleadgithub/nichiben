@@ -151,7 +151,7 @@
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_student','受講者') ?></th>
-							<td ><?= $class['lecture_students_name'] ?></td>
+							<td ><?= htmlspecialchars( $class['lecture_students_name'], ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_note','備考') ?></th>
@@ -178,7 +178,7 @@
 													<?= htmlspecialchars( $class_material['kinds'], ENT_QUOTES, 'UTF-8')  ?>
 												<?php else: ?>
 													<a href="" onclick = "window.open('/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_material['class_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/', 'imgwindow', 'width=846,height=624, menubar=no, toolbar=no, scrollbars=yes, location=no, status=no'); return false;">
-													<?= $class_material['kinds']; ?></a>
+													<?= htmlspecialchars( $class_material['kinds'], ENT_QUOTES, 'UTF-8') ?></a>
 												<?php endif; ?>
 											</td>
 											<td style="padding-bottom: 4px; padding-top: 4px;"><?= htmlspecialchars( $class_material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?></td>

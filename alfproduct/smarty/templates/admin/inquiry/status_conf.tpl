@@ -60,7 +60,7 @@
 
 	<div class="submit">
 		<div style="width:48%;float:left;text-align:right;">
-			<form action="<!--{$prev_url}-->" accept-charset="utf-8" method="post" name="inquiry_form_prev">
+			<form action="<!--{$prev_url|escape}-->" accept-charset="utf-8" method="post" name="inquiry_form_prev">
 			<input type="hidden" name="iid" value="<!--{$iid|escape}-->">
 			<input type="hidden" name="inquiry_status" value="<!--{$inquiry_status|escape}-->">
 			<input type="hidden" name="return_name" value="<!--{$return_name|escape}-->">
@@ -68,7 +68,7 @@
 			</form>
 		</div>
 		<div style="width:48%;float:right;text-align:left;">
-			<form action="<!--{$next_url}-->" accept-charset="utf-8" method="post" name="inquiry_form_next">
+			<form action="<!--{$next_url|escape}-->" accept-charset="utf-8" method="post" name="inquiry_form_next">
 			<input type="hidden" name="iid" value="<!--{$iid|escape}-->">
 			<input type="hidden" name="inquiry_status" value="<!--{$inquiry_status|escape}-->">
 			<input type="hidden" name="return_name" value="<!--{$return_name|escape}-->">

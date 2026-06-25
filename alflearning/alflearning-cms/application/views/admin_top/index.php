@@ -52,16 +52,16 @@
 						<li style=<?= ($information['school_id']==0) ? "background-color:#D3F5EA;" : ""; ?>>
 							<div class="list_title">
 								<a href="#" onclick="information_show_hide(this);return false;">
-									<?=$information['information_date']?>&nbsp;
+									<?= htmlspecialchars( $information['information_date'], ENT_QUOTES, 'UTF-8') ?>&nbsp;
 									<?php if($information['school_id']==0): ?>
 										[<?= $this->lang->line_or_def('common_all_school_object','全学校対象') ?>]&nbsp;
 									<?php endif; ?>
-									<?=$information['information_title']?>
+									<?= htmlspecialchars( $information['information_title'], ENT_QUOTES, 'UTF-8') ?>
 								<!-- <?=$information['information_date']?>&nbsp;<?=$information['information_title']?> -->
 								</a>
 							</div>
 							<div class="list_caption" style="display:none;">
-								<?= nl2br($information['information_caption']); ?>
+								<?= nl2br( htmlspecialchars( $information['information_caption'], ENT_QUOTES, 'UTF-8') ) ?>
 							</div>
 						</li>
 					<?php
@@ -87,10 +87,10 @@
 								</tr>
 								<?php foreach($login_logs as $login_log) { ?>
 								<tr style="border: 1px #808080 solid; border-style: none none solid none ;">
-								<td width="150px" style="padding-bottom: 2px; padding-top: 2px;"><?= $login_log['teacher_id'] ?></td>
-								<td width="300px" style="padding-bottom: 2px; padding-top: 2px;"><?= $login_log['teacher_name'] ?></td>
-								<td width="150px" style="padding-bottom: 2px; padding-top: 2px;"><?= $login_log['log_name'] ?></td>
-								<td width="150px" style="padding-bottom: 2px; padding-top: 2px;"><?= $login_log['added_at'] ?></td>
+								<td width="150px" style="padding-bottom: 2px; padding-top: 2px;"><?= htmlspecialchars( $login_log['teacher_id'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td width="300px" style="padding-bottom: 2px; padding-top: 2px;"><?= htmlspecialchars( $login_log['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td width="150px" style="padding-bottom: 2px; padding-top: 2px;"><?= htmlspecialchars( $login_log['log_name'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td width="150px" style="padding-bottom: 2px; padding-top: 2px;"><?= htmlspecialchars( $login_log['added_at'], ENT_QUOTES, 'UTF-8') ?></td>
 								</tr>
 								<?php } ?>
 							</table>
@@ -103,9 +103,9 @@
 								</tr>
 								<?php foreach($login_logs as $login_log) { ?>
 								<tr style="border: 1px #808080 solid; border-style: none none solid none ;">
-								<td width="150px" style="padding-bottom: 2px; padding-top: 2px;"><?= $login_log['teacher_id'] ?></td>
-								<td width="300px" style="padding-bottom: 2px; padding-top: 2px;"><?= $login_log['teacher_name'] ?></td>
-								<td width="300px" style="padding-bottom: 2px; padding-top: 2px;"><?= $login_log['added_at'] ?></td>
+								<td width="150px" style="padding-bottom: 2px; padding-top: 2px;"><?= htmlspecialchars( $login_log['teacher_id'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td width="300px" style="padding-bottom: 2px; padding-top: 2px;"><?= htmlspecialchars( $login_log['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td width="300px" style="padding-bottom: 2px; padding-top: 2px;"><?= htmlspecialchars( $login_log['added_at'], ENT_QUOTES, 'UTF-8') ?></td>
 								</tr>
 								<?php } ?>
 							</table>

@@ -400,13 +400,13 @@
 			/* 問題に所属する受講者情報の取得 */
 			<?php if( isset($exam['exam_students']) ) {
 				foreach( $exam['exam_students'] as $lecture) { ?>
-					students_checked[<?=$lecture; ?>] = true;
+					students_checked[<?= htmlspecialchars( $lecture, ENT_QUOTES, 'UTF-8') ?>] = true;
 			<?php } } ?>
 			
 			/* 講座に所属する受講者・設問の表示（初期表示） */
 			<?php $cource_id_list = implode('-', $exam['exam_lectures']); ?>
-			//ajax_search_cource_students("<?= $cource_id_list; ?>");
-			ajax_search_cource_exam_problems("<?= $cource_id_list; ?>");
+			//ajax_search_cource_students("<?= htmlspecialchars( $cource_id_list, ENT_QUOTES, 'UTF-8') ?>");
+			ajax_search_cource_exam_problems("<?= htmlspecialchars( $cource_id_list, ENT_QUOTES, 'UTF-8') ?>");
 			
 			/* チェックボックスと全選択ボタン連動（受講者） */
 			$('#student_list').click(function (){
@@ -1176,7 +1176,7 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="exam_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="exam_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($exam['exam_lectures']) ) {
 														foreach( $exam['exam_lectures'] as $lecture) { 
@@ -1190,7 +1190,7 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -1312,21 +1312,21 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 													<?php foreach( $exam_problems_list as $exam_problem ): ?>
 														<?php if($exam_problem['exam_problem_id'] == $exam_problem_id): ?>
 															<li>
-																<input type="hidden" name="exam_problems[]" value=<?=$exam_problem['exam_problem_id']?> />
+																<input type="hidden" name="exam_problems[]" value=<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?> />
 																<div class="problem_name">
 																
 																<? if( getenv('URL_SERVICE')=='mitemo' ): ?>
-																	[No<?=$exam_problem['exam_problem_id']?>] <?=$exam_problem['exam_problem_name']?> [<?= $this->lang->line_or_def('common_exam_answer_points','解答配点') ?>:<?=$exam_problem['answer_point']?>]
+																	[No<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?>] <?= htmlspecialchars( $exam_problem['exam_problem_name'], ENT_QUOTES, 'UTF-8') ?> [<?= $this->lang->line_or_def('common_exam_answer_points','解答配点') ?>:<?= htmlspecialchars( $exam_problem['answer_point'], ENT_QUOTES, 'UTF-8') ?>]
 																<? else: ?>
-																	[No<?=$exam_problem['exam_problem_id']?>] <?=$exam_problem['exam_problem_name']?> [<?= $this->lang->line_or_def('common_management_teacher','管理講師') ?>:<?=$exam_problem['teacher_name']?>] [<?= $this->lang->line_or_def('common_exam_answer_points','解答配点') ?>:<?=$exam_problem['answer_point']?>]
+																	[No<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?>] <?= htmlspecialchars( $exam_problem['exam_problem_name'], ENT_QUOTES, 'UTF-8') ?> [<?= $this->lang->line_or_def('common_management_teacher','管理講師') ?>:<?= htmlspecialchars( $exam_problem['teacher_name'], ENT_QUOTES, 'UTF-8') ?>] [<?= $this->lang->line_or_def('common_exam_answer_points','解答配点') ?>:<?= htmlspecialchars( $exam_problem['answer_point'], ENT_QUOTES, 'UTF-8') ?>]
 																<? endif; ?>
 																
 																</div>
 																<div class="problem_preview_link">
-																	<input class="preview_button" type="button" value="<?= $this->lang->line_or_def('common_preview','プレビュー') ?>" onclick="" data-epid="<?=$exam_problem['exam_problem_id']?>" />
+																	<input class="preview_button" type="button" value="<?= $this->lang->line_or_def('common_preview','プレビュー') ?>" onclick="" data-epid="<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?>" />
 																</div>
 																<div class="problem_del_link">
-																	<input class="delete_button" type="button" value="<?= $this->lang->line_or_def('common_deletion','削除') ?>" onclick="" data-epid="<?=$exam_problem['exam_problem_id']?>" />
+																	<input class="delete_button" type="button" value="<?= $this->lang->line_or_def('common_deletion','削除') ?>" onclick="" data-epid="<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?>" />
 																</div>
 																<div style="clear:both;"></div>
 															</li>

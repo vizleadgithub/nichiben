@@ -70,8 +70,8 @@
 							<?php foreach($school_list as $school) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td class="tdc"><a href="/cms_school_manage/detail/<?= $school['school_id'] ?>"><?=$school['school_id']?></td>
-									<td class="tdc"><?=$school['school_name']?></td>
+									<td class="tdc"><a href="/cms_school_manage/detail/<?= htmlspecialchars( $school['school_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $school['school_id'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td class="tdc"><?= htmlspecialchars( $school['school_name'], ENT_QUOTES, 'UTF-8') ?></td>
 									<td class="tdc">
 									<!--<?= $school['contract'] ?>-->
 

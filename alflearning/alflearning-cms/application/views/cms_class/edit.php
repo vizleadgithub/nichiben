@@ -158,11 +158,11 @@
 			// [2012/11/30]講座所属の受講生情報の取得
 			<?php if( isset($class['lecture_students']) ) {
 				foreach( $class['lecture_students'] as $lecture) { ?>
-					students_checked[<?=$lecture; ?>] = true;
+					students_checked[<?= htmlspecialchars( $lecture, ENT_QUOTES, 'UTF-8') ?>] = true;
 			<?php } } ?>
 
 			// [2012/11/30]講座所属の受講者の表示（初期表示）
-			ajax_search_cource_students(<?= $class['cource_id']; ?>);
+			ajax_search_cource_students(<?= htmlspecialchars( $class['cource_id'], ENT_QUOTES, 'UTF-8') ?>);
 
 			// [2012/11/30]講座名変更時の処理
 			$("*[name=cource_id]").change(function() {
@@ -431,7 +431,7 @@
 										&nbsp;<lavel id="teacher_change_message" style="color:#00A4E2;"><?= $this->lang->line_or_def('msg_different_teacher','別の講師が選択されています') ?></label>
 									<? else: ?>
 										<input type="hidden" name="teacher_id" value='<?=set_value('teacher_id',$class['teacher_id'])?>'>
-										<?= $class['teacher_name']; ?>
+										<?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 									<? endif; ?>
 								<? endif; ?>
 							</td>

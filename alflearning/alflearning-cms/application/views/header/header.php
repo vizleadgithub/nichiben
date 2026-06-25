@@ -103,7 +103,7 @@
 		);
 	?>
 	<?php if(isset($callview)): ?>
-		<title><?=$title_box[$callview]?></title>
+		<title><?= htmlspecialchars( $title_box[$callview], ENT_QUOTES, 'UTF-8') ?></title>
 	<?php endif; ?>
 	<?php if(!isset($callview)): ?>
 		<title><?=$this->lang->line_or_def('common_title_default','アルフラーニング') ?></title>

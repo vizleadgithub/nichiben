@@ -300,7 +300,7 @@ function searchButton(formAct){
 	</tr>
 	<!--{foreach from=$arr_bar_association item=val}-->
 		<tr>
-			<td colspan="2" class="bar_association_title"><!--{$val.name}--></td>
+			<td colspan="2" class="bar_association_title"><!--{$val.name|escape}--></td>
 		</tr>
 		<!--{foreach from=$val.branch_info item=branch}-->
 		<!--{assign var=branch_id value=$branch.id}-->
@@ -315,13 +315,13 @@ function searchButton(formAct){
 		<!--{if ($arr_input.$capacity!="" && $arr_input.$hall!="" && $arr_input.$receptionist_start_date!="" && $arr_input.$receptionist_end_date!="" && $arr_input.$dates!="" && $arr_input.$web_flg!="") || $arr_input.$web_flg=="2"}-->
 		<tr>
 			<td>
-				<!--{$branch.name}-->
+				<!--{$branch.name|escape}-->
 			</td>
 			<td>
 				定員：<!--{if $arr_input.$capacity==9999}-->制限なし<!--{else}--><!--{$arr_input.$capacity|escape}--><!--{/if}--><br />
 				会場：<!--{$arr_input.$hall|escape}--><br />
 				受付：<!--{$arr_input.$receptionist_start_date|escape}-->&nbsp;～&nbsp;<!--{$arr_input.$receptionist_end_date|escape}--><br />
-				実施日：<!--{$arr_input.$dates}--><br />
+				実施日：<!--{$arr_input.$dates|escape}--><br />
 				<!--{if $nichibenren_flg}-->
 				Web申込：<!--{if $arr_input.$web_flg==='1'}-->WEB申込可(研修を実施する)<!--{/if}--><!--{if $arr_input.$web_flg==='0'}-->WEB申込不可(研修を実施する)<!--{/if}--><!--{if $arr_input.$web_flg==='2'}-->研修を実施しない<!--{/if}--><br />
 				<!--{/if}-->

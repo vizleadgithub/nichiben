@@ -31,7 +31,7 @@
 			//--------------------------------------------------
 			<?php if( isset($exam_problem_group['position_exam_problems']) ) {
 				foreach( $exam_problem_group['position_exam_problems'] as $lecture) { ?>
-					exam_problems_checked[<?=$lecture; ?>] = true;
+					exam_problems_checked[<?= htmlspecialchars( $lecture, ENT_QUOTES, 'UTF-8') ?>] = true;
 			<?php } } ?>
 			//--------------------------------------------------
 			// チェックボックスと全選択ボタン連動（設問）
@@ -120,10 +120,10 @@
 									);
 								}
 								
-								$("#exam_problem_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= $exam_problem_group['exam_problem_all_count']; ?>);
+								$("#exam_problem_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $exam_problem_group['exam_problem_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 								$(".select_all_affiliation.select_exam_problem").css('display','block');
 							}else{
-								$("#exam_problem_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= $exam_problem_group['exam_problem_all_count']; ?>);
+								$("#exam_problem_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $exam_problem_group['exam_problem_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 								$(".select_all_affiliation.select_exam_problem").css('display','none');
 							}
 						}
@@ -246,7 +246,7 @@
 								<input type="button" id="btn_all_exam_problem"    value="一覧" />
 								<div style="float: right; margin-top: 6px; margin-right: 10px;">
 									<label id="exam_problem_count">
-										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= $exam_problem_group['exam_problem_all_count']; ?>
+										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $exam_problem_group['exam_problem_all_count'], ENT_QUOTES, 'UTF-8') ?>
 									</label>
 								</div><div style="clear:both;"></div>
 								<div id="exam_problem_list">

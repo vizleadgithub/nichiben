@@ -71,7 +71,7 @@
 				</div>
 
 				<h2><?= $this->lang->line_or_def('msg_video_select','ビデオファイルを選択してください') ?></h2>
-				<form name="video_form" enctype="multipart/form-data" accept-charset="utf-8" method="post" action="<?= $video['upload_url'] ?>" onSubmit="return filename_check()">
+				<form name="video_form" enctype="multipart/form-data" accept-charset="utf-8" method="post" action="<?= htmlspecialchars( $video['upload_url'], ENT_QUOTES, 'UTF-8') ?>" onSubmit="return filename_check()">
 					<div class="error" id="filename_error"></div>
 
 					<table class="form">

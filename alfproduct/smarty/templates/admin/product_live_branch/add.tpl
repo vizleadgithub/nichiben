@@ -22,7 +22,7 @@ function formSubmit(formName, formAction, formAct){
 <!--{if !empty($err_msg)}-->
 <div class="error">
 <!--{foreach from=$err_msg item=msg}-->
-	<!--{$msg}--><br />
+	<!--{$msg|escape}--><br />
 <!--{/foreach}-->
 </div>
 <!--{/if}-->
@@ -293,7 +293,7 @@ function formSubmit(formName, formAction, formAct){
 					定員<span style="color:red;">※</span>：<input type="text" name="<!--{$capacity}-->" value="<!--{$arr_input.$capacity|escape}-->" maxlength="4"/><br />
 					会場<span style="color:red;">※</span>：<input type="text" name="<!--{$hall}-->" value="<!--{$arr_input.$hall|escape}-->" /><br />
 					受付<span style="color:red;">※</span>：<input type="text" name="<!--{$receptionist_start_date}-->" id="<!--{$receptionist_start_date}-->" class="calendar" value="<!--{$arr_input.$receptionist_start_date|escape}-->" style="width:200px;" />～<input type="text" name="<!--{$receptionist_end_date}-->" id="<!--{$receptionist_end_date}-->" class="calendar" value="<!--{$arr_input.$receptionist_end_date|escape}-->" style="width:200px;" /><br />
-					実施日<span style="color:red;">※</span>：<input type="text" name="<!--{$dates}-->" id="<!--{$dates}-->" class="calendar" value="<!--{$arr_input.$dates}-->" /><br />
+					実施日<span style="color:red;">※</span>：<input type="text" name="<!--{$dates}-->" id="<!--{$dates}-->" class="calendar" value="<!--{$arr_input.$dates|escape}-->" /><br />
 					<!--{if $disp_web_flg}-->
 					Web申込<span style="color:red;">※</span>：<label><input type="radio" name="<!--{$web_flg}-->" value="1" <!--{if $arr_input.$web_flg==='1'}-->checked<!--{/if}--> />WEB申込可(研修を実施する)</label><label><input type="radio" name="<!--{$web_flg}-->" value="0" <!--{if $arr_input.$web_flg==='0'}-->checked<!--{/if}--> />WEB申込不可(研修を実施する)</label><label><input type="radio" name="<!--{$web_flg}-->" value="2" <!--{if $arr_input.$web_flg==='2'}-->checked<!--{/if}--> />研修を実施しない</label><br />
 					<!--{/if}-->

@@ -42,7 +42,7 @@
 				<h3 class="error">
 					<?= $this->lang->line_or_def('error_book_library_upload_1','登録は完了しましたが、アップロードでエラーが発生しました。') ?>
 				</h3>
-				<?=$upload_error?>
+				<?= htmlspecialchars( $upload_error, ENT_QUOTES, 'UTF-8') ?>
 				<h3 class="error">
 					<?= $this->lang->line_or_def('error_book_library_upload_2','該当資料を削除後、再度新規登録をしてください。') ?>
 				</h3>

@@ -105,19 +105,19 @@
 			
 			function delete_item(msg){
 				if(window.confirm( msg )){
-					location.href = "delete.php?iid=<!--{$iid}-->";
+					location.href = "delete.php?iid=<!--{$iid|escape}-->";
 				}
 			}
 			function edit_item(){
-				location.href ="edit.php?iid=<!--{$iid}-->";
+				location.href ="edit.php?iid=<!--{$iid|escape}-->";
 			}
 			function status_item(){
-				location.href ="status.php?iid=<!--{$iid}-->";
+				location.href ="status.php?iid=<!--{$iid|escape}-->";
 			}
 		</script>
 		<form>
 		<div style="width:45%;float:left;text-align:right;">
-			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
+			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
 		</div>
 		<div style="width:10%;float:left;text-align:center;">&nbsp;
 			<!--{*<a href="javascript:void(0);" onclick="edit_item();return false;" /><img src="/alfproduct/images/btn_revise2.png"></a>*}-->
@@ -136,19 +136,19 @@
 			
 			function delete_item(msg){
 				if(window.confirm( msg )){
-					location.href = "delete.php?iid=<!--{$mid}-->";
+					location.href = "delete.php?iid=<!--{$mid|escape}-->";
 				}
 			}
 			
 			function edit_item(){
-				location.href ="edit.php?iid=<!--{$iid}-->";
+				location.href ="edit.php?iid=<!--{$iid|escape}-->";
 			}
 			function status_item(){
-				location.href ="status.php?iid=<!--{$iid}-->";
+				location.href ="status.php?iid=<!--{$iid|escape}-->";
 			}
 		</script>
 		<form>
-			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
+			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
 		</form>
 		<!--{/if}-->
 	</div>

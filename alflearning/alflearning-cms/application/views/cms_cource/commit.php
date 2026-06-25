@@ -31,7 +31,7 @@
 				<h2><?= $this->lang->line_or_def('msg_course_commit','講座情報更新') ?></h2>
 
 				<?php if( strstr($message, 'OK') == false ): ?>
-					<div class="error"><?= $message; ?></div>
+					<div class="error"><?= htmlspecialchars( $message, ENT_QUOTES, 'UTF-8') ?></div>
 				<?php endif; ?>
 
 				<h3><?= $this->lang->line_or_def('msg_commit_detail','正常に完了しました。') ?></h3>

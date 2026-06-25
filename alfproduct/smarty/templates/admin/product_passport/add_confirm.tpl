@@ -43,7 +43,7 @@ function searchButton(formAct){
 		<td>
 			<!--{if $arr_input.passport_target != ""}-->
 			<!--{foreach from=$arr_input.passport_target item="val"}-->
-				・<!--{$arr_passport_target.$val}--><br />
+				・<!--{$arr_passport_target.$val|escape}--><br />
 			<!--{/foreach}-->
 			<!--{/if}-->
 		</td>

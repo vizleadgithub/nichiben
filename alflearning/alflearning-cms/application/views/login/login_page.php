@@ -31,7 +31,7 @@
 					<?=validation_errors('<div class="error">', '</div>') ?>
 				<? endif; ?>
 				<? if(isset($error_msg) && $error_msg!=""): ?>
-					<div class="error"><?=$error_msg?></div>
+					<div class="error"><?= htmlspecialchars( $error_msg, ENT_QUOTES, 'UTF-8') ?></div>
 				<? endif; ?>
 				<form action="/login_page/login?backurl=<?= ($this->input->get('backurl') ? urlencode($this->input->get('backurl')) : '/'); ?>" name="form1" method="post">
 					<table class="form">
@@ -49,7 +49,7 @@
 								<td align = "left">
 									<select name="school_select">
 										<? foreach($enableSchools as $enableSchool): ?>
-											<option value="<?= $enableSchool->school_id; ?>"><?= $enableSchool->school_name; ?></option>
+											<option value="<?= htmlspecialchars( $enableSchool->school_id, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $enableSchool->school_name, ENT_QUOTES, 'UTF-8') ?></option>
 										<? endforeach; ?>
 									</select>
 								</td>

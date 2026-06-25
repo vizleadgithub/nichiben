@@ -199,9 +199,9 @@
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_id}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_name}--></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_name|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.start_date}-->～<!--{$row.end_date}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="search_product_ranking_set.php?rank_i=<!--{$rank_i}-->&pid=<!--{$row.product_id}-->&pname=<!--{$row.product_name}-->">この商品を設定する</a></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="search_product_ranking_set.php?rank_i=<!--{$rank_i}-->&pid=<!--{$row.product_id}-->&pname=<!--{$row.product_name|escape}-->">この商品を設定する</a></td>
 	</tr>
 	<!--{/foreach}-->
 	<tr>

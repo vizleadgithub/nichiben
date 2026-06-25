@@ -56,9 +56,9 @@ TABLE.list TH.list_common{
 				<div class="toolbar clearfix"></div>
 				
 				<?=form_open("cms_class_material/class_material_confirm")?>
-					<input type=hidden name=class_id value='<?= $class_id ?>'>
-					<h3><?= str_replace("class_name", $class_list[0]['class_name'], 
-						 $this->lang->line_or_def('msg_class_material_del_title','授業名『class_name』に登録されている資料') ); ?></h3>
+					<input type=hidden name=class_id value='<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>'>
+					<h3><?= htmlspecialchars( str_replace("class_name", $class_list[0]['class_name'],
+						 $this->lang->line_or_def('msg_class_material_del_title','授業名『class_name』に登録されている資料') ), ENT_QUOTES, 'UTF-8') ?></h3>
 					<table class="list" style="width: 773px;"> <!--775px;-->
 						<tr>
 							<th colspan=7 class="list_common">
@@ -92,7 +92,7 @@ TABLE.list TH.list_common{
 									<?php foreach($class_material_list as $class_material) { ?>
 										<tr style="height: 66px;">
 											<td class="center_middle">
-												<input type="button" onClick="location.href='/cms_class_material/download_file/<?= $class_material['class_material_id'] ?>/<?= $class_id ?>';;return false;" value="<?= $this->lang->line_or_def('common_download_abbreviation','DL') ?>" class="btn_r">
+												<input type="button" onClick="location.href='/cms_class_material/download_file/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>';;return false;" value="<?= $this->lang->line_or_def('common_download_abbreviation','DL') ?>" class="btn_r">
 											</td>
 										</tr>
 									<?php } ?>
@@ -102,16 +102,16 @@ TABLE.list TH.list_common{
 									<?php foreach($class_material_list as $class_material) { ?>
 										<tr style="height: 66px;">
 											<td style="vertical-align: middle;width: 64px;text-align: center;">
-												<input type="checkbox" name="delete_check[]" value=<?=$class_material['class_material_id']?> 
+												<input type="checkbox" name="delete_check[]" value=<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php if( in_array($class_material['class_material_id'], $delete_checked) ){ ?>
 													<?= 'checked' ?>
 													<?php } ?>>
 											</td>
 											<td style="vertical-align: middle;width: 127px;">
-												<img class="img_thumbnail" src="/file_container/get_class_material_thubmnail/<?=$class_id?>/<?=$class_material['teacher_id']?>/<?=$class_material['student_id']?>/<?=$class_material['class_material_id']?>/" alt="" />
+												<img class="img_thumbnail" src="/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" />
 											</td>
 											<td style="vertical-align: middle;width: 64px;">
-												<?=$class_material['class_material_id']?>
+												<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>
 											</td>
 											<td style="vertical-align: middle;width: 70px;">
 												<?php if($class_material['teacher_id'] == -1){ ?>
@@ -134,7 +134,7 @@ TABLE.list TH.list_common{
 												<?php } ?>
 											</td>
 											<td style="vertical-align: middle;width: 291px;word-wrap:break-word;"> <!--width: 310px;-->
-												<?=$class_material['material_logic_name']?>
+												<?= htmlspecialchars( $class_material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?>
 											</td>
 										</tr>
 									<?php } ?>
@@ -145,8 +145,8 @@ TABLE.list TH.list_common{
 						<?php } ?>
 					</div>
 
-					<h3><?= str_replace("class_name", $class_list[0]['class_name'], 
-						 $this->lang->line_or_def('msg_class_material_add_title','授業名『class_name』に登録できる資料') ); ?></h3>
+					<h3><?= htmlspecialchars( str_replace("class_name", $class_list[0]['class_name'],
+						 $this->lang->line_or_def('msg_class_material_add_title','授業名『class_name』に登録できる資料') ), ENT_QUOTES, 'UTF-8') ?></h3>
 					<table class="list" style="width: 773px;"><!--width: 775px;-->
 						<tr>
 							<th colspan=6 class="list_common">
@@ -177,7 +177,7 @@ TABLE.list TH.list_common{
 									<?php foreach($material_list as $material) { ?>
 										<tr style="height: 66px;">
 											<td class="center_middle">
-												<input type="button" onClick="window.open('/cms_material/detail/<?= $material['material_id']; ?>')" value="<?= $this->lang->line_or_def('common_detail','詳細') ?>" class='btn_r'>
+												<input type="button" onClick="window.open('/cms_material/detail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>')" value="<?= $this->lang->line_or_def('common_detail','詳細') ?>" class='btn_r'>
 											</td>
 										</tr>
 									<?php } ?>
@@ -187,22 +187,22 @@ TABLE.list TH.list_common{
 									<?php foreach($material_list as $material) { ?>
 										<tr style="height: 66px;">
 											<td style="vertical-align: middle;width: 82px;text-align: center;">
-												<input type="checkbox" name="insert_check[]" value=<?=$material['material_id']?> 
+												<input type="checkbox" name="insert_check[]" value=<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php if( in_array($material['material_id'], $insert_checked) ){ ?>
 													<?= 'checked' ?>
 													<?php } ?>>
 											</td>
 											<td style="vertical-align: middle;width: 113px;">
-												<img class="img_thumbnail" src="/file_container/get_material_thubmnail/<?=$material['material_id']?>/" alt="" />
+												<img class="img_thumbnail" src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" />
 											</td>
 											<td style="vertical-align: middle;width: 82px;">
-												<?=$material['material_id']?>
+												<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>
 											</td>
 											<td style="vertical-align: middle;width: 268px; > <!--width: 271px; "-->
-												<?=$material['material_logic_name']?>
+												<?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?>
 											</td>
 											<td style="vertical-align: middle;width: 147px;">
-												<?=$material['teacher_name']?>
+												<?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 											</td>
 										</tr>
 									<?php } ?>
@@ -214,9 +214,9 @@ TABLE.list TH.list_common{
 					</div>
 
 				<div class="submit">
-					<input type="image" src="/static/image/btn_back.png" onClick='location.href = "/cms_class/detail/<?= $class_id ?>";return false;' />
+					<input type="image" src="/static/image/btn_back.png" onClick='location.href = "/cms_class/detail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>";return false;' />
 					<input type="image" src="/static/image/btn_register.png" />
-					<input type="button" onClick="location.href='/cms_class_material/add_material/<?= $class_id ?>';;return false;" value="資料新規追加" class="btn_r">
+					<input type="button" onClick="location.href='/cms_class_material/add_material/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>';;return false;" value="資料新規追加" class="btn_r">
 				</div>
 			</form>
 			

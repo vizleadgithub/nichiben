@@ -532,7 +532,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="exam2_problem_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="exam2_problem_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($exam2_problem['exam2_problem_lectures']) ) {
 														foreach( $exam2_problem['exam2_problem_lectures'] as $lecture) { 
@@ -546,7 +546,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -599,7 +599,7 @@
 									<ul id="answer_contents_choice_area">
 										
 										<?php foreach($exam2_problem['answer_contents_no'] as $ino => $answer_contents_no): ?>
-											<li id="li_answer_contents_no_<?=$answer_contents_no;?>">
+											<li id="li_answer_contents_no_<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>">
 												<input type="hidden" name="answer_contents_no[]" value='<?=set_value('answer_contents_no[]', $exam2_problem['answer_contents_no'][$ino])?>' />
 												<div class="div_word">
 													<textarea name="answer_contents_word[]" class="answer_contents_word"><?=set_value('answer_contents_word[]',$exam2_problem['answer_contents_word'][$ino])?></textarea>
@@ -607,14 +607,14 @@
 												
 												<div class="div_correct">
 													<?php if($exam2_problem['answer_contents_correct'][$ino] == 1): ?>
-														<input type="hidden" value="<?= $answer_contents_no; ?>" name="answer_contents_correct[]">
+														<input type="hidden" value="<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>" name="answer_contents_correct[]">
 													<?php else: ?>
-														<input type="hidden" value="<?= $answer_contents_no; ?>" name="answer_contents_correct[]" >
+														<input type="hidden" value="<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>" name="answer_contents_correct[]" >
 													<?php endif; ?>
 													<!--<?= $this->lang->line_or_def('msg_correct_answer_is_check','正解はチェック') ?>-->
 													
 												</div>
-												<input class="<?= ($ino == 0) ? 'delete_answer_contents_hidden' : 'delete_answer_contents'; ?>" type="button" onclick="delete_answer_contents(<?= $answer_contents_no; ?>);return false;" value="<?= $this->lang->line_or_def('common_deletion','削除') ?>" >
+												<input class="<?= ($ino == 0) ? 'delete_answer_contents_hidden' : 'delete_answer_contents'; ?>" type="button" onclick="delete_answer_contents(<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>);return false;" value="<?= $this->lang->line_or_def('common_deletion','削除') ?>" >
 												<div style="clear:both;"></div>
 											</li>
 										<?php endforeach; ?>

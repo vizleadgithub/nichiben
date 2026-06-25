@@ -19,7 +19,7 @@
 		<tr>
 			<th>フリーワード</th>
 			<td>
-				<input type="text" name="search_keyword" size="45" value="<!--{$search_keyword}-->">
+				<input type="text" name="search_keyword" size="45" value="<!--{$search_keyword|escape}-->">
 			</td>
 		</tr>
 		<tr>
@@ -35,7 +35,7 @@
 		<tr>
 			<th>登録番号</th>
 			<td>
-				<input type="text" name="search_lawyer_number" size="45" value="<!--{$search_lawyer_number}-->">
+				<input type="text" name="search_lawyer_number" size="45" value="<!--{$search_lawyer_number|escape}-->">
 			</td>
 		</tr>
 	</table>

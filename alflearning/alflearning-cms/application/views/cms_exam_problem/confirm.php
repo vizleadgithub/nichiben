@@ -100,7 +100,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam_problem_name','設問名') ?></th>
 							<td>
-								<?=$exam_problem['exam_problem_name']; ?>
+								<?= htmlspecialchars( $exam_problem['exam_problem_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 
@@ -108,7 +108,7 @@
 						<? if( getenv('URL_SERVICE')!='mitemo' ): ?>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
-							<td ><?= $exam_problem['teacher_name']; ?>
+							<td ><?= htmlspecialchars( $exam_problem['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<? endif; ?>
@@ -124,7 +124,7 @@
 											if($flg){	?>
 												,
 											<?php } ?>
-											<?=$name?>
+											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8') ?>
 										<?php
 											$flg = TRUE;
 										}
@@ -144,7 +144,7 @@
 											if($flg){	?>
 												,
 											<?php } ?>
-											<?=$exam_problem_groups_dropdown[$id]?>
+											<?= htmlspecialchars( $exam_problem_groups_dropdown[$id], ENT_QUOTES, 'UTF-8') ?>
 										<?php
 											$flg = TRUE;
 										}
@@ -170,18 +170,18 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_problem_contents','設問内容') ?></th>
 							<?php if($exam_problem['problem_kind'] == 1): ?>
-								<td style="word-break: break-all;"><?= nl2br($exam_problem['problem_contents_text']); ?></td>
+								<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam_problem['problem_contents_text'], ENT_QUOTES, 'UTF-8') ) ?></td>
 							<?php elseif($exam_problem['problem_kind'] == 2): ?>
-								<td><?=$exam_problem['problem_contents_video_name']; ?></td>
+								<td><?= htmlspecialchars( $exam_problem['problem_contents_video_name'], ENT_QUOTES, 'UTF-8') ?></td>
 							<?php elseif($exam_problem['problem_kind'] == 3): ?>
-								<td><?=$exam_problem['problem_contents_book_library_name']; ?></td>
+								<td><?= htmlspecialchars( $exam_problem['problem_contents_book_library_name'], ENT_QUOTES, 'UTF-8') ?></td>
 							<?php else: ?>
 								<td></td>
 							<?php endif; ?>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_problem_note','設問備考') ?></th>
-								<td style="word-break: break-all;"><?= nl2br($exam_problem['problem_note']); ?></td>
+								<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam_problem['problem_note'], ENT_QUOTES, 'UTF-8') ) ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_answer_kind','解答種類') ?></th>
@@ -207,7 +207,7 @@
 										<?php foreach($exam_problem['answer_contents_no'] as $ino => $answer_contents_no): ?>
 											<li>
 												<div class="div_word">
-													<?= nl2br($exam_problem['answer_contents_word'][$ino]); ?>
+													<?= nl2br( htmlspecialchars( $exam_problem['answer_contents_word'][$ino], ENT_QUOTES, 'UTF-8') ) ?>
 												</div>
 												<div class="div_correct">
 													<?php if($exam_problem['answer_contents_correct'][$ino] == 1): ?>
@@ -222,7 +222,7 @@
 									</ul>
 								</td>
 							<?php elseif($exam_problem['answer_kind'] == 3): ?>
-								<td style="word-break: break-all;"><?= nl2br($exam_problem['answer_contents_text']); ?></td>
+								<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam_problem['answer_contents_text'], ENT_QUOTES, 'UTF-8') ) ?></td>
 							<?php else: ?>
 								<td></td>
 							<?php endif; ?>
@@ -255,18 +255,18 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') ?></th>
 							<?php if($exam_problem['answer_explain_kind'] == 1): ?>
-								<td style="word-break: break-all;"><?= nl2br($exam_problem['answer_explain_contents_text']); ?></td>
+								<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam_problem['answer_explain_contents_text'], ENT_QUOTES, 'UTF-8') ) ?></td>
 							<?php elseif($exam_problem['answer_explain_kind'] == 2): ?>
-								<td><?=$exam_problem['answer_explain_contents_video_name']; ?></td>
+								<td><?= htmlspecialchars( $exam_problem['answer_explain_contents_video_name'], ENT_QUOTES, 'UTF-8') ?></td>
 							<?php elseif($exam_problem['answer_explain_kind'] == 3): ?>
-								<td><?=$exam_problem['answer_explain_contents_book_library_name']; ?></td>
+								<td><?= htmlspecialchars( $exam_problem['answer_explain_contents_book_library_name'], ENT_QUOTES, 'UTF-8') ?></td>
 							<?php else: ?>
 								<td></td>
 							<?php endif; ?>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_answer_explain_note','解答解説備考') ?></th>
-								<td style="word-break: break-all;"><?= nl2br($exam_problem['answer_explain_note']); ?></td>
+								<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam_problem['answer_explain_note'], ENT_QUOTES, 'UTF-8') ) ?></td>
 						</tr>
 						<?php endif; ?>
 						

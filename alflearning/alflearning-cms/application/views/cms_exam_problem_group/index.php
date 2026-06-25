@@ -78,8 +78,8 @@
 							<?php foreach($exam_problem_group_list as $exam_problem_group) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam_problem_group/detail/<?= $exam_problem_group['exam_problem_group_id']; ?>/"><?=$exam_problem_group['exam_problem_group_id']?></td>
-									<td><?=$exam_problem_group['exam_problem_group_name']?></td>
+									<td><a href="/cms_exam_problem_group/detail/<?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><?= htmlspecialchars( $exam_problem_group['exam_problem_group_name'], ENT_QUOTES, 'UTF-8') ?></td>
 									<td><?=$exam_problem_group['exam_problem_count']?></td>
 								</tr>
 							<?php } ?>

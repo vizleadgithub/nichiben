@@ -60,7 +60,7 @@
 										}
 									}
 								?>
-								<img src="<?= $imgUrl; ?>" width="auto" height="80" border="1">
+								<img src="<?= htmlspecialchars( $imgUrl, ENT_QUOTES, 'UTF-8') ?>" width="auto" height="80" border="1">
 							</td>
 						</tr>
 						<tr>

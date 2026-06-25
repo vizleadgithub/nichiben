@@ -70,14 +70,14 @@
 							<?php foreach($exam2_list as $exam2) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam2/detail/<?= $exam2['exam2_id']; ?>/"><?=$exam2['exam2_id']?></td>
-									<td style="word-wrap:break-word;"><?=$exam2['exam2_name']?></td>
+									<td><a href="/cms_exam2/detail/<?= htmlspecialchars( $exam2['exam2_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam2['exam2_id'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam2['exam2_name'], ENT_QUOTES, 'UTF-8') ?></td>
 <?php if(false){ ?>
 									<td>
 										<?= (getenv('URL_SERVICE')=='mitemo')? "": $exam2['teacher_name']; ?>
 									</td>
 <?php } ?>
-									<td><?=$exam2['disp_status']?></td>
+									<td><?= htmlspecialchars( $exam2['disp_status'], ENT_QUOTES, 'UTF-8') ?></td>
 									<?php if($exam2['public_flag'] == 0){ ?>
 										<td><?= $this->lang->line_or_def('common_public','公開'); ?></td>
 									<?php }elseif($exam2['public_flag'] == 9){ ?>

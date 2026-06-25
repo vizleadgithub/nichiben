@@ -35,7 +35,7 @@
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.video_id}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.video_logic_name}--></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.video_logic_name|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="search_set.php?gid=<!--{$gid|urlencode}-->&id=<!--{$row.video_id|urlencode}-->&name=<!--{$row.video_logic_name|escape|urlencode}-->&comment=<!--{$row.video_caption|urlencode}-->">このコンテンツを登録する</a></td>
 	</tr>
 	<!--{/foreach}-->

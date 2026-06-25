@@ -33,7 +33,7 @@
 				<h2><?= $this->lang->line_or_def('msg_report_month_select','表示する月を選択してください') ?></h2>
 				<ul>
 					<? foreach($monthList as $month): ?>
-						<li><? if($month == $selectMonth): ?><?= $month; ?><? else: ?><a href="/cms_report/cms_video/<?= $month; ?>"><?= $month; ?></a><? endif; ?></li>
+						<li><? if($month == $selectMonth): ?><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?><? else: ?><a href="/cms_report/cms_video/<?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?></a><? endif; ?></li>
 					<? endforeach; ?>
 				</ul>
 				<div class="clear"></div>
@@ -55,7 +55,7 @@
 					//		}
 					//	}
 					?>
-					<h3><?= $this->lang->line_or_def('msg_report_this_month','今月分') ?>&nbsp;<?= date('[Y年m月d日 H時i分s秒更新]', $contractParam['updated_at']); ?></h3>
+					<h3><?= $this->lang->line_or_def('msg_report_this_month','今月分') ?>&nbsp;<?= htmlspecialchars( date('[Y年m月d日 H時i分s秒更新]', $contractParam['updated_at']), ENT_QUOTES, 'UTF-8') ?></h3>
 					<table class="list">
 						<tr>
 							<th width="140">対象</th>
@@ -98,7 +98,7 @@
 					</tr>
 					<? foreach($reports as $date => $report): ?>
 						<tr>
-							<td><?= $date; ?></td>
+							<td><?= htmlspecialchars( $date, ENT_QUOTES, 'UTF-8') ?></td>
 							<td><?= (isset($report['stream']) ? ConvertUnit($report['stream'], 2) : '-'); ?></td>
 							<td><?= (isset($report['strage']) ? ConvertUnit($report['strage'], 2) : '-'); ?></td>
 						</tr>

@@ -66,7 +66,7 @@
 											}
 										}
 									?>
-									<img src="<?= $imgUrl; ?>" height="80" width="80" border="1">
+									<img src="<?= htmlspecialchars( $imgUrl, ENT_QUOTES, 'UTF-8') ?>" height="80" width="80" border="1">
 								</td>
 								<td style="vertical-align:top;">
 									<div class="select_change_or_default">
@@ -98,7 +98,7 @@
 											}
 										}
 									?>
-									<img src="<?= $imgUrl; ?>" height="80" width="80" border="1">
+									<img src="<?= htmlspecialchars( $imgUrl, ENT_QUOTES, 'UTF-8') ?>" height="80" width="80" border="1">
 								</td>
 								<td style="vertical-align:top;">
 									<div class="select_change_or_default">
@@ -130,7 +130,7 @@
 											}
 										}
 									?>
-									<img src="<?= $imgUrl; ?>" height="80" width="80" border="1">
+									<img src="<?= htmlspecialchars( $imgUrl, ENT_QUOTES, 'UTF-8') ?>" height="80" width="80" border="1">
 								</td>
 								<td style="vertical-align:top;">
 									<div class="select_change_or_default">
@@ -161,7 +161,7 @@
 										}
 									}
 								?>
-								<img src="<?= $imgUrl; ?>" height="80" width="80" border="1">
+								<img src="<?= htmlspecialchars( $imgUrl, ENT_QUOTES, 'UTF-8') ?>" height="80" width="80" border="1">
 							</td>
 							<td style="vertical-align:top;">
 								<div class="select_change_or_default">
@@ -192,7 +192,7 @@
 											}
 										}
 									?>
-									<img src="<?= $imgUrl; ?>" height="80" width="80" border="1">
+									<img src="<?= htmlspecialchars( $imgUrl, ENT_QUOTES, 'UTF-8') ?>" height="80" width="80" border="1">
 								</td>
 								<td style="vertical-align:top;">
 									<div class="select_change_or_default">
@@ -224,7 +224,7 @@
 											}
 										}
 									?>
-									<img src="<?= $imgUrl; ?>" height="80" width="80" border="1">
+									<img src="<?= htmlspecialchars( $imgUrl, ENT_QUOTES, 'UTF-8') ?>" height="80" width="80" border="1">
 								</td>
 								<td style="vertical-align:top;">
 									<div class="select_change_or_default">
@@ -255,7 +255,7 @@
 										}
 									}
 								?>
-								<img src="<?= $imgUrl; ?>" height="80" width="80" border="1">
+								<img src="<?= htmlspecialchars( $imgUrl, ENT_QUOTES, 'UTF-8') ?>" height="80" width="80" border="1">
 							</td>
 							<td style="vertical-align:top;">
 								<div class="select_change_or_default">

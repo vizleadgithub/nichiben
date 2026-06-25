@@ -4,10 +4,10 @@
 </div>
 
 
-<form action="<!--{$next_url}-->" accept-charset="utf-8" method="post" name="mailmagazine_form">
+<form action="<!--{$next_url|escape}-->" accept-charset="utf-8" method="post" name="mailmagazine_form">
 	<h2>対象会員内容を入力してください</h2>
 	<!--{foreach from=$arr_err item="err"}-->
-	<div class="error"><!--{$err}--></div>
+	<div class="error"><!--{$err|escape}--></div>
 	<!--{/foreach}-->
 	<table class="form">
 		<!--{if $mid!=""}-->
@@ -40,7 +40,7 @@
 				<select name="bar_association_id">
 					<option value="">----</option>
 				<!--{foreach from=$arr_bar_association item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$bar_association_id}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->"<!--{if $row.id==$bar_association_id}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>

@@ -83,18 +83,18 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_title','タイトル') ?></th>
 							<td>
-								<?=$information['information_title']?>
+								<?= htmlspecialchars( $information['information_title'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td><?= nl2br($information['information_caption']); ?>
+							<td><?= nl2br( htmlspecialchars( $information['information_caption'], ENT_QUOTES, 'UTF-8') ) ?>
 							</td>
 						</tr>
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_url','URL') ?></th>
 							<td>
-								<?=$information['information_url']?>
+								<?= htmlspecialchars( $information['information_url'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>

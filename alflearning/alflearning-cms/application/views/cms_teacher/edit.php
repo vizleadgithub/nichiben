@@ -204,7 +204,7 @@
 												$val .= "";
 											}
 										?>
-										<option value="<?= $index ?>" <?= $select_option; ?>><?= $val ?></option>
+										<option value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" <?= htmlspecialchars( $select_option, ENT_QUOTES, 'UTF-8') ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8') ?></option>
 									<?php endforeach; ?>
 								</select>
 							</td>

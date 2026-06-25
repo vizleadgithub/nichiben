@@ -60,14 +60,14 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_name','名前') ?></th>
 							<td>
-								<?=$teacher['teacher_name']?>
+								<?= htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 								<input type="hidden" name="teacher_name" size="45" value="<?=set_value('teacher_name',$teacher['teacher_name'])?>">
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?></th>
 							<td>
-								<?=$teacher['teacher_email']?>
+								<?= htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8') ?>
 								<input type="hidden" name="teacher_email" size="45" value="<?=set_value('teacher_email',$teacher['teacher_email'])?>">
 							</td>
 						</tr>

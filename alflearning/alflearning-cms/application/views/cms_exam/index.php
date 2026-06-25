@@ -70,14 +70,14 @@
 							<?php foreach($exam_list as $exam) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam/detail/<?= $exam['exam_id']; ?>/"><?=$exam['exam_id']?></td>
-									<td style="word-wrap:break-word;"><?=$exam['exam_name']?></td>
+									<td><a href="/cms_exam/detail/<?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam['exam_name'], ENT_QUOTES, 'UTF-8') ?></td>
 <?php if(false){ ?>
 									<td>
 										<?= (getenv('URL_SERVICE')=='mitemo')? "": $exam['teacher_name']; ?>
 									</td>
 <?php } ?>
-									<td><?=$exam['disp_status']?></td>
+									<td><?= htmlspecialchars( $exam['disp_status'], ENT_QUOTES, 'UTF-8') ?></td>
 									<?php if($exam['public_flag'] == 0){ ?>
 										<td><?= $this->lang->line_or_def('common_public','公開'); ?></td>
 									<?php }elseif($exam['public_flag'] == 9){ ?>

@@ -1,4 +1,4 @@
-<h2>検索する内容を入力してください</h2>
+﻿<h2>検索する内容を入力してください</h2>
 
 <form action="#" accept-charset="utf-8" method="post" name="search_form">
 	<table class="form">
@@ -46,9 +46,9 @@
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_id}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_name}--></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_name|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.start_date}-->～<!--{$row.end_date}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="search_set.php?gid=<!--{$gid}-->&id=<!--{$row.product_id}-->&name=<!--{$row.product_name}-->">この商品を設定する</a></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="search_set.php?gid=<!--{$gid}-->&id=<!--{$row.product_id}-->&name=<!--{$row.product_name|escape}-->">この商品を設定する</a></td>
 	</tr>
 	<!--{/foreach}-->
 	<tr>

@@ -68,7 +68,7 @@
 				<?php if($select_tag===''): ?>
 					新着
 				<?php else: ?>
-					<?= $this->lang->line_or_def('common_tag','タグ') ?>&nbsp;:&nbsp;<?= $select_tag ?>
+					<?= $this->lang->line_or_def('common_tag','タグ') ?>&nbsp;:&nbsp;<?= htmlspecialchars( $select_tag, ENT_QUOTES, 'UTF-8') ?>
 				<?php endif; ?>
 			</div>
 		</h1>
@@ -88,7 +88,7 @@
 					?>
 						<li>
 							<h2 style="text-align: left;">
-								[<?=$information['information_id']?>]&nbsp;<?=$information['information_date']?>&nbsp;&nbsp;
+								[<?= htmlspecialchars( $information['information_id'], ENT_QUOTES, 'UTF-8') ?>]&nbsp;<?= htmlspecialchars( $information['information_date'], ENT_QUOTES, 'UTF-8') ?>&nbsp;&nbsp;
 								
 								<?php if( ($information['show_teacher']==1) && ($information['show_student']==1) ): ?>
 									<?= $this->lang->line_or_def('common_information_target','お知らせ対象') ?>&nbsp;:&nbsp;<?= $this->lang->line_or_def('common_teacher','講師') ?>&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_student','受講者') ?>
@@ -98,7 +98,7 @@
 									<?= $this->lang->line_or_def('common_information_target','お知らせ対象') ?>&nbsp;:&nbsp;<?= $this->lang->line_or_def('common_student','受講者') ?>
 								<?php endif; ?>
 								<span style="display: block;float: right;height: 25px;line-height: 25px;">
-									<?=$information['information_open']?><?= $this->lang->line_or_def('common_range','～') ?><?=$information['information_close']?>&nbsp;&nbsp;
+									<?= htmlspecialchars( $information['information_open'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $information['information_close'], ENT_QUOTES, 'UTF-8') ?>&nbsp;&nbsp;
 								</span>
 							</h2>
 							<table id="information_table" style=<?= ($information['school_id']==0) ? "background-color:#D3F5EA;" : ""; ?> >
@@ -108,12 +108,12 @@
 										<?php if($information['school_id']==0): ?>
 											[<?= $this->lang->line_or_def('common_all_school_object','全学校対象') ?>]&nbsp;
 										<?php endif; ?>
-										<?=$information['information_title']?>
+										<?= htmlspecialchars( $information['information_title'], ENT_QUOTES, 'UTF-8') ?>
 									</td>
 								</tr>
 								<tr>
 									<th class="information_title" ><?= $this->lang->line_or_def('common_caption','説明') ?>&nbsp;:&nbsp;</th>
-									<td class="information_detail"><?= nl2br($information['information_caption']); ?></td>
+									<td class="information_detail"><?= nl2br( htmlspecialchars( $information['information_caption'], ENT_QUOTES, 'UTF-8') ) ?></td>
 								</tr>
 								<tr>
 									<th class="information_title" ><?= $this->lang->line_or_def('common_tag','タグ') ?>&nbsp;:&nbsp;</th>
@@ -124,7 +124,7 @@
 											<?php if(empty($information['information_tags'])): ?>
 												<?= $this->lang->line_or_def('common_nothing','なし') ?>
 											<?php else: ?>
-												<?= $information['information_tags']; ?>
+												<?= htmlspecialchars( $information['information_tags'], ENT_QUOTES, 'UTF-8') ?>
 											<?php endif; ?>
 										<?php endif; ?>
 									</td>

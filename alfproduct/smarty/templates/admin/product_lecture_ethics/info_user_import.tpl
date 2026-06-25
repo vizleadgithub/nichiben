@@ -41,7 +41,7 @@ function formSubmit(formName, mode){
 		<tr>
 			<th>研修名</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.product_name}-->
+				<!--{$arr_input_2.product_name|escape}-->
 			</td>
 		</tr>
 	</table>
@@ -53,7 +53,7 @@ function formSubmit(formName, mode){
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
 	<div style="color:red;">
-		<!--{$err_msg}-->
+		<!--{$err_msg|escape}-->
 	</div>
 	<table class="list">
 		<tr>
@@ -96,8 +96,8 @@ function formSubmit(formName, mode){
 		<!--{if is_array($arr_list) && count($arr_list) > 0}-->
 		<!--{foreach from=$arr_list item="row"}-->
 		<tr style="">
-			<td class="tdc" style=""><!--{$row.lawyer_number}--></td>
-			<td class="tdc" style=""><!--{$row.student_name}--></td>
+			<td class="tdc" style=""><!--{$row.lawyer_number|escape}--></td>
+			<td class="tdc" style=""><!--{$row.student_name|escape}--></td>
 			<td class="tdc" style=""><!--{$row.entry_date}--></td>
 			<td class="tdc" style=""><!--{$row.take_date}--></td>
 		</tr>
@@ -110,7 +110,7 @@ function formSubmit(formName, mode){
 
 <!--{if $res_msg != ""}-->
 <div>
-	<!--{$res_msg}-->
+	<!--{$res_msg|escape}-->
 </div>
 <!--{/if}-->
 

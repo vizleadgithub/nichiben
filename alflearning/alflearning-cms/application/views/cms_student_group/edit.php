@@ -20,7 +20,7 @@
 			// グループ所属の受講生情報の取得
 			<?php if( isset($student_group['position_students']) ) {
 				foreach( $student_group['position_students'] as $lecture) { ?>
-					students_checked[<?=$lecture; ?>] = true;
+					students_checked[<?= htmlspecialchars( $lecture, ENT_QUOTES, 'UTF-8') ?>] = true;
 			<?php } } ?>
 
 			// チェックボックスと全選択ボタン連動（受講者）

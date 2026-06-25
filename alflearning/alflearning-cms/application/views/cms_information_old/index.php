@@ -63,17 +63,17 @@
 					<?php if(isset($information_list)) { ?>
 						<?php foreach($information_list as $information) { ?>
 							<tr style=<?= ($information['school_id']==0) ? "background-color:#D3F5EA;" : ""; ?> >
-								<td class="tdc"><a href="/cms_information/detail/<?= $information['information_id'] ?>"><?=$information['information_id']?>
+								<td class="tdc"><a href="/cms_information/detail/<?= htmlspecialchars( $information['information_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $information['information_id'], ENT_QUOTES, 'UTF-8') ?>
 								</td>
-								<td class="tdc"><?=$information['information_date']?></td>
-								<td class="tdc"><?=$information['information_title']?></td>
+								<td class="tdc"><?= htmlspecialchars( $information['information_date'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td class="tdc"><?= htmlspecialchars( $information['information_title'], ENT_QUOTES, 'UTF-8') ?></td>
 								<td class="tdc">
 									<span style="visibility:<?= ($information['show_teacher'] ? 'vilible' : 'hidden'); ?>"><?= $this->lang->line_or_def('common_teacher','講師'); ?></span>
 									&nbsp;
 									<span style="visibility:<?= ($information['show_student'] ? 'vilible' : 'hidden'); ?>"><?= $this->lang->line_or_def('common_student','受講生'); ?></span>
 								</td>
 								<td class="tdc">
-									<?=$information['disp_status']?>&nbsp;<?= ($information['school_id']==0) ? '('.$this->lang->line_or_def('common_all_school','全学校').')' : ""; ?>
+									<?= htmlspecialchars( $information['disp_status'], ENT_QUOTES, 'UTF-8') ?>&nbsp;<?= ($information['school_id']==0) ? '('.$this->lang->line_or_def('common_all_school','全学校').')' : ""; ?>
 								</td>
 							</tr>
 						<?php } ?>
