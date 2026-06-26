@@ -118,19 +118,19 @@ class Elm_api_test extends CI_Controller {
 		$this->load->helper('json');
 
 		$outdata  = '<h4>API URL</h4>';
-		$outdata .= 'API URL&nbsp;:&nbsp;'.$request_url.'<br/>';
+		$outdata .= 'API URL&nbsp;:&nbsp;'.htmlspecialchars($request_url, ENT_QUOTES, 'UTF-8').'<br/>';
 		$outdata .= '<hr>';
 
 		$outdata .= '<h4>リクエストパラメータ</h4>';
 		foreach($request as $key => $value){
-			$outdata .= $key.'&nbsp;:&nbsp;'.$value.'<br/>';
+			$outdata .= htmlspecialchars($key, ENT_QUOTES, 'UTF-8').'&nbsp;:&nbsp;'.htmlspecialchars($value, ENT_QUOTES, 'UTF-8').'<br/>';
 		}
 		$outdata .= '<hr>';
 
 		$outdata .= '<h4>レスポンスパラメータ</h4>';
-		$outdata .= $content.'<br/>';
+		$outdata .= htmlspecialchars($content, ENT_QUOTES, 'UTF-8').'<br/>';
 		$outdata .= '----------<br/>';
-		$outdata .= print_r(obj2arr(json_decode($content)),true ).'<br/>';
+		$outdata .= htmlspecialchars(print_r(obj2arr(json_decode($content)), true), ENT_QUOTES, 'UTF-8').'<br/>';
 		$outdata .= '<hr>';
 
 		$this->output->set_header("HTTP/1.0 200 OK");

@@ -14,7 +14,6 @@ if ($term!='pc' && $term!='sp'){
 
 //$idkey = 'QzPRF8UKr6Fc'; // 動画識別キー(idkey)
 $idkey = 'v9pr5fXtehB3'; // 動画識別キー(idkey)
-print("<!--[".$idkey."]-->");
 $video_logic_name = 'このサイトの使い方（動画）'; // titleタグ用＆動画名
 
 

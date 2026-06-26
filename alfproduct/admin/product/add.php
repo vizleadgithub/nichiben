@@ -1,6 +1,4 @@
 <?php
-print("test");
-exit();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
 $template = new Template();
@@ -32,8 +30,6 @@ $template->assign('page_name', 'product');
 // 初期表示
 if(!isset($_POST['action'])){
 	$product_category_list = get_product_category();
-var_dump($product_category_list);
-exit();
 	$template->assign('productcategory_list', $product_category_list);
 	$template->admin_layout('product/add.tpl');
 	

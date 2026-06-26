@@ -346,7 +346,7 @@ class Curl {
 		echo "=============================================<br/>\n";
 		echo "<h3>Info</h3>";
 		echo "<pre>";
-		print_r($this->info);
+		echo htmlspecialchars(print_r($this->info, true), ENT_QUOTES, 'UTF-8');
 		echo "</pre>";
 	}
 

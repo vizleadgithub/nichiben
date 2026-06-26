@@ -44,11 +44,10 @@ class Bat_cron_student_product_history extends CI_Controller {
 		print("START insert_student_product_history\n");
 		exec('ps auxw | grep insert_student_product_history | grep -v " grep " | grep -v "/bin/sh" ', $outputs);
 		if(count($outputs) > 1){
-			echo var_dump($outputs);
 			echo "前回バッチが起動中でした\n";
 			return;
 		}
-		
+
 		$this->_output_log("START insert_student_product_history");
 
 		$arr_student_list = array();
@@ -544,9 +543,6 @@ class Bat_cron_student_product_history extends CI_Controller {
 						$arr_list[$arr_list_key]["TSUB_reading_date"],
 					)
 				);
-				print("\n=============================\n");
-				var_dump($sql);
-				print("\n=============================\n");
 			}
 			//print("\n=============================\n");
 			//var_dump($arr_list);

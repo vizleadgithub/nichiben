@@ -80,7 +80,6 @@ class Bat_oneoff_import_teacher extends CI_Controller {
 	public function oneoff_import(){
 		exec('ps auxw | grep oneoff_import | grep -v " grep " | grep -v "/bin/sh" ', $outputs);
 		if(count($outputs) > 1){
-			echo var_dump($outputs);
 			echo "前回バッチが起動中でした\n";
 			return;
 		}

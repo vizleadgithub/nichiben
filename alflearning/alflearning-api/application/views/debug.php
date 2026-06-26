@@ -22,15 +22,15 @@
 		<ul>
 			<li>
 				<h2>PATH</h2>
-				<div><?= $_SERVER['REQUEST_URI']; ?></div>
+				<div><?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8'); ?></div>
 			</li>
 			<li>
 				<h2>Query[GET]</h2>
-				<div><?= parseArray($_GET); ?></div>
+				<div><?= htmlspecialchars(parseArray($_GET), ENT_QUOTES, 'UTF-8'); ?></div>
 			</li>
 			<li>
 				<h2>Query[POST]</h2>
-				<div><?= parseArray($_POST); ?></div>
+				<div><?= htmlspecialchars(parseArray($_POST), ENT_QUOTES, 'UTF-8'); ?></div>
 			</li>
 		</ul>
 

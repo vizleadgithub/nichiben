@@ -3,7 +3,6 @@ include(dirname(__FILE__) ."./../../module/module.php");
 
 $objGMOPaymentProtocol = new GMOPaymentProtocol();
 $ret = $objGMOPaymentProtocol->search_member($_SESSION['member_id']);
-var_dump($ret);
 ?>
 <br /><br />カード登録<br /><br />
 

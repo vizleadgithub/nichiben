@@ -51,7 +51,6 @@ class Bat_oneoff_import_tbl_order_update extends CI_Controller {
 	public function oneoff_update(){
 		exec('ps auxw | grep oneoff_update | grep -v " grep " | grep -v "/bin/sh" ', $outputs);
 		if(count($outputs) > 1){
-			echo var_dump($outputs);
 			echo "前回バッチが起動中でした\n";
 			return;
 		}

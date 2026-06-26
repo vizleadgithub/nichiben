@@ -28,7 +28,6 @@ class Bat_goto_streamserver extends CI_Controller {
 		$fp = fopen($fName, 'w');
 		$classLists = array();
 		foreach($query->result_array() as $row){
-			print_r($row);
 			fwrite($fp, $row['class_id']."\n");
 		}
 		fclose($fp);

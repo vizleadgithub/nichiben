@@ -74,7 +74,6 @@ if($err_flg==0 ){
 	if($err_flg==0 ){
 		if( $access_id!="" && $access_pass!="" ){
 			$ret = $objGMOPaymentProtocol->exec_tran_paypal( $access_id, $access_pass, $order_id, $item_name, $etc1, $etc2, $etc3 );
-var_dump($ret);
 			if( isset($ret["ErrCode"]) ){
 				if( $ret["ErrCode"]!="" ){
 					$err_flg = 1;

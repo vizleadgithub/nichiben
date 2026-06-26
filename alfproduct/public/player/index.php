@@ -131,16 +131,6 @@ if ($product_list){
 					$set_btn_flg = false;
 				}
 			}
-print("<!--[student_id:");
-var_dump($user_id);
-print("]-->");
-print("<!--[ret_view_history:");
-var_dump($ret_view_history);
-print("]-->");
-print("<!--[set_btn_flg:");
-var_dump($set_btn_flg);
-print("]-->");
-			
 			// ユーザー情報取得
 			$sql = "SELECT * FROM student WHERE status='0' AND student_id='$user_id'";
 			$user_list = $objDbConnect->query_fetch($sql);

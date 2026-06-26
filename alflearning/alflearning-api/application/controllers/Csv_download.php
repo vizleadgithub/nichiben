@@ -62,22 +62,12 @@ class Csv_download extends CI_Controller {
 			$post_csv_where = $_POST['csv_where'];
 		}
 		// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-		var_dump($post_type);
-		var_dump($post_csv_filename);
-		var_dump($post_csv_where);
-		print("test");
-		//exit();
-
-
-		// ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 		// 出力csvのデータ取得
 		$csv_header = array();
 		$table_data = array();
 		switch ($post_type) {
 			case 'student_list':
 				$table_data = $this->_student_list($post_csv_where);
-var_dump($table_data);
-exit();
 				$csv_header = $this->header_student_list;
 				break;
 			default:

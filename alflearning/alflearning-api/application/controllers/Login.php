@@ -289,10 +289,8 @@ class Login extends CI_Controller {
 //print "〓\n";
 //print var_dump(obj2arr(json_decode(json_encode($output))));
 //print "\n〓\n";
-		if($this->input->post('debug')){
-			$this->load->view('debug', array(
-				'data'	=> $output,
-			));
+		if(false){
+			// デバッグビュー無効化
 		}
 		else{
 			$this->output->set_header("HTTP/1.0 200 OK");

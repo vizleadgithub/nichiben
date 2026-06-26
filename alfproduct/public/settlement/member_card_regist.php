@@ -38,14 +38,10 @@ if ($result1){
 	$arr_id = $objDbConnect->query_fetch($sql);
 	
 	if ($arr_id){
-echo $arr_id['id'];
-echo '<br />';
 		$objDbConnect->tran_begin();
-		
+
 		// カードの有効性チェック
 		$ret1 = $objGMOPaymentProtocol->entry_tran('CHECK'.$arr_id['id'], 1);
-var_dump($ret1);
-echo '<br />';
 		if (isset($ret1["ErrCode"]) || isset($ret1["ErrInfo"])){
 			$err_flg = 1;
 			echo 'カード有効性エラー';
@@ -53,8 +49,6 @@ echo '<br />';
 		} else {
 			// カード情報登録(GMOサーバ)
 			$ret2 = $objGMOPaymentProtocol->save_card($member_id, $card_no, $expire, $fixed_flag, $card_seq, $holder_name, $card_name, $card_pass);
-var_dump($ret2);
-echo '<br />';
 			if (isset($ret2["ErrCode"]) || isset($ret2["ErrInfo"])){
 				$err_flg = 1;
 				echo 'カード情報登録エラー';
