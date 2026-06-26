@@ -112,6 +112,7 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 	<form name="form_payment" method="post" action="#">
 	*}-->
 	<form name="form_payment" method="post" action="/settlement/">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<table style="margin-top:0px;line-height:3em;">
 		<tr>
 			<th class="table_name" style="width:250px;text-align:left;color:#5c9e4b;">注文番号：</th><td class="table_data"><!--{$order_no|escape}--><td>

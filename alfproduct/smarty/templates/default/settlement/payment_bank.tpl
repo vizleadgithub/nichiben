@@ -96,6 +96,7 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 	</div>
 	
 	<form name="form_payment" method="post" action="#">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<input type="hidden" name="mode" value="settlement_exe" />
 	<table>
 		<tr>

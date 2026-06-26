@@ -46,6 +46,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $_SESSION['wp_page_head_title'] = '講座詳細';
 $objDbConnect = new DbConnect();
 $template = new Template();
@@ -1939,6 +1940,7 @@ $GLOBALS['meta_keywords'] = get_product_gategory_meta_keywords($objDbConnect, $p
 
 // Android、iPad、iPhoneのFLG
 $template->assign('is_sp', is_sp());
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout('product/detail.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

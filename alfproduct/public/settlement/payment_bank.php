@@ -5,6 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $objDbConnect = new DbConnect();
 $template = new Template();
 
@@ -352,6 +353,7 @@ $template->assign('expire_m', $expire_m);
 
 $template->assign('cart', $_SESSION["cart"]);
 $template->assign('cart_total_price', $_SESSION["cart_total_price"]);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('settlement/payment_bank.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

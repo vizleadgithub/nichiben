@@ -108,6 +108,7 @@ if( !$arrTemp ) {
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
+	csrf_token_verify();
 	$objGMOPaymentProtocol = new GMOPaymentProtocol();
 	if( $access_id=="" && $access_pass=="" ){
 		$ret = $objGMOPaymentProtocol->entry_tran( $order_id, 2, $price, $tax );
@@ -378,6 +379,7 @@ $template->assign('cart', $_SESSION["cart"]);
 $template->assign('cart_total_price', $_SESSION["cart_total_price"]);
 
 $template->assign('arr_expire_y', $arr_expire_y);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('settlement/payment_card.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

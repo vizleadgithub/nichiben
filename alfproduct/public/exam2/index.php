@@ -167,6 +167,7 @@ $template->assign('arr_list', $arr_list);
 $template->assign('arr_list_q', $arr_list_q);
 $template->assign('answered_list', $answered_list);
 $template->assign('answered_list_q', $answered_list_q);
+$template->assign('csrf_token', csrf_token_get());
 
 // Android、iPad、iPhoneのFLG
 $template->assign('is_sp', is_sp());

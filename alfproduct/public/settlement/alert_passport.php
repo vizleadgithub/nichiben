@@ -5,6 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $_SESSION['wp_page_head_title'] = 'パスポートアラート';
 $template = new Template();
 
@@ -50,6 +51,7 @@ if (isset($_POST['act'])){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $template->assign('passport_pop_flg', $_SESSION['user']['passport_pop_flg']);
+$template->assign('csrf_token', csrf_token_get());
 $template->layout_noside('settlement/alert_passport.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 exit();

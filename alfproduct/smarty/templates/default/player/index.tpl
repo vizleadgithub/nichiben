@@ -1,6 +1,7 @@
 <!--[]-->
 <!--{if $next_contents_flg}-->
 <form name="playerForm" action="/player/index.php?term=<!--{$isSP|escape}-->" method="post">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 	<input type="hidden" name="vid" id="hid_vid" value="<!--{$next_vid|escape}-->" />
 	<input type="hidden" name="vid2" id="hid_vid2" value="<!--{$next_vid2|escape}-->" />

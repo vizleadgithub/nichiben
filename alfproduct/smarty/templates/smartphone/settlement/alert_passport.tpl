@@ -29,6 +29,7 @@
 
 
 <form name="formAlertPassport" action="/settlement/alert_passport.php" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" id="act" name="act" value="" />
 <div id="modal">
 	<div id="heading">

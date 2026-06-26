@@ -42,12 +42,14 @@ width:98% !important;
 
 <!--{* 資料ダウンロードボタン用form *}-->
 <form name="downloadForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" name="pid" value="<!--{$pid}-->" />
 <input type="hidden" name="cdname" id="hid_cdname" value="" />
 <input type="hidden" name="cdname2" id="hid_cdname2" value="" />
 </form>
 <!--{* 一括資料ダウンロードボタン用form *}-->
 <form name="downloadAllForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" name="pid" value="<!--{$pid}-->" />
 </form>
 

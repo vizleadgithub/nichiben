@@ -1,6 +1,7 @@
 <?php
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $objDbConnect = new DbConnect();
 $template = new Template();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -598,6 +599,7 @@ $template->assign('video_logic_name', $video_logic_name);
 $template->assign('video_popup', $video_popup);
 
 $template->assign('isSP', $term);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_alfstream('player/index.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

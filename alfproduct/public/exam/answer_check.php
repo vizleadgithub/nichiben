@@ -45,6 +45,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $_SESSION['wp_page_head_title'] = 'テスト';
 $objDbConnect = new DbConnect();
 $template = new Template();
@@ -208,9 +209,11 @@ if( count($_POST["exam_problem_id"] ?? [])==0 ){
 				$html_message.= '<br>'."";
 			}
 			
-			$formhtml_message = '<form id="form_regist_answer" name="form_regist_answer" method="post" action="/exam/answer_save.php?eid='.$eid.'&pid='.$pid.'&ccno='.$ccno.'&qid='.$qid.'">'."".$formhtml_message."".'</form>';
+			$csrf_next = csrf_token_get();
+			$formhtml_message = '<form id="form_regist_answer" name="form_regist_answer" method="post" action="/exam/answer_save.php?eid='.$eid.'&pid='.$pid.'&ccno='.$ccno.'&qid='.$qid.'">'."".'<input type="hidden" name="csrf_token" value="'.htmlspecialchars($csrf_next, ENT_QUOTES, 'UTF-8').'">'.$formhtml_message."".'</form>';
 		} else {
-			$formhtml_message = '<form id="form_regist_answer" name="form_regist_answer" method="post" action="/exam/answer_save.php?eid='.$eid.'&pid='.$pid.'&ccno='.$ccno.'">'."".$formhtml_message."".'</form>';
+			$csrf_next = csrf_token_get();
+			$formhtml_message = '<form id="form_regist_answer" name="form_regist_answer" method="post" action="/exam/answer_save.php?eid='.$eid.'&pid='.$pid.'&ccno='.$ccno.'">'."".'<input type="hidden" name="csrf_token" value="'.htmlspecialchars($csrf_next, ENT_QUOTES, 'UTF-8').'">'.$formhtml_message."".'</form>';
 		}
 		
 		$formhtml_message.= '<input type="hidden" name="exam_id" value="'.$eid.'">';

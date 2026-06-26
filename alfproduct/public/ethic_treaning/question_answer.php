@@ -45,6 +45,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $_SESSION['wp_page_head_title'] = '倫理研修代替措置研修';
 $objDbConnect = new DbConnect();
 $template = new Template();

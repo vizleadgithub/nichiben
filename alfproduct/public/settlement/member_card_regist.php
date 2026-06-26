@@ -5,6 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 
 $err_flg = 0;
 

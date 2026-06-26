@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $pid = $_POST['pid'];
 if (!st_login_check()){

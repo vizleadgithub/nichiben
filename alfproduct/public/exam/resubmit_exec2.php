@@ -45,6 +45,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $_SESSION['wp_page_head_title'] = 'テスト';
 $objDbConnect = new DbConnect();
 $template = new Template();

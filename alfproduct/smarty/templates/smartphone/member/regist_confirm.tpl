@@ -12,6 +12,7 @@ document.form1.submit();
 
 <form name="form1" action="#" method="post">
 <input type="hidden" id="act" name="act" value="" />
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <!--{foreach from=$arr_input item=item key=key}-->
 	<!--{if $key=="mail_magazine"}-->
 		<!--{foreach from=$arr_input.arr_mail_magazine item=item2 key=key2}-->

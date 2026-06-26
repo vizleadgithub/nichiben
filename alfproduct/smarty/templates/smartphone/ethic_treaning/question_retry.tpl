@@ -24,6 +24,7 @@
 			<div style="width:100%;float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border-bottom:solid 1px #000000;">【選択肢】</div>
 			<div style="float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border: none;margin-bottom:20px;">
 				<form action="/ethic_treaning/question_answer_retry.php?pid=<!--{$pid}-->&qid=<!--{$qid}-->" method="post" name="form_answer">
+					<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 					<div style="width:100%;">
 						<!--{html_radios name='ethic_branch_id' options=$arr_list separator='<br />'}-->
 					</div>

@@ -126,6 +126,7 @@ $template->assign('arr_list', $arr_list);
 $template->assign('question', $question);
 $template->assign('reference', $reference);
 $template->assign('answer_btn_disp_flg', $answer_btn_disp_flg);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('ethic_treaning/question_retry.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

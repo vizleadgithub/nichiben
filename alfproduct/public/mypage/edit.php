@@ -477,10 +477,12 @@ if(!isset($_POST['act'])){
 			// 入力エラーなし
 			if(empty($err_msg)){
 				if($_POST['act'] == 'back'){
+					$template->assign('csrf_token', csrf_token_get());
 					$template->layout_noside('mypage/edit.tpl');
 					$objDbConnect->close();
 					exit();
 				} else {
+					$template->assign('csrf_token', csrf_token_get());
 					$template->layout_noside('mypage/edit_confirm.tpl');
 					$objDbConnect->close();
 					exit();
@@ -499,8 +501,9 @@ if(!isset($_POST['act'])){
 			
 		// 完了
 		case 'complete':
+			csrf_token_verify();
 			$err_flag = 0;
-			
+
 			// 改竄なし
 			if(empty($err_msg)){
 				$birth = $birth_year.'-'.sprintf("%02d", $birth_month).'-'.sprintf("%02d", $birth_day);

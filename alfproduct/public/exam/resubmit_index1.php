@@ -198,6 +198,7 @@ $template->assign('btn_type_q', $btn_type_q);
 
 // Android、iPad、iPhoneのFLG
 $template->assign('is_sp', is_sp());
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('exam/resubmit_index1.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

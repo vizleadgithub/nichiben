@@ -385,10 +385,12 @@ if(!isset($_POST['act'])){
 			// 入力エラーなし
 			if(empty($err_msg)){
 				if($_POST['act'] == 'back'){
+					$template->assign('csrf_token', csrf_token_get());
 					$template->layout_oneside('member/regist.tpl');
 					$objDbConnect->close();
 					exit;
 				} else {
+					$template->assign('csrf_token', csrf_token_get());
 					$template->layout_oneside('member/regist_confirm.tpl');
 					$objDbConnect->close();
 					exit;
@@ -407,6 +409,7 @@ if(!isset($_POST['act'])){
 			
 		// 完了
 		case 'complete':
+			csrf_token_verify();
 			$err_flag = 0;
 			
 			// 改竄なし

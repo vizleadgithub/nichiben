@@ -5,6 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $_SESSION['wp_page_head_title'] = '講座購入';
 $objDbConnect = new DbConnect();
 $template = new Template();
@@ -223,6 +224,7 @@ if (isset($_GET['ptype'])){
 	$ptype = '1';
 }
 $template->assign('ptype', $ptype);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('settlement/index.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

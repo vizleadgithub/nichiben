@@ -76,6 +76,7 @@ function examFormSubmit(flg){
 </script>
 
 <form name="examForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <div style="float:right;width:980px;border: solid 1px #EDECE0;background-color:#FFFFFF;">
 	<div style="float:left;width:940px;height:36px;background-image: url( /img/lecture/h2_back.png );margin-left:10px;margin-top:20px;">
 		<!--{* <!--{if !$question_flg}--><span style="font-size:14px;color:red;font-weight: bold;padding-left: 10px;">採点結果：<!--{$total_score}-->&nbsp;&frasl;&nbsp;<!--{$exam_total_score}-->&nbsp;点</span><!--{/if}--> *}-->

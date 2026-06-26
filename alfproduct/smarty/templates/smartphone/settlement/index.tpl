@@ -34,6 +34,7 @@ function buy__close(){
 }
 </script>
 <form name="formSettlement" method="post" action="#">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 <input type="hidden" name="temp_date" value="<!--{$temp_date|escape}-->" />
 <input type="hidden" name="temp_no" value="<!--{$temp_no|escape}-->" />

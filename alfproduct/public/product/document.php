@@ -40,6 +40,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $_SESSION['wp_page_head_title'] = '講座詳細';
 $objDbConnect = new DbConnect();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -97,6 +98,7 @@ $template->assign('st_login_check', $st_login_check);
 $template->assign('isApple', $isApple);
 $template->assign('isAndroid', $isAndroid);
 $template->assign('sid', session_id());
+$template->assign('csrf_token', csrf_token_get());
 
 $GLOBALS['meta_description'] = '';
 $GLOBALS['meta_keywords'] = get_product_gategory_meta_keywords($objDbConnect, $pid);

@@ -1,5 +1,6 @@
 <!--{if $next_contents_flg}-->
 <form name="playerForm" action="/player/player_ethic.php?term=pc" method="post">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 	<input type="hidden" name="vid" id="hid_vid" value="<!--{$next_vid|escape}-->" />
 	<input type="hidden" name="ftn" id="hid_ftn" value="<!--{$next_ftn|escape}-->" />

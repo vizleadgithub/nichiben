@@ -207,6 +207,7 @@ $template->assign('answered_list_q', $answered_list_q);
 
 // Android、iPad、iPhoneのFLG
 $template->assign('is_sp', is_sp());
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('exam/index.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

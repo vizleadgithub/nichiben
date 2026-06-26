@@ -13,6 +13,7 @@ $objDbConnect = new DbConnect();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 会員データ登録時以外にマスタデータを取得
 if($_POST['action'] == 'complete'){
+	csrf_token_verify();
 	if (!st_login_check()){
 		header("Location: /");
 		exit;
@@ -42,6 +43,7 @@ if($_POST['action'] == 'complete'){
 		}
 	}
 
+	$template->assign('csrf_token', csrf_token_get());
 	$template->layout_noside('mypage/refusal_confirm.tpl');
 } else {
 	if (!st_login_check()){

@@ -62,6 +62,7 @@ float:right;
 }
 </style>
 <form name="exam2Form" method="post" id="exam2Form">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<div style="float:left;width:100%;height:36px;background-image: url( /img/lecture/h2_back.png );">
 		<span style="font-size:17px;color:#5E4C33;font-weight: bold;padding-left: 10px;"><!--{$arr_list.exam2_name|escape}--></span>
 	</div>
