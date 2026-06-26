@@ -51,7 +51,7 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 	<script type="text/javascript">
 		<!--{* // 初期化 *}-->
 		//+++++++++++++++++++++++++++
-		var video_codec_type ="<!--{$codec}-->";
+		var video_codec_type ="<!--{$codec|escape:'javascript'}-->";
 		//+++++++++++++++++++++++++++
 		var pop_up_time = 1200;
 		var pop_stop_time = 1260;

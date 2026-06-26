@@ -127,7 +127,7 @@ float:right;
 			<div style="text-align:center;width:420px;margin-left:246px;">
 				<a class="btn2" href="javascript:void(0)" onclick="pop_close_reload()">閉じる</a>
 				<!--<a class="btn1" href="javascript:void(0)" onclick="pop_get_html('/exam2/resubmit_exec.php?e2id=<!--{$e2id}-->&pid=<!--{$pid}-->');">解答を修正する</a>-->
-				<a class="btn1" href="javascript:void(0)" onclick="pop_get_html_sub('/exam2/resubmit_check.php?e2id=<!--{$e2id}-->&pid=<!--{$pid}-->','exam2Form');">解答を修正する</a>
+				<a class="btn1" href="javascript:void(0)" onclick="pop_get_html_sub('/exam2/resubmit_check.php?e2id=<!--{$e2id|escape:'javascript'}-->&pid=<!--{$pid|escape:'javascript'}-->','exam2Form');">解答を修正する</a>
 			</div>
 		</div>
 	</div>

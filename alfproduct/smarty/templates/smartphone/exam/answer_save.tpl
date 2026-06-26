@@ -31,6 +31,6 @@ width:200px;
 	<!--{/if}-->
 </div>
 <div>
-	<a class="btn" href="javascript:void(0)" onclick="<!--{if !$err_flg}-->opener.location.href='/exam/result.php?eid=<!--{$eid}-->&pid=<!--{$pid}-->&ccno=<!--{$ccno}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->';<!--{/if}-->window.close();">閉じる</a>
+	<a class="btn" href="javascript:void(0)" onclick="<!--{if !$err_flg}-->opener.location.href='/exam/result.php?eid=<!--{$eid|escape:'javascript'}-->&pid=<!--{$pid|escape:'javascript'}-->&ccno=<!--{$ccno|escape:'javascript'}--><!--{if $qid!=''}-->&qid=<!--{$qid|escape:'javascript'}--><!--{/if}-->';<!--{/if}-->window.close();">閉じる</a>
 </div>
 </center>

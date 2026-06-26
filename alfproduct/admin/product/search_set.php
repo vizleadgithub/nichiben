@@ -29,5 +29,5 @@ function serchSet(id, name, hid_id_name, spa_id_name, hid_name_name){
 		window.close();
 	}
 }
-window.onload = serchSet(<?php echo "'$id', '$name', '$hid_id_name', '$spa_id_name', '$hid_name_name'"; ?>);
+window.onload = serchSet(<?php echo json_encode($id).", ".json_encode($name).", ".json_encode($hid_id_name).", ".json_encode($spa_id_name).", ".json_encode($hid_name_name); ?>);
 </script>

@@ -92,7 +92,7 @@ margin-left:310px;
 			
 			<div style="text-align:center;width:100%;display:block;height:auto;">
 				<div style="text-align:center;margin:0 auto;width:520px;display:block;height:auto;">
-					<a style="float:left; margin-left:0;    margin-right:10px;" class="btn" href="javascript:void(0)" onclick="pop_get_html_sub('/exam2/answer_check.php?e2id=<!--{$arr_list.exam2_id}-->&pid=<!--{$pid}-->','exam2Form')">次へ</a>
+					<a style="float:left; margin-left:0;    margin-right:10px;" class="btn" href="javascript:void(0)" onclick="pop_get_html_sub('/exam2/answer_check.php?e2id=<!--{$arr_list.exam2_id|escape:'javascript'}-->&pid=<!--{$pid|escape:'javascript'}-->','exam2Form')">次へ</a>
 					<a style="float:right;margin-left:10px; margin-right:0;" class="btn" href="javascript:void(0)" onclick="pop_close()">閉じる</a>
 				</div>
 			</div>
