@@ -48,6 +48,7 @@ $template->assign('input_name',		 $input_name);
 $template->assign('input_mail',		 $input_mail);
 $template->assign('input_comment',	 $input_comment);
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout('inquiry/form.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ?>

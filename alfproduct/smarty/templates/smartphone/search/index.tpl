@@ -240,6 +240,7 @@
 						<div style="float:right;text-align:right;display:inline-block;width:180px;">
 							<!--{if $row.favorite_flg}-->
 								<form name="favoriteForm" action="/mypage/favorite.php" method="post">
+									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
 									<input type="hidden" name="act" value="regist" />
 									<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 									<input type="image" src="/img/list/favorite_btn.png" />
@@ -318,6 +319,7 @@
 						<div style="float:right;text-align:right;display:inline-block;width:180px;">
 							<!--{if $row.favorite_flg}-->
 								<form name="favoriteForm" action="/mypage/favorite.php" method="post">
+									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
 									<input type="hidden" name="act" value="regist" />
 									<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 									<input type="image" src="/img/list/favorite_btn.png" />

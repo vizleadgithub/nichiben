@@ -267,6 +267,7 @@ $template->assign('mtb_product_flg', $mtb_product_flg);
 $template->assign('sort_select', get_sort_selectbox());
 $template->assign('sort', $sort);
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout('product/list_limit.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect->close();

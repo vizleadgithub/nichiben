@@ -149,6 +149,7 @@ a.test_btn_none{
 			<div style="text-align:right;padding-top:10px;">
 				<!--{if $favorite_flg}-->
 				<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 				<input type="hidden" name="act" value="regist" />
 				<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 					<input type="image" src="/img/list/favorite_btn.png" /><br />
@@ -308,6 +309,7 @@ a.test_btn_none{
 			<div style="text-align:right;padding-top:10px;">
 				<!--{if $favorite_flg}-->
 				<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 				<input type="hidden" name="act" value="regist" />
 				<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 					<input type="image" src="/img/list/favorite_btn.png" /><br />
@@ -2754,6 +2756,7 @@ a.test_btn_none{
 			<div style="text-align:right;">
 				<!--{if $favorite_flg}-->
 					<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+						<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 						<input type="hidden" name="act" value="regist" />
 						<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 						<input type="image" src="/img/list/favorite_btn.png" /><br />

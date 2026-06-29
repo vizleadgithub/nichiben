@@ -170,6 +170,7 @@ $template->assign('list_start', $objPager->getOffsetStart());
 $template->assign('list_end', $objPager->getOffsetEnd());
 $template->assign('page_max', $pagemax);
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout_noside('mypage/favorite_list.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function _get_sql($select_col, $order=''){

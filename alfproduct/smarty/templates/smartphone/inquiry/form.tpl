@@ -26,6 +26,7 @@
 			<div class="error" style="color:#ff6666;">※<!--{$err}--></div>
 			<!--{/foreach}-->
 			<form name="form_inquiry" method="post" action="conf.php">
+			<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 
 			<table style="width:100%;margin-top:20px;" class="member_table" cellspacing="0" cellpadding="0">
 				<!--{* ====================================================================== *}-->

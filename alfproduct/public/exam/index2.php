@@ -45,6 +45,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $_SESSION['wp_page_head_title'] = 'テスト';
 $objDbConnect = new DbConnect();
 $template = new Template();
@@ -391,6 +392,7 @@ $template->assign('answered_info', $answered_info);
 // Android、iPad、iPhoneのFLG
 $template->assign('is_sp', is_sp());
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout_noside('exam/index2.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect->close();

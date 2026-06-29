@@ -1,4 +1,5 @@
 <form name="form1" action="regist.php" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" name="act" value="confirm" />
 
 

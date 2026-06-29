@@ -59,6 +59,7 @@
 								</script>
 								<div id="download_div">
 									<form name="downloadForm" action="receipt_download.php?oid=<!--{$arr_buy.order_id|escape}-->" method="post">
+									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
 									宛名：<input type="text" id="atena" name="atena" size="28" />
 									<a id="download_btn" href="javascript: void(0);" onclick="non_download();" ><img src="/img/mypage/issue_btn.png" style="vertical-align:middle;"></a>
 									</form>

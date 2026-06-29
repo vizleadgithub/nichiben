@@ -126,6 +126,7 @@
 							<tr style="border: solid 1px #AB9983;border-style: none none dotted none;height:55px;font-size:14px;">
 								<td colspan="2" style="text-align:center;font-size:14px;padding-top:5px;">お気に入りから<br>
 									<form name="form_delete<!--{$row.product_id|escape}-->" action="favorite.php" method="post">
+									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
 									<input type="hidden" name="act" value="delete" />
 									<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 									<!--<input type="submit" value="削除" />-->
@@ -142,6 +143,7 @@
 								<td style="text-align:center;font-size:14px;">
 									<!--{if !($page == 1 && $smarty.foreach.fav.first)}-->
 										<form name="form_up<!--{$row.product_id|escape}-->" action="favorite.php" method="post">
+										<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
 										<input type="hidden" name="act" value="up" />
 										<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 										<!--<input type="submit" value="↑" />-->
@@ -152,6 +154,7 @@
 								<td style="text-align:center;font-size:14px;">
 									<!--{if !($list_end == $all_count && $smarty.foreach.fav.last)}-->
 										<form name="form_down<!--{$row.product_id|escape}-->" action="favorite.php" method="post">
+										<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
 										<input type="hidden" name="act" value="down" />
 										<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 										<!--<input type="submit" value="↓" />-->

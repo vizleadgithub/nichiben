@@ -30,7 +30,7 @@
 
 			<div style="width:100%;float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border-bottom:solid 1px #000000;">【選択肢】</div>
 			<div style="float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border: none;margin-bottom:20px;">
-				<form action="/ethic_treaning/question_answer.php?pid=<!--{$pid}-->&qid=<!--{$qid}-->" method="post" name="form_answer">
+				<form action="/ethic_treaning/question_answer.php?pid=<!--{$pid|escape}-->&qid=<!--{$qid}-->" method="post" name="form_answer">
 					<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 					<div style="width:100%;">
 						<!--{html_radios name='ethic_branch_id' options=$arr_list separator='<br />'}-->
@@ -43,7 +43,7 @@
 						-->
 					<!--{/if}-->
 					<ul style="text-align:center;padding:20px;list-style:none;padding-left:280px;">
-						<li style="float:left;padding:0 20px;"><a href="javascript:void(0);" onclick="javascript:location.href='/ethic_treaning/?pid=<!--{$pid}-->';"><img src="/img/button/question1_btn.png" alt="今は回答しない" /></a></li>
+						<li style="float:left;padding:0 20px;"><a href="javascript:void(0);" onclick="javascript:location.href='/ethic_treaning/?pid=<!--{$pid|escape}-->';"><img src="/img/button/question1_btn.png" alt="今は回答しない" /></a></li>
 						<li style="float:left;padding:0 20px;"><a href="javascript:void(0);" onclick="javascript:document.form_answer.submit();"><img src="/img/button/question2_btn.png" alt="回答する" /></a></li>
 					</ul>
 				</form>

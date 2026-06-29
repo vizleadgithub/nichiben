@@ -73,7 +73,7 @@
 		<div style="float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border: none;margin-bottom:20px;">
 
 			<div style="text-align:center;padding:20px;">
-				<input type="button" value="設問・解説動画一覧に戻る" onclick="javascript:location.href='/ethic_treaning/result_history.php?pid=<!--{$pid}-->';">	
+				<input type="button" value="設問・解説動画一覧に戻る" onclick="javascript:location.href='/ethic_treaning/result_history.php?pid=<!--{$pid|escape}-->';">	
 			</div>
 		</div>
 	</div>

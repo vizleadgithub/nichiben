@@ -149,6 +149,7 @@ a.test_btn_none{
 			<div style="text-align:right;padding-top:10px;">
 				<!--{if $favorite_flg}-->
 				<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 				<input type="hidden" name="act" value="regist" />
 				<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 					<input type="image" src="/img/list/favorite_btn.png" /><br />
@@ -294,6 +295,7 @@ a.test_btn_none{
 				<img src="/img/lecture/buy_wait.png" alt="購入手続き中" /><br />
 			<!--{else}-->
 				<form name="buyForm" action="/settlement/index.php" method="post" style="display:inline;">
+				<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 				<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 				<input type="hidden" name="hid_product_type_add" value="<!--{$product_list.product_type_add|escape}-->" />
 					<input type="image" src="/img/button/buy_process_btn.jpg" alt="買い物かごに入れる" /><br />
@@ -307,6 +309,7 @@ a.test_btn_none{
 			<div style="text-align:right;padding-top:10px;">
 				<!--{if $favorite_flg}-->
 				<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+				<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 				<input type="hidden" name="act" value="regist" />
 				<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 					<input type="image" src="/img/list/favorite_btn.png" /><br />
@@ -2617,6 +2620,7 @@ a.test_btn_none{
 			<div style="text-align:right;">
 				<!--{if $favorite_flg}-->
 					<form name="favoriteForm" action="<!--{*https://*}--><!--{*php}-->echo $_SERVER['SERVER_NAME'];<!--{/php*}-->/mypage/favorite.php" method="post">
+						<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 						<input type="hidden" name="act" value="regist" />
 						<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 						<input type="image" src="/img/list/favorite_btn.png" /><br />
@@ -2757,6 +2761,7 @@ a.test_btn_none{
 								<!--{if $buy_flg}-->
 									<!--{if $kaijo_moushikomi_flg}-->
 										<form name="buyForm" action="/settlement/index.php" method="post" style="display:inline;">
+										<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 										<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 										<input type="hidden" name="hid_product_type_add" value="<!--{$product_list.product_type_add|escape}-->" />
 										<input type="hidden" name="hid_bar_association_id" value="<!--{$bar_association_id|escape}-->" />
@@ -3085,6 +3090,7 @@ a.test_btn_none{
 				<img src="/img/lecture/buy_wait.png" alt="購入手続き中" /><br />
 			<!--{else}-->
 				<form name="buyForm" action="/settlement/index.php" method="post" style="display:inline;">
+				<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 				<input type="hidden" name="pid" value="<!--{$pid|escape}-->" />
 				<input type="hidden" name="hid_product_type_add" value="<!--{$product_list.product_type_add|escape}-->" />
 					<input type="image" src="/img/button/buy_process_btn.jpg" alt="買い物かごに入れる" /><br />
@@ -3477,6 +3483,7 @@ a.test_btn_none{
 
 <!--{* 動画視聴ボタン用form *}-->
 <form name="playerForm" action="#" method="post">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<input type="hidden" name="pid" value="<!--{$pid}-->" />
 	<input type="hidden" name="vid" id="hid_vid" value="" />
 	<input type="hidden" name="vid2" id="hid_vid2" value="" />
@@ -3488,6 +3495,7 @@ a.test_btn_none{
 
 <!--{* 資料ダウンロードボタン用form *}-->
 <form name="downloadForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" name="pid" value="<!--{$pid}-->" />
 <input type="hidden" name="cdname" id="hid_cdname" value="" />
 </form>

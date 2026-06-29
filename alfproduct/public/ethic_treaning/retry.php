@@ -180,6 +180,7 @@ $template->assign('hantei_flg', $hantei_flg);
 // Android、iPad、iPhoneのFLG
 $template->assign('is_sp', is_sp());
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout_noside('ethic_treaning/retry.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect->close();

@@ -56,6 +56,7 @@ if($_POST['action'] == 'complete'){
 		}
 	}
 
+	$template->assign('csrf_token', csrf_token_get());
 	$template->layout_noside('mypage/refusal.tpl');
 }
 $objDbConnect->close();

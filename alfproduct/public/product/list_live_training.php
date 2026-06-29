@@ -232,6 +232,7 @@ $template->assign('page_max', $pagemax);
 $template->assign('sort_select', get_sort_selectbox());
 $template->assign('sort', $sort);
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout('product/list_live_training.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect->close();

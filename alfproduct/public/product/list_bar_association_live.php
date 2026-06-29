@@ -227,6 +227,7 @@ $template->assign('pankuzu', get_product_pankuzu($objDbConnect, $pcid));
 $template->assign('sort_select', get_sort_selectbox());
 $template->assign('sort', $sort);
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout('product/list_bar_association_live.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect->close();

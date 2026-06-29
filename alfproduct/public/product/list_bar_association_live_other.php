@@ -259,6 +259,7 @@ $template->assign('page_max', $pagemax);
 $template->assign('sort_select', get_sort_selectbox());
 $template->assign('sort', $sort);
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout('product/list_bar_association_live_other.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect->close();

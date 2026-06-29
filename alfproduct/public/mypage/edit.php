@@ -141,6 +141,7 @@ if(!isset($_POST['act'])){
 		header("Location: /");
 		exit();
 	}
+	$template->assign('csrf_token', csrf_token_get());
 	$template->layout_noside('mypage/edit.tpl');
 	$objDbConnect->close();
 	exit();
@@ -478,7 +479,8 @@ if(!isset($_POST['act'])){
 			if(empty($err_msg)){
 				if($_POST['act'] == 'back'){
 					$template->assign('csrf_token', csrf_token_get());
-					$template->layout_noside('mypage/edit.tpl');
+					$template->assign('csrf_token', csrf_token_get());
+				$template->layout_noside('mypage/edit.tpl');
 					$objDbConnect->close();
 					exit();
 				} else {

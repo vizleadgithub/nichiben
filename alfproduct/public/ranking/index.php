@@ -209,6 +209,7 @@ foreach ($ret as $key => $val){
 $template->assign('arr_list', $arr_list);
 $template->assign('file_list', $file_list);
 $template->assign('mtb_product_flg', $mtb_product_flg);
+$template->assign('csrf_token', csrf_token_get());
 $template->layout('ranking/index.tpl');
 $objDbConnect->close();
 exit();

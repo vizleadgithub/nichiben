@@ -39,11 +39,11 @@
 							<td style="text-align:center;width:180px;">
 								<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 								<!--{if $row.test_flg}-->
-									<a href="/ethic_treaning/question.php?pid=<!--{$pid}-->&qid=<!--{$key|escape}-->"><!--
+									<a href="/ethic_treaning/question.php?pid=<!--{$pid|escape}-->&qid=<!--{$key|escape}-->"><!--
 										--><img src="/img/lecture/test_btn.png"><!--
 									--></a>
 								<!--{else}-->
-									<a href="/ethic_treaning/answer_history.php?pid=<!--{$pid}-->&qid=<!--{$key|escape}-->"><!--
+									<a href="/ethic_treaning/answer_history.php?pid=<!--{$pid|escape}-->&qid=<!--{$key|escape}-->"><!--
 										--><img src="/img/lecture/answer_btn.png"><!--
 									--></a>
 								<!--{/if}-->
@@ -107,9 +107,9 @@
 			</div>
 
 			<div style="text-align:center;padding:20px;">
-				<a href="/product/detail.php?pid=<!--{$pid}-->"><img src="/img/lecture/detail_back_btn.png" alt="講座詳細ページに戻る" /></a>
+				<a href="/product/detail.php?pid=<!--{$pid|escape}-->"><img src="/img/lecture/detail_back_btn.png" alt="講座詳細ページに戻る" /></a>
 				<!--{if $hantei_flg}-->
-				<a href="/ethic_treaning/result.php?pid=<!--{$pid}-->"><img src="/img/lecture/result_btn.png" alt="結果判定" /></a>
+				<a href="/ethic_treaning/result.php?pid=<!--{$pid|escape}-->"><img src="/img/lecture/result_btn.png" alt="結果判定" /></a>
 				<!--{/if}-->
 			</div>
 
@@ -119,6 +119,7 @@
 
 <!--{* 動画視聴ボタン用form *}-->
 <form name="playerForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" name="vid" id="hid_vid" value="" />
 <input type="hidden" name="pid" id="hid_pid" value="<!--{$pid|escape}-->" />
 <input type="hidden" name="back_type" id="hid_back_type" value="index" />

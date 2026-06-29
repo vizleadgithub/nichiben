@@ -257,6 +257,7 @@ $template->assign('judge_flg', $judge_flg);
 // Android、iPad、iPhoneのFLG
 $template->assign('is_sp', is_sp());
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout_noside('ethic_treaning/result_history.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect->close();

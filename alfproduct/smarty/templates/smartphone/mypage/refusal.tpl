@@ -8,6 +8,7 @@
 
 
 	<form name="form1" action="refusal.php" method="post">
+	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<input type="hidden" name="action" value="confirm" />
 
 		<div style="border: solid 1px #47a6d4;padding: 5px;text-align:center;">

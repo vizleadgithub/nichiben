@@ -42,7 +42,7 @@
 <!--{if $judge_flg == 5}-->
 	<table style="text-align:center;margin:20px 0 0 240px;">
 	<tr>
-	<td style="padding:10px;"><a href="/product/detail.php?pid=<!--{$pid}-->"><img src="/img/lecture/detail_back_btn.png" alt="講座詳細ページに戻る" /></a></td>
+	<td style="padding:10px;"><a href="/product/detail.php?pid=<!--{$pid|escape}-->"><img src="/img/lecture/detail_back_btn.png" alt="講座詳細ページに戻る" /></a></td>
 	</tr>
 	</table>
 <!--{else}-->
@@ -63,7 +63,7 @@
 								<table><tr>
 									<td style="text-align:center;width:180px;">
 										<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
-										<a href="/ethic_treaning/result_history_detail.php?pid=<!--{$pid}-->&qid=<!--{$key|escape}-->"><!--
+										<a href="/ethic_treaning/result_history_detail.php?pid=<!--{$pid|escape}-->&qid=<!--{$key|escape}-->"><!--
 											--><img src="/img/lecture/answer_btn.png"><!--
 										--></a>
 										<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
@@ -121,7 +121,7 @@
 								<table><tr>
 									<td style="text-align:center;width:180px;">
 										<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
-										<a href="/ethic_treaning/result_history_detail.php?pid=<!--{$pid}-->&qid=<!--{$key|escape}-->"><!--
+										<a href="/ethic_treaning/result_history_detail.php?pid=<!--{$pid|escape}-->&qid=<!--{$key|escape}-->"><!--
 											--><img src="/img/lecture/answer_btn.png"><!--
 										--></a>
 										<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
@@ -171,8 +171,8 @@
 
 			<table style="text-align:center;margin:20px 0 0 60px;">
 			<tr>
-			<td style="padding:10px;"><a href="/product/detail.php?pid=<!--{$pid}-->"><img src="/img/lecture/detail_back_btn.png" alt="講座詳細ページに戻る" /></a></td>
-			<td style="padding:10px;"><a href="/ethic_treaning/answer_history_all.php?pid=<!--{$pid}-->"><img src="/img/lecture/zen_kaito_ichiran.png" alt="全回答内容一覧" /></a></td>
+			<td style="padding:10px;"><a href="/product/detail.php?pid=<!--{$pid|escape}-->"><img src="/img/lecture/detail_back_btn.png" alt="講座詳細ページに戻る" /></a></td>
+			<td style="padding:10px;"><a href="/ethic_treaning/answer_history_all.php?pid=<!--{$pid|escape}-->"><img src="/img/lecture/zen_kaito_ichiran.png" alt="全回答内容一覧" /></a></td>
 			</tr>
 			</table>
 <!--{/if}-->
@@ -181,6 +181,7 @@
 </div>
 <!--{* 動画視聴ボタン用form *}-->
 <form name="playerForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" name="vid" id="hid_vid" value="" />
 <input type="hidden" name="pid" id="hid_pid" value="<!--{$pid|escape}-->" />
 <input type="hidden" name="back_type" id="hid_back_type" value="result_history" />

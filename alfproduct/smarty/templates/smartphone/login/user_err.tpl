@@ -2,5 +2,5 @@
 	<div class="error">
 	emailもしくはpasswordが間違っています。
 	</div>
-	<a href="<!--{$back_url}-->">戻る</a>
+	<a href="<!--{$back_url|escape}-->">戻る</a>
 </div>

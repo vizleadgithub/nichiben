@@ -40,6 +40,7 @@ if($_POST['act'] != 'complete'){
 
 // 初期表示
 if(!isset($_POST['act'])){
+	$template->assign('csrf_token', csrf_token_get());
 	$template->layout_oneside('member/regist.tpl');
 	$objDbConnect->close();
 	exit;
@@ -386,7 +387,8 @@ if(!isset($_POST['act'])){
 			if(empty($err_msg)){
 				if($_POST['act'] == 'back'){
 					$template->assign('csrf_token', csrf_token_get());
-					$template->layout_oneside('member/regist.tpl');
+					$template->assign('csrf_token', csrf_token_get());
+				$template->layout_oneside('member/regist.tpl');
 					$objDbConnect->close();
 					exit;
 				} else {

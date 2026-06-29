@@ -1,6 +1,7 @@
 <?php
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+csrf_token_verify();
 $objDbConnect = new DbConnect();
 $template = new Template();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -166,6 +166,7 @@ $template->assign('arr_buy_detail', $arr_buy_detail);
 $template->assign('arr_buy', $arr_buy);
 $template->assign('total_price', $total_price);
 
+$template->assign('csrf_token', csrf_token_get());
 $template->layout_noside('mypage/buy_detail.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ?>

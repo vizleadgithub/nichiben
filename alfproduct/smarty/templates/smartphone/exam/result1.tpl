@@ -103,6 +103,7 @@ function confirmDisp(epid){
 </script>
 
 <form name="examForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <div style="float:right;width:980px;border: solid 1px #EDECE0;background-color:#FFFFFF;">
 	<div style="float:left;width:940px;height:36px;background-image: url( /img/lecture/h2_back.png );margin-left:10px;margin-top:20px;">
 		<span style="font-size:17px;color:#5E4C33;font-weight: bold;padding-left: 10px;"><!--{$arr_list.exam_name|escape}--></span>
@@ -180,7 +181,7 @@ function confirmDisp(epid){
 					</div>
 					
 					<div id="btn_area_<!--{$row.exam_problem_id}-->" class="btn_area">
-						<a class="btn" href="/exam/resubmit_index1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->&eno=<!--{$row_no}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->"><!--{if $btn_type=='2'}-->回答修正画面へ<!--{else}-->解答修正画面へ<!--{/if}--></a>
+						<a class="btn" href="/exam/resubmit_index1.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}-->&eno=<!--{$row_no}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->"><!--{if $btn_type=='2'}-->回答修正画面へ<!--{else}-->解答修正画面へ<!--{/if}--></a>
 					</div>
 				</div>
 				<br>
@@ -235,7 +236,7 @@ function confirmDisp(epid){
 					</div>
 					
 					<div id="btn_area_<!--{$row_q.exam_problem_id}-->" class="btn_area">
-						<a class="btn" href="/exam/resubmit_index1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->&eno=<!--{$row_no_q+$row_no}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->"><!--{if $btn_type_q=='2'}-->回答修正画面へ<!--{else}-->解答修正画面へ<!--{/if}--></a>
+						<a class="btn" href="/exam/resubmit_index1.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}-->&eno=<!--{$row_no_q+$row_no}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->"><!--{if $btn_type_q=='2'}-->回答修正画面へ<!--{else}-->解答修正画面へ<!--{/if}--></a>
 					</div>
 				</div>
 				<br>
@@ -249,7 +250,7 @@ function confirmDisp(epid){
 			<!--{/if}-->
 			
 			<div style="text-align:center;padding:10px;">
-				<a class="btn" href="/product/detail.php?pid=<!--{$pid}-->">終了する</a>
+				<a class="btn" href="/product/detail.php?pid=<!--{$pid|escape}-->">終了する</a>
 			</div>
 
 		</div>

@@ -103,6 +103,7 @@ function confirmDisp(epid){
 </script>
 
 <form name="examForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <div style="float:right;width:980px;border: solid 1px #EDECE0;background-color:#FFFFFF;">
 	<div style="float:left;width:940px;height:36px;background-image: url( /img/lecture/h2_back.png );margin-left:10px;margin-top:20px;">
 		<span style="font-size:17px;color:#5E4C33;font-weight: bold;padding-left: 10px;"><!--{$arr_list.exam_name|escape}--></span>

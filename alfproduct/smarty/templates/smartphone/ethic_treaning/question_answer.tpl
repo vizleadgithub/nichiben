@@ -26,7 +26,7 @@
 			<!--{/if}-->
 		</div>
 		<div style="float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border: none;margin-bottom:20px;">
-			<form action="/ethic_treaning/question_answer.php?pid=<!--{$pid}-->&qid=<!--{$qid}-->" method="post" name="form_answer">
+			<form action="/ethic_treaning/question_answer.php?pid=<!--{$pid|escape}-->&qid=<!--{$qid}-->" method="post" name="form_answer">
 				<div style="width:100%;">
 					<!--{$str_answer|escape}-->
 					<br />
@@ -34,7 +34,7 @@
 					解説動画を必ず視聴してください。
 				</div>
 				<div style="text-align:center;padding:20px;">
-					<input type="button" value="設問・解説動画一覧に戻る" onclick="javascript:location.href='/ethic_treaning/?pid=<!--{$pid}-->';">	
+					<input type="button" value="設問・解説動画一覧に戻る" onclick="javascript:location.href='/ethic_treaning/?pid=<!--{$pid|escape}-->';">	
 				</div>
 			</form>
 		</div>

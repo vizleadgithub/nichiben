@@ -33,7 +33,7 @@
 				解説動画を必ず視聴してください。
 			</div>
 			<div style="text-align:center;padding:20px;">
-				<input type="button" value="設問・解説動画一覧に戻る" onclick="javascript:location.href='/ethic_treaning/retry.php?pid=<!--{$pid}-->';">	
+				<input type="button" value="設問・解説動画一覧に戻る" onclick="javascript:location.href='/ethic_treaning/retry.php?pid=<!--{$pid|escape}-->';">	
 			</div>
 		</div>
 	</div>

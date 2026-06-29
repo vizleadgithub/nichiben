@@ -116,6 +116,7 @@ function examFormSubmit(eid,pid,ccno){
 </script>
 
 <form name="examForm" action="#" method="post">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <div style="float:right;width:980px;border: solid 1px #EDECE0;background-color:#FFFFFF;">
 	<div style="float:left;width:940px;height:36px;background-image: url( /img/lecture/h2_back.png );margin-left:10px;margin-top:20px;">
 		<span style="font-size:17px;color:#5E4C33;font-weight: bold;padding-left: 10px;"><!--{$arr_list.exam_name|escape}--></span>
@@ -188,7 +189,7 @@ function examFormSubmit(eid,pid,ccno){
 					</div>
 					
 					<div id="btn_area_<!--{$row.exam_problem_id}-->" class="btn_area">
-						<a class="btn_edit" href="/exam/index2.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->&eno=<!--{$row_no}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->"><!--{if $btn_type=='2'}-->回答修正画面へ<!--{else}-->解答修正画面へ<!--{/if}--></a>
+						<a class="btn_edit" href="/exam/index2.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}-->&eno=<!--{$row_no}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->"><!--{if $btn_type=='2'}-->回答修正画面へ<!--{else}-->解答修正画面へ<!--{/if}--></a>
 					</div>
 				</div>
 				<br>
@@ -259,15 +260,15 @@ function examFormSubmit(eid,pid,ccno){
 					</div>
 					
 					<div id="btn_area_<!--{$row_q.exam_problem_id}-->" class="btn_area">
-						<a class="btn_edit" href="/exam/index2.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->&eno=<!--{$row_no_q+$eno_max_test}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->"><!--{if $btn_type_q=='2'}-->回答修正画面へ<!--{else}-->解答修正画面へ<!--{/if}--></a>
+						<a class="btn_edit" href="/exam/index2.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}-->&eno=<!--{$row_no_q+$eno_max_test}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->"><!--{if $btn_type_q=='2'}-->回答修正画面へ<!--{else}-->解答修正画面へ<!--{/if}--></a>
 					</div>
 				</div>
 				<br>
 			<!--{/foreach}-->
 			
 			<div style="text-align:center;width:420px;margin-left:246px;">
-				<input class="btn2" type="button" onclick="location.href='/exam/index2.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->&eno=<!--{$eno_max}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->'" value="戻る">
-				<input class="btn1" type="button" onclick="examFormSubmit(<!--{$arr_list.exam_id}-->,<!--{$pid}-->,<!--{$ccno}-->);" value="提出する">
+				<input class="btn2" type="button" onclick="location.href='/exam/index2.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}-->&eno=<!--{$eno_max}--><!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->'" value="戻る">
+				<input class="btn1" type="button" onclick="examFormSubmit(<!--{$arr_list.exam_id|escape}-->,<!--{$pid|escape}-->,<!--{$ccno|escape}-->);" value="提出する">
 			</div>
 
 		</div>

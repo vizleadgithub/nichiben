@@ -37,7 +37,7 @@
 			</div>
 
 			<div style="text-align:center;padding:20px;">
-				<a href="/product/detail.php?pid=<!--{$pid}-->"><img src="/img/lecture/detail_back_btn.png" alt="講座詳細ページに戻る" /></a>
+				<a href="/product/detail.php?pid=<!--{$pid|escape}-->"><img src="/img/lecture/detail_back_btn.png" alt="講座詳細ページに戻る" /></a>
 			</div>
 		</div>
 	</div>
