@@ -15,11 +15,6 @@
 				</div>
 				<div id="list" style="overflow: auto;">
 					<table class="list" style="width:100%;">
-<?php
-print("\n<!--[\n");
-var_dump($export_data);
-print("\n]-->\n");
-?>
 
 <script type="text/javascript">
 	const variables = {};
@@ -90,11 +85,7 @@ print("\n]-->\n");
 											<?php
 											//解答種類 1:単一形式、2:複数形式、3:フリー回答
 											if( $export_data[0]["exam2_problem"][$i2]["answer_kind"] == 1 ){
-												print(  "<!--[answer_kind:".$export_data[0]["exam2_problem"][$i2]["answer_kind"]."]-->"  );
 												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"],true );
-												print(  "<!--["  );
-												var_dump($arr_temp);
-												print(  "]-->"  );
 												if( isset($arr_temp->answer_contents) && !empty($arr_temp->answer_contents) ){
 													for($i3=0;$i3<count($arr_temp->answer_contents);$i3++){
 														$temp = $arr_temp->answer_contents[$i3];
@@ -104,11 +95,7 @@ print("\n]-->\n");
 													}
 												}
 											} elseif( $export_data[0]["exam2_problem"][$i2]["answer_kind"] == 2 ){
-												print(  "<!--[".$export_data[0]["exam2_problem"][$i2]["answer_kind"]."]-->"  );
 												$arr_answer = explode(",",$student['answer'][$i2]["exam2_answer_contents"]);
-												print(  "<!--["  );
-												var_dump($arr_temp);
-												print(  "]-->"  );
 												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"],true );
 
 												for($i4=0;$i4<count($arr_answer);$i4++){
@@ -125,11 +112,7 @@ print("\n]-->\n");
 												//$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"],true );
 												//print(  $student['answer'][$i2]["exam2_answer_contents"]  );
 											} elseif( $export_data[0]["exam2_problem"][$i2]["answer_kind"] == 3 ){
-												print(  "<!--[".$export_data[0]["exam2_problem"][$i2]["answer_kind"]."]-->"  );
 												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"] );
-												print(  "<!--["  );
-												var_dump($arr_temp);
-												print(  "]-->"  );
 												print(  '<textarea id="exam2_answer_'.$student['answer'][$i2]["exam2_answer_id"].'">'  );
 												print(  $student['answer'][$i2]["exam2_answer_contents"]  );
 												if($student['answer'][$i2]["exam2_answer_contents_old"] != ""){

@@ -38,7 +38,7 @@ function examFormSubmit(eid,pid,ccno){
 	document.examForm.target = "examDisp";
 	document.examForm.method = "post";
 	<!--{if $qid!=''}-->
-		document.examForm.action = "/exam/answer_check.php?eid="+eid+"&pid="+pid+"&ccno="+ccno+"&qid="+<!--{$qid}-->;
+		document.examForm.action = "/exam/answer_check.php?eid="+eid+"&pid="+pid+"&ccno="+ccno+"&qid="+<!--{$qid|escape:'javascript'}-->;
 	<!--{else}-->
 		document.examForm.action = "/exam/answer_check.php?eid="+eid+"&pid="+pid+"&ccno="+ccno;
 	<!--{/if}-->

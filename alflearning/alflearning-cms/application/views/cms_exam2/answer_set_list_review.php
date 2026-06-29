@@ -15,11 +15,6 @@
 				</div>
 				<div id="list" style="overflow: auto;">
 					<table class="list" style="width:100%;">
-<?php
-print("\n<!--[\n");
-var_dump($export_data);
-print("\n]-->\n");
-?>
 
 <script type="text/javascript">
 	const variables = {};

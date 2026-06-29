@@ -100,6 +100,8 @@ function get_back_url(){
 		$parsed = parse_url($back_url);
 		if (isset($parsed['scheme']) && !in_array(strtolower($parsed['scheme']), ['http', 'https'])) {
 			$back_url = '/';
+		} elseif (isset($parsed['host']) && $parsed['host'] !== $_SERVER['HTTP_HOST']) {
+			$back_url = '/';
 		}
 	} else {
 		$back_url = '/';

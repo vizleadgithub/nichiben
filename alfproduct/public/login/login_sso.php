@@ -69,8 +69,9 @@ if (isset($_SESSION['user']['token_id']) && isset($_SESSION['user']['login_resul
 		//} else {
 		//	header("Location: /");
 		//} 
-                if( isset($_GET["burl"]) && trim($_GET["burl"])!="" ){
-			header("Location: ".$_GET["burl"]);
+		$burl = isset($_GET["burl"]) ? trim($_GET["burl"]) : "";
+                if( $burl !== "" && substr($burl, 0, 1) === '/' && substr($burl, 0, 2) !== '//' ){
+			header("Location: ".$burl);
                 } else {
 			header("Location: /");
 		}

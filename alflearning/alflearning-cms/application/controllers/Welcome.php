@@ -20,23 +20,6 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->database();
-
-		$query = $this->db->query("DESCRIBE ci_sessions");
-
-		foreach ($query->result() as $row) {
-			echo $row->Field . '<br>'; // カラム名を出力
-		}
-
-		$this->load->library('session');
-		$_SESSION["test"] = 1;
-
-		// セッションにデータをセット
-		$this->session->set_userdata('test_key', 'test_value');
-
-		// セッションからデータを取得
-		echo $this->session->userdata('test_key');
-
-		$this->load->view('welcome_message');
+		show_404();
 	}
 }

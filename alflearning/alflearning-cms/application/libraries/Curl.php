@@ -329,25 +329,7 @@ class Curl {
 
 	public function debug()
 	{
-		echo "=============================================<br/>\n";
-		echo "<h2>CURL Test</h2>\n";
-		echo "=============================================<br/>\n";
-		echo "<h3>Response</h3>\n";
-		echo "<code>" . nl2br(htmlentities($this->response)) . "</code><br/>\n\n";
-
-		if ($this->error_string)
-		{
-			echo "=============================================<br/>\n";
-			echo "<h3>Errors</h3>";
-			echo "<strong>Code:</strong> " . $this->error_code . "<br/>\n";
-			echo "<strong>Message:</strong> " . $this->error_string . "<br/>\n";
-		}
-
-		echo "=============================================<br/>\n";
-		echo "<h3>Info</h3>";
-		echo "<pre>";
-		print_r($this->info);
-		echo "</pre>";
+		// デバッグ出力は本番環境では無効
 	}
 
 	public function debug_request()
