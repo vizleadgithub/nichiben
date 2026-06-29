@@ -240,7 +240,7 @@
 						<div style="float:right;text-align:right;display:inline-block;width:180px;">
 							<!--{if $row.favorite_flg}-->
 								<form name="favoriteForm" id="favoriteForm<!--{$row.product_id|escape}-->">
-									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
+									<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 									<input type="hidden" name="act" value="regist" />
 									<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 									<button type="button" style="border: none; background: none; padding: 0;cursor: pointer;" onclick="favoriteForm<!--{$row.product_id|escape}-->()">
@@ -336,7 +336,7 @@
 						<div style="float:right;text-align:right;display:inline-block;width:180px;">
 							<!--{if $row.favorite_flg}-->
 								<form name="favoriteForm" id="favoriteForm<!--{$row.product_id|escape}-->">
-									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
+									<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 									<input type="hidden" name="act" value="regist" />
 									<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 									<button type="button" style="border: none; background: none; padding: 0;cursor: pointer;" onclick="favoriteForm<!--{$row.product_id|escape}-->()">

@@ -134,7 +134,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 } else {
 	//print("<!--[".$_SERVER["REQUEST_METHOD"]."]-->\n");
 	//$msg_flg  = true;
-	$disp_flg = false;
+	$disp_flg = true;
 
 	$search_type = $_GET["search_type"];
 	$search_category = array_filter( explode(  "|",  trim($_GET["search_category"])  ), 'strlen' );

@@ -1,4 +1,4 @@
-<!--{include file='mypage/side_menu.tpl'}-->
+﻿<!--{include file='mypage/side_menu.tpl'}-->
 
 <div style="float:right;width:730px;border: none;font-size:15px;margin-bottom:10px;">
 	<div style="float:left;margin-right:2px;color:#5E4D34;"><a href="/" style="color:#5E4D34">TOP</a></div>
@@ -59,7 +59,7 @@
 								</script>
 								<div id="download_div">
 									<form name="downloadForm" action="receipt_download.php?oid=<!--{$arr_buy.order_id|escape}-->" method="post">
-									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
+									<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 									宛名：<input type="text" id="atena" name="atena" size="28" />
 									<a id="download_btn" href="javascript: void(0);" onclick="non_download();" ><img src="/img/mypage/issue_btn.png" style="vertical-align:middle;"></a>
 									</form>
