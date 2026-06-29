@@ -496,7 +496,7 @@
 <!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 <!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 <form name="search_form" method="post" action="index.php?search=new#main">
-	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+	<input type="hidden" name="csrf_token" value="<!--{php}-->echo htmlspecialchars(csrf_token_get(), ENT_QUOTES, 'UTF-8');<!--{/php}-->" />
 
 	<div style="border: solid 1px #a1c873;padding: 1px;">
 		<table style="width:100%;background-color: #ffffff;" class="member_table">

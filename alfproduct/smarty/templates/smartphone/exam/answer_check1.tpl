@@ -53,7 +53,7 @@ margin-left:336px;
 			<!--{foreach name=loop from=$arr_list.problem item="row" key="key"}-->
 			<!--{assign var=row_no value=$smarty.foreach.loop.iteration}-->
 			<!--{if $row_no==$eno}-->
-				<!--{$row.exam_problem_name}-->
+				<!--{$row.exam_problem_name|escape}-->
 			<!--{/if}-->
 			<!--{/foreach}-->
 			
@@ -61,7 +61,7 @@ margin-left:336px;
 				<!--{foreach name=loop_q from=$arr_list_q.problem item="row_q" key="key_q"}-->
 				<!--{assign var=row_no_q value=$smarty.foreach.loop_q.iteration}-->
 				<!--{if $row_no_q==($eno-$eno_max_test)}-->
-					<!--{$row_q.exam_problem_name}-->
+					<!--{$row_q.exam_problem_name|escape}-->
 				<!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
@@ -88,7 +88,7 @@ margin-left:336px;
 							<!--{foreach name=loop1 from=$row.answer_contents_select.answer_contents item="row1" key="key1"}-->
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
-									<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled <!--{if isset($answered_info) && isset($answered_info[$row.exam_problem_id].exam_answer_contents) && $row1.no==$answered_info[$row.exam_problem_id].exam_answer_contents[0]}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
+									<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled <!--{if isset($answered_info) && isset($answered_info[$row.exam_problem_id].exam_answer_contents) && $row1.no==$answered_info[$row.exam_problem_id].exam_answer_contents[0]|escape}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
 									<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
@@ -107,7 +107,7 @@ margin-left:336px;
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row.exam_problem_id].exam_answer_contents[0]}--></textarea></div>
+							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row.exam_problem_id].exam_answer_contents[0]|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定
@@ -118,7 +118,7 @@ margin-left:336px;
 						<div class="problem_contents problem_result">
 							<div><!--{if $answered_info[$row.exam_problem_id].exam_answer_mark==1}-->正解<!--{else}-->不正解<!--{/if}--></div>
 							<!--{if $answered_info[$row.exam_problem_id].exam_answer_mark==1 || !$hantei_ari}-->
-								<div>正解は「<!--{$answered_info[$row.exam_problem_id].correct_answer_str}-->」、あなたの解答は「<!--{$answered_info[$row.exam_problem_id].exam_answer_contents_str}-->」</div>
+								<div>正解は「<!--{$answered_info[$row.exam_problem_id].correct_answer_str|escape}-->」、あなたの解答は「<!--{$answered_info[$row.exam_problem_id].exam_answer_contents_str|escape}-->」</div>
 							<!--{/if}-->
 						</div>
 					<!--{/if}-->
@@ -153,7 +153,7 @@ margin-left:336px;
 								<!--{foreach name=loop1_q from=$row_q.answer_contents_select.answer_contents item="row1_q" key="key1_q"}-->
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<div class="problem_content">
-										<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled <!--{if isset($answered_info) && isset($answered_info[$row_q.exam_problem_id].exam_answer_contents) && $row1_q.no==$answered_info[$row_q.exam_problem_id].exam_answer_contents[0]}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
+										<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled <!--{if isset($answered_info) && isset($answered_info[$row_q.exam_problem_id].exam_answer_contents) && $row1_q.no==$answered_info[$row_q.exam_problem_id].exam_answer_contents[0]|escape}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
 										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|escape|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
@@ -172,7 +172,7 @@ margin-left:336px;
 								
 							<!--{* フリー解答 *}-->
 							<!--{elseif $row_q.answer_kind==3}-->
-								<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row_q.exam_problem_id].exam_answer_contents[0]}--></textarea></div>
+								<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row_q.exam_problem_id].exam_answer_contents[0]|escape}--></textarea></div>
 								
 							<!--{else}-->
 								未設定

@@ -12,7 +12,7 @@
 	</div>
 
 	<div style="float:left;width:680px;margin-left:25px;margin-top:20px;border: solid 1px #EDECE0;border-style: none none solid;">
-		<span style="font-size:20px;color:#5E4D34;font-weight: bold;"><!--{$smarty.session.user.name}-->　様</span>
+		<span style="font-size:20px;color:#5E4D34;font-weight: bold;"><!--{$smarty.session.user.name|escape}-->　様</span>
 
 		<div style="float:left;font-size:16px;line-height: 22px;color:#525252;width:650px;margin-left:15px;margin-top:20px;border: none;margin-bottom:20px;">
 			日弁連総合研修サイトマイページへようこそ。<br />
@@ -97,7 +97,7 @@
 					あなたの日弁連の倫理研修義務年度は
 				</div>
 				<div style="float:left;height:32px;padding-top: 7px;width:152px;background-image: url( /img/mypage/date_backpng.png );background-repeat : no-repeat;text-align:center;margin-right:15px;margin-left:15px;">
-					<span style="color:#F69F3E;font-weight: bold;"><!--{$smarty.session.user.bar_association_duty_year}-->度</span>
+					<span style="color:#F69F3E;font-weight: bold;"><!--{$smarty.session.user.bar_association_duty_year|escape}-->度</span>
 				</div>
 				<div style="float:left;height:32px;padding-top: 7px;">
 					です。

@@ -17,10 +17,10 @@
 				名<input type="text" name="name2" id="name2" value="<!--{$arr_input.name2|escape}-->" <!--{$name2_style}--> style="width:40%" /></td>
 			</tr></table>
 			<!--{if isset($err_msg.name1)}-->
-			<br /><span style="color:red;"><!--{$err_msg.name1}--></span>
+			<br /><span style="color:red;"><!--{$err_msg.name1|escape}--></span>
 			<!--{/if}-->
 			<!--{if isset($err_msg.name2)}-->
-			<br /><span style="color:red;"><!--{$err_msg.name2}--></span>
+			<br /><span style="color:red;"><!--{$err_msg.name2|escape}--></span>
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -36,10 +36,10 @@
 				メイ<input type="text" name="kana2" id="kana2" value="<!--{$arr_input.kana2|escape}-->" <!--{$kana2_style}--> style="width:40%" /></td>
 			</tr></table>
 			<!--{if isset($err_msg.kana1)}-->
-			<br /><span style="color:red;"><!--{$err_msg.kana1}--></span>
+			<br /><span style="color:red;"><!--{$err_msg.kana1|escape}--></span>
 			<!--{/if}-->
 			<!--{if isset($err_msg.kana2)}-->
-			<br /><span style="color:red;"><!--{$err_msg.kana2}--></span>
+			<br /><span style="color:red;"><!--{$err_msg.kana2|escape}--></span>
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -57,7 +57,7 @@
 				<a target="_blank" href="http://search.post.japanpost.jp/zipcode/" rel="noopener noreferrer"><span>郵便番号検索</span></a></td>
 			</tr></table>
 			<!--{if isset($err_msg.zip)}-->
-			<br /><span style="color:red;"><!--{$err_msg.zip}--></span>
+			<br /><span style="color:red;"><!--{$err_msg.zip|escape}--></span>
 			<!--{/if}-->
 			<a target="_blank" onclick="fnCallAddress('input_zip.php', 'zip1', 'zip2', 'pref_id' ); return false;" href="javascript:void(0);" rel="noopener noreferrer"><img width="120" height="24" alt="住所自動入力" src="/img/btn_zip.jpg" style="margin-top: 10px;"></a>
 			<span> 郵便番号を入力後、クリックしてください。</span>
@@ -128,7 +128,7 @@
 						<!--{/foreach}-->
 						</select>
 						<!--{if isset($err_msg.pref_id)}-->
-						<br /><span style="color:red;"><!--{$err_msg.pref_id}--></span>
+						<br /><span style="color:red;"><!--{$err_msg.pref_id|escape}--></span>
 						<!--{/if}-->
 					</td>
 				</tr><!--{*<tr>
@@ -136,7 +136,7 @@
 					<td>
 						<input type="text" name="address1" id="address1" value="<!--{$arr_input.address1|escape}-->" <!--{$address1_style}--> />
 						<!--{if isset($err_msg.address1)}-->
-						<br /><span style="color:red;"><!--{$err_msg.address1}--></span>
+						<br /><span style="color:red;"><!--{$err_msg.address1|escape}--></span>
 						<!--{/if}-->
 					</td>
 				</tr><tr>
@@ -144,7 +144,7 @@
 					<td>
 						<input type="text" name="address2" id="address2" value="<!--{$arr_input.address2|escape}-->" <!--{$address2_style}--> />
 						<!--{if isset($err_msg.address2)}-->
-						<br /><span style="color:red;"><!--{$err_msg.address2}--></span>
+						<br /><span style="color:red;"><!--{$err_msg.address2|escape}--></span>
 						<!--{/if}-->
 					</td>
 				</tr><tr>
@@ -152,7 +152,7 @@
 					<td>
 						<input type="text" name="address3" id="address3" value="<!--{$arr_input.address3|escape}-->" <!--{$address3_style}--> />
 						<!--{if isset($err_msg.address3)}-->
-						<br /><span style="color:red;"><!--{$err_msg.address3}--></span>
+						<br /><span style="color:red;"><!--{$err_msg.address3|escape}--></span>
 						<!--{/if}-->
 					</td>
 				</tr>*}--></table>
@@ -177,10 +177,10 @@
 				<td>
 					確認のため2度入力してください。
 					<!--{if isset($err_msg.email)}-->
-						<br /><span style="color:red;"><!--{$err_msg.email}--></span>
+						<br /><span style="color:red;"><!--{$err_msg.email|escape}--></span>
 					<!--{/if}-->
 					<!--{if isset($err_msg.email_conf)}-->
-						<br /><span style="color:red;"><!--{$err_msg.email_conf}--></span>
+						<br /><span style="color:red;"><!--{$err_msg.email_conf|escape}--></span>
 					<!--{/if}-->
 				</td>
 			</tr></table>
@@ -200,7 +200,7 @@
 				<td>
 					半角英数字4～10文字でお願いします。(記号不可)
 					<!--{if isset($err_msg.password)}-->
-					<br /><span style="color:red;"><!--{$err_msg.password}--></span>
+					<br /><span style="color:red;"><!--{$err_msg.password|escape}--></span>
 					<!--{/if}-->
 				</td>
 			</tr><tr>
@@ -211,7 +211,7 @@
 				<td>
 					確認のため2度入力してください。
 					<!--{if isset($err_msg.password_conf)}-->
-					<br /><span style="color:red;"><!--{$err_msg.password_conf}--></span>
+					<br /><span style="color:red;"><!--{$err_msg.password_conf|escape}--></span>
 					<!--{/if}-->
 				</td>
 			</tr></table>
@@ -233,7 +233,7 @@
 					<!--{/foreach}-->
 					</select>
 					<!--{if isset($err_msg.password_question)}-->
-					<br /><span style="color:red;"><!--{$err_msg.password_question}--></span>
+					<br /><span style="color:red;"><!--{$err_msg.password_question|escape}--></span>
 					<!--{/if}-->
 				</td>
 			</tr><tr>
@@ -241,7 +241,7 @@
 				<td>
 					<input type="text" name="password_answer" id="password_answer" value="<!--{$arr_input.password_answer|escape}-->" <!--{$password_answer_style}--> />
 					<!--{if isset($err_msg.password_answer)}-->
-					<br /><span style="color:red;"><!--{$err_msg.password_answer}--></span>
+					<br /><span style="color:red;"><!--{$err_msg.password_answer|escape}--></span>
 					<!--{/if}-->
 				</td>
 			</tr></table>
@@ -302,7 +302,7 @@
 			<!--{/foreach}-->
 			</select>
 			<!--{if isset($err_msg.age)}-->
-			<br /><span style="color:red;"><!--{$err_msg.age}--></span>
+			<br /><span style="color:red;"><!--{$err_msg.age|escape}--></span>
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -316,7 +316,7 @@
 			<!--{/foreach}-->
 			<!--{if isset($err_msg.gender)}-->
 			<!--{assign var=gender_style value=$err_style}-->
-			<br /><span style="color:red;"><!--{$err_msg.gender}--></span>
+			<br /><span style="color:red;"><!--{$err_msg.gender|escape}--></span>
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -390,7 +390,7 @@
 			<label <!--{$mail_magazine_flag_style}-->><input type="radio" name="mail_magazine_flag" value="0" <!--{if $arr_input.mail_magazine_flag=="0" && $arr_input.mail_magazine_flag!=""}-->checked<!--{/if}--> />受け取らない</label>
 			<!--{if isset($err_msg.mail_magazine_flag)}-->
 			<!--{assign var=gender_style value=$err_style}-->
-			<br /><span style="color:red;"><!--{$err_msg.mail_magazine_flag}--></span>
+			<br /><span style="color:red;"><!--{$err_msg.mail_magazine_flag|escape}--></span>
 			<!--{/if}-->
 		</td>
 	</tr>

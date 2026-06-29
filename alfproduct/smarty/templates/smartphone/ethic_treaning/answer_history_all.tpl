@@ -31,12 +31,12 @@
 				設問【<!--{$item.question_no|escape|string_format:"%02d"}-->】
 				回答日：<!--{$history_answer.$answer_date|escape}-->
 			</div>
-			<!--{$item.question}-->
+			<!--{$item.question|escape}-->
 			<!--{if $item.reference!=''}-->
 				<p>
 				</p>
 				<p>
-					<!--{$item.reference}-->
+					<!--{$item.reference|escape}-->
 				</p>
 			<!--{/if}-->
 		</div>

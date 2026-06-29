@@ -30,7 +30,7 @@ function searchButton(formAct){
 <h2>商品の内容を確認</h2>
 
 <form name="form1" action="#" method="post">
-<input type="hidden" name="mid" id="mid" value="<!--{$mid}-->" />
+<input type="hidden" name="mid" id="mid" value="<!--{$mid|escape}-->" />
 <input type="hidden" name="act" id="act" value="" />
 <!--{foreach from=$arr_input item=item key=key}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
@@ -53,7 +53,7 @@ function searchButton(formAct){
 	<tr>
 		<th style="vertical-align:middle;width:200px;">研修種別</th>
 		<td>
-			<!--{$mtb_live_training_type[$arr_input.training_kind_flg]}-->
+			<!--{$mtb_live_training_type[$arr_input.training_kind_flg]|escape}-->
 		</td>
 	</tr>
 	<tr>
@@ -109,7 +109,7 @@ function searchButton(formAct){
 	<tr>
 		<th style="vertical-align:middle;">受講対象者</th>
 		<td>
-			<!--{$mtb_live_target_flg[$arr_input.target_flg]}-->
+			<!--{$mtb_live_target_flg[$arr_input.target_flg]|escape}-->
 		</td>
 	</tr>
 	<tr>

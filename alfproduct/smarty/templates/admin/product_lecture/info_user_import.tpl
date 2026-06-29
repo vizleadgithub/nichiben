@@ -153,7 +153,7 @@ function formSubmit(formName, mode){
 <input type="hidden" name="aid" value="<!--{$aid}-->">
 <input type="hidden" name="atype" value="<!--{$atype}-->">
 <input type="hidden" name="oid" value="<!--{$oid}-->">
-<input type="hidden" name="ufnn" value="<!--{$upload_file_new_name}-->">
+<input type="hidden" name="ufnn" value="<!--{$upload_file_new_name|escape}-->">
 	<table class="list">
 		<tr>
 			<th>登録番号</th>

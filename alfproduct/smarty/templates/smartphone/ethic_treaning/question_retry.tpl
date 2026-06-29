@@ -17,7 +17,7 @@
 		<!--{if $answer_btn_disp_flg}-->
 			<div style="float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border: none;margin-bottom:20px;">
 				<div style="width:100%;border-bottom:solid 1px #000000;">設問</div>
-				<!--{$question}-->
+				<!--{$question|escape}-->
 			</div>
 
 
@@ -30,7 +30,7 @@
 					</div>
 					<!--{if $reference!=''}-->
 						<div style="width:100%;padding-top:10px;">
-							<!--{$reference}-->
+							<!--{$reference|escape}-->
 						</div>
 					<!--{/if}-->
 					<ul style="text-align:center;padding:20px;list-style:none;padding-left:280px;">

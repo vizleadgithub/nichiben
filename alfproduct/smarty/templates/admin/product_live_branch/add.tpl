@@ -41,7 +41,7 @@ function formSubmit(formName, formAction, formAct){
 	<tr>
 		<th style="vertical-align:middle;width:200px;">研修種別</th>
 		<td colspan = "3">
-			<!--{$mtb_live_training_type[$arr_input.training_kind_flg]}-->
+			<!--{$mtb_live_training_type[$arr_input.training_kind_flg]|escape}-->
 			<input type="hidden" name="training_kind_flg" id="training_kind_flg" value="<!--{$arr_input.training_kind_flg|escape}-->" />
 		</td>
 	</tr>
@@ -129,7 +129,7 @@ function formSubmit(formName, formAction, formAct){
 	<tr>
 		<th style="vertical-align:middle;">受講対象者</th>
 		<td colapan="3">
-			<!--{$mtb_live_target_flg[$arr_input.target_flg]}-->
+			<!--{$mtb_live_target_flg[$arr_input.target_flg]|escape}-->
 			<input type="hidden" name="target_flg" id="target_flg" value="<!--{$arr_input.target_flg|escape}-->" />
 		</td>
 	</tr>
@@ -273,7 +273,7 @@ function formSubmit(formName, formAction, formAct){
 	<!--{foreach from=$arr_bar_association key=bar_association_id item=val}-->
 		<!--{if $bar_association_id == $login_bar_association_id}-->
 			<tr>
-				<td colspan="4" class="bar_association_title"><!--{$val.name}--></td>
+				<td colspan="4" class="bar_association_title"><!--{$val.name|escape}--></td>
 			</tr>
 			<!--{foreach from=$val.branch_info item=branch}-->
 			<!--{assign var=branch_id value=$branch.id}-->
@@ -287,7 +287,7 @@ function formSubmit(formName, formAction, formAct){
 			<!--{assign var=entry_number value='entry_number'|cat:$branch_id}-->
 			<tr>
 				<td>
-					<!--{$branch.name}-->
+					<!--{$branch.name|escape}-->
 				</td>
 				<td>
 					定員<span style="color:red;">※</span>：<input type="text" name="<!--{$capacity}-->" value="<!--{$arr_input.$capacity|escape}-->" maxlength="4"/><br />

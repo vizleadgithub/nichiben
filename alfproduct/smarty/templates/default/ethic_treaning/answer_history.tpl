@@ -19,12 +19,12 @@
 				設問【<!--{$question_no|escape|string_format:"%02d"}-->】
 				回答日：<!--{$history_answer.answer_date|escape}-->
 			</div>
-			<!--{$question}-->
+			<!--{$question|escape}-->
 			<!--{if $reference!=''}-->
 				<p>
 				</p>
 				<p>
-					<!--{$reference}-->
+					<!--{$reference|escape}-->
 				</p>
 			<!--{/if}-->
 		</div>

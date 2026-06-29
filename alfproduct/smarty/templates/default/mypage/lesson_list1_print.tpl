@@ -4,8 +4,8 @@
 	<!--{foreach from=$arr_list item=val}-->
 	<table class="print_table">
 		<tr class="table_row"><td class="table_name2" colspan="2"><b>受講履歴（eラーニング）</b></td></tr>
-		<tr class="table_row"><td class="table_name">登録番号</td><td class="table_value"><!--{$student_info.lawyer_number}--></td></tr>
-		<tr class="table_row"><td class="table_name">氏名</td><td class="table_value"><!--{$student_info.student_name}--></td></tr>
+		<tr class="table_row"><td class="table_name">登録番号</td><td class="table_value"><!--{$student_info.lawyer_number|escape}--></td></tr>
+		<tr class="table_row"><td class="table_name">氏名</td><td class="table_value"><!--{$student_info.student_name|escape}--></td></tr>
 		<tr class="table_row"><td class="table_name">講座名</td><td class="table_value"><!--{if $val.product_name_TOD!=''}--><!--{$val.product_name_TOD|escape}--><!--{elseif $val.product_name_TP!=''}--><!--{$val.product_name_TP|escape}--><!--{else}-->掲載終了しました。<!--{/if}--></td></tr>
 
 		<tr class="table_row"><td class="table_name2" colspan="2">受講状況</td></tr>

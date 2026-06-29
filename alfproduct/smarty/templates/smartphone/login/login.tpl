@@ -12,7 +12,7 @@
 		<input type="hidden" name="act" value="execute" />
 		<table>
 			<tr>
-				<th>メールアドレス</th><td><input type="text" name="email" value="<!--{if isset($smarty.cookies.login_email)}--><!--{$smarty.cookies.login_email}--><!--{/if}-->" /></td>
+				<th>メールアドレス</th><td><input type="text" name="email" value="<!--{if isset($smarty.cookies.login_email)}--><!--{$smarty.cookies.login_email|escape}--><!--{/if}-->" /></td>
 			</tr>
 			<tr>
 				<th>パスワード</th><td><input type="password" name="password" /></td>

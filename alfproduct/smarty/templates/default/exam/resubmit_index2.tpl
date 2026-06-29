@@ -81,7 +81,7 @@ function examFormSubmit(flg){
 			<!--{foreach name=loop from=$arr_list.problem item="row" key="key"}-->
 			<!--{assign var=row_no value=$smarty.foreach.loop.iteration}-->
 			<!--{if $row_no==$eno}-->
-				<!--{$row.exam_problem_name}-->
+				<!--{$row.exam_problem_name|escape}-->
 			<!--{/if}-->
 			<!--{/foreach}-->
 			
@@ -89,7 +89,7 @@ function examFormSubmit(flg){
 				<!--{foreach name=loop_q from=$arr_list_q.problem item="row_q" key="key_q"}-->
 				<!--{assign var=row_no_q value=$smarty.foreach.loop_q.iteration}-->
 				<!--{if $row_no_q==($eno-$eno_max_test)}-->
-					<!--{$row_q.exam_problem_name}-->
+					<!--{$row_q.exam_problem_name|escape}-->
 				<!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->

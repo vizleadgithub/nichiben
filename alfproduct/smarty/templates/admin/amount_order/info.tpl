@@ -76,7 +76,7 @@
 <script type="text/javascript">
 	function non_download() {
 		var atena = document.getElementById("atena").value;
-		if (confirm("宛名は、以下のように発行されます。\n\n" + atena + "\n<!--{$arr_order[0].student_name|escape}--> 様\n\n発行しても宜しいですか？")){
+		if (confirm("宛名は、以下のように発行されます。\n\n" + atena + "\n<!--{$arr_order[0].student_name|escape:'javascript'}--> 様\n\n発行しても宜しいですか？")){
 			document.getElementById('download_btn').disabled = true;
 			window.document.downloadForm.submit();
 		}

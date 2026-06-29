@@ -74,7 +74,7 @@ function examFormSubmit(flg){
 </script>
 
 <form name="examForm" action="#" method="post">
-<input type="hidden" name="eflg" value="<!--{$eflg}-->">
+<input type="hidden" name="eflg" value="<!--{$eflg|escape}-->">
 <input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <div style="float:right;width:980px;border: solid 1px #EDECE0;background-color:#FFFFFF;">
 	<div style="float:left;width:940px;height:36px;background-image: url( /img/lecture/h2_back.png );margin-left:10px;margin-top:20px;">
@@ -82,7 +82,7 @@ function examFormSubmit(flg){
 			<!--{foreach name=loop from=$arr_list.problem item="row" key="key"}-->
 			<!--{assign var=row_no value=$smarty.foreach.loop.iteration}-->
 			<!--{if $row_no==$eno}-->
-				<!--{$row.exam_problem_name}-->
+				<!--{$row.exam_problem_name|escape}-->
 			<!--{/if}-->
 			<!--{/foreach}-->
 			
@@ -90,7 +90,7 @@ function examFormSubmit(flg){
 				<!--{foreach name=loop_q from=$arr_list_q.problem item="row_q" key="key_q"}-->
 				<!--{assign var=row_no_q value=$smarty.foreach.loop_q.iteration}-->
 				<!--{if $row_no_q==($eno-$eno_max_test)}-->
-					<!--{$row_q.exam_problem_name}-->
+					<!--{$row_q.exam_problem_name|escape}-->
 				<!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->

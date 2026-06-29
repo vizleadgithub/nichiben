@@ -12,9 +12,9 @@
 	<table class="form">
 		<!--{if $mid!=""}-->
 		<tr>
-			<input type="hidden" name="mid" value="<!--{$mid}-->">
+			<input type="hidden" name="mid" value="<!--{$mid|escape}-->">
 			<th style="">ID</th>
-			<td style=""><!--{$mid}--></td>
+			<td style=""><!--{$mid|escape}--></td>
 		</tr>
 		<!--{/if}-->
 		<tr>
@@ -27,10 +27,10 @@
 		<tr>
 			<th style="">登録年</th>
 			<td style="">
-				<input type="text" name="start_regist_date" id="start_date" value="<!--{$start_regist_date}-->" readonly="" /> 
+				<input type="text" name="start_regist_date" id="start_date" value="<!--{$start_regist_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.mailmagazine_form.start_regist_date.value='';">クリア</a>
 				～
-				<input type="text" name="end_regist_date" id="end_date" value="<!--{$end_regist_date}-->" readonly="" /> 
+				<input type="text" name="end_regist_date" id="end_date" value="<!--{$end_regist_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.mailmagazine_form.end_regist_date.value='';">クリア</a>
 			</td>
 		</tr>
@@ -163,7 +163,7 @@
 		<tr>
 			<th style="background: none repeat scroll 0% 0% rgb(246, 246, 243);">配信日時</th>
 			<td style="background: none repeat scroll 0% 0% rgb(246, 246, 243);">
-				<input type="text" name="submit_datetime" id="submit_datetime" value="<!--{$submit_datetime}-->" readonly="" /> 
+				<input type="text" name="submit_datetime" id="submit_datetime" value="<!--{$submit_datetime|escape}-->" readonly="" /> 
 			</td>
 		</tr>
 		<tr>

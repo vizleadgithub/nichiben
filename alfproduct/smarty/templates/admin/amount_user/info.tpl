@@ -1,7 +1,7 @@
 <h2></h2>
 
 <form accept-charset="utf-8" method="post" name="search_form">
-	<input type="hidden" name="sid" value="<!--{$sid}-->">
+	<input type="hidden" name="sid" value="<!--{$sid|escape}-->">
 	<input type="hidden" name="search_orderby" value="">
 	<table class="form">
 		<tr>
@@ -34,7 +34,7 @@
 </form>
 <br />
 
-<a href="csv.php?sid=<!--{$sid}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
+<a href="csv.php?sid=<!--{$sid|escape}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
 <table class="list">
 	<form accept-charset="utf-8" method="get" name="list_form">
 	</form>

@@ -240,7 +240,7 @@
 						<div style="float:right;text-align:right;display:inline-block;width:180px;">
 							<!--{if $row.favorite_flg}-->
 								<form name="favoriteForm" action="/mypage/favorite.php" method="post">
-									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
+									<input type="hidden" name="csrf_token" value="<!--{php}-->echo htmlspecialchars(csrf_token_get(), ENT_QUOTES, 'UTF-8');<!--{/php}-->" />
 									<input type="hidden" name="act" value="regist" />
 									<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 									<input type="image" src="/img/list/favorite_btn.png" />
@@ -319,7 +319,7 @@
 						<div style="float:right;text-align:right;display:inline-block;width:180px;">
 							<!--{if $row.favorite_flg}-->
 								<form name="favoriteForm" action="/mypage/favorite.php" method="post">
-									<input type="hidden" name="csrf_token" value="<!--{|escape}-->" />
+									<input type="hidden" name="csrf_token" value="<!--{php}-->echo htmlspecialchars(csrf_token_get(), ENT_QUOTES, 'UTF-8');<!--{/php}-->" />
 									<input type="hidden" name="act" value="regist" />
 									<input type="hidden" name="pid" value="<!--{$row.product_id|escape}-->" />
 									<input type="image" src="/img/list/favorite_btn.png" />
@@ -462,7 +462,7 @@
 <!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 <!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 <form name="search_form" method="post" action="index.php?search=new#main">
-<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+<input type="hidden" name="csrf_token" value="<!--{php}-->echo htmlspecialchars(csrf_token_get(), ENT_QUOTES, 'UTF-8');<!--{/php}-->" />
 
 
 	<div style="border: solid 1px #a1c873;padding: 1px;">

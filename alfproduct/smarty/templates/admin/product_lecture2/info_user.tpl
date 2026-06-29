@@ -94,7 +94,7 @@ function formSubmitStatus(formName, mode, pid, aid, odid, flg){
 		<tr>
 			<th>研修名</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.product_name}-->
+				<!--{$arr_input_2.product_name|escape}-->
 			</td>
 		</tr>
 	</table>

@@ -16,12 +16,12 @@
 	<div style="float:left;width:910px;margin-left:25px;margin-top:20px;border: solid 1px #EDECE0;border-style: none none solid;">
 		<div style="float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border: none;margin-bottom:20px;">
 			<div style="width:100%;border-bottom:solid 1px #000000;">設問【<!--{$question_no|escape|string_format:"%02d"}-->】</div>
-			<!--{$question}-->
+			<!--{$question|escape}-->
 			<!--{if $reference!=''}-->
 				<p>
 				</p>
 				<p>
-					<!--{$reference}-->
+					<!--{$reference|escape}-->
 				</p>
 			<!--{/if}-->
 		</div>

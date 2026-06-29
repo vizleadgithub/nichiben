@@ -51,7 +51,7 @@ function searchButton(formAct){
 	<tr>
 		<th style="vertical-align:middle;width:200px;">研修種別</th>
 		<td>
-			<!--{$mtb_live_training_type[$arr_input.training_kind_flg]}-->
+			<!--{$mtb_live_training_type[$arr_input.training_kind_flg]|escape}-->
 		</td>
 	</tr>
 	<tr>
@@ -107,7 +107,7 @@ function searchButton(formAct){
 	<tr>
 		<th style="vertical-align:middle;">受講対象者</th>
 		<td>
-			<!--{$mtb_live_target_flg[$arr_input.target_flg]}-->
+			<!--{$mtb_live_target_flg[$arr_input.target_flg]|escape}-->
 		</td>
 	</tr>
 	<tr>

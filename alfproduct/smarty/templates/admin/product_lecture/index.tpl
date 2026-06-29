@@ -242,7 +242,7 @@
 		<!--{/foreach}-->
 		</td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->">
-			<!--{$row.branch_list}-->
+			<!--{$row.branch_list|escape}-->
 		</td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->">
 			<!--{foreach from=$row.bar_association item="row2"}-->

@@ -72,19 +72,17 @@ $search_end_contents_date = "";
 
 $pagemax = 5;
 
-if( isset($_GET["search"]) && $_GET["search"]=="new" ){
-	$disp_flg = true;
-} else {
-}
-
 //$msg_flg  = false; // メッセージの表示フラグ
 $disp_flg = false; // 初回表示フラグ
+
+if( isset($_GET["search"]) && $_GET["search"]=="new" ){
+	$disp_flg = true;
+}
 
 //var_dump($_SERVER["REQUEST_METHOD"]);
 
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	csrf_token_verify();
 	//print("<!--[".$_SERVER["REQUEST_METHOD"]."]-->\n");
 	//$msg_flg  = true;
 	$disp_flg = true;

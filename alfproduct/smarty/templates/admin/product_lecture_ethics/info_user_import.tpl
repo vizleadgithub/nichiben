@@ -84,7 +84,7 @@ function formSubmit(formName, mode){
 <form action="info_user_import.php" accept-charset="utf-8" method="post" name="list_form">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="pid" value="<!--{$pid|escape}-->">
-<input type="hidden" name="ufnn" value="<!--{$upload_file_new_name}-->">
+<input type="hidden" name="ufnn" value="<!--{$upload_file_new_name|escape}-->">
 	<table class="list">
 		<tr>
 			<th>登録番号</th>

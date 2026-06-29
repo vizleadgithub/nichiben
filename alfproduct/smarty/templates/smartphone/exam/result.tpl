@@ -95,7 +95,7 @@ function examFormSubmit(flg){
 			<!--{assign var=row_no value=$smarty.foreach.loop.iteration}-->
 				<div class="problem">
 					<div class="problem_title">
-						●設問<!--{$row_no}-->　<!--{$row.exam_problem_name}-->
+						●設問<!--{$row_no}-->　<!--{$row.exam_problem_name|escape}-->
 					</div>
 					<div class="problem_contents">
 						<!--{$row.problem_contents|escape|nl2br}-->
@@ -170,7 +170,7 @@ function examFormSubmit(flg){
 			<!--{assign var=row_no_q value=$smarty.foreach.loop_q.iteration}-->
 				<div class="problem">
 					<div class="problem_title">
-						●設問<!--{$row_no_q+$row_no}-->　<!--{$row_q.exam_problem_name}-->
+						●設問<!--{$row_no_q+$row_no}-->　<!--{$row_q.exam_problem_name|escape}-->
 					</div>
 					<div class="problem_contents">
 						<!--{$row_q.problem_contents|escape|nl2br}-->

@@ -22,7 +22,7 @@ function exam2Button(formAct){
 
 <form name="form1" action="#" method="post">
 	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
-	<input type="hidden" name="mid" id="mid" value="<!--{$mid}-->" />
+	<input type="hidden" name="mid" id="mid" value="<!--{$mid|escape}-->" />
 	<input type="hidden" name="act" id="act" value="" />
 
 	<!--{foreach from=$arr_input item=item key=key}-->
@@ -296,7 +296,7 @@ function exam2Button(formAct){
 		<td>
 			<!--{if $arr_input.product_flg != ""}-->
 			<!--{foreach from=$arr_input.product_flg item="val"}-->
-				・<!--{$arr_product_flg.$val}--><br />
+				・<!--{$arr_product_flg.$val|escape}--><br />
 			<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -306,7 +306,7 @@ function exam2Button(formAct){
 		<td>
 			<!--{if $arr_input.product_disp_warning_word != ""}-->
 			<!--{foreach from=$arr_input.product_disp_warning_word item="val"}-->
-				・<!--{$arr_product_disp_warning_word.$val}--><br />
+				・<!--{$arr_product_disp_warning_word.$val|escape}--><br />
 			<!--{/foreach}-->
 			<!--{/if}-->
 		</td>

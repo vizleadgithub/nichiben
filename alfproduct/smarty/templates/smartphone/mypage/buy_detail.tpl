@@ -50,7 +50,7 @@
 								<script type="text/javascript">
 									function non_download() {
 										var atena = document.getElementById("atena").value;
-										if (confirm("宛名は、以下のように発行されます。\n\n" + atena + "\n<!--{$smarty.session.user.name}--> 様\n\n発行しても宜しいですか？")){
+										if (confirm("宛名は、以下のように発行されます。\n\n" + atena + "\n<!--{$smarty.session.user.name|escape:'javascript'}--> 様\n\n発行しても宜しいですか？")){
 											document.getElementById('download_btn').disabled = true;
 											window.document.downloadForm.submit();
 											document.getElementById('download_div').innerHTML = '<img src="/img/mypage/issue_btn_comp.png" alt="発行済" />';

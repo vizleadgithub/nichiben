@@ -118,7 +118,7 @@ function formSubmitFpFix(formName, mode, pid, aid){
 		<tr>
 			<th>研修実施日</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.dates}-->
+				<!--{$arr_input_2.dates|escape}-->
 			</td>
 		</tr>
 		<tr>

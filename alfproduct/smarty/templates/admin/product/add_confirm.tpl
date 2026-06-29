@@ -296,7 +296,7 @@ function searchButton(formAct){
 		<td>
 			<!--{if $arr_input.product_flg != ""}-->
 			<!--{foreach from=$arr_input.product_flg item="val"}-->
-				・<!--{$arr_product_flg.$val}--><br />
+				・<!--{$arr_product_flg.$val|escape}--><br />
 			<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -306,7 +306,7 @@ function searchButton(formAct){
 		<td>
 			<!--{if $arr_input.product_disp_warning_word != ""}-->
 			<!--{foreach from=$arr_input.product_disp_warning_word item="val"}-->
-				・<!--{$arr_product_disp_warning_word.$val}--><br />
+				・<!--{$arr_product_disp_warning_word.$val|escape}--><br />
 			<!--{/foreach}-->
 			<!--{/if}-->
 		</td>

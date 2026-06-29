@@ -42,7 +42,7 @@ function formSubmit(formName, mode){
 		<tr>
 			<th>研修名</th>
 			<td style="width:70%">
-				<!--{$arr_input_2.product_name}-->
+				<!--{$arr_input_2.product_name|escape}-->
 			</td>
 		</tr>
 	</table>
@@ -112,7 +112,7 @@ function formSubmit(formName, mode){
 <input type="hidden" name="aid" value="<!--{$aid}-->">
 <input type="hidden" name="atype" value="<!--{$atype}-->">
 <input type="hidden" name="oid" value="<!--{$oid}-->">
-<input type="hidden" name="ufnn" value="<!--{$upload_file_new_name}-->">
+<input type="hidden" name="ufnn" value="<!--{$upload_file_new_name|escape}-->">
 	<table class="list">
 		<tr>
 			<th>登録番号</th>
@@ -126,9 +126,9 @@ function formSubmit(formName, mode){
 		<!--{foreach from=$arr_list item="row"}-->
 		<!--{cycle values="0,1" assign="cycle_bg"}-->
 		<tr style="">
-			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.lawyer_number}--></td>
-			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_name}--></td>
-			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.bar_association_name}--></td>
+			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.lawyer_number|escape}--></td>
+			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_name|escape}--></td>
+			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.bar_association_name|escape}--></td>
 			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.entry_date}--></td>
 			<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.take_date}--></td>
 		</tr>
@@ -141,7 +141,7 @@ function formSubmit(formName, mode){
 
 <!--{if $res_msg != ""}-->
 <div>
-	<!--{$res_msg}-->
+	<!--{$res_msg|escape}-->
 </div>
 <!--{/if}-->
 

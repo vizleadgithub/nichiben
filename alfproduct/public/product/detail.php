@@ -1,9 +1,4 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('HTTP/1.1 405 Method Not Allowed');
-    header('Allow: POST');
-    exit;
-}
 $debag = false;
 header('Etag: ' . date("YmdHis"));
 header('Expires: Sun, 26 Nov 2000 00:00:00 GMT');
@@ -46,7 +41,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
-csrf_token_verify();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { csrf_token_verify(); }
 $_SESSION['wp_page_head_title'] = '講座詳細';
 $objDbConnect = new DbConnect();
 $template = new Template();

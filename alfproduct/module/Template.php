@@ -71,6 +71,7 @@ class Template extends Smarty {
 
 		$this->left_delimiter  =  '<!--{';
 		$this->right_delimiter =  '}-->';
+		$this->compile_check   =  true;
 
 		//テンプレート側でデフォルトで使いたい変数の設定
 		//$this->assign('SYS_NAME',SYS_NAME);

@@ -77,7 +77,7 @@
 								<!--{if $val.payment_status == 2}-->
 									<script type="text/javascript">
 										function non_download<!--{$val.order_id|escape}-->() {
-											if (confirm("宛名を指定して発行したい場合は、詳細ページから発行してください。\n\nこのページから発行した場合、宛名は「<!--{$smarty.session.user.name}--> 様」となります。\n\nこのまま発行しても宜しいですか？")){
+											if (confirm("宛名を指定して発行したい場合は、詳細ページから発行してください。\n\nこのページから発行した場合、宛名は「<!--{$smarty.session.user.name|escape:'javascript'}--> 様」となります。\n\nこのまま発行しても宜しいですか？")){
 												document.getElementById('download_btn<!--{$val.order_id|escape}-->').disabled = true;
 												document.getElementById('download_div<!--{$val.order_id|escape}-->').innerHTML = '<img src="/img/mypage/issue_btn_comp.png">';
 												window.open("receipt_download.php?oid=<!--{$val.order_id|escape}-->", "", "width=10,height=10");

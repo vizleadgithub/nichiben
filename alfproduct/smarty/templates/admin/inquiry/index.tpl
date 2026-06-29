@@ -9,10 +9,10 @@
 		<tr>
 			<th>投稿日時</th>
 			<td>
-				<input type="text" name="search_start_date" id="start_date" value="<!--{$search_start_date}-->" readonly="" /> 
+				<input type="text" name="search_start_date" id="start_date" value="<!--{$search_start_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.start_date.value='';">クリア</a>
 				～
-				<input type="text" name="search_end_date" id="end_date" value="<!--{$search_end_date}-->" readonly="" /> 
+				<input type="text" name="search_end_date" id="end_date" value="<!--{$search_end_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.end_date.value='';">クリア</a>
 			</td>
 		</tr>

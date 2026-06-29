@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ja">
 <head>
-	<title><!--{$html_head_title}--> | <!--{php}-->bloginfo( 'name' );<!--{/php}--></title>
+	<title><!--{$html_head_title|escape}--> | <!--{php}-->bloginfo( 'name' );<!--{/php}--></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta charset="UTF-8" />

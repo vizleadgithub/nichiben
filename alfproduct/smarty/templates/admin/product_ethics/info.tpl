@@ -257,7 +257,7 @@ function searchButton(formAct){
 		<td>
 			<!--{if $arr_input.product_flg != ""}-->
 			<!--{foreach from=$arr_input.product_flg item="val"}-->
-				・<!--{$arr_product_flg.$val}--><br />
+				・<!--{$arr_product_flg.$val|escape}--><br />
 			<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -284,7 +284,7 @@ function searchButton(formAct){
 	<tr>
 		<th style="vertical-align:middle;">倫理研修問題</th>
 		<td>
-			<!--{$ethic_group[$arr_input.ethic_group_id]}-->
+			<!--{$ethic_group[$arr_input.ethic_group_id]|escape}-->
 		</td>
 	</tr>
 

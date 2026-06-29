@@ -5,10 +5,10 @@
 		<tr>
 			<th>購入期間</th>
 			<td>
-				<input type="text" name="search_start_buy_date" id="start_date" value="<!--{$search_start_buy_date}-->" readonly="" /> 
+				<input type="text" name="search_start_buy_date" id="start_date" value="<!--{$search_start_buy_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.start_date.value='';">クリア</a>
 				～
-				<input type="text" name="search_end_buy_date" id="end_date" value="<!--{$search_end_buy_date}-->" readonly="" /> 
+				<input type="text" name="search_end_buy_date" id="end_date" value="<!--{$search_end_buy_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.end_date.value='';">クリア</a>
 			</td>
 		</tr>

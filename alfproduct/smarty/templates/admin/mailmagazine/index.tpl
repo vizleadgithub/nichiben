@@ -10,10 +10,10 @@
 		<tr>
 			<th style="background: none repeat scroll 0% 0% rgb(246, 246, 243);">配信日時</th>
 			<td style="background: none repeat scroll 0% 0% rgb(246, 246, 243);">
-				<input type="text" name="search_start_date" id="start_date" value="<!--{$search_start_date}-->" readonly="" /> 
+				<input type="text" name="search_start_date" id="start_date" value="<!--{$search_start_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.start_date.value='';">クリア</a>
 				～
-				<input type="text" name="search_end_date" id="end_date" value="<!--{$search_end_date}-->" readonly="" /> 
+				<input type="text" name="search_end_date" id="end_date" value="<!--{$search_end_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.end_date.value='';">クリア</a>
 			</td>
 		</tr>
@@ -26,10 +26,10 @@
 		<tr>
 			<th style="background: none repeat scroll 0% 0% rgb(246, 246, 243);">登録年</th>
 			<td style="background: none repeat scroll 0% 0% rgb(246, 246, 243);">
-				<input type="text" name="search_start_regist_date" id="search_start_regist_date" value="<!--{$search_start_regist_date}-->" readonly="" /> 
+				<input type="text" name="search_start_regist_date" id="search_start_regist_date" value="<!--{$search_start_regist_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.search_start_regist_date.value='';">クリア</a>
 				～
-				<input type="text" name="search_end_regist_date" id="search_end_regist_date" value="<!--{$search_end_regist_date}-->" readonly="" /> 
+				<input type="text" name="search_end_regist_date" id="search_end_regist_date" value="<!--{$search_end_regist_date|escape}-->" readonly="" /> 
 				<a class="clear_date" href="javascript:void(0);" onclick="javascript:document.search_form.search_end_regist_date.value='';">クリア</a>
 			</td>
 		</tr>

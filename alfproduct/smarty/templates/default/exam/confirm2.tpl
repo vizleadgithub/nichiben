@@ -143,7 +143,7 @@ function examFormSubmit(eid,pid,ccno){
 							<!--{if $row.answer_kind==1}-->
 								<!--{foreach name=loop1 from=$row.answer_contents_select.answer_contents item="row1" key="key1"}-->
 								<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
-									<!--{if $row1.no==$answered_info[$row.exam_problem_id].arr_exam_answer_contents[0]}-->
+									<!--{if $row1.no==$answered_info[$row.exam_problem_id].arr_exam_answer_contents[0]|escape}-->
 										<div class="problem_content">
 											<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled checked><!--{$row_no1}-->.</div>
 											<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
@@ -179,7 +179,7 @@ function examFormSubmit(eid,pid,ccno){
 								
 							<!--{* フリー解答 *}-->
 							<!--{elseif $row.answer_kind==3}-->
-								<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row.exam_problem_id].arr_exam_answer_contents[0]}--></textarea></div>
+								<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row.exam_problem_id].arr_exam_answer_contents[0]|escape}--></textarea></div>
 								
 							<!--{else}-->
 								未設定
@@ -214,7 +214,7 @@ function examFormSubmit(eid,pid,ccno){
 							<!--{if $row_q.answer_kind==1}-->
 								<!--{foreach name=loop1_q from=$row_q.answer_contents_select.answer_contents item="row1_q" key="key1_q"}-->
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
-									<!--{if $row1_q.no==$answered_info[$row_q.exam_problem_id].arr_exam_answer_contents[0]}-->
+									<!--{if $row1_q.no==$answered_info[$row_q.exam_problem_id].arr_exam_answer_contents[0]|escape}-->
 										<div class="problem_content">
 											<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled checked><!--{$row_no1_q}-->.</div>
 											<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|escape|nl2br}--></label></div>
@@ -250,7 +250,7 @@ function examFormSubmit(eid,pid,ccno){
 								
 							<!--{* フリー解答 *}-->
 							<!--{elseif $row_q.answer_kind==3}-->
-								<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row_q.exam_problem_id].arr_exam_answer_contents[0]}--></textarea></div>
+								<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row_q.exam_problem_id].arr_exam_answer_contents[0]|escape}--></textarea></div>
 								
 							<!--{else}-->
 								未設定

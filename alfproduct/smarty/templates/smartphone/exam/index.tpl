@@ -59,7 +59,7 @@ function examFormSubmit(eid,pid,ccno){
 			<!--{assign var=row_no value=$smarty.foreach.loop.iteration}-->
 				<div class="problem">
 					<div class="problem_title">
-						●設問<!--{$row_no}-->　<!--{$row.exam_problem_name}-->
+						●設問<!--{$row_no}-->　<!--{$row.exam_problem_name|escape}-->
 					</div>
 					<div class="problem_contents">
 						<!--{$row.problem_contents|escape|nl2br}-->
@@ -92,7 +92,7 @@ function examFormSubmit(eid,pid,ccno){
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000"><!--{$answered_list.$row_no.answer3}--></textarea></div>
+							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000"><!--{$answered_list.$row_no.answer3|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定
@@ -108,7 +108,7 @@ function examFormSubmit(eid,pid,ccno){
 			<!--{assign var=row_no_q value=$smarty.foreach.loop_q.iteration+$row_no}-->
 				<div class="problem">
 					<div class="problem_title">
-						●設問<!--{$row_no_q}-->　<!--{$row_q.exam_problem_name}-->
+						●設問<!--{$row_no_q}-->　<!--{$row_q.exam_problem_name|escape}-->
 					</div>
 					<div class="problem_contents">
 						<!--{$row_q.problem_contents|escape|nl2br}-->
@@ -141,7 +141,7 @@ function examFormSubmit(eid,pid,ccno){
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row_q.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000"><!--{$answered_list_q.$row_no_q.answer3}--></textarea></div>
+							<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000"><!--{$answered_list_q.$row_no_q.answer3|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定
