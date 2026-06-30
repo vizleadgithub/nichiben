@@ -176,13 +176,13 @@ print("<!--[slug:".$slug."]-->\n");
 					<h3 class="entry-title" style="padding:0;margin:0;width: 658px;">
 						<?php if (!$disp_flg){ ?>
 							<!--[Test13]-->
-							<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print($post["post_title"]); ?></span>
+							<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
 						<?php } else { ?>
 							<!--[Test14]-->
 							<?php if ($post["url"] != ""){ ?>
-								<!--<a href="<?php echo $post["url"]; ?>" title="" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;">--><span style="color:#579748;font-size:17px;font-weight:bold;"><?php print($post["post_title"]); ?></span><!--</a>-->
+								<!--<a href="<?php echo $post["url"]; ?>" title="" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;">--><span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span><!--</a>-->
 							<?php } else { ?>
-								<!--<a href="/archives/<?php print($post["ID"]); ?>" title="" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;">--><span style="color:#579748;font-size:17px;font-weight:bold;"><?php print($post["post_title"]); ?></span><!--</a>-->
+								<!--<a href="/archives/<?php print($post["ID"]); ?>" title="" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;">--><span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span><!--</a>-->
 							<?php } ?>
 						<?php } ?>
 					</h3>
@@ -202,7 +202,7 @@ print("<!--[slug:".$slug."]-->\n");
 								<a href="/archives/<?php print($post["ID"]); ?>" class="page-link" rel="bookmark" style="color: #796A57;font-weight: normal;">>>詳細へ</a>
 							<?php } else { ?>
 								<?php if ($post["url"] != ""){ ?>
-									<a href="<?php print($post["url"]); ?>" class="page-link" rel="bookmark" style="color: #796A57;font-weight: normal;" target="_blank" >>>詳細へ</a>
+									<a href="<?php print(htmlspecialchars($post["url"], ENT_QUOTES, 'UTF-8')); ?>" class="page-link" rel="noopener noreferrer" style="color: #796A57;font-weight: normal;" target="_blank">>>詳細へ</a>
 								<?php } else { ?>
 									<a href="/archives/<?php print($post["ID"]); ?>" class="page-link" rel="bookmark" style="color: #796A57;font-weight: normal;">>>詳細へ</a>
 								<?php } ?>

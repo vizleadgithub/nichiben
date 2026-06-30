@@ -10,7 +10,7 @@ $objDbConnect = new DbConnect();
 $limit= 3; // 表示最大件数
 $arr_viewd_video = array();       // ビデオ情報
 $arr_rel_video_product = array(); // ビデオに紐付く商品情報
-$student_id = $_SESSION['user']['id'];
+$student_id = (int)$_SESSION['user']['id'];
 
 // 受講した動画のvideo_idを取得
 $sql = "
@@ -300,7 +300,7 @@ foreach ($arr_rel_video_product as $val){
 	<?php foreach ($arr_rel_video_product as $video_id => $val){ ?>
 		<?php if ($val['disp_flg']){ ?>
 		<tr>
-			<td class="lecture_title" colspan="2"><h4><a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><?php echo $val['product_name']; ?></a></h4></td>
+			<td class="lecture_title" colspan="2"><h4><a href="/product/detail.php?pid=<?php echo (int)$val['product_id']; ?>"><?php echo htmlspecialchars($val['product_name'], ENT_QUOTES, 'UTF-8'); ?></a></h4></td>
 		</tr>
 		<tr>
 			<td style="text-align:center;">

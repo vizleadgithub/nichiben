@@ -7,7 +7,7 @@
 	<h3></h3>
 <div class="profile">
 <?php if(st_login_check()){ ?>
-<p style="margin:15px 0;text-align:center;font-size:18px;"><?php echo $_SESSION['user']['name'].'様'; ?></p>
+<p style="margin:15px 0;text-align:center;font-size:18px;"><?php echo htmlspecialchars($_SESSION['user']['name'], ENT_QUOTES, 'UTF-8').'様'; ?></p>
 
 <?php /* if($_SESSION['user']['presence_passport']==1){ ?>
 <div style="margin:2px 5px 2px 10px;">研修パスポート有効期限</div>
@@ -15,7 +15,7 @@
 <?php } */ ?>
 
 <div style="margin:12px 5px 2px 10px;">あなたの倫理研修義務年</div>
-<div class="timelimit"><?php if($_SESSION['user']['bar_association_duty_year']){echo $_SESSION['user']['bar_association_duty_year'];}else{echo '完了しています';} ?></div>
+<div class="timelimit"><?php if($_SESSION['user']['bar_association_duty_year']){echo htmlspecialchars((string)$_SESSION['user']['bar_association_duty_year'], ENT_QUOTES, 'UTF-8');}else{echo '完了しています';} ?></div>
 
 <?php if (contents_limit_user_check()){ ?>
 <p style="margin:15px 0;text-align:center;color:red;">
@@ -47,11 +47,11 @@
 
 
 <?php } else { ?>
-<form name="form1" action="https://<?php echo $_SERVER['SERVER_NAME']; ?>/login/login.php" method="post">
+<form name="form1" action="https://<?php echo htmlspecialchars($_SERVER['SERVER_NAME'], ENT_QUOTES, 'UTF-8'); ?>/login/login.php" method="post">
 <input type="hidden" name="action" value="execute" />
 	<p>
 		email<br />
-		<input type="text" name="email" style="width:96%;" value="<?php if(isset($_COOKIE['login_email'])){echo $_COOKIE['login_email'];} ?>" />
+		<input type="text" name="email" style="width:96%;" value="<?php if(isset($_COOKIE['login_email'])){echo htmlspecialchars($_COOKIE['login_email'], ENT_QUOTES, 'UTF-8');} ?>" />
 	</p>
 	<p>
 		password<br />

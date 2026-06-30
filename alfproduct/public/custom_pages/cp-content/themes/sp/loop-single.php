@@ -16,8 +16,8 @@
  */
 ?>
 <?php
-if (isset($_REQUEST["p"])){
-	$id = $_REQUEST["p"];
+if (isset($_GET["p"])){
+	$id = (int)$_GET["p"];
 } else {
 	$id = trim(strrchr($_SERVER["REQUEST_URI"], "/"), "/");
 }
@@ -64,7 +64,7 @@ if ($cate_flg == 1){
 						<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 						<?php if ($post->product_id != 0){ ?>
 							<div style="text-align:right;padding-bottom:10px;">
-								<a href="/product/detail.php?pid=<?php echo $post->product_id; ?>" style="color:#796A57;">>>詳細情報を見る</a>
+								<a href="/product/detail.php?pid=<?php echo (int)$post->product_id; ?>" style="color:#796A57;">>>詳細情報を見る</a>
 							</div>
 						<?php } ?>
 					</div><!-- .entry-content -->
@@ -81,12 +81,12 @@ if ($cate_flg == 1){
 						<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 						<?php if ($post->product_id > 0){ ?>
 							<div style="text-align:right;padding-bottom:10px;">
-								<a href="/product/detail.php?pid=<?php echo $post->product_id; ?>" style="color:#796A57;">>>詳細情報を見る</a>
+								<a href="/product/detail.php?pid=<?php echo (int)$post->product_id; ?>" style="color:#796A57;">>>詳細情報を見る</a>
 							</div>
 						<?php } else { ?>
 							<?php if ($post->url != ""){ ?>
 								<div style="text-align:right;padding-bottom:10px;">
-									<a href="<?php echo $post->url; ?>" style="color: #796A57;" target="_blank" >>>詳細情報を見る</a>
+									<a href="<?php echo htmlspecialchars($post->url, ENT_QUOTES, 'UTF-8'); ?>" style="color: #796A57;" target="_blank" rel="noopener noreferrer">>>詳細情報を見る</a>
 								</div>
 							<?php } else { ?>
 							<?php } ?>
@@ -129,7 +129,7 @@ if ($cate_flg == 1){
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 					<?php if ($post->product_id != 0){ ?>
 						<div style="text-align:right;padding-bottom:10px;">
-							<a href="/product/detail.php?pid=<?php echo $post->product_id; ?>" style="color:#796A57;">>>詳細情報を見る</a>
+							<a href="/product/detail.php?pid=<?php echo (int)$post->product_id; ?>" style="color:#796A57;">>>詳細情報を見る</a>
 						</div>
 					<?php } ?>
 				</div><!-- .entry-content -->

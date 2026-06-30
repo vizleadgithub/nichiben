@@ -69,23 +69,23 @@ color:#ffffff;
 					<div><a href="<?php site_url(); ?>/policy">利用規約</a></div>
 					<!--<div><a href="<?php site_url(); ?>/policy_passport">研修パスポート利用規約</a></div>-->
 					<div><a href="<?php site_url(); ?>/question">よくある質問</a></div>
-					<div><a href="<?php site_url(); ?>/pdf/jfba-kenshu-manual.pdf" target="_blank">総合研修サイトマニュアル</a></div>
+					<div><a href="<?php site_url(); ?>/pdf/jfba-kenshu-manual.pdf" target="_blank" rel="noopener noreferrer">総合研修サイトマニュアル</a></div>
 					<div><a href="<?php site_url(); ?>/inquiry/">総合研修サイトに関するお問い合わせ</a></div>
 					<div><a href="<?php site_url(); ?>/browser">総合研修サイト推奨環境</a></div>
 				</li>
 				<li>
 					<div class="fttt"><span class="fs">■</span>&nbsp;会員専用サイトのご案内</div>
-					<div><a href="https://member.nichibenren.or.jp/site_riyojoken.html" target="_blank">サイト利用条件</a></div>
-					<div><a href="https://www.nichibenren.or.jp/copyright/privacy.html" target="_blank">個人情報保護方針</a></div>
+					<div><a href="https://member.nichibenren.or.jp/site_riyojoken.html" target="_blank" rel="noopener noreferrer">サイト利用条件</a></div>
+					<div><a href="https://www.nichibenren.or.jp/copyright/privacy.html" target="_blank" rel="noopener noreferrer">個人情報保護方針</a></div>
 					<div><a href="<?php site_url(); ?>/sitemap">サイトマップ</a></div>
 				</li>
 				<li>
 					<div class="fttt"><span class="fs">■</span>&nbsp;その他</div>
-					<div><a href="<?php site_url(); ?>/pdf/rinri-kenshu-kisoku.pdf" target="_blank">倫理研修規則</a></div>
-					<div><a href="<?php site_url(); ?>/pdf/rinri-kenshu-kitei.pdf" target="_blank">倫理研修規程</a></div>
-					<div><a href="<?php site_url(); ?>/pdf/shinki-touroku-bengoshi-kenshu-guideline.pdf" target="_blank">新規登録弁護士研修ガイドライン</a></div>
-					<div><a href="<?php site_url(); ?>/pdf/keizoku-kenshu-guideline.pdf" target="_blank">継続研修ガイドライン</a></div>
-					<div><a href="https://www.jlf.or.jp/work/kenshu/" target="_blank">公益財団法人日弁連法務研究財団の研修に係る御案内（外部サイト）</a></div>
+					<div><a href="<?php site_url(); ?>/pdf/rinri-kenshu-kisoku.pdf" target="_blank" rel="noopener noreferrer">倫理研修規則</a></div>
+					<div><a href="<?php site_url(); ?>/pdf/rinri-kenshu-kitei.pdf" target="_blank" rel="noopener noreferrer">倫理研修規程</a></div>
+					<div><a href="<?php site_url(); ?>/pdf/shinki-touroku-bengoshi-kenshu-guideline.pdf" target="_blank" rel="noopener noreferrer">新規登録弁護士研修ガイドライン</a></div>
+					<div><a href="<?php site_url(); ?>/pdf/keizoku-kenshu-guideline.pdf" target="_blank" rel="noopener noreferrer">継続研修ガイドライン</a></div>
+					<div><a href="https://www.jlf.or.jp/work/kenshu/" target="_blank" rel="noopener noreferrer">公益財団法人日弁連法務研究財団の研修に係る御案内（外部サイト）</a></div>
 				</li>
 
 			</ul>

@@ -585,9 +585,9 @@ if (strpos($_SERVER['SCRIPT_NAME'], '/ethic_treaning/') === false){
 		<?php if(st_login_check()){ ?>
 			<div id="head_center_area">
 				<div>
-					<p style="text-align:left;font-size:12px;margin:0;"><b><?php echo $_SESSION['user']['name'].'様'; ?></b></p>
+					<p style="text-align:left;font-size:12px;margin:0;"><b><?php echo htmlspecialchars($_SESSION['user']['name'], ENT_QUOTES, 'UTF-8').'様'; ?></b></p>
 					<p style="text-align:left;font-size:12px;margin:0;"><b>あなたの日弁連の倫理研修義務年度は</b></p>
-					<p style="text-align:right;font-size:12px;margin:0;"><b><?php if($_SESSION['user']['bar_association_duty_year']){echo $_SESSION['user']['bar_association_duty_year'];}else{echo '完了しています';} ?>度です。</b></p>
+					<p style="text-align:right;font-size:12px;margin:0;"><b><?php if($_SESSION['user']['bar_association_duty_year']){echo htmlspecialchars((string)$_SESSION['user']['bar_association_duty_year'], ENT_QUOTES, 'UTF-8');}else{echo '完了しています';} ?>度です。</b></p>
 				</div>
 			</div>
 		<?php } ?>
@@ -599,7 +599,7 @@ if (strpos($_SERVER['SCRIPT_NAME'], '/ethic_treaning/') === false){
 		<div class="subnavi">
 			<div>
 				<div style="display: inline-block;float: left;">
-					<a href="https://member.nichibenren.or.jp/" target="_blank">日弁連会員ページへ</a>
+					<a href="https://member.nichibenren.or.jp/" target="_blank" rel="noopener noreferrer">日弁連会員ページへ</a>
 				</div>
 				<div style="display: inline-block;float: left;">
 					<a href="/logout/logout.php">ログアウト</a>

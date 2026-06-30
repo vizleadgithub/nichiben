@@ -64,7 +64,7 @@ color:#ffffff;
 					if($cat_list){
 						foreach($cat_list as $val){
 					?>
-						<a href="/product/list.php?pcid=<?php echo $val['term_id']; ?>"><?php echo $val['name']; ?></a><br />
+						<a href="/product/list.php?pcid=<?php echo (int)$val['term_id']; ?>"><?php echo htmlspecialchars($val['name'], ENT_QUOTES, 'UTF-8'); ?></a><br />
 					<?php
 						}
 					}

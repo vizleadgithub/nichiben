@@ -404,7 +404,7 @@ foreach ($arr_disp_list as $val){
 						<li style="min-height: 18px;max-height: 65px;overflow:hidden;">
 							<div>
 								<a class="textOverflowTest4" style="display:inline-block;text-decoration:none;color:#3b2707;font-weight:bold;float:left;width:700px;overflow: hidden;max-height: 36px;" href="/product/detail.php?pid=<?php echo $val['product_id']; ?>">
-									<?php echo $val['product_name']; ?>
+									<?php echo htmlspecialchars($val['product_name'], ENT_QUOTES, 'UTF-8'); ?>
 								</a>
 							</div>
 							<div style="display:inline-block;float:left;width:300px;overflow: hidden;">

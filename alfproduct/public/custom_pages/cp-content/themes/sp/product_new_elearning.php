@@ -47,7 +47,7 @@ $mtb_product_flg = get_mtb_product_flg_icon();
 								<img src="/img/status001.png" alt="NEW" />
 							</div>
 							<a class="textOverflowTest4" style="display:inline-block;text-decoration:none;color:#3b2707;font-weight:bold;float:left;width:630px;overflow: hidden;max-height: 36px;" href="/product/detail.php?pid=<?php echo $val['product_id']; ?>">
-								<?php echo $val['product_name']; ?>
+								<?php echo htmlspecialchars($val['product_name'], ENT_QUOTES, 'UTF-8'); ?>
 							</a>
 						</div>
 					</li>

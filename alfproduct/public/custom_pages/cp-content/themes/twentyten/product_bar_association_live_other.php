@@ -57,8 +57,8 @@ $arr_list = $objDbConnect->query_fetch_arr($sql);
 								}
 								?>
 							</div>
-							<a class="textOverflowTest4" style="display:inline-block;text-decoration:none;color:#3b2707;font-weight:bold;float:left;width:580px;overflow: hidden;max-height: 36px;" href="/product/detail.php?pid=<?php echo $val['product_id']; ?>">
-								<?php echo $val['product_name']; ?>
+							<a class="textOverflowTest4" style="display:inline-block;text-decoration:none;color:#3b2707;font-weight:bold;float:left;width:580px;overflow: hidden;max-height: 36px;" href="/product/detail.php?pid=<?php echo (int)$val['product_id']; ?>">
+								<?php echo htmlspecialchars($val['product_name'], ENT_QUOTES, 'UTF-8'); ?>
 							</a>
 						</div>
 					</li>
