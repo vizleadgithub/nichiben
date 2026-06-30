@@ -1,0 +1,118 @@
+<?php
+$objDbConnect = new DbConnect();
+
+$ret = array();
+$sql = "SELECT";
+$sql.= "  *";
+$sql.= " FROM";
+$sql.= "  tbl_product";
+$sql.= "    INNER JOIN";
+$sql.= "  tbl_product_elearning";
+$sql.= "    ON tbl_product.product_id = tbl_product_elearning.product_id";
+$sql.= " WHERE";
+$sql.= "  tbl_product.del_flg=0";
+$sql.= " AND (  (tbl_product.start_date<='".date("Y-m-d")."' and tbl_product.end_date>='".date("Y-m-d")."')  OR  (tbl_product.start_date<='".date("Y-m-d")."' and tbl_product.end_date IS NULL)  OR  (tbl_product.start_date IS NULL and tbl_product.end_date>='".date("Y-m-d")."')  OR  (tbl_product.start_date IS NULL and tbl_product.end_date IS NULL)  ) ";
+$sql.= " AND (  (DATE_ADD(tbl_product.regist_date, INTERVAL 1 MONTH) >= '".date("Y-m-d")."' AND tbl_product.update_date IS NULL) OR (DATE_ADD(tbl_product.update_date, INTERVAL 1 MONTH) >= '".date("Y-m-d")."') )";
+if (!st_login_check()){
+	$sql.= " AND tbl_product.product_type=2";
+}
+$sql.= " ORDER BY rand()";
+$sql.= " LIMIT 6";
+$ret = $objDbConnect->query_fetch_arr($sql);
+
+$mtb_product_flg = get_mtb_product_flg_icon();
+?>
+
+<div style="border:solid 1px #cccccc; clear:both;height:630px;padding:20px 5px 20px 25px;margin-bottom:30px;background-color:#fcfcfc;" class="product_new_elearning">
+<h2><img src="/img/h2_new_training.png" alt="新着eラーニング" /></h2>
+<?php if(empty($ret)){ ?>
+該当する講座はありません。
+<?php } else { ?>
+	<?php foreach($ret as $val){ ?>
+		<div style="width:155px;height:300px;float:left;margin:0;text-align:center;">
+			<div class="imagebd">
+				<?php
+				$img_url = '';
+				if ($val["thumbnail"] != ''){
+					$img_url = "/resize_image.php?image=".$val["thumbnail"];
+				} else {
+					$arr_thumbnail = array();
+					$arr_thumbnail = get_alf_thumbnail_db($val["contents_contents1"]);
+					if ($arr_thumbnail){
+						if ($arr_thumbnail["contents_thumbnail"][0]["p180"] != ''){
+							$img_url = "/resize_video_image.php?image=".$val["contents_contents1"].$arr_thumbnail["contents_thumbnail"][0]["p180"];
+						}
+					}
+				}
+				if ($img_url == ''){
+					$img_url = "/resize_image.php?image=noimage.jpg";
+				}
+				?>
+				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="<?php echo $img_url; ?>&width=140&height=117" alt="" /></a>
+			</div>
+			<div class="name" style="width:140px;height:150px;text-align:left;padding:5px;overflow:auto;">
+				<?php
+				// カテゴリ
+				$term_ids = array();
+				if (isset($val['term_id'])){
+					$term_ids = explode(',', $val['term_id']);
+				}
+				if (!empty($term_ids)){
+					$count = 0;
+					$all_count = count($term_ids);
+					foreach ($term_ids as $term_id){
+						$image_name = '';
+						$image_name = $term_id . CATEGORY_ICON_IMG_EXTENSION;
+						if (file_exists(CATEGORY_ICON_IMG_DIR . $image_name)){
+							echo '<img src="'.CATEGORY_ICON_IMG_PATH . $image_name.'" alt="" />';
+							if ($count != $all_count){
+								echo '<br />';
+							}
+						}
+						$count++;
+					}
+				}
+				
+				// アイコン
+				$icon = '';
+				$arr_icon = array();
+				$arr_icon = explode('|', trim($val['product_flg'], '|'));
+				$count = 1;
+				$all_count = count($arr_icon);
+				foreach ($arr_icon as $icon){
+					if ($mtb_product_flg[$icon]['icon'] != ''){
+						if (file_exists(NICHIBENREN_FRONT_ROOT_DIR . 'img/' . $mtb_product_flg[$icon]['icon'])){
+							echo '<img src="/img/' . $mtb_product_flg[$icon]['icon'] . '" alt="' . $mtb_product_flg[$icon]['name'] . '" />';
+							$cal = $count % 2;
+							if ($cal == 0){
+								echo '<br />';
+							}
+							$count++;
+						}
+					}
+				}
+				if ($all_count == 0){
+					echo '<br />';
+				}
+				?>
+				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>" style="text-decoration:none;color:#3b2707;font-weight:bold;">
+				<?php if(mb_strlen($val['product_name'], 'UTF-8')>24){ echo mb_substr($val['product_name'],0,24,"UTF-8")."..."; } else { echo $val['product_name']; } ?><br />
+				単品価格：<?php echo number_format($val['price'] + tax_cal_yen($val['price'])); ?>円<br />
+				掲載期間：
+				<?php
+				if ($val['start_date']=='' && $val['end_date']==''){
+					echo '常に公開';
+				} elseif ($val['start_date']!='' && $val['end_date']==''){
+					echo date('Y/m/d', strtotime($val['start_date'])).'～';
+				} elseif ($val['start_date']=='' && $val['end_date']!=''){
+					echo '～'.date('Y/m/d', strtotime($val['end_date']));
+				} else {
+					echo '<br />'.date('Y/m/d', strtotime($val['start_date'])).'<br />～'.date('Y/m/d', strtotime($val['end_date']));
+				}
+				?>
+				</a>
+			</div>
+		</div>
+	<?php } ?>
+<?php } ?>
+</div>
