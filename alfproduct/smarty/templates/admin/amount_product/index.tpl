@@ -34,7 +34,7 @@
 			<th>商品種別</th>
 			<td>
 				<!--{foreach from=$arr_product_type_add item="row"}-->
-					<input type="checkbox" name="search_product_type_add[]" value="<!--{$row.id}-->" id="search_product_type_add_<!--{$row.id}-->"<!--{if in_array($row.id,$search_product_type_add)}--> checked="checked"<!--{/if}-->><label for="search_product_type_add_<!--{$row.id}-->"><!--{$row.name}--></label>&nbsp;
+					<input type="checkbox" name="search_product_type_add[]" value="<!--{$row.id}-->" id="search_product_type_add_<!--{$row.id}-->"<!--{if in_array($row.id,$search_product_type_add)}--> checked="checked"<!--{/if}-->><label for="search_product_type_add_<!--{$row.id}-->"><!--{$row.name|escape}--></label>&nbsp;
 				<!--{/foreach}-->
 			</td>
 		</tr>
@@ -43,7 +43,7 @@
 			<th>決済方法</th>
 			<td>
 				<!--{foreach from=$arr_payment_type item="row"}-->
-					<input type="checkbox" name="search_payment_type[]" value="<!--{$row.id}-->" id="search_payment_type_<!--{$row.id}-->"<!--{if in_array($row.id,$search_payment_type)}--> checked="checked"<!--{/if}-->><label for="search_payment_type_<!--{$row.id}-->"><!--{$row.name}--></label>&nbsp;
+					<input type="checkbox" name="search_payment_type[]" value="<!--{$row.id}-->" id="search_payment_type_<!--{$row.id}-->"<!--{if in_array($row.id,$search_payment_type)}--> checked="checked"<!--{/if}-->><label for="search_payment_type_<!--{$row.id}-->"><!--{$row.name|escape}--></label>&nbsp;
 				<!--{/foreach}-->
 			</td>
 		</tr>
@@ -51,7 +51,7 @@
 			<th>請求書</th>
 			<td>
 				<!--{foreach from=$arr_claim_flg item="row"}-->
-					<input type="checkbox" name="search_claim_flg[]" value="<!--{$row.id}-->" id="search_claim_flg_<!--{$row.id}-->"<!--{if in_array($row.id,$search_claim_flg)}--> checked="checked"<!--{/if}-->><label for="search_claim_flg_<!--{$row.id}-->"><!--{$row.name}--></label>&nbsp;
+					<input type="checkbox" name="search_claim_flg[]" value="<!--{$row.id}-->" id="search_claim_flg_<!--{$row.id}-->"<!--{if in_array($row.id,$search_claim_flg)}--> checked="checked"<!--{/if}-->><label for="search_claim_flg_<!--{$row.id}-->"><!--{$row.name|escape}--></label>&nbsp;
 				<!--{/foreach}-->
 			</td>
 		</tr>

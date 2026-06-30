@@ -211,7 +211,7 @@
 			//------------------------------------------
 			function delete_item(msg){
 				if(window.confirm( msg )){
-					location.href = "delete.php?mid=<!--{$mid}-->";
+					location.href = "delete.php?mid=<!--{$mid|escape:'javascript'}-->";
 				}
 			}
 			
@@ -219,12 +219,12 @@
 			//詳細確認画面　修正ボタン押下
 			//------------------------------------------
 			function edit_item(){
-				location.href ="edit.php?mid=<!--{$mid}-->";
+				location.href ="edit.php?mid=<!--{$mid|escape:'javascript'}-->";
 			}
 		</script>
 		<form>
 		<div style="width:40%;float:left;text-align:right;">
-			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
+			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape:'javascript'}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
 		</div>
 		<div style="width:20%;float:left;text-align:center;">
 			<a href="javascript:void(0);" onclick="edit_item();return false;" /><img src="/alfproduct/images/btn_revise.png"></a>
@@ -241,7 +241,7 @@
 			//------------------------------------------
 			function delete_item(msg){
 				if(window.confirm( msg )){
-					location.href = "delete.php?mid=<!--{$mid}-->";
+					location.href = "delete.php?mid=<!--{$mid|escape:'javascript'}-->";
 				}
 			}
 			
@@ -249,11 +249,11 @@
 			//詳細確認画面　修正ボタン押下
 			//------------------------------------------
 			function edit_item(){
-				location.href ="edit.php?mid=<!--{$mid}-->";
+				location.href ="edit.php?mid=<!--{$mid|escape:'javascript'}-->";
 			}
 		</script>
 		<form>
-			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
+			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape:'javascript'}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
 		</form>
 		<!--{/if}-->
 	</div>
