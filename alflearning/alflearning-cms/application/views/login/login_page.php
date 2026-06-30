@@ -34,6 +34,7 @@
 					<div class="error"><?= htmlspecialchars( $error_msg, ENT_QUOTES, 'UTF-8') ?></div>
 				<? endif; ?>
 				<form action="/login_page/login?backurl=<?= ($this->input->get('backurl') ? urlencode($this->input->get('backurl')) : '/'); ?>" name="form1" method="post">
+					<?= form_hidden($this->security->get_csrf_token_name(), $this->security->get_csrf_hash()) ?>
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_id','ID') ?></th>

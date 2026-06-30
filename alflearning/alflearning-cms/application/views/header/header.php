@@ -122,8 +122,25 @@
 </script>
 
 <script type="text/javascript">
+	var ciCsrfTokenName = '<?= $this->security->get_csrf_token_name() ?>';
+	var ciCsrfToken     = '<?= $this->security->get_csrf_hash() ?>';
+	$(document).ajaxSend(function(event, jqxhr, settings) {
+		if ((settings.type || '').toUpperCase() === 'POST') {
+			if (settings.data instanceof FormData) {
+				settings.data.append(ciCsrfTokenName, ciCsrfToken);
+			} else if (typeof settings.data === 'string') {
+				settings.data += (settings.data ? '&' : '') + ciCsrfTokenName + '=' + encodeURIComponent(ciCsrfToken);
+			} else {
+				if (!settings.data) { settings.data = {}; }
+				settings.data[ciCsrfTokenName] = ciCsrfToken;
+			}
+		}
+	});
+</script>
+
+<script type="text/javascript">
 	var notification_id_list = '0';
-	
+
 	$(function(){
 		// 通知情報の取得（ajax）の呼び出し
 		ajax_search_notification();
