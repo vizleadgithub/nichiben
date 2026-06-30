@@ -169,7 +169,7 @@ if ($ret){
 			$arr_sponsor = explode('|', trim($val["sponsor"], '|'));
 			if ($arr_sponsor){
 				foreach ($arr_sponsor as $sponsor){
-					$disp_sponsor.= $mtb_bar_association[$sponsor] . '<br />';
+					$disp_sponsor.= htmlspecialchars($mtb_bar_association[$sponsor], ENT_QUOTES, 'UTF-8') . '<br />';
 				}
 				$disp_sponsor = rtrim($disp_sponsor, '<br />');
 			}

@@ -649,7 +649,7 @@ function get_product_pankuzu($objDbConnect, $pcid='', $pid=''){
 
 		if (!empty($product_name)) {
 		    $pankuzu .= '<li>&nbsp;<img src="/img/c_ar_2.png" alt="＞" style="height:10px;" />&nbsp;</li>';
-		    $pankuzu .= '<li>'.$product_name.'</li>';
+		    $pankuzu .= '<li>'.htmlspecialchars($product_name, ENT_QUOTES, 'UTF-8').'</li>';
 		}
 		$pankuzu.= '</ul><br style="clear;both;"></div>';
 
@@ -818,7 +818,7 @@ function get_product_pankuzu($objDbConnect, $pcid='', $pid=''){
 
 		if (!empty($product_name)) {
 		    $pankuzu .= '<li>&nbsp;<img src="/img/c_ar_2.png" alt="＞" style="height:10px;" />&nbsp;</li>';
-		    $pankuzu .= '<li>'.$product_name.'</li>';
+		    $pankuzu .= '<li>'.htmlspecialchars($product_name, ENT_QUOTES, 'UTF-8').'</li>';
 		}
 
 		$pankuzu .= '</ul><br style="clear:both;"></div>';

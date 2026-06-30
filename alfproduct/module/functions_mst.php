@@ -590,11 +590,11 @@ function get_product_pankuzu($objDbConnect, $pcid='', $pid=''){
 		$pankuzu.= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'">TOP</a></li>';
 		for($i=0;$i<count($arr_pan_cat);$i++){
 			$pankuzu.= '<li>&nbsp;<img src="/img/c_ar_2.png" alt="＞" style="height:10px;" />&nbsp;</li>';
-			$pankuzu.= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'/product/list.php?pcid='.$arr_pan_cat[$i]['id'].'">'.$arr_pan_cat[$i]['name'].'</a></li>';
+			$pankuzu.= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'/product/list.php?pcid='.$arr_pan_cat[$i]['id'].'">'.htmlspecialchars($arr_pan_cat[$i]['name'], ENT_QUOTES, 'UTF-8').'</a></li>';
 		}
 		if($product_name != ""){
 			$pankuzu.= '<li>&nbsp;<img src="/img/c_ar_2.png" alt="＞" style="height:10px;" />&nbsp;</li>';
-			$pankuzu.= '<li>'.$product_name.'</li>';
+			$pankuzu.= '<li>'.htmlspecialchars($product_name, ENT_QUOTES, 'UTF-8').'</li>';
 		}
 		$pankuzu.= '</ul><br style="clear;both;"></div>';
 
@@ -753,11 +753,11 @@ function get_product_pankuzu($objDbConnect, $pcid='', $pid=''){
 		$pankuzu.= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'">TOP</a></li>';
 		for($i=0;$i<count($arr_pan_cat);$i++){
 			$pankuzu.= '<li>&nbsp;<img src="/img/c_ar_2.png" alt="＞" style="height:10px;" />&nbsp;</li>';
-			$pankuzu.= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'/product/list.php?pcid='.$arr_pan_cat[$i]['id'].'">'.$arr_pan_cat[$i]['name'].'</a></li>';
+			$pankuzu.= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'/product/list.php?pcid='.$arr_pan_cat[$i]['id'].'">'.htmlspecialchars($arr_pan_cat[$i]['name'], ENT_QUOTES, 'UTF-8').'</a></li>';
 		}
 		if($product_name != ""){
 			$pankuzu.= '<li>&nbsp;<img src="/img/c_ar_2.png" alt="＞" style="height:10px;" />&nbsp;</li>';
-			$pankuzu.= '<li>'.$product_name.'</li>';
+			$pankuzu.= '<li>'.htmlspecialchars($product_name, ENT_QUOTES, 'UTF-8').'</li>';
 		}
 		$pankuzu.= '</ul><br style="clear;both;"></div>';
 	}
