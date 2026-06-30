@@ -186,12 +186,12 @@ margin-left:336px;
 			
 			<div style="text-align:center;padding:20px;">
 				<!--{if $eflg=='1'}-->
-					<a class="btn" href="/exam/confirm1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">解答を修正する</a>
+					<a class="btn" href="/exam/confirm1.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}--><!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->">解答を修正する</a>
 				<!--{else}-->
 					<!--{if $eno==$eno_max}-->
-						<a class="btn" href="/exam/confirm1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">次へ</a>
+						<a class="btn" href="/exam/confirm1.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}--><!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->">次へ</a>
 					<!--{else}-->
-						<a class="btn" href="/exam/index1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->&eno=<!--{$eno+1}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">次へ</a>
+						<a class="btn" href="/exam/index1.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}-->&eno=<!--{$eno+1}--><!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->">次へ</a>
 					<!--{/if}-->
 				<!--{/if}-->
 			</div>

@@ -46,7 +46,7 @@ float:right;
 
 <!--{if !$err_flg}-->
 	<div style="width:420px;">
-		<a class="btn1" href="/exam/answer_save2.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">提出する</a>
+		<a class="btn1" href="/exam/answer_save2.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}--><!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->">提出する</a>
 		<a class="btn2" href="javascript:void(0)" onclick="window.close();">キャンセル</a>
 	</div>
 <!--{else}-->
