@@ -43,6 +43,7 @@ if( !$arrTemp ) {
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
+	csrf_token_verify();
 	$objGMOPaymentProtocol = new GMOPaymentProtocol();
 	if( $access_id=="" && $access_pass=="" ){
 		$ret = $objGMOPaymentProtocol->entry_tran_payeasy( $order_id, $price, $tax );

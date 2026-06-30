@@ -16,6 +16,7 @@ if (strpos($_SERVER['HTTP_REFERER'], '/settlement') === false){
 	header("Location: /");
 	exit;
 }
+csrf_token_verify();
 
 $order_id = 0;
 $temp_date = $_POST["temp_date"];

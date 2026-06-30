@@ -130,6 +130,7 @@ $template->assign('question_no', $question_no);
 $template->assign('reference', $reference);
 $template->assign('arr_list', $arr_list);
 $template->assign('history_answer', $history_answer);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('ethic_treaning/result_history_detail.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

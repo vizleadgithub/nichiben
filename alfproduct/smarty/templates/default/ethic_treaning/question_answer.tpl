@@ -27,6 +27,7 @@
 		</div>
 		<div style="float:left;font-size:16px;line-height: 22px;color:#525252;width:880px;margin-left:15px;margin-top:20px;border: none;margin-bottom:20px;">
 			<form action="/ethic_treaning/question_answer.php?pid=<!--{$pid|escape}-->&qid=<!--{$qid|escape}-->" method="post" name="form_answer">
+				<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 				<div style="width:100%;">
 					<!--{$str_answer|escape}-->
 					<br />

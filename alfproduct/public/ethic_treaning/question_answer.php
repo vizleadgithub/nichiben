@@ -149,6 +149,7 @@ $template->assign('pid', $pid);
 $template->assign('qid', $qid);
 $template->assign('question_no', $question_no);
 $template->assign('str_answer', $str_answer);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('ethic_treaning/question_answer.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

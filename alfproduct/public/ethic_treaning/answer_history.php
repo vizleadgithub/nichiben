@@ -131,6 +131,7 @@ $template->assign('reference', $reference);
 $template->assign('arr_list', $arr_list);
 $template->assign('history_answer', $history_answer);
 $template->assign('retry_flg', $retry_flg);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('ethic_treaning/answer_history.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

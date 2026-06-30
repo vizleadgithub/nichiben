@@ -57,6 +57,7 @@
 </head>
 <body>
 <form name="form1" id="form1" method="post" >
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 <input type="hidden" name="state" value="<!--{$id|escape}-->" />
 <input type="hidden" name="city" value="<!--{$city|escape}-->" />
 <input type="hidden" name="town" value="<!--{$town|escape}-->" />

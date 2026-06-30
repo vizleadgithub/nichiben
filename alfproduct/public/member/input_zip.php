@@ -63,6 +63,7 @@ $template->assign('city', $city);
 $template->assign('town', $town);
 $template->assign('input1', $input1);
 $template->assign('input2', $input2);
+$template->assign('csrf_token', csrf_token_get());
 if( count($err_msg)>0 ){
 	$template->display('member/zip_err.tpl');
 } else {
