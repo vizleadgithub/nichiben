@@ -1,0 +1,3471 @@
+﻿# Ph.1 修正レポート — デバッグ echo / print 削除
+
+**実施日:** 2026-06-24  
+**対応区分:** CMS-H-01〜16（必須）＋ F-8b（同時対応）
+
+---
+
+## サマリー
+
+| 項目 | 値 |
+|------|-----|
+| 修正ファイル数 | 5 |
+| 削除行数（合計） | 9 行 |
+| 追加行 | 0（削除のみ） |
+| AppScan 解消件数 | CMS-H-01〜16（高リスク × 16 件） |
+
+> **AppScan への影響:**  
+> CMS-H-01〜06（反射型 XSS × 6件）と CMS-H-07〜16（格納型 XSS × 10件）の根本原因である  
+> `echo "<!--[..SQL..]-->"` を削除。再診断で高リスク 16 件がすべて解消される見込み。
+
+---
+
+## 修正ファイル一覧
+
+| # | ファイル | 区分 | 削除行番号 | 削除行数 |
+|---|---------|------|-----------|---------|
+| 1 | `alflearning-cms/alfproduct/product/index.php` | CMS-H-01〜16 必須 | 356〜357 | 2 |
+| 2 | `alflearning-cms/alfproduct/product_lecture_ethics/index.php` | F-8b 同時対応 | 429〜430 | 2 |
+| 3 | `alflearning-cms/alfproduct/product_ethics/index.php` | F-8b 同時対応 | 361〜362 | 2 |
+| 4 | `alflearning-cms/alfproduct/product_lecture2/csv.php` | F-8b 同時対応 | 194 | 1 |
+| 5 | `alflearning-cms/alfproduct/product_live/index20260324.php` | F-8b 同時対応 | 400〜401 | 2 |
+
+---
+
+## 修正差分
+
+### 1. `alflearning-cms/alfproduct/product/index.php`
+
+**区分:** CMS-H-01〜16 必須 / **削除行:** 356〜357 (-2行)
+
+```diff
+@@ -353,8 +353,6 @@
+ //$sql = "select product_id,...";
+ $sql = "select tbl_product.product_id,tbl_product.product_name, ...";
+ 
+-echo "<!--[".$sql.$where.$order.$offset."]-->";
+-
+ $ret = $objDbConnect->query_fetch_arr($sql.$where.$order.$offset);
+```
+
+> SQL クエリ全文（WHERE 句 = ユーザー入力含む）が HTML コメントに出力されていた。CMS-H 系 XSS の直接的な発生源。
+
+---
+
+### 2. `alflearning-cms/alfproduct/product_lecture_ethics/index.php`
+
+**区分:** F-8b 同時対応 / **削除行:** 429〜430 (-2行)
+
+```diff
+@@ -426,7 +426,5 @@
+ //$sql = "select ..."; // コメントアウト済み旧SQL
+ 
+-	echo "<!--[".$sql.$where.$group.$order.$offset."]-->";
+-
+ 	$ret = $objDbConnect->query_fetch_arr($sql.$where.$group.$order.$offset);
+```
+
+> product/index.php と同一パターン。GROUP BY 句も含むため変数が追加されている。AppScan 未到達ページだが同時削除。
+
+---
+
+### 3. `alflearning-cms/alfproduct/product_ethics/index.php`
+
+**区分:** F-8b 同時対応 / **削除行:** 361〜362 (-2行)
+
+```diff
+@@ -358,7 +358,5 @@
+ $sql = "select tbl_product.product_id, ...";
+ 
+ 
+-echo "<!--[".$sql.$where.$order.$offset."]-->";
+-
+ $ret = $objDbConnect->query_fetch_arr($sql.$where.$order.$offset);
+```
+
+> 倫理研修商品一覧。product/index.php と完全に同一のパターン。
+
+---
+
+### 4. `alflearning-cms/alfproduct/product_lecture2/csv.php`
+
+**区分:** F-8b 同時対応 / **削除行:** 194 (-1行)
+
+```diff
+@@ -191,6 +191,5 @@
+ $arr_input_2 = $objDbConnect->query_fetch($sql);
+ if (!$arr_input_2) {
+-print("<!--[".$sql."]-->");
+ 	echo '情報の取得に失敗しました。';
+ 	exit;
+```
+
+> 他と異なりエラー条件内に記述。クエリ失敗時に SQL 文字列をそのまま出力していた。
+
+---
+
+### 5. `alflearning-cms/alfproduct/product_live/index20260324.php`
+
+**区分:** F-8b 同時対応 / **削除行:** 400〜401 (-2行)
+
+```diff
+@@ -396,8 +396,6 @@
+  ";
+ //echo $sql.$where.$order;  // 既にコメントアウト済みの旧残存
+ 
+-echo "<!--[".$sql.$where.$order.$offset."]-->";
+-
+ $ret = $objDbConnect->query_fetch_arr($sql.$where.$order.$offset);
+```
+
+> ファイル名に日付 (20260324) が付く旧版ファイル。コメントアウト済みの echo が別途残存しており、有効な echo も共存していた。
+
+---
+
+## スコープ補足
+
+- **F-* 除外方針:** F-8b 以外の F-* 系列（F-1〜F-16）はすべて「PDF スキャン対象外」として除外済み。
+- **セッション格納前エスケープ（行 138〜146）は非対応:** echo 削除で XSS ベクターを完全に除去しているため不要。SQL WHERE 句に入る値に HTML エスケープを掛けることは不正確になるため見送り。テンプレート表示エスケープは Ph.4（#A Smarty `|escape`）でカバー。
+
+---
+
+## 次フェーズ
+
+| フェーズ | 内容 | 対象件数 |
+|---------|------|---------|
+| **Ph.2** | A型 405 GET 排除 + C型 `$_REQUEST`→`$_POST` | 65 ファイル |
+| **Ph.3** | `rel="noopener noreferrer"` 付与 | 22 箇所 |
+| **Ph.4** | Smarty `\|escape` 追加（#A） | 77 ファイル |
+| **Ph.5** | CI3 ビュー `htmlspecialchars()` 追加（#D） | 84 ファイル |
+| **Ph.6** | `AlfSession.php` SameSite=Strict 変更 | 1 ファイル |
+
+---
+
+# Ph.2 修正レポート — A型 GET 405拒否 / C型 `$_REQUEST` 置換
+
+**実施日:** 2026-06-24  
+**対応区分:** CMS-L-02（AppScan 必須）+ STU-L-02（AppScan 必須）
+
+---
+
+## サマリー
+
+| 項目 | 値 |
+|------|-----|
+| 修正ファイル数 | 79 |
+| スキップ（既存チェックあり） | 1 |
+| GET拒否ブロック追加行数 | 320 行（64 ファイル × 5 行） |
+| `$_REQUEST`→`$_POST` 置換箇所 | 83 箇所（11 ファイル） |
+| `$_REQUEST`→`$_GET` 置換箇所 | 70 箇所（15 ファイル） |
+| **合計修正行数** | **320 行追加 / 0 行削除** |
+
+> **AppScan への影響:**  
+> CMS-L-02・STU-L-02（ボディパラメータをクエリで送信）の根本原因である GET リクエストでの  
+> POST エンドポイントへのアクセスを全面遮断。再診断で該当指摘がすべて解消される見込み。
+
+---
+
+## 修正パターン
+
+### A型: GET 拒否ブロック（`<?php` 直後に挿入）
+
+```diff
+@@ -1,4 +1,9 @@
+ <?php
++if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
++    header('HTTP/1.1 405 Method Not Allowed');
++    header('Allow: POST');
++    exit;
++}
+ //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include("/srv/alfproduct/module/module.php");
+ $template = new Template();
+```
+
+### C型書込系: GET 拒否ブロック + `$_REQUEST` → `$_POST`
+
+```diff
+@@ -1,6 +1,11 @@
+ <?php
++if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
++    header('HTTP/1.1 405 Method Not Allowed');
++    header('Allow: POST');
++    exit;
++}
+ //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include("/srv/alfproduct/module/module.php");
+ ...
+-if(isset($_REQUEST["pid"])){
+-    $pid = intval($_REQUEST["pid"]);
++if(isset($_POST["pid"])){
++    $pid = intval($_POST["pid"]);
+```
+
+### C型表示系: `$_REQUEST` → `$_GET`（GET 拒否なし）
+
+```diff
+-if(isset($_REQUEST["pid"])){
+-    $pid = intval($_REQUEST["pid"]);
++if(isset($_GET["pid"])){
++    $pid = intval($_GET["pid"]);
+```
+
+---
+
+## CMS-A型（22 ファイル）— GET 拒否追加のみ
+
+| # | ファイル | 状態 | 追加行 |
+|---|---------|------|------|
+| 1 | `alflearning-cms/alfproduct/product/add.php` | modified | +5 |
+| 2 | `alflearning-cms/alfproduct/product/add_review.php` | modified | +5 |
+| 3 | `alflearning-cms/alfproduct/product/delete_all_contents.php` | modified | +5 |
+| 4 | `alflearning-cms/alfproduct/product/delete_document.php` | modified | +5 |
+| 5 | `alflearning-cms/alfproduct/product/delete_thumbnail.php` | modified | +5 |
+| 6 | `alflearning-cms/alfproduct/product/upload_all_contents.php` | modified | +5 |
+| 7 | `alflearning-cms/alfproduct/product/upload_document.php` | modified | +5 |
+| 8 | `alflearning-cms/alfproduct/product/upload_thumbnail.php` | modified | +5 |
+| 9 | `alflearning-cms/alfproduct/product_ethics/add.php` | modified | +5 |
+| 10 | `alflearning-cms/alfproduct/product_ethics/delete_all_contents.php` | modified | +5 |
+| 11 | `alflearning-cms/alfproduct/product_ethics/delete_document.php` | modified | +5 |
+| 12 | `alflearning-cms/alfproduct/product_ethics/delete_thumbnail.php` | modified | +5 |
+| 13 | `alflearning-cms/alfproduct/product_ethics/upload_all_contents.php` | modified | +5 |
+| 14 | `alflearning-cms/alfproduct/product_ethics/upload_document.php` | modified | +5 |
+| 15 | `alflearning-cms/alfproduct/product_ethics/upload_thumbnail.php` | modified | +5 |
+| 16 | `alflearning-cms/alfproduct/product_live/add.php` | modified | +5 |
+| 17 | `alflearning-cms/alfproduct/product_live/delete_thumbnail.php` | modified | +5 |
+| 18 | `alflearning-cms/alfproduct/product_live/upload_thumbnail.php` | modified | +5 |
+| 19 | `alflearning-cms/alfproduct/product_live_branch/add.php` | modified | +5 |
+| 20 | `alflearning-cms/alfproduct/product_passport/add.php` | modified | +5 |
+| 21 | `alflearning-cms/alfproduct/product_passport/delete_thumbnail.php` | modified | +5 |
+| 22 | `alflearning-cms/alfproduct/product_passport/upload_thumbnail.php` | modified | +5 |
+
+**小計: +110 行**
+
+---
+
+## STU-A型（32 ファイル）— GET 拒否追加のみ
+
+| # | ファイル | 状態 | 追加行 | 備考 |
+|---|---------|------|------|------|
+| 1 | `alfproduct/public/exam/answer_check.php` | modified | +5 | |
+| 2 | `alfproduct/public/exam/answer_check1.php` | modified | +5 | |
+| 3 | `alfproduct/public/exam/answer_save.php` | modified | +5 | |
+| 4 | `alfproduct/public/exam/confirm2.php` | modified | +5 | |
+| 5 | `alfproduct/public/exam/index2.php` | modified | +5 | |
+| 6 | `alfproduct/public/exam/resubmit_exec.php` | modified | +5 | |
+| 7 | `alfproduct/public/exam/resubmit_exec1.php` | modified | +5 | |
+| 8 | `alfproduct/public/exam/resubmit_exec2.php` | modified | +5 | |
+| 9 | `alfproduct/public/exam/resubmit_index1.php` | modified | +5 | |
+| 10 | `alfproduct/public/exam2/answer_check.php` | modified | +5 | |
+| 11 | `alfproduct/public/exam2/answer_save.php` | modified | +5 | |
+| 12 | `alfproduct/public/exam2/resubmit_check.php` | modified | +5 | |
+| 13 | `alfproduct/public/exam2/resubmit_check_mst.php` | modified | +5 | |
+| 14 | `alfproduct/public/exam2/resubmit_check_review.php` | modified | +5 | |
+| 15 | `alfproduct/public/exam2/resubmit_exec.php` | modified | +5 | |
+| 16 | `alfproduct/public/exam2/resubmit_exec_mst.php` | modified | +5 | |
+| 17 | `alfproduct/public/exam2/resubmit_exec_review.php` | modified | +5 | |
+| 18 | `alfproduct/public/ethic_treaning/question_answer.php` | modified | +5 | |
+| 19 | `alfproduct/public/ethic_treaning/question_answer_retry.php` | modified | +5 | |
+| 20 | `alfproduct/public/inquiry/conf.php` | **skipped** | — | 既存 REQUEST_METHOD チェックあり |
+| 21 | `alfproduct/public/member/regist.php` | modified | +5 | |
+| 22 | `alfproduct/public/mypage/edit.php` | modified | +5 | |
+| 23 | `alfproduct/public/mypage/favorite.php` | modified | +5 | |
+| 24 | `alfproduct/public/mypage/receipt_download.php` | modified | +5 | |
+| 25 | `alfproduct/public/mypage/refusal.php` | modified | +5 | |
+| 26 | `alfproduct/public/product/detail.php` | modified | +5 | |
+| 27 | `alfproduct/public/product/detail_review.php` | modified | +5 | |
+| 28 | `alfproduct/public/settlement/alert_passport.php` | modified | +5 | |
+| 29 | `alfproduct/public/settlement/araigae_upload.php` | modified | +5 | |
+| 30 | `alfproduct/public/settlement/member_card_regist.php` | modified | +5 | |
+| 31 | `alfproduct/public/settlement/payment_bank.php` | modified | +5 | |
+| 32 | `alfproduct/public/settlement/payment_passport_user.php` | modified | +5 | |
+
+**小計: +155 行（1 ファイルスキップ）**
+
+---
+
+## C型書込系（11 ファイル）— GET 拒否 + `$_REQUEST`→`$_POST`
+
+| # | ファイル | 区分 | 追加行 | 置換箇所 |
+|---|---------|------|------|---------|
+| 1 | `alflearning-cms/alfproduct/product_lecture2/info_user.php` | CMS 必須 | +5 | 12 |
+| 2 | `alflearning-cms/alfproduct/product_lecture/info_user.php` | CMS 必須 | +5 | 12 |
+| 3 | `alflearning-cms/alfproduct/product_lecture2/info_user_regist.php` | CMS 必須 | +5 | 10 |
+| 4 | `alflearning-cms/alfproduct/product_lecture2/info_user_import.php` | CMS 必須 | +5 | 10 |
+| 5 | `alflearning-cms/alfproduct/product_lecture/info_user_regist.php` | CMS 必須 | +5 | 10 |
+| 6 | `alflearning-cms/alfproduct/product_lecture/info_user_import.php` | CMS 必須 | +5 | 10 |
+| 7 | `alflearning-cms/alfproduct/product_lecture_ethics/info_user_import.php` | CMS 必須 | +5 | 6 |
+| 8 | `alflearning-cms/alfproduct/product_lecture_ethics/info_user_regist.php` | CMS 必須 | +5 | 4 |
+| 9 | `alfproduct/public/settlement/index.php` | STU 必須 | +5 | 3 |
+| 10 | `alfproduct/public/settlement/order_regist.php` | STU 必須 | +5 | 4 |
+| 11 | `alfproduct/public/settlement/order_passport_user.php` | STU 必須 | +5 | 2 |
+
+**小計: +55 行追加 / 83 箇所置換**
+
+---
+
+## C型表示系（15 ファイル）— `$_REQUEST`→`$_GET`のみ
+
+| # | ファイル | 区分 | 置換箇所 | 置換対象パラメーター |
+|---|---------|------|---------|---------|
+| 1 | `alflearning-cms/alfproduct/product_lecture_ethics/info.php` | CMS 任意 | 14 | pid, oid, odid, res, sid 等 |
+| 2 | `alflearning-cms/alfproduct/product_lecture2/info.php` | CMS 任意 | 2 | pid |
+| 3 | `alflearning-cms/alfproduct/product_lecture/info.php` | CMS 任意 | 2 | pid |
+| 4 | `alflearning-cms/alfproduct/product_ethics/info.php` | CMS 任意 | 2 | mid |
+| 5 | `alflearning-cms/alfproduct/product/info.php` | CMS 任意 | 2 | mid |
+| 6 | `alflearning-cms/alfproduct/product_live/info.php` | CMS 任意 | 2 | mid |
+| 7 | `alflearning-cms/alfproduct/product_live_branch/info.php` | CMS 任意 | 2 | mid |
+| 8 | `alflearning-cms/alfproduct/product_passport/info.php` | CMS 任意 | 2 | mid |
+| 9 | `alflearning-cms/alfproduct/amount_user/info.php` | CMS 任意 | 2 | sid |
+| 10 | `alflearning-cms/alfproduct/amount_order/info.php` | CMS 任意 | 8 | mode, oid, order_detail_id, payment_status |
+| 11 | `alflearning-cms/alfproduct/product_lecture_ethics/csv.php` | CMS 任意 | 8 | pid, type, aid, atype |
+| 12 | `alflearning-cms/alfproduct/product_lecture2/csv.php` | CMS 任意 | 6 | pid, aid, type |
+| 13 | `alflearning-cms/alfproduct/product_lecture/csv.php` | CMS 任意 | 6 | pid, aid, type |
+| 14 | `alflearning-cms/alfproduct/amount_order/pdf.php` | CMS 任意 | 8 | mode, oid, order_detail_id, payment_status |
+| 15 | `alfproduct/public/product/download_android.php` | STU 任意 | 4 | pid, cdname, uid |
+
+**小計: 0 行追加 / 70 箇所置換**
+
+---
+
+## スキップ
+
+| ファイル | 理由 |
+|---------|------|
+| `alfproduct/public/inquiry/conf.php` | 既存の REQUEST_METHOD チェックが存在（Ph.1 以前に対応済み） |
+
+---
+
+## 修正合計
+
+| 区分 | ファイル数 | 追加行 | 置換箇所 |
+|------|----------|------|---------|
+| CMS-A型（GET 拒否のみ） | 22 | +110 | — |
+| STU-A型（GET 拒否のみ） | 31 | +155 | — |
+| C型書込系（GET 拒否 + POST 置換） | 11 | +55 | 83 |
+| C型表示系（GET 置換のみ） | 15 | 0 | 70 |
+| **合計** | **79** | **+320** | **153** |
+
+---
+
+## 次フェーズ
+
+| フェーズ | 内容 | 対象件数 |
+|---------|------|---------|
+| **Ph.3** | `rel="noopener noreferrer"` 付与 | 22 箇所 |
+| **Ph.4** | Smarty `\|escape` 追加（#A） | 77 ファイル |
+| **Ph.5** | CI3 ビュー `htmlspecialchars()` 追加（#D） | 84 ファイル |
+| **Ph.6** | `AlfSession.php` SameSite=Strict 変更 | 1 ファイル |
+
+---
+
+# Ph.3 修正レポート — `target="_blank"` に `rel="noopener noreferrer"` 追加
+
+**実施日:** 2026-06-24  
+**対応区分:** STU-M-06〜11（`target="_blank"` の `rel` 属性欠落）
+
+---
+
+## サマリー
+
+| 項目 | 値 |
+|------|-----|
+| 修正ファイル数 | 20 |
+| 修正行数（行の変更） | 22 行 |
+| 修正タグ数（anchor タグ実数） | 27 箇所 |
+| スキップ | 0 |
+
+> **注:** `payment_card.tpl`（PC/SP）・`payment_bank.tpl` の各 1 行にはそれぞれ 2 つの `target="_blank"` が含まれており、
+> 22 行変更で 27 タグを修正。
+
+---
+
+## Smarty テンプレート（15 ファイル）
+
+### 1. `alfproduct/smarty/templates/default/settlement/payment_card.tpl`
+
+**行 161 — 2タグ修正**
+
+```diff
+-  <span style="color:#ff6666;"><a href="http://www.nichibenren.or.jp/copyright/privacy.html" target="_blank">プライパシーポリシー</a>及び<a href="/policy" target="_blank">利用規約</a>に同意の上...
++  <span style="color:#ff6666;"><a href="http://www.nichibenren.or.jp/copyright/privacy.html" target="_blank" rel="noopener noreferrer">プライパシーポリシー</a>及び<a href="/policy" target="_blank" rel="noopener noreferrer">利用規約</a>に同意の上...
+```
+
+---
+
+### 2. `alfproduct/smarty/templates/smartphone/settlement/payment_card.tpl`
+
+**行 161 — 2タグ修正**（PC版と同一パターン）
+
+```diff
+-  ...target="_blank">プライパシーポリシー</a>及び<a href="/policy" target="_blank">利用規約</a>...
++  ...target="_blank" rel="noopener noreferrer">プライパシーポリシー</a>及び<a href="/policy" target="_blank" rel="noopener noreferrer">利用規約</a>...
+```
+
+---
+
+### 3. `alfproduct/smarty/templates/smartphone/settlement/payment_bank.tpl`
+
+**行 123 — 2タグ修正**（payment_card と同一パターン）
+
+```diff
+-  ...target="_blank">プライパシーポリシー</a>及び<a href="/policy" target="_blank">利用規約</a>...
++  ...target="_blank" rel="noopener noreferrer">プライパシーポリシー</a>及び<a href="/policy" target="_blank" rel="noopener noreferrer">利用規約</a>...
+```
+
+---
+
+### 4. `alfproduct/smarty/templates/smartphone/ranking/index.tpl`
+
+**行 66 — 1タグ修正**
+
+```diff
+-  <a href="/custom_pages/cp-content/uploads/<!--{$row.file_path|escape}-->" target="_blank">こちら</a>
++  <a href="/custom_pages/cp-content/uploads/<!--{$row.file_path|escape}-->" target="_blank" rel="noopener noreferrer">こちら</a>
+```
+
+---
+
+### 5. `alfproduct/smarty/templates/smartphone/mypage/edit.tpl`
+
+**行 65, 70 — 各1タグ修正（計2タグ）**
+
+```diff
+@@ 行 65 @@
+-  <td><a target="_blank" href="http://search.post.japanpost.jp/zipcode/"><span>郵便番号検索</span></a></td>
++  <td><a target="_blank" rel="noopener noreferrer" href="http://search.post.japanpost.jp/zipcode/"><span>郵便番号検索</span></a></td>
+
+@@ 行 70 @@
+-  <a target="_blank" onclick="fnCallAddress(...)" href="javascript:void(0);"><img ... alt="住所自動入力"></a>
++  <a target="_blank" rel="noopener noreferrer" onclick="fnCallAddress(...)" href="javascript:void(0);"><img ... alt="住所自動入力"></a>
+```
+
+---
+
+### 6. `alfproduct/smarty/templates/smartphone/member/regist.tpl`
+
+**行 56, 61 — 各1タグ修正（計2タグ）**
+
+```diff
+@@ 行 56 @@
+-  <a target="_blank" href="http://search.post.japanpost.jp/zipcode/"><span>郵便番号検索</span></a>
++  <a target="_blank" rel="noopener noreferrer" href="http://search.post.japanpost.jp/zipcode/"><span>郵便番号検索</span></a>
+
+@@ 行 61 @@
+-  <a target="_blank" onclick="fnCallAddress(...)" href="javascript:void(0);"><img ... alt="住所自動入力"></a>
++  <a target="_blank" rel="noopener noreferrer" onclick="fnCallAddress(...)" href="javascript:void(0);"><img ... alt="住所自動入力"></a>
+```
+
+---
+
+### 7. `alfproduct/smarty/templates/admin/main_frame.tpl`
+
+**行 225, 226 — 各1タグ修正（計2タグ）**
+
+```diff
+@@ 行 225 @@
+-  <li><a target="_blank" href="http://alfredcore.com/">運営会社</a></li>
++  <li><a target="_blank" rel="noopener noreferrer" href="http://alfredcore.com/">運営会社</a></li>
+
+@@ 行 226 @@
+-  <li><a target="_blank" href="http://alfredcore.com/privacy">個人情報保護方針</a></li>
++  <li><a target="_blank" rel="noopener noreferrer" href="http://alfredcore.com/privacy">個人情報保護方針</a></li>
+```
+
+---
+
+### 8〜15. 管理側 CSV ダウンロード・CSV リンク系（1タグ/ファイル）
+
+同一パターン（CSV ダウンロード img リンク）：
+
+```diff
+-  <a href="csv.php?data=<!--{...}-->" target="_blank"><img src="...abtn_csv.png" alt="CSVダウンロード"></a>
++  <a href="csv.php?data=<!--{...}-->" target="_blank" rel="noopener noreferrer"><img src="...abtn_csv.png" alt="CSVダウンロード"></a>
+```
+
+| # | ファイル | 修正行 |
+|---|---------|------|
+| 8 | `admin/report_product/index.tpl` | 209 |
+| 9 | `admin/report_product/info.tpl` | 88 |
+| 10 | `admin/product_live/index.tpl` | 217 |
+| 11 | `admin/amount_passport/index.tpl` | 69 |
+| 12 | `admin/amount_product/index.tpl` | 68 |
+| 13 | `admin/amount_user/index.tpl` | 56 |
+| 14 | `admin/amount_user/info.tpl` | 37 |
+| 15 | `admin/amount_order/index.tpl` | 91 |
+
+---
+
+## CMS ビュー PHP（5 ファイル）
+
+### 16. `alflearning-cms/application/views/header/body_header.php`
+
+**行 162, 164 — 各1タグ修正（計2タグ）** PHP 文字列連結内
+
+```diff
+@@ 行 162 @@
+-  $temp_li = $temp_li.'><a href="'.$user_auth['url'].'" target="_blank"><img src="...logo_eLearningManager.png" />'.$user_auth['name'].'</a></li>';
++  $temp_li = $temp_li.'><a href="'.$user_auth['url'].'" target="_blank" rel="noopener noreferrer"><img src="...logo_eLearningManager.png" />'.$user_auth['name'].'</a></li>';
+
+@@ 行 164 @@
+-  $temp_li = $temp_li.'><a href="'.$user_auth['url'].'" target="_blank">'.$user_auth['name'].'</a></li>';
++  $temp_li = $temp_li.'><a href="'.$user_auth['url'].'" target="_blank" rel="noopener noreferrer">'.$user_auth['name'].'</a></li>';
+```
+
+---
+
+### 17. `alflearning-cms/application/views/admin_top/update_history.php`
+
+**行 204 — 1タグ修正**
+
+```diff
+-  <a href="http://elearningmanager.jp/" target="_blank">eLearning Manager</a>との連携に対応しました...
++  <a href="http://elearningmanager.jp/" target="_blank" rel="noopener noreferrer">eLearning Manager</a>との連携に対応しました...
+```
+
+---
+
+### 18. `alflearning-cms/application/views/cms_exam/confirm.php`
+
+**行 226 — 1タグ修正** JavaScript 文字列内
+
+```diff
+-  problem_kind_detail = '...'+'<a style="text-decoration: none;" href="'+problem_kind_link+'" target="_blank">'+response['exam_problems_problem_contents']+'</a>';
++  problem_kind_detail = '...'+'<a style="text-decoration: none;" href="'+problem_kind_link+'" target="_blank" rel="noopener noreferrer">'+response['exam_problems_problem_contents']+'</a>';
+```
+
+---
+
+### 19. `alflearning-cms/application/views/cms_exam2/confirm.php`
+
+**行 226 — 1タグ修正**（cms_exam と同一パターン、変数名のみ `exam2_` プレフィックス）
+
+---
+
+### 20. `alflearning-cms/application/views/cms_issue/confirm.php`
+
+**行 166 — 1タグ修正**
+
+```diff
+-  <a href="<?= $this->config->item('stream_get_url'); ?>/school_...?token=..." target="_blank"><?= $issue['issue_submit_logic_name'][$id]; ?></a>
++  <a href="<?= $this->config->item('stream_get_url'); ?>/school_...?token=..." target="_blank" rel="noopener noreferrer"><?= $issue['issue_submit_logic_name'][$id]; ?></a>
+```
+
+---
+
+## 修正合計
+
+| 区分 | ファイル数 | 修正行数 | 修正タグ数 |
+|------|----------|---------|---------|
+| Smarty テンプレート | 15 | 17 行 | 21 タグ |
+| CMS ビュー PHP | 5 | 5 行 | 6 タグ |
+| **合計** | **20** | **22 行** | **27 タグ** |
+
+---
+
+## スコープ外
+
+`alfproduct/admin/testlogin/` 配下 2 ファイル（`body_header.php` 行 138, 140 / `body_footer.php` 行 19, 20）は
+`alfproduct/admin/` が DocumentRoot 外のため Web 非到達 → 除外済み（Ph.2 同様の admin 除外方針）。
+
+---
+
+## 次フェーズ
+
+| フェーズ | 内容 | 対象件数 |
+|---------|------|---------|
+| **Ph.4** | Smarty `\|escape` 追加（#A） | 77 ファイル |
+| **Ph.5** | CI3 ビュー `htmlspecialchars()` 追加（#D） | 84 ファイル |
+| **Ph.6** | `AlfSession.php` SameSite=Strict 変更 | 1 ファイル |
+
+---
+
+# Ph.4 修正レポート — Smarty テンプレート `|escape` 追加（#A）
+
+**実施日:** 2026-06-25  
+**対応区分:** 管理画面 XSS（優先度：低）— Smarty 変数の出力エスケープ漏れ
+
+---
+
+## サマリー
+
+| 項目 | 値 |
+|------|-----|
+| 対象ファイル総数 | 66 |
+| 修正（`|escape` 追加） | 58 ファイル |
+| 対応済み（既に `|escape` 有） | 3 ファイル |
+| スキップ（`pager` のみ or 変数なし） | 5 ファイル |
+| **追加修正箇所合計** | **143 箇所** |
+
+> **スキップ方針:**  
+> `pager`（CI3 Pagination が生成する HTML フラグメント）と `admin_main_side_menu`（同様 HTML フラグメント）は  
+> `|escape` 追加の対象外。その他の変数はすべて追加済み。
+
+---
+
+## 修正パターン
+
+```diff
+- <!--{$variable}-->
++ <!--{$variable|escape}-->
+
+- <!--{$variable|urlencode}-->
++ <!--{$variable|urlencode|escape}-->
+
+- <!--{$variable|number_format}-->
++ <!--{$variable|number_format|escape}-->
+```
+
+---
+
+## フレーム / 共通（3 ファイル・10 箇所）
+
+| ファイル | 状態 | 箇所数 | 対象変数 |
+|---------|------|------|---------|
+| `main_frame.tpl` | modified | 6 | admin_main_title(×3), admin_main_name, admin_main_school, admin_main_comment |
+| `main_frame_non.tpl` | modified | 1 | admin_main_title |
+| `pop_frame.tpl` | modified | 3 | admin_main_title(×2), admin_main_comment |
+
+---
+
+## 金額集計系（7 ファイル・20 箇所）
+
+| ファイル | 状態 | 箇所数 | 対象変数 |
+|---------|------|------|---------|
+| `amount_order/index.tpl` | modified | 3 | row.name(×3) |
+| `amount_order/info.tpl` | modified | 4 | arr_order[0].lawyer_number, arr_order[0].student_name(×2), arr_order[0].association_name |
+| `amount_passport/index.tpl` | modified | 4 | row.name(×2), passport_target_name, row.disp_passport_target |
+| `amount_product/index.tpl` | modified | 2 | search_product_name, search_product_code |
+| `amount_user/index.tpl` | modified | 1 | row.name |
+| `amount_user/info.tpl` | modified | 3 | arr_student.lawyer_number, arr_student.student_name, arr_student.association_name |
+| `bank_upload/index.tpl` | modified | 3 | err_msg, ok_msg(×2) |
+
+---
+
+## 問合・メルマガ系（9 ファイル・23 箇所）
+
+| ファイル | 状態 | 箇所数 | 対象変数 |
+|---------|------|------|---------|
+| `inquiry/conf.tpl` | modified | 2 | prev_url, next_url |
+| `inquiry/form.tpl` | already_done | 0 | — |
+| `inquiry/index.tpl` | modified | 2 | search_keyword, search_lawyer_number |
+| `inquiry/info.tpl` | modified | 8 | iid(×5), mid, page(×2)（JS URL 内） |
+| `inquiry/status.tpl` | modified | 2 | next_url, err |
+| `inquiry/status_conf.tpl` | modified | 2 | prev_url, next_url |
+| `mailmagazine/conf.tpl` | modified | 2 | prev_url, next_url |
+| `mailmagazine/form.tpl` | modified | 3 | next_url, err, row.name |
+| `mailmagazine/index.tpl` | modified | 2 | search_keyword, row.mail_title |
+
+---
+
+## 商品系（11 ファイル・15 箇所）
+
+| ファイル | 状態 | 箇所数 | 対象変数 |
+|---------|------|------|---------|
+| `product/info.tpl` | modified | 1 | arr_input.exam2_id |
+| `product/search_contents_so.tpl` | modified | 1 | row.video_logic_name |
+| `product/search_elive.tpl` | modified | 2 | row.product_name(×2) |
+| `product/search_product.tpl` | modified | 2 | row.product_name(×2) |
+| `product/search_product_ranking.tpl` | modified | 2 | row.product_name(×2) |
+| `product/search_student.tpl` | modified | 3 | row.name, row.student_name(×2) |
+| `product_ethics/add_confirm.tpl` | modified | 1 | ethic_group[$arr_input.ethic_group_id] |
+| `product_ethics/index.tpl` | skipped | 0 | pager のみ |
+| `product_ethics/info.tpl` | already_done | 0 | — |
+| `product_ethics/search_contents.tpl` | modified | 1 | row.video_logic_name |
+| `product_ethics/search_product.tpl` | modified | 2 | row.product_name(×2) |
+
+---
+
+## 講義・講座系（19 ファイル・47 箇所）
+
+| ファイル | 状態 | 箇所数 | 対象変数 |
+|---------|------|------|---------|
+| `product_lecture/index.tpl` | modified | 3 | row.name(×2), row2.name |
+| `product_lecture/info.tpl` | modified | 2 | arr_input.product_name, arr_input.dates |
+| `product_lecture/info_user.tpl` | modified | 3 | arr_input_2.bar_association_name, arr_input_2.bar_association_branch_name, arr_input_2.product_name |
+| `product_lecture/info_user_import.tpl` | modified | 11 | arr_input_2.bar_association_name, arr_input_2.bar_association_branch_name, arr_input_2.product_name, arr_input_2.dates, arr_input_2.entry_number, arr_input_2.capacity, err_msg, row.lawyer_number, row.student_name, row.bar_association_name, res_msg |
+| `product_lecture/info_user_regist.tpl` | modified | 7 | arr_input_2.bar_association_name, arr_input_2.bar_association_branch_name, arr_input_2.product_name, arr_input_2.dates, arr_input_2.entry_number, arr_input_2.capacity, res_msg |
+| `product_lecture2/index.tpl` | modified | 3 | row.name(×2), row2.name |
+| `product_lecture2/info.tpl` | modified | 1 | arr_input.product_name |
+| `product_lecture2/info_user.tpl` | skipped | 0 | arr_input.* 出現なし（arr_input_2 は別変数） |
+| `product_lecture2/info_user_import.tpl` | modified | 1 | err_msg |
+| `product_lecture2/info_user_regist.tpl` | modified | 2 | arr_input_2.product_name, res_msg |
+| `product_lecture2/product_lecture2/index.tpl` | modified | 2 | row.name, row2.name |
+| `product_lecture2/product_lecture2/info.tpl` | modified | 2 | arr_input.product_name, arr_input.dates |
+| `product_lecture2/product_lecture2/info_user.tpl` | modified | 1 | arr_input_2.product_name |
+| `product_lecture2/product_lecture2/info_user_import.tpl` | modified | 1 | err_msg |
+| `product_lecture2/product_lecture2/info_user_regist.tpl` | modified | 2 | arr_input_2.product_name, res_msg |
+| `product_lecture_ethics/index.tpl` | already_done | 0 | — |
+| `product_lecture_ethics/info.tpl` | modified | 1 | arr_input.product_name |
+| `product_lecture_ethics/info_user_import.tpl` | modified | 5 | arr_input_2.product_name, err_msg, row.lawyer_number, row.student_name, res_msg |
+| `product_lecture_ethics/info_user_regist.tpl` | modified | 2 | arr_input_2.product_name, res_msg |
+
+---
+
+## ライブ・パスポート・レポート系（17 ファイル・28 箇所）
+
+| ファイル | 状態 | 箇所数 | 対象変数 |
+|---------|------|------|---------|
+| `product_live/add.tpl` | modified | 2 | val.name, branch.name |
+| `product_live/add_confirm.tpl` | modified | 5 | mtb_live_training_type[...], mtb_live_target_flg[...], val.name, branch.name, arr_input.$dates |
+| `product_live/approval.tpl` | skipped | 0 | pager のみ |
+| `product_live/index.tpl` | modified | 1 | mtb_bar_association[$row.bar_association_id] |
+| `product_live/info.tpl` | modified | 3 | val.name, branch.name, arr_input.$dates |
+| `product_live/search_product.tpl` | modified | 2 | row.product_name(×2) |
+| `product_live_branch/add.tpl` | modified | 2 | msg, arr_input.$dates |
+| `product_live_branch/add_confirm.tpl` | modified | 3 | val.name, branch.name, arr_input.$dates |
+| `product_live_branch/index.tpl` | modified | 1 | mtb_bar_association[$row.bar_association_id] |
+| `product_live_branch/info.tpl` | modified | 2 | branch.bar_association_branch_name, branch.dates |
+| `product_passport/add.tpl` | modified | 1 | msg |
+| `product_passport/add_confirm.tpl` | modified | 1 | arr_passport_target.$val |
+| `product_passport/index.tpl` | skipped | 0 | pager のみ |
+| `product_passport/info.tpl` | modified | 1 | arr_passport_target.$val |
+| `product_passport/search_product.tpl` | modified | 2 | row.product_name(×2) |
+| `report_product/index.tpl` | modified | 2 | row.name(×2) |
+| `report_product/info.tpl` | skipped | 0 | pager のみ |
+
+---
+
+## 修正合計
+
+| 区分 | ファイル数 | 修正箇所数 |
+|------|----------|---------|
+| フレーム / 共通 | 3 | 10 |
+| 金額集計系 | 7 | 20 |
+| 問合・メルマガ系 | 9（1 already_done） | 23 |
+| 商品系 | 11（1 already_done・1 skipped） | 15 |
+| 講義・講座系 | 19（1 already_done・1 skipped） | 47 |
+| ライブ・パスポート・レポート系 | 17（3 skipped） | 28 |
+| **合計** | **66（3 already_done・5 skipped・58 modified）** | **143** |
+
+---
+
+## スコープ外・特記事項
+
+| 事項 | 理由 |
+|------|------|
+| `pager` 変数 | CI3 Pagination クラスが生成する HTML フラグメント — `|escape` 追加不可 |
+| `admin_main_side_menu` | HTML フラグメント — `|escape` 追加不可 |
+| `alfproduct/admin/` 管理画面 PHP | DocumentRoot 外（Web 非到達）— スコープ外 |
+
+---
+
+## 次フェーズ
+
+| フェーズ | 内容 | 対象件数 |
+|---------|------|---------|
+| **Ph.5** | CI3 ビュー `htmlspecialchars()` 追加（#D） | 84 ファイル |
+| **Ph.6** | `AlfSession.php` SameSite=Strict 変更 | 1 ファイル |
+
+---
+
+# Ph.5 修正レポート — CI3 ビュー `htmlspecialchars()` 追加（#D）
+
+**実施日:** 2026-06-25  
+**対応区分:** 管理画面 XSS（優先度：低）— CI3 ビュー変数の出力エスケープ漏れ
+
+---
+
+## サマリー
+
+| 項目 | 値 |
+|------|-----|
+| 対象ファイル総数 | 101 |
+| 修正（`htmlspecialchars()` 追加） | 97 ファイル |
+| 対応済み（既に `htmlspecialchars()` 有） | 4 ファイル |
+| スキップ（対象変数なし） | 0 ファイル |
+| **追加修正箇所合計** | **580 箇所** |
+
+> **スキップ方針:**  
+> `$pagination` 変数（CI3 Pagination ライブラリが生成するHTML断片）、  
+> `$this->...` で始まる CI3 オブジェクトメソッド、  
+> `base_url()` / `site_url()` 等の CI3 ヘルパー関数は対象外。
+
+---
+
+## 修正パターン
+
+```diff
+- <?=$var?>
++ <?= htmlspecialchars( $var, ENT_QUOTES, 'UTF-8') ?>
+
+- <?= nl2br($var) ?>
++ <?= nl2br( htmlspecialchars( $var, ENT_QUOTES, 'UTF-8') ) ?>
+```
+
+---
+
+## ファイル別修正一覧
+
+### ルートレベル（エラー画面）
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `book_library_error.php` | 修正済み | 2 |
+| `course_class_error.php` | 修正済み | 2 |
+| `issue_error.php` | 修正済み | 2 |
+| `material_error.php` | 修正済み | 2 |
+| `teacher_error.php` | 修正済み | 2 |
+
+### header/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `header/header.php` | 修正済み | 1 |
+
+### admin_top/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `admin_top/classes.php` | 修正済み | 4 |
+| `admin_top/index.php` | 修正済み | 9 |
+| `admin_top/info_detail.php` | 修正済み | 7 |
+| `admin_top/menu_upload.php` | 修正済み | 7 |
+| `admin_top/photo_upload.php` | 修正済み | 1 |
+| `admin_top/_submenu.php` | 修正済み | 2 |
+
+### cms_auth/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_auth/edit.php` | 修正済み | 2 |
+| `cms_auth/index.php` | 対応済み | — |
+
+### cms_book_library/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_book_library/commit.php` | 修正済み | 1 |
+| `cms_book_library/edit.php` | 修正済み | 6 |
+| `cms_book_library/index.php` | 対応済み | — |
+
+### login/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `login/login_page.php` | 修正済み | 3 |
+
+### cms_class/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_class/confirm.php` | 修正済み | 2 |
+| `cms_class/edit.php` | 修正済み | 3 |
+| `cms_class/index.php` | 対応済み | — |
+
+### cms_class_material/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_class_material/add_material.php` | 修正済み | 5 |
+| `cms_class_material/confirm.php` | 修正済み | 11 |
+| `cms_class_material/index.php` | 修正済み | 16 |
+
+### cms_cource/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_cource/commit.php` | 修正済み | 1 |
+| `cms_cource/confirm.php` | 修正済み | 9 |
+| `cms_cource/edit.php` | 修正済み | 18 |
+| `cms_cource/index.php` | 修正済み | 4 |
+
+### cms_exam/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam/confirm.php` | 修正済み | 13 |
+| `cms_exam/confirm_answer.php` | 修正済み | 20 |
+| `cms_exam/edit.php` | 修正済み | 14 |
+| `cms_exam/index.php` | 修正済み | 3 |
+
+### cms_exam2/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam2/answer_set_list.php` | 修正済み | 11 |
+| `cms_exam2/answer_set_list_review.php` | 修正済み | 10 |
+| `cms_exam2/confirm.php` | 修正済み | 23 |
+| `cms_exam2/confirm_answer.php` | 修正済み | 21 |
+| `cms_exam2/edit.php` | 修正済み | 13 |
+| `cms_exam2/index.php` | 修正済み | 4 |
+
+### cms_exam2_download/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam2_download/confirm.php` | 修正済み | 3 |
+| `cms_exam2_download/edit.php` | 修正済み | 1 |
+
+### cms_exam2_problem/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam2_problem/confirm.php` | 修正済み | 7 |
+| `cms_exam2_problem/edit.php` | 修正済み | 3 |
+| `cms_exam2_problem/index.php` | 修正済み | 2 |
+
+### cms_exam2_problem_group/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam2_problem_group/confirm.php` | 修正済み | 3 |
+| `cms_exam2_problem_group/edit.php` | 修正済み | 4 |
+| `cms_exam2_problem_group/index.php` | 修正済み | 4 |
+
+### cms_exam2_problem_import/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam2_problem_import/confirm.php` | 修正済み | 3 |
+| `cms_exam2_problem_import/edit.php` | 修正済み | 16 |
+
+### cms_exam_problem/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam_problem/confirm.php` | 修正済み | 14 |
+| `cms_exam_problem/edit.php` | 修正済み | 6 |
+| `cms_exam_problem/index.php` | 修正済み | 4 |
+
+### cms_exam_problem_group/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam_problem_group/confirm.php` | 修正済み | 3 |
+| `cms_exam_problem_group/edit.php` | 修正済み | 4 |
+| `cms_exam_problem_group/index.php` | 修正済み | 3 |
+
+### cms_exam_problem_import/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_exam_problem_import/confirm.php` | 修正済み | 3 |
+| `cms_exam_problem_import/edit.php` | 修正済み | 18 |
+
+### cms_information/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_information/confirm.php` | 修正済み | 3 |
+| `cms_information/index.php` | 修正済み | 3 |
+
+### cms_information_old/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_information_old/confirm.php` | 修正済み | 6 |
+| `cms_information_old/edit.php` | 修正済み | 2 |
+| `cms_information_old/index.php` | 修正済み | 4 |
+
+### cms_issue/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_issue/confirm.php` | 修正済み | 18 |
+| `cms_issue/edit.php` | 修正済み | 7 |
+| `cms_issue/index.php` | 修正済み | 5 |
+
+### cms_material/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_material/commit.php` | 修正済み | 1 |
+| `cms_material/confirm.php` | 修正済み | 6 |
+| `cms_material/edit.php` | 修正済み | 5 |
+| `cms_material/index.php` | 修正済み | 4 |
+
+### cms_report/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_report/book_library.php` | 修正済み | 11 |
+| `cms_report/class.php` | 修正済み | 9 |
+| `cms_report/user.php` | 修正済み | 9 |
+| `cms_report/user_detail_all.php` | 修正済み | 13 |
+| `cms_report/user_detail_elearning.php` | 修正済み | 15 |
+| `cms_report/user_detail_ethic_training.php` | 修正済み | 12 |
+| `cms_report/user_detail_live_training.php` | 修正済み | 13 |
+| `cms_report/user_detail_nichibenren_except_host.php` | 修正済み | 12 |
+| `cms_report/video.php` | 修正済み | 4 |
+
+### cms_school_manage/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_school_manage/commit.php` | 修正済み | 4 |
+| `cms_school_manage/confirm.php` | 修正済み | 18 |
+| `cms_school_manage/edit.php` | 修正済み | 4 |
+| `cms_school_manage/index.php` | 修正済み | 3 |
+
+### cms_student/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_student/confirm.php` | 修正済み | 7 |
+| `cms_student/edit.php` | 修正済み | 12 |
+| `cms_student/index.php` | 修正済み | 4 |
+
+### cms_student_group/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_student_group/confirm.php` | 修正済み | 3 |
+| `cms_student_group/edit.php` | 修正済み | 1 |
+| `cms_student_group/index.php` | 修正済み | 4 |
+
+### cms_student_sub_auth/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_student_sub_auth/confirm.php` | 修正済み | 10 |
+| `cms_student_sub_auth/edit.php` | 修正済み | 7 |
+| `cms_student_sub_auth/index.php` | 修正済み | 8 |
+
+### cms_teacher/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_teacher/edit.php` | 修正済み | 3 |
+| `cms_teacher/index.php` | 対応済み | — |
+| `cms_teacher/photo_upload.php` | 修正済み | 6 |
+
+### cms_video/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `cms_video/confirm.php` | 修正済み | 7 |
+| `cms_video/edit.php` | 修正済み | 2 |
+| `cms_video/edit_moviecut.php` | 修正済み | 8 |
+| `cms_video/index.php` | 修正済み | 9 |
+| `cms_video/newdata1.php` | 修正済み | 3 |
+| `cms_video/newdata2.php` | 修正済み | 1 |
+
+### school_select/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `school_select/index.php` | 修正済み | 7 |
+
+### mail_templates/
+
+| ファイル | status | 修正箇所 |
+|---------|--------|---------|
+| `mail_templates/class_notification.php` | 修正済み | 5 |
+
+---
+
+## 修正合計
+
+| 区分 | ファイル数 | 修正箇所数 |
+|------|-----------|-----------|
+| 修正（`htmlspecialchars()` 追加） | 97 | 580 |
+| 対応済み（既にエスケープ適用済み） | 4 | 0 |
+| スキップ（対象変数なし） | 0 | 0 |
+| **合計** | **101** | **580** |
+
+---
+
+## スコープ外・特記事項
+
+| 事項 | 理由 |
+|------|------|
+| `$pagination` 変数 | CI3 Pagination クラスが生成するHTML断片 |
+| `$this->lang->line_or_def(...)` | CI3 言語ヘルパー |
+| `base_url()`, `site_url()` 等 | CI3 URLヘルパー関数 |
+| `intval()`, `number_format()` 等 | 数値処理済み（XSSリスクなし） |
+| `nl2br($var)` | `nl2br( htmlspecialchars($var, ...) )` に変換済み |
+| HTMLコメント内の変数 | 非表示のためリスクなし（一部は保守性のため適用） |
+| `if(false){}` ブロック内変数 | デッドコードだが一貫性のため修正対象とした場合あり |
+
+---
+
+## 次フェーズ
+
+| フェーズ | 内容 | 対象件数 |
+|---------|------|---------|
+| **Ph.6** | `AlfSession.php` SameSite=Strict 変更 | 1 ファイル |
+
+---
+
+# Ph.6 修正レポート — SameSite=Strict 変更
+
+**実施日:** 2026-06-25  
+**対応区分:** セッションCookieの SameSite 属性強化
+
+---
+
+## サマリー
+
+| 項目 | 値 |
+|------|-----|
+| 修正ファイル数 | 2 |
+| 修正箇所数 | 4 |
+| 変更内容 | `SameSite=Lax` → `SameSite=Strict` |
+
+---
+
+## 修正内容
+
+### 変更前 → 変更後
+
+```diff
+- $config['sess_samesite'] = 'Lax';
++ $config['sess_samesite'] = 'Strict';
+
+- $config['cookie_samesite'] = 'Lax';
++ $config['cookie_samesite'] = 'Strict';
+```
+
+---
+
+## 修正ファイル
+
+### 1. `alflearning/alflearning-cms/application/config/config.php`
+
+| 行 | 項目 | 変更前 | 変更後 |
+|----|------|--------|--------|
+| 395 | `sess_samesite` | `'Lax'` | `'Strict'` |
+| 425 | `cookie_samesite` | `'Lax'` | `'Strict'` |
+
+### 2. `alflearning/alflearning-api/application/config/config.php`
+
+| 行 | 項目 | 変更前 | 変更後 |
+|----|------|--------|--------|
+| 394 | `sess_samesite` | `'Lax'` | `'Strict'` |
+| 424 | `cookie_samesite` | `'Lax'` | `'Strict'` |
+
+---
+
+## 効果・影響
+
+### 効果
+`SameSite=Strict` にすることで、**クロスサイトリクエスト時にCookieが一切送信されなくなる**。  
+CSRF 攻撃の根本的な緩和策となる（CSRF トークン実装の補完）。
+
+### 影響範囲
+- **CMS セッション（ci_session）:** 外部サイトからのリンク経由でのアクセス時に再ログインが必要になる
+- **API セッション:** alfproduct（同一eTLD+1: alfcloud.com）からのリクエストは同一サイト扱いのため影響なし
+- 本番ドメイン（nichibenren.or.jp 等）が異なる場合は別途検討が必要
+
+> **注:** `alfcloud.com` 配下のサブドメイン間（`nichibenren-stg2.alfcloud.com` ↔  
+> `cms.nichibenren-stg2.alfcloud.com` ↔ `api.nichibenren-stg2.alfcloud.com`）は  
+> 同一サイト（eTLD+1 = `alfcloud.com`）として扱われるため、SameSite=Strict でも Cookie は送信される。
+
+---
+
+## 補足: AlfSession.php との関係
+
+`alfproduct/module/AlfSession.php` はセッションCookieの **読み取り** のみ行い、  
+Cookie の **発行** は CI3 の Session ライブラリ（CMS 側）が担う。  
+したがって SameSite 属性の変更は `config.php` への修正で有効になる。
+
+---
+
+## 次フェーズ（サーバー側・別途対応）
+
+| 対応 | 内容 | 対応方法 |
+|------|------|---------|
+| COOP/CORP/COEP ヘッダー | Cross-Origin 分離ヘッダー | vhost.conf に `Header set` 追加 |
+| CSP ヘッダー | Content-Security-Policy | vhost.conf または PHP で設定 |
+| CSRF トークン | CMS-M-04, M-05, STU-M-04, M-05 | 設計フェーズ（別途） |
+
+---
+
+# Ph.7 修正レポート — セキュリティ HTTP ヘッダー追加
+
+**作成日:** 2026-06-25  
+**対応区分:** CMS-M-01〜03 / CMS-L-01 / STU-M-01〜03 / STU-L-01  
+**優先度:** 中（M-系：Medium / L-系：Low）  
+**作業場所:** サーバー直接修正 — `/etc/httpd/vhost.d/vhost.conf`
+
+---
+
+## サマリー
+
+| 項目 | 値 |
+|------|-----|
+| 対象ファイル | `/etc/httpd/vhost.d/vhost.conf`（サーバー上） |
+| 対象 VirtualHost | product × 2（HTTP/HTTPS）、CMS × 2（HTTP/HTTPS）、API × 2（HTTP/HTTPS） |
+| 追加ヘッダー種別 | COOP / CORP / COEP / CSP — 4 種 |
+| 指摘 ID | CMS-M-01, 02, 03, L-01 / STU-M-01, 02, 03, L-01（計 8 件） |
+
+> **注意:** vhost.conf はリポジトリ管理外（サーバー上の `/etc/httpd/vhost.d/`）。  
+> ローカルソースコードの修正ではないため、ステージングサーバー SSH 接続のうえ直接編集・`httpd -t` で構文確認・`systemctl reload httpd` で反映する。
+
+---
+
+## 修正前後の差分（全 VirtualHost 共通）
+
+```diff
+  <IfModule mod_headers.c>
+      Header set Referrer-Policy "strict-origin-when-cross-origin"
++     Header set Cross-Origin-Opener-Policy "same-origin"
++     Header set Cross-Origin-Resource-Policy "same-origin"
++     Header set Cross-Origin-Embedder-Policy "require-corp"
++     Header set Content-Security-Policy "..."
+  </IfModule>
+```
+
+---
+
+## ヘッダー別説明
+
+### 1. COOP（Cross-Origin-Opener-Policy）— CMS-M-01 / STU-M-01
+
+```
+Header set Cross-Origin-Opener-Policy "same-origin"
+```
+
+**効果:** 別オリジンのページとブラウザ閲覧コンテキスト（window.opener）を切り離す。タブナビゲーションアタック防止。  
+**破壊的影響:** なし。ポップアップウィンドウ経由の親子 window 参照が切れるが、現システムに該当フローがあれば確認が必要。
+
+---
+
+### 2. CORP（Cross-Origin-Resource-Policy）— CMS-M-02 / STU-M-02
+
+```
+Header set Cross-Origin-Resource-Policy "same-origin"
+```
+
+**効果:** このサーバーのリソースを同一オリジンのみが `fetch/XHR` で読み込める。Spectre 等のサイドチャネル攻撃緩和。  
+**破壊的影響:** 外部サイトからこのサーバーのリソース（画像・JS 等）を直接参照している場合はブロックされる。  
+**確認事項:** `/upload/video_thumbnail/`（NFS alias）は同一ホストからのアクセスのため問題なし。
+
+---
+
+### 3. COEP（Cross-Origin-Embedder-Policy）— CMS-M-03 / STU-M-03
+
+```
+Header set Cross-Origin-Embedder-Policy "require-corp"
+```
+
+**効果:** ページが読み込むすべてのサブリソース（画像・JS・iframe 等）に CORP ヘッダーが必要となる。SharedArrayBuffer 有効化の前提条件でもある。  
+
+**⚠️ 破壊的リスクが高い — 事前確認必須**
+
+| 確認項目 | 影響可能性 |
+|---------|-----------|
+| GMO 決済ページの外部 iframe | **高** — GMO 側に CORP ヘッダーがなければブロック |
+| 外部 CDN（jQuery 等）を直接読み込む場合 | **高** — CDN からのレスポンスに CORP ヘッダーがなければブロック |
+| `/alflearning-data/` の動画サムネイル（Apache Alias） | **低** — 同一オリジン配信のため問題なし |
+| 動画プレーヤーが外部ストリームを使う場合 | **要確認** |
+
+**推奨:** まず CMS VirtualHost のみに適用して動作確認後、product VirtualHost に展開する。  
+product VirtualHost で外部リソースが確認された場合は `unsafe-none` → `require-corp` の段階適用を検討。
+
+---
+
+### 4. CSP（Content-Security-Policy）— CMS-L-01 / STU-L-01
+
+CSP は "どのオリジンのリソースを何の目的で読み込んでいいか" をブラウザに伝えるポリシー。  
+アプリが実際に使用しているリソースをすべて把握してから設定しないと、ページが壊れる。
+
+#### 推奨アプローチ: Report-Only → 段階的強化
+
+**Step 1 — まず `Report-Only` で違反を収集する**
+
+```apache
+Header set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; report-uri /csp-report"
+```
+
+- `Content-Security-Policy-Report-Only` はポリシー違反をレポートするが、**ブロックはしない**
+- 違反は `report-uri` で受け取るか、ブラウザの DevTools Console で確認できる
+- 数日〜数週間の動作ログから `script-src` などに追加すべきオリジンを特定する
+
+**Step 2 — 違反確認後、`Content-Security-Policy` に切り替える**
+
+違反ログをもとに、外部オリジンを明示的に許可リストに追加してから本適用する。
+
+#### CMS VirtualHost の初期ポリシー案
+
+CMS は管理者専用・限定ユーザーのため、まず以下で試す：
+
+```apache
+Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'"
+```
+
+| ディレクティブ | 値 | 理由 |
+|---|---|---|
+| `default-src` | `'self'` | 未指定カテゴリはすべて自分自身のみ |
+| `script-src` | `'self' 'unsafe-inline' 'unsafe-eval'` | CodeIgniter のインライン JS が存在するため一時許可（将来的に削除を目指す） |
+| `style-src` | `'self' 'unsafe-inline'` | インライン style が存在するため |
+| `img-src` | `'self' data: blob:` | data URI のアイコン等に対応 |
+| `frame-ancestors` | `'none'` | CMS 画面を iframe 埋め込みさせない（クリックジャッキング防止） |
+| `object-src` | `'none'` | Flash/ActiveX 完全禁止 |
+
+#### product VirtualHost の初期ポリシー案
+
+外部リソース（GMO 決済、動画ストリーム等）の把握が先決。**Report-Only から開始する**こと。
+
+```apache
+Header set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'"
+```
+
+`img-src` に `https:` を入れているのは、外部画像の存在が不明なため暫定許可。違反ログで特定後に絞る。
+
+---
+
+## 修正手順
+
+### 適用ファイル: `/etc/httpd/vhost.d/vhost.conf`
+
+#### 対象 VirtualHost ブロックと追加位置
+
+各 VirtualHost の `<IfModule mod_headers.c>` ブロック末尾に追加する。
+
+```
+#------------------------------------------------------------------------#
+# cms (HTTPS)
+#------------------------------------------------------------------------#
+<VirtualHost *:443>
+    ...
+    <IfModule mod_headers.c>
+        Header set Referrer-Policy "strict-origin-when-cross-origin"
+        Header set Cross-Origin-Opener-Policy "same-origin"          ← 追加
+        Header set Cross-Origin-Resource-Policy "same-origin"        ← 追加
+        Header set Cross-Origin-Embedder-Policy "require-corp"       ← 追加（要確認後）
+        Header set Content-Security-Policy "..."                     ← 追加（Step 1はReport-Onlyで）
+    </IfModule>
+</VirtualHost>
+```
+
+同様に HTTP (port 80) の各 VirtualHost にも追加する。
+
+---
+
+#### 修正対象ブロック一覧
+
+| VirtualHost | Port | ServerName | 追加ヘッダー数 |
+|-------------|------|-----------|-------------|
+| product | 443 | `nichibenren-stg2.alfcloud.com` | 4 |
+| product | 80 | `nichibenren-stg2.alfcloud.com` | 4 |
+| cms | 443 | `cms.nichibenren-stg2.alfcloud.com` | 4 |
+| cms | 80 | `cms.nichibenren-stg2.alfcloud.com` | 4 |
+| api | 443 | `api.nichibenren-stg2.alfcloud.com` | 3（COEPは不要） |
+| api | 80 | `api.nichibenren-stg2.alfcloud.com` | 3（COEPは不要） |
+
+> **API VirtualHost について:** API は JSON を返す REST エンドポイントのため COEP は不要。COOP・CORP・CSP のみ追加する。  
+> CSP は `default-src 'none'; frame-ancestors 'none'` のみで十分（API レスポンスはブラウザが直接レンダリングしない）。
+
+---
+
+## 反映・確認コマンド
+
+```bash
+# 構文チェック
+httpd -t
+
+# 設定反映
+systemctl reload httpd
+
+# ヘッダー確認（CMS）
+curl -sI https://cms.nichibenren-stg2.alfcloud.com/ | grep -i "cross-origin\|content-security"
+
+# ヘッダー確認（product）
+curl -sI https://nichibenren-stg2.alfcloud.com/ | grep -i "cross-origin\|content-security"
+```
+
+---
+
+## 指摘 ID 対応表
+
+| 指摘 ID | 区分 | ヘッダー | VirtualHost | 対応 |
+|---------|------|---------|------------|------|
+| CMS-M-01 | Medium | COOP | cms | `same-origin` |
+| CMS-M-02 | Medium | CORP | cms | `same-origin` |
+| CMS-M-03 | Medium | COEP | cms | `require-corp`（動作確認要） |
+| CMS-L-01 | Low | CSP | cms | Report-Only → 段階適用 |
+| STU-M-01 | Medium | COOP | product | `same-origin` |
+| STU-M-02 | Medium | CORP | product | `same-origin` |
+| STU-M-03 | Medium | COEP | product | `require-corp`（外部リソース確認要） |
+| STU-L-01 | Low | CSP | product | Report-Only から開始 |
+
+---
+
+## 次フェーズ（Ph.8）
+
+| 指摘 ID | 内容 | 備考 |
+|---------|------|------|
+| CMS-M-04 | CSRF（商品一覧） | CI3 CSRF トークン実装 + Smarty フォーム修正 |
+| CMS-M-05 | CSRF（商品登録） | 同上 |
+| STU-M-04 | CSRF（検索） | alfproduct 独自 CSRF 実装 + Smarty フォーム修正 |
+| STU-M-05 | CSRF（問い合わせ確認） | 同上 |
+
+---
+
+# Ph.8 修正レポート — CSRF トークン実装
+
+**作成日:** 2026-06-25  
+**対応区分:** CMS-M-04 / CMS-M-05 / STU-M-04 / STU-M-05  
+**優先度:** 高（Medium）  
+**作業場所:** ローカルソースコード修正
+
+---
+
+## サマリー
+
+| 項目 | 値 |
+|------|-----|
+| 修正ファイル数 | 15 |
+| 追加関数数 | 2（`csrf_token_get()` / `csrf_token_verify()`） |
+| 対象指摘 | CMS-M-04, CMS-M-05, STU-M-04, STU-M-05 |
+
+CI3 の `csrf_protection` はフラット PHP ファイル（`alfproduct/` 系・`alflearning-cms/alfproduct/` 系）には適用されないため、独自の CSRF トークンヘルパーを実装した。
+
+---
+
+## 実装方針
+
+### トークンの仕様
+
+| 項目 | 内容 |
+|------|------|
+| 生成 | `bin2hex(random_bytes(32))` — 256 bit の暗号論的乱数 |
+| 保存 | `$_SESSION['csrf_token']` |
+| 検証 | `hash_equals()` によるタイミングセーフ比較 |
+| 再発行 | 検証成功時に毎回再発行（トークンのリプレイ防止） |
+
+### ヘルパー関数（`alfproduct/module/functions.php` に追加）
+
+```php
+function csrf_token_get(): string {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function csrf_token_verify(): void {
+    $stored = $_SESSION['csrf_token'] ?? '';
+    $posted = $_POST['csrf_token'] ?? '';
+    if (empty($stored) || !hash_equals($stored, $posted)) {
+        http_response_code(403);
+        exit;
+    }
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+```
+
+`functions.php` は `module/module.php` 経由で全対象ページに自動 include されるため、追加設定不要。
+
+---
+
+## CMS-M-04 — 商品一覧・検索フォーム CSRF
+
+**対象ページ:** CMS 商品一覧 (`/alfproduct/product/index.php`)
+
+### 修正ファイル
+
+#### 1. `alflearning/alflearning-cms/alfproduct/product/index.php`
+
+```diff
+ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
++    csrf_token_verify();
+     $search_product_name = isset($_POST["search_product_name"]) ...
+```
+
+```diff
+ $template->assign('page_name', 'product');
++$template->assign('csrf_token', csrf_token_get());
+ $template->admin_layout('product/index.tpl');
+```
+
+#### 2. `alfproduct/smarty/templates/admin/product/index.tpl`
+
+```diff
+ <form action="#" accept-charset="utf-8" method="post" name="search_form">
++    <input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+     <table class="form">
+```
+
+---
+
+## CMS-M-05 — 商品登録・編集 CSRF
+
+**対象ページ:** CMS 商品詳細 (`/alfproduct/product/info.php`) → 商品登録 (`add.php`)
+
+### フォームフロー
+
+```
+info.php (GET) → info.tpl [token T]
+  → add.php (act=edit) [verify T, assign T2] → add.tpl [token T2]
+    → add.php (act=confirm) [assign T3] → add_confirm.tpl [token T3]
+      → add.php (act=complete) [verify T3] → 完了
+```
+
+### 修正ファイル
+
+#### 1. `alflearning/alflearning-cms/alfproduct/product/info.php`
+
+```diff
+ $template->assign('arr_term_id', $arr_term_id);
+ $template->assign('term_name', $term_name);
++$template->assign('csrf_token', csrf_token_get());
+ $template->admin_layout('product/info.tpl');
+```
+
+#### 2. `alfproduct/smarty/templates/admin/product/info.tpl`
+
+```diff
+ <form name="form1" action="#" method="post">
++    <input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+     <input type="hidden" name="mid" id="mid" value="<!--{$mid}-->" />
+```
+
+#### 3. `alflearning/alflearning-cms/alfproduct/product/add.php`
+
+**case 'complete' — 検証追加:**
+```diff
+ case 'complete':
++    csrf_token_verify();
+     $err_flag = 0;
+```
+
+**case 'confirm' 成功 — トークン引き渡し:**
+```diff
+ if(empty($err_msg)){
++    $template->assign('csrf_token', csrf_token_get());
+     $template->admin_layout('product/add_confirm.tpl');
+```
+
+**case 'confirm' 失敗 / 'edit' / 'back' / 'upload' — トークン引き渡し:**
+```diff
+     $template->assign('productcategory_list', get_product_category());
++    $template->assign('csrf_token', csrf_token_get());
+     $template->admin_layout('product/add.tpl');
+```
+
+#### 4. `alfproduct/smarty/templates/admin/product/add.tpl`
+
+```diff
+ <form name="form1" action="add.php" method="post" enctype="multipart/form-data">
+ <input type="hidden" name="act" id="act" value="confirm" />
++<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+```
+
+#### 5. `alfproduct/smarty/templates/admin/product/add_confirm.tpl`
+
+```diff
+ <input type="hidden" name="act" id="act" value="" />
++<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+```
+
+---
+
+## STU-M-04 — 受講者向け講座検索 CSRF
+
+**対象ページ:** 受講者サイト 講座検索 (`/search/index.php`)
+
+### 修正ファイル
+
+#### 1. `alfproduct/public/search/index.php`
+
+```diff
+ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
++    csrf_token_verify();
+     $disp_flg = true;
+```
+
+```diff
+ $template->assign('disp_flg', $disp_flg);
++$template->assign('csrf_token', csrf_token_get());
+ $template->layout('search/index.tpl');
+```
+
+#### 2. `alfproduct/smarty/templates/default/search/index.tpl`
+
+```diff
+ <form name="search_form" method="post" action="index.php?search=new#main">
++    <input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+```
+
+---
+
+## STU-M-05 — お問い合わせ確認・送信 CSRF
+
+**対象ページ:** お問い合わせ確認 (`/inquiry/conf.php`) → 送信 (`send.php`)
+
+### フォームフロー
+
+```
+conf.php [assign token] → conf.tpl [token T in form_inquiry_submit]
+  → send.php [verify T] → 送信完了
+```
+
+### 修正ファイル
+
+#### 1. `alfproduct/public/inquiry/conf.php`
+
+```diff
+ } else {
++    $template->assign('csrf_token', csrf_token_get());
+     $template->layout('inquiry/conf.tpl');
+ }
+```
+
+#### 2. `alfproduct/smarty/templates/default/inquiry/conf.tpl`
+
+form_inquiry_back（戻るボタン）:
+```diff
+ <form name="form_inquiry_back" method="post" action="index.php">
++    <input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+```
+
+form_inquiry_submit（送信ボタン）:
+```diff
+ <form name="form_inquiry_submit" method="post" action="send.php">
++    <input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+```
+
+#### 3. `alfproduct/public/inquiry/send.php`
+
+```diff
+ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
++    csrf_token_verify();
+     $input_lawyer_number = trim($_POST["input_lawyer_number"]);
+```
+
+---
+
+## 修正ファイル一覧
+
+| ファイル | 修正種別 |
+|---------|---------|
+| `alfproduct/module/functions.php` | ヘルパー関数 2 件追加 |
+| `alflearning/alflearning-cms/alfproduct/product/index.php` | verify + assign |
+| `alfproduct/smarty/templates/admin/product/index.tpl` | hidden フィールド追加 |
+| `alflearning/alflearning-cms/alfproduct/product/info.php` | assign |
+| `alfproduct/smarty/templates/admin/product/info.tpl` | hidden フィールド追加 |
+| `alflearning/alflearning-cms/alfproduct/product/add.php` | verify (complete) + assign (confirm/edit/back/upload) |
+| `alfproduct/smarty/templates/admin/product/add.tpl` | hidden フィールド追加 |
+| `alfproduct/smarty/templates/admin/product/add_confirm.tpl` | hidden フィールド追加 |
+| `alfproduct/public/search/index.php` | verify + assign |
+| `alfproduct/smarty/templates/default/search/index.tpl` | hidden フィールド追加 |
+| `alfproduct/public/inquiry/conf.php` | assign |
+| `alfproduct/smarty/templates/default/inquiry/conf.tpl` | hidden フィールド追加（2 フォーム） |
+| `alfproduct/public/inquiry/send.php` | verify |
+| `alfproduct/smarty/templates/smartphone/search/index.tpl` | hidden フィールド追加（SP 版） |
+| `alfproduct/smarty/templates/smartphone/inquiry/conf.tpl` | hidden フィールド追加（SP 版・2 フォーム） |
+
+---
+
+## 動作確認方法
+
+### CMS-M-04 確認
+
+1. CMS にログインし `/alfproduct/product/index.php` を開く
+2. 商品名で検索 → 正常に結果が返ること
+3. 別タブで CSRF フォーム（csrf_token を空にした POST）を送信 → 403 が返ること
+
+### CMS-M-05 確認
+
+1. CMS で商品詳細 (`info.php?mid=xxx`) を開く
+2. 「修正」ボタン → add.tpl が開くこと
+3. 内容確認 → add_confirm.tpl → 「完了」ボタン → 正常に更新されること
+4. csrf_token を改ざんした POST を add.php に直接送信 → 403 が返ること
+
+### STU-M-04 確認
+
+1. 受講者サイトで講座検索を実行 → 正常に結果が返ること
+2. csrf_token なし POST → 403 が返ること
+
+### STU-M-05 確認
+
+1. お問い合わせフォーム入力 → 確認ページ表示
+2. 「送信する」ボタン → 送信完了ページへ遷移すること
+3. csrf_token なし POST を send.php に送信 → 403 が返ること
+
+---
+
+## 注意事項
+
+- `csrf_token_verify()` は検証成功後にトークンを再発行するため、ブラウザ戻るボタンで同じフォームを再送信すると 403 になる。これは意図した動作。
+- `AlfSession::session_check()` は CI3 セッションデータを `$_SESSION` にマージするが、`$_SESSION['csrf_token']` は `prev_session` に含まれるため正しく引き継がれる。
+- Smarty の `|escape` modifier は `htmlspecialchars()` を通すため、トークン値（hex文字列）は安全に出力される。
+
+---
+
+## 指摘 ID 対応表
+
+| 指摘 ID | 区分 | 内容 | 対応 |
+|---------|------|------|------|
+| CMS-M-04 | Medium | CSRF（商品一覧・検索） | `csrf_token_verify()` + hidden フィールド |
+| CMS-M-05 | Medium | CSRF（商品登録・編集） | `csrf_token_verify()` (complete) + トークン引き渡し |
+| STU-M-04 | Medium | CSRF（講座検索） | `csrf_token_verify()` + hidden フィールド |
+| STU-M-05 | Medium | CSRF（問い合わせ送信） | `csrf_token_verify()` + hidden フィールド |
+
+---
+
+# Ph.9 修正レポート — デバッグ出力一括削除
+
+- 実施日: 2026-06-26
+- 対象ID: F-12 / F-14 / F-15b / F-11(admin) / F-8 / F-11(bat/view)
+- 修正方針: 全ファイルにおけるデバッグ出力（`var_dump()` / `print_r()` / `echo` デバッグ文 / `exit()` による機能停止）を削除
+
+---
+
+## F-12 — 決済ページ 機密情報漏洩（最優先）
+
+GMO / PayPal API レスポンスの `var_dump()` を削除。
+
+| ファイル | 修正内容 |
+|---------|---------|
+| `alfproduct/public/settlement/member_card.php` 旧行6 | `var_dump($ret);` 削除 |
+| `alfproduct/public/settlement/payment_paypal.php` 旧行77 | `var_dump($ret);` 削除 |
+| `alfproduct/public/settlement/member_card_regist.php` 旧行41-42,47-48,56-57 | `echo $arr_id['id']`, `echo '<br />'`, `var_dump($ret1)`, `echo '<br />'`, `var_dump($ret2)`, `echo '<br />'` 削除（計6行） |
+
+---
+
+## F-14 — API Csv_download.php 機能停止修正（最優先）
+
+`exit()` によりCSV出力APIが完全停止していた箇所を修正。
+
+| ファイル | 修正内容 |
+|---------|---------|
+| `alflearning/alflearning-api/application/controllers/Csv_download.php` 旧行65-69 | `var_dump($post_type)` / `var_dump($post_csv_filename)` / `var_dump($post_csv_where)` / `print("test")` / `//exit()` 削除 |
+| `alflearning/alflearning-api/application/controllers/Csv_download.php` 旧行79-80 | `var_dump($table_data); exit();` 削除 → `$csv_header` 代入以降が実行されるように復旧 |
+
+---
+
+## F-15b — API デバッグビュー XSS（最優先）
+
+| ファイル | 修正内容 |
+|---------|---------|
+| `alflearning/alflearning-api/application/views/debug.php` 行25,29,33 | `$_SERVER['REQUEST_URI']` / `parseArray($_GET)` / `parseArray($_POST)` の出力を `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')` でエスケープ |
+| `alflearning/alflearning-api/application/controllers/Login.php` 旧行292-296 | POST `debug` パラメータによるデバッグビュー呼び出しブロックを `if(false){}` に変更してルートを閉鎖 |
+| `alflearning/alflearning-api/application/controllers/Elm_api_test.php` 行121-133 | `_output_display()` 内の `$request_url` / `$key` / `$value` / `$content` / `print_r()` 結果を `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')` でエスケープ（計5箇所） |
+| `alflearning/alflearning-api/application/libraries/Curl.php` 行349 | `print_r($this->info)` → `echo htmlspecialchars(print_r($this->info, true), ENT_QUOTES, 'UTF-8')` |
+
+---
+
+## F-11(admin) — 商品追加ページ 機能停止修正（高）
+
+`print("test"); exit();` および `var_dump($product_category_list); exit();` により商品追加ページが完全に動作しなかった箇所を修正。
+
+| ファイル | 修正内容 |
+|---------|---------|
+| `alfproduct/admin/product/add.php` 旧行2-3 | `print("test"); exit();` 削除 |
+| `alfproduct/admin/product/add.php` 旧行33-34 | `var_dump($product_category_list); exit();` 削除 |
+
+---
+
+## F-8 — player デバッグ出力（低）
+
+HTMLコメントへのセッション値出力を削除。
+
+| ファイル | 修正内容 |
+|---------|---------|
+| `alfproduct/public/player/index.php` 旧行134-142 | `print("<!--[student_id:...")` / `var_dump($user_id)` / `print("]-->")` 等9行削除 |
+| `alfproduct/public/player/sample.php` 旧行17 | `print("<!--[".$idkey."]-->");` 削除 |
+
+---
+
+## F-11(bat/view) — Bat_* コントローラー デバッグ出力（低）
+
+`echo var_dump($outputs)` および `print_r($row)` を削除。コメントアウト済みの `//var_dump()` は放置。
+
+| ファイル | 修正箇所 |
+|---------|---------|
+| `Bat_cron_student_product_history.php` 旧行47 | `echo var_dump($outputs);` 削除 |
+| `Bat_cron_student_product_history.php` 旧行547-549 | `print("===")` / `var_dump($sql)` / `print("===")` 3行削除 |
+| `Bat_goto_streamserver.php` 旧行31 | `print_r($row);` 削除 |
+| `Bat_oneoff_import_student.php` 旧行84 | `echo var_dump($outputs);` 削除 |
+| `Bat_oneoff_import_tbl_bookmark.php` 旧行100 | `echo var_dump($outputs);` 削除 |
+| `Bat_oneoff_import_tbl_order.php` 旧行105 | `echo var_dump($outputs);` 削除 |
+| `Bat_oneoff_import_tbl_order_update.php` 旧行54 | `echo var_dump($outputs);` 削除 |
+| `Bat_oneoff_import_teacher.php` 旧行83 | `echo var_dump($outputs);` 削除 |
+
+---
+
+## 修正ファイル総数
+
+| ID | ファイル数 | 修正行数 |
+|----|----------|---------|
+| F-12 | 3 | 8行削除 |
+| F-14 | 1 | 7行削除 |
+| F-15b | 4 | 10箇所修正 |
+| F-11(admin) | 1 | 4行削除 |
+| F-8 | 2 | 10行削除 |
+| F-11(bat/view) | 8 | 10行削除 |
+| **合計** | **19** | **49行削除・修正** |
+
+---
+
+# Ph.10 修正レポート — JSコンテキスト XSS 修正
+
+**対象脆弱性分類**: F-1, F-1b, F-2, F-3, F-16  
+**修正日**: 2026-06-26  
+**修正ファイル数**: 27ファイル  
+**修正箇所数**: 27箇所（各ファイル1〜複数変数）
+
+---
+
+## 修正内容一覧
+
+### F-1 — player_ethic: JS変数 `codec` のエスケープ（4ファイル）
+
+`<script>` ブロック内の JS 文字列リテラルに `$codec` を直接展開していた。
+
+| ファイル | 行 | 修正前 | 修正後 |
+|---|---|---|---|
+| `alfproduct/smarty/templates/default/player/player_ethic.tpl` | 64 | `<!--{$codec}-->` | `<!--{$codec\|escape:'javascript'}-->` |
+| `alfproduct/smarty/templates/default/player/player_ethic_commentary.tpl` | 54 | `<!--{$codec}-->` | `<!--{$codec\|escape:'javascript'}-->` |
+| `alfproduct/smarty/templates/smartphone/player/player_ethic.tpl` | 64 | `<!--{$codec}-->` | `<!--{$codec\|escape:'javascript'}-->` |
+| `alfproduct/smarty/templates/smartphone/player/player_ethic_commentary.tpl` | 54 | `<!--{$codec}-->` | `<!--{$codec\|escape:'javascript'}-->` |
+
+---
+
+### F-1b — player/index.tpl: URL パラメータのエスケープ（1ファイル）
+
+`<form action>` の URL クエリパラメータ `term` に `$isSP` を無エスケープで展開していた。  
+※ smartphone版 `index.tpl` は `term=sp` ハードコードのため修正不要。
+
+| ファイル | 行 | 修正前 | 修正後 |
+|---|---|---|---|
+| `alfproduct/smarty/templates/default/player/index.tpl` | 3 | `term=<!--{$isSP}-->` | `term=<!--{$isSP\|escape}-->` |
+
+---
+
+### F-2 — exam/answer_save, answer_save2: onclick URL のエスケープ（4ファイル）
+
+`onclick` 属性内 JS 文字列の URL に `$eid`, `$pid`, `$ccno`, `$qid` を無エスケープで展開していた。
+
+| ファイル | 修正変数 |
+|---|---|
+| `alfproduct/smarty/templates/default/exam/answer_save2.tpl` | `$eid`, `$pid`, `$ccno`, `$qid` → `\|escape:'javascript'` |
+| `alfproduct/smarty/templates/smartphone/exam/answer_save2.tpl` | 同上 |
+| `alfproduct/smarty/templates/default/exam/answer_save.tpl` | 同上（`/exam/result.php` の URL） |
+| `alfproduct/smarty/templates/smartphone/exam/answer_save.tpl` | 同上 |
+
+---
+
+### F-3 — exam2 各テンプレート: onclick URL のエスケープ（12ファイル）
+
+`onclick` 属性内 JS 文字列の URL に `$e2id`, `$pid`, `$arr_list.exam2_id` を無エスケープで展開していた。
+
+| ファイル | 修正変数 |
+|---|---|
+| `default/exam2/answer_check.tpl` | `$e2id`, `$pid` → `\|escape:'javascript'` |
+| `smartphone/exam2/answer_check.tpl` | 同上 |
+| `default/exam2/answer_save.tpl` | `$e2id`, `$pid` → `\|escape:'javascript'` |
+| `smartphone/exam2/answer_save.tpl` | 同上 |
+| `default/exam2/resubmit_check.tpl` | `$e2id`, `$pid` → `\|escape:'javascript'` |
+| `smartphone/exam2/resubmit_check.tpl` | 同上 |
+| `default/exam2/resubmit_exec.tpl` | `$e2id`, `$pid` → `\|escape:'javascript'` |
+| `smartphone/exam2/resubmit_exec.tpl` | 同上 |
+| `default/exam2/result.tpl` | `$e2id`, `$pid` → `\|escape:'javascript'` |
+| `smartphone/exam2/result.tpl` | 同上 |
+| `default/exam2/index.tpl` | `$arr_list.exam2_id`, `$pid` → `\|escape:'javascript'` |
+| `smartphone/exam2/index.tpl` | 同上 |
+
+---
+
+### F-16 — search_set.php: PHP→JS注入を json_encode で修正（5ファイル）
+
+`window.onload = serchSet(<?php echo "'$id', '$name', ..."; ?>)` 形式で `$_GET` の値を直接 JS に埋め込んでいた。`json_encode()` に変更してシングルクォートによる JS インジェクションを防止。
+
+**admin版（5変数）:**
+
+```php
+// 修正前
+window.onload = serchSet(<?php echo "'$id', '$name', '$hid_id_name', '$spa_id_name', '$hid_name_name'"; ?>);
+// 修正後
+window.onload = serchSet(<?php echo json_encode($id).", ".json_encode($name).", ".json_encode($hid_id_name).", ".json_encode($spa_id_name).", ".json_encode($hid_name_name); ?>);
+```
+
+**CMS版（7変数、product/product_live/product_ethics/product_passport 共通）:**
+
+```php
+// 修正前
+window.onload = serchSet(<?php echo "'$id', '$name', '$comment', '$hid_id_name', '$spa_id_name', '$hid_name_name', '$hid_comment_name'"; ?>);
+// 修正後
+window.onload = serchSet(<?php echo json_encode($id).", ".json_encode($name).", ".json_encode($comment).", ".json_encode($hid_id_name).", ".json_encode($spa_id_name).", ".json_encode($hid_name_name).", ".json_encode($hid_comment_name); ?>);
+```
+
+| ファイル |
+|---|
+| `alfproduct/admin/product/search_set.php` |
+| `alflearning/alflearning-cms/alfproduct/product/search_set.php` |
+| `alflearning/alflearning-cms/alfproduct/product_live/search_set.php` |
+| `alflearning/alflearning-cms/alfproduct/product_ethics/search_set.php` |
+| `alflearning/alflearning-cms/alfproduct/product_passport/search_set.php` |
+
+---
+
+## 修正方針まとめ
+
+| 修正パターン | 適用 |
+|---|---|
+| Smarty JS文字列リテラル内の変数 | `\|escape:'javascript'` を追加 |
+| Smarty HTML属性内 URL のクエリパラメータ | `\|escape` (HTML エスケープ) を追加 |
+| PHP `echo` で JS 引数に直接展開 | `json_encode()` に置換 |
+
+---
+
+## 除外（修正不要）
+
+- `smartphone/player/index.tpl` — `term=sp` はハードコード文字列リテラルのためXSSなし
+- `default/exam2/result.tpl` 行129 — コメントアウト済み `<!--<a ... onclick="...">-->` のため対象外
+
+---
+
+# Ph.11 修正レポート — CI3 CSRF保護の有効化
+
+**対象脆弱性分類**: F-10  
+**修正日**: 2026-06-26  
+**修正ファイル数**: 2ファイル  
+
+---
+
+## 修正内容
+
+| ファイル | 行 | 修正前 | 修正後 |
+|---|---|---|---|
+| `alflearning/alflearning-cms/application/config/config.php` | 469 | `$config['csrf_protection'] = false;` | `$config['csrf_protection'] = TRUE;` |
+| `alflearning/alflearning-api/application/config/config.php` | 468 | `$config['csrf_protection'] = FALSE;` | `$config['csrf_protection'] = TRUE;` |
+
+---
+
+## 影響範囲・注意事項
+
+### alflearning-cms（CMS管理画面）
+
+管理画面の全 POST フォームに CSRF トークン検証が適用される。CI3 の CSRF 保護は：
+1. レスポンス時に Cookie (`csrf_cookie_name`) にトークンを設定する
+2. POST リクエスト受信時に Cookie のトークンと POST パラメータ (`csrf_token_name`) を照合する
+3. 不一致の場合 403 を返す
+
+CMS フォームは既に CI3 の `form_open()` または `<?php echo form_open('...') ?>` を使っていればトークンが自動挿入される。ただし **生の `<form>` タグを使っている箇所**は手動で hidden フィールドを追加する必要がある。
+
+現在の設定値：
+- `csrf_token_name` = `csrf_test_name`
+- `csrf_cookie_name` = `csrf_cookie_name`
+- `csrf_expire` = 7200 秒（2時間）
+- `csrf_regenerate` = TRUE（送信ごとにトークン再生成）
+
+### alflearning-api（REST API）
+
+alflearning-api は alfproduct の PHP コードからサーバー間 HTTP リクエスト（curl 等）で呼び出される REST API。Cookie を持たないサーバー間 POST は CSRF トークンを持てないため、**CSRF 有効化後に alfproduct からの API 呼び出しが失敗するリスクがある**。
+
+対処として `csrf_exclude_uris` に API の全エンドポイントを除外する方法がある。ただし本来 REST API に対するCSRF保護は不要（CSRF攻撃はブラウザの Cookie を悪用するため、Basic認証で保護されたサーバー間通信では意味をなさない）。
+
+**ステージング環境でのテスト実施を強く推奨する。** API側で障害が発生した場合は `csrf_exclude_uris` での除外、または API 設定を `FALSE` に戻すことを検討すること。
+
+---
+
+# Ph.12 修正レポート
+
+- 対象フェーズ: Ph.12
+- 脆弱性ID: F-15
+- 修正日: 2026-06-25
+- 優先度: 最優先
+
+---
+
+## 概要
+
+`alfproduct/public` 全体の公開 POST フォームに CSRF トークン検証を実装した。
+既存の `csrf_token_get()` / `csrf_token_verify()` 関数（`module/functions.php` 行 3198・3205）を活用し、以下の方針で全フォームに適用した。
+
+- **テンプレート側**: `<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />` を POST フォームの先頭に追加
+- **PHP 描画側**: `$template->assign('csrf_token', csrf_token_get());` をレイアウト呼び出し直前に追加
+- **PHP 受信側**: POST ハンドラの冒頭に `csrf_token_verify();` を追加
+
+スキップ条件:
+- `/backup/` ディレクトリ以下のファイル（本番未使用）
+- 日付スナップショットファイル（`_YYYYMMDD.tpl` 等）
+- ZIP 郵便番号ポップアップ（`member/zip.tpl`, `mypage/zip.tpl`）: JS で値を読み取るだけで HTTP POST しない
+- `reminder/` テンプレート: alfproduct/public に PHP ハンドラが存在しないため
+- 管理画面テンプレート (`admin/`): Ph.14 の対象
+
+---
+
+## 修正ファイル一覧
+
+### PHP — csrf_token_verify() 追加（POST ハンドラ）
+
+| ファイル | 備考 |
+|---|---|
+| `public/search/index.php` | 検索 POST 受信 |
+| `public/product/detail.php` | 購入・プレーヤー起動 POST |
+| `public/product/detail_review.php` | 購入 POST |
+| `public/product/document.php` | PDF ダウンロード POST |
+| `public/product/download.php` | ファイルダウンロード POST |
+| `public/product/download_all.php` | 一括ダウンロード POST |
+| `public/exam/index2.php` | 試験画面遷移 POST |
+| `public/exam/confirm2.php` | 試験確認 POST |
+| `public/exam/answer_check1.php` | 回答チェック POST |
+| `public/exam/answer_check.php` | 回答チェック POST |
+| `public/exam/answer_save.php` | 回答保存 POST |
+| `public/exam/resubmit_exec.php` | 再提出実行 POST |
+| `public/exam/resubmit_exec1.php` | 再提出実行 POST |
+| `public/exam/resubmit_exec2.php` | 再提出実行 POST |
+| `public/exam2/answer_check.php` | 試験2 回答チェック POST |
+| `public/exam2/answer_save.php` | 試験2 回答保存 POST |
+| `public/exam2/resubmit_check.php` | 試験2 再提出確認 POST |
+| `public/exam2/resubmit_check_mst.php` | 試験2 再提出確認 POST |
+| `public/exam2/resubmit_check_review.php` | 試験2 再提出確認 POST |
+| `public/exam2/resubmit_exec.php` | 試験2 再提出実行 POST |
+| `public/exam2/resubmit_exec_mst.php` | 試験2 再提出実行 POST |
+| `public/exam2/resubmit_exec_review.php` | 試験2 再提出実行 POST |
+| `public/ethic_treaning/question_answer.php` | 倫理研修 回答 POST |
+| `public/ethic_treaning/question_answer_retry.php` | 倫理研修 再回答 POST |
+| `public/player/index.php` | プレーヤー起動 POST |
+| `public/player/player_ethic.php` | 倫理プレーヤー起動 POST |
+| `public/player/player_ethic_commentary.php` | 倫理解説プレーヤー POST |
+| `public/mypage/favorite.php` | お気に入り登録 POST |
+| `public/mypage/receipt_download.php` | 領収書 PDF ダウンロード POST |
+| `public/mypage/refusal.php` | 退会申請 POST |
+| `public/mypage/edit.php` | 会員情報編集 POST |
+| `public/member/regist.php` | 会員登録 POST |
+| `public/inquiry/send.php` | 問い合わせ送信 POST |
+| `public/settlement/index.php` | 決済 POST |
+| `public/settlement/member_card_regist.php` | カード登録 POST |
+| `public/settlement/order_regist.php` | 注文確定 POST |
+| `public/settlement/payment_bank.php` | 銀行振込 POST |
+| `public/settlement/payment_card.php` | カード決済 POST |
+| `public/settlement/payment_passport_user.php` | パスポート決済 POST |
+| `public/settlement/alert_passport.php` | パスポート確認 POST |
+
+### PHP — csrf_token_get() assign 追加（描画側）
+
+| ファイル | 呼び出し箇所 |
+|---|---|
+| `public/product/list.php` | product/list.tpl 描画前 |
+| `public/product/list_recommend.php` | list_recommend.tpl 描画前 |
+| `public/product/list_new_training.php` | list_new_training.tpl 描画前 |
+| `public/product/list_live_training.php` | list_live_training.tpl 描画前 |
+| `public/product/list_limit.php` | list_limit.tpl 描画前 |
+| `public/product/list_limit_user.php` | list_limit_user.tpl 描画前 |
+| `public/product/list_bar_association_live.php` | 描画前 |
+| `public/product/list_bar_association_live_other.php` | 描画前 |
+| `public/product/detail.php` | detail.tpl 描画前 |
+| `public/product/detail_review.php` | detail_review.tpl 描画前 |
+| `public/product/document.php` | document.tpl 描画前 |
+| `public/ranking/index.php` | ranking/index.tpl 描画前 |
+| `public/search/index.php` | search/index.tpl 描画前 |
+| `public/exam/index.php` | exam/index.tpl 描画前 |
+| `public/exam/index1.php` | exam/index1.tpl 描画前 |
+| `public/exam/index2.php` | exam/index2.tpl 描画前 |
+| `public/exam/confirm1.php` | exam/confirm1.tpl 描画前 |
+| `public/exam/confirm2.php` | exam/confirm2.tpl 描画前 |
+| `public/exam/answer_check1.php` | answer_check1.tpl 描画前 |
+| `public/exam/resubmit_exec1.php` | resubmit_exec_result1.tpl 描画前 |
+| `public/exam/resubmit_index1.php` | resubmit_index1.tpl 描画前 |
+| `public/exam/resubmit_index2.php` | resubmit_index2.tpl 描画前 |
+| `public/exam/result.php` | exam/result.tpl 描画前 |
+| `public/exam/result1.php` | exam/result1.tpl 描画前 |
+| `public/exam/result2.php` | exam/result2.tpl 描画前 |
+| `public/exam2/index.php` | exam2/index.tpl 描画前 |
+| `public/exam2/result.php` | exam2/result.tpl 描画前 |
+| `public/ethic_treaning/index.php` | ethic_treaning/index.tpl 描画前 |
+| `public/ethic_treaning/question.php` | question.tpl 描画前 |
+| `public/ethic_treaning/question_retry.php` | question_retry.tpl 描画前 |
+| `public/ethic_treaning/result_history.php` | result_history.tpl 描画前 |
+| `public/ethic_treaning/retry.php` | retry.tpl 描画前 |
+| `public/player/index.php` | player/index.tpl 描画前 |
+| `public/player/player_ethic.php` | player_ethic.tpl 描画前 |
+| `public/mypage/buy_detail.php` | buy_detail.tpl 描画前 |
+| `public/mypage/edit.php` | edit.tpl 描画前（初期表示・エラー表示の2箇所） |
+| `public/mypage/favorite_list.php` | favorite_list.tpl 描画前 |
+| `public/mypage/refusal.php` | refusal.tpl 描画前 |
+| `public/member/regist.php` | regist.tpl 描画前（初期表示・エラー表示の2箇所） |
+| `public/inquiry/index.php` | inquiry/form.tpl 描画前 |
+| `public/inquiry/conf.php` | inquiry/conf.tpl 描画前 |
+| `public/settlement/index.php` | settlement/index.tpl 描画前 |
+| `public/settlement/payment_bank.php` | payment_bank.tpl 描画前 |
+| `public/settlement/payment_card.php` | payment_card.tpl 描画前 |
+| `public/settlement/alert_passport.php` | alert_passport.tpl 描画前 |
+
+### テンプレート — csrf_token hidden フィールド追加
+
+CSRF トークン hidden フィールドをフォーム開始直後に挿入。
+
+**default / smartphone 共通（各2ファイル）:**
+
+| テンプレート | フォーム名 | 対象フォーム数 |
+|---|---|---|
+| `search/index.tpl` | favoriteForm | 1 |
+| `product/list.tpl` | favoriteForm | 1 |
+| `product/list_recommend.tpl` | favoriteForm | 1 |
+| `product/list_new_training.tpl` | favoriteForm | 1 |
+| `product/list_live_training.tpl` | favoriteForm | 1 |
+| `product/list_limit.tpl` | favoriteForm | 1 |
+| `product/list_limit_user.tpl` | favoriteForm | 1 |
+| `product/list_bar_association_live.tpl` | favoriteForm | 1 |
+| `product/list_bar_association_live_other.tpl` | favoriteForm | 1 |
+| `product/detail_review.tpl` | buyForm × 3、playerForm、downloadForm | 5 |
+| `ranking/index.tpl` | favoriteForm | 1 |
+| `mypage/favorite_list.tpl` | favoriteForm | 1 |
+| `mypage/buy_detail.tpl` | receiptForm（receipt_download.php POST） | 1 |
+| `mypage/edit.tpl` | form1 | 1 |
+| `mypage/refusal.tpl` | form1 | 1 |
+| `member/regist.tpl` | form1 | 1 |
+| `inquiry/form.tpl` | form_inquiry | 1 |
+| `exam/index.tpl` | examForm | 1 |
+| `exam/index1.tpl` | examForm | 1 |
+| `exam/index2.tpl` | examForm | 1 |
+| `exam/confirm1.tpl` | examForm | 1 |
+| `exam/confirm2.tpl` | examForm | 1 |
+| `exam/answer_check1.tpl` | examForm | 1 |
+| `exam/resubmit_exec_result1.tpl` | examForm | 1 |
+| `exam/resubmit_index1.tpl` | examForm | 1 |
+| `exam/resubmit_index2.tpl` | examForm | 1 |
+| `exam/result.tpl` | examForm | 1 |
+| `exam/result1.tpl` | examForm | 1 |
+| `exam/result2.tpl` | examForm | 1 |
+| `exam2/index.tpl` | examForm | 1 |
+| `ethic_treaning/index.tpl` | playerForm | 1 |
+| `ethic_treaning/question.tpl` | playerForm | 1 |
+| `ethic_treaning/question_retry.tpl` | playerForm | 1 |
+| `ethic_treaning/result_history.tpl` | playerForm | 1 |
+| `ethic_treaning/retry.tpl` | playerForm | 1 |
+| `settlement/index.tpl` | 既存フォーム | 1 |
+| `settlement/payment_bank.tpl` | 既存フォーム | 1 |
+| `settlement/payment_card.tpl` | 既存フォーム | 1 |
+| `settlement/alert_passport.tpl` | 既存フォーム | 1 |
+
+**smartphone のみ:**
+
+| テンプレート | 備考 |
+|---|---|
+| `smartphone/exam2/confirm1.tpl` | examForm |
+
+**非 Smarty PHP（直接出力）:**
+
+| ファイル | 備考 |
+|---|---|
+| `public/settlement/member_card.php` | `<?php echo htmlspecialchars(csrf_token_get(), ENT_QUOTES, 'UTF-8'); ?>` で直接出力 |
+
+---
+
+## スキップ（対応不要）理由
+
+| ファイル | 理由 |
+|---|---|
+| `member/zip.tpl`, `mypage/zip.tpl` | フォームは JS でデータを読み取るだけ。HTTP POST を行わない |
+| `reminder/form.tpl`, `reminder/question.tpl` | alfproduct/public に PHP ハンドラが存在しない（機能未実装） |
+| `admin/` 配下テンプレート | Ph.14 の対象 |
+| `*/backup/` 以下 | 本番未使用 |
+| 日付スナップショット（`_YYYYMMDD.tpl` 等） | 本番未使用 |
+
+---
+
+# Ph.13 修正レポート
+
+- 対象フェーズ: Ph.13
+- 脆弱性ID: F-5、F-6、F-7
+- 修正日: 2026-06-29
+- 優先度: 中
+
+---
+
+## 概要
+
+href 属性・onclick 属性における URL パラメータ・HTTP_REFERER 由来の XSS（反射型）を修正した。
+
+### 修正方針
+
+1. **Smarty テンプレート**: `<!--{$var}-->` → `<!--{$var|escape}-->` に変更し、HTML 属性コンテキストでの XSS を防止
+2. **`get_back_url()` 関数**: `parse_url()` でスキームを検証し、`http` / `https` 以外（`javascript:` / `data:` 等）は `/` に置換
+
+---
+
+## F-6 — ログインエラー画面の HTTP_REFERER XSS
+
+### 問題
+
+`get_back_url()` が `$_SERVER['HTTP_REFERER']` をそのまま返し、テンプレートの `href` 属性にエスケープなしで出力されていた。
+
+攻撃者が `javascript:` スキームを含む Referer ヘッダーを送信することで任意の JS を実行できた。
+
+### 修正内容
+
+#### PHP — `get_back_url()` 関数（2ファイル）
+
+`alfproduct/module/functions.php` および `alfproduct/module/functions_mst.php` の `get_back_url()` にスキーム検証を追加。
+
+```php
+// 修正前
+function get_back_url(){
+    if ($_SERVER['HTTP_REFERER'] != ''){
+        $back_url = $_SERVER['HTTP_REFERER'];
+    } else {
+        $back_url = '/';
+    }
+    return $back_url;
+}
+
+// 修正後
+function get_back_url(){
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+        $back_url = $_SERVER['HTTP_REFERER'];
+        $parsed = parse_url($back_url);
+        if (isset($parsed['scheme']) && !in_array(strtolower($parsed['scheme']), ['http', 'https'])) {
+            $back_url = '/';
+        }
+    } else {
+        $back_url = '/';
+    }
+    return $back_url;
+}
+```
+
+#### テンプレート（3ファイル）
+
+| ファイル | 修正前 | 修正後 |
+|---|---|---|
+| `default/login/user_err.tpl` | `<!--{$back_url}-->` | `<!--{$back_url|escape}-->` |
+| `smartphone/login/user_err.tpl` | `<!--{$back_url}-->` | `<!--{$back_url|escape}-->` |
+| `smartphone/login/error.tpl` | `<!--{$back_url}-->` | `<!--{$back_url|escape}-->` |
+
+---
+
+## F-5 — 試験画面の href 属性 XSS（`$pid`・`$eid`・`$ccno`・`$qid`）
+
+### 問題
+
+試験結果・確認画面の「解答修正画面へ」「終了する」「戻る」リンクおよびボタンの `href` / `onclick` 属性に、URL パラメータ由来の `$pid`・`$eid`・`$ccno`・`$qid` がエスケープなしで出力されていた。
+
+### 修正内容（8ファイル — default + smartphone 各4ファイル）
+
+各テンプレートで以下の変数に `|escape` を追加（ループカウンタ `$row_no`・`$eno_max` 等の整数値は対象外）。
+
+**対象変数:** `$pid`、`$ccno`、`$eid`、`$qid`、`$arr_list.exam_id`（confirm2 のみ）
+
+| テンプレート | 修正箇所 |
+|---|---|
+| `default/exam/result1.tpl` | 行 184, 239（resubmit_index1 href）、行 253（product/detail href） |
+| `smartphone/exam/result1.tpl` | 同上 |
+| `default/exam/result2.tpl` | 行 184, 239（resubmit_index2 href）、行 253（product/detail href） |
+| `smartphone/exam/result2.tpl` | 同上 |
+| `default/exam/confirm1.tpl` | 行 184, 239（index1 href）、行 260（answer_save1 href） |
+| `smartphone/exam/confirm1.tpl` | 同上 |
+| `default/exam/confirm2.tpl` | 行 192, 263（index2 href）、行 270（onclick location.href）、行 271（onclick examFormSubmit 引数） |
+| `smartphone/exam/confirm2.tpl` | 同上 |
+
+#### 修正例
+
+```smarty
+<!-- 修正前 -->
+<a class="btn" href="/exam/resubmit_index1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->&eno=<!--{$row_no}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">
+
+<!-- 修正後 -->
+<a class="btn" href="/exam/resubmit_index1.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}-->&eno=<!--{$row_no}-->&eflg=1<!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->">
+```
+
+```smarty
+<!-- confirm2 onclick 修正前 -->
+<input class="btn1" type="button" onclick="examFormSubmit(<!--{$arr_list.exam_id}-->,<!--{$pid}-->,<!--{$ccno}-->);" value="提出する">
+
+<!-- 修正後 -->
+<input class="btn1" type="button" onclick="examFormSubmit(<!--{$arr_list.exam_id|escape}-->,<!--{$pid|escape}-->,<!--{$ccno|escape}-->);" value="提出する">
+```
+
+---
+
+## F-7 — 倫理研修画面の onclick / href 属性 XSS（`$pid`）
+
+### 問題
+
+倫理研修の各画面で `$pid`（商品 ID、URL パラメータ由来）が `href` / `onclick` 属性にエスケープなしで出力されていた。
+
+### 修正内容（24ファイル — default + smartphone 各12ファイル）
+
+全テンプレートの `<!--{$pid}-->` を `<!--{$pid|escape}-->` に置換。
+
+| テンプレート（default + smartphone 各1） | 修正行（代表） |
+|---|---|
+| `ethic_treaning/index.tpl` | `href="/product/detail.php?pid=..."` 行 110, 112 |
+| `ethic_treaning/result_history.tpl` | `href` 行 45, 174, 175 |
+| `ethic_treaning/retry.tpl` | `href` 行 105, 107 |
+| `ethic_treaning/result.tpl` | `href` 行 40 |
+| `ethic_treaning/result_retry.tpl` | `href` 行 41 |
+| `ethic_treaning/question.tpl` | `onclick="location.href=..."` 行 46 |
+| `ethic_treaning/answer_history.tpl` | `onclick` 行 60, 62 |
+| `ethic_treaning/answer_history_all.tpl` | `onclick` 行 76 |
+| `ethic_treaning/question_answer.tpl` | `onclick` 行 37 |
+| `ethic_treaning/question_answer_retry.tpl` | `onclick` 行 36 |
+| `ethic_treaning/question_retry.tpl` | `onclick` 行 46 |
+| `ethic_treaning/result_history_detail.tpl` | `onclick` 行 59 |
+
+---
+
+# Ph.14 修正レポート
+
+- 対象フェーズ: Ph.14
+- 脆弱性ID: #B、#A、#C
+- 修正日: 2026-06-29
+- 優先度: 高（#B）、中（#A・#C）
+
+---
+
+## 概要
+
+受講者サイト・管理画面の Smarty テンプレートにおける XSS 脆弱性を 3 カテゴリに分けて一括修正した。  
+セッション値の直接出力（#B）、管理画面 Smarty テンプレートの DB 値出力（#A）、受講者サイトの DB 値出力（#C）が対象。
+
+### 修正方針
+
+1. **Smarty テンプレート**: `<!--{$var}-->` → `<!--{$var|escape}-->` に変更し、HTML コンテキストでの文字列エスケープを強制する
+2. **除外基準**: PHP 側で生成した意図的 HTML（`$pager`・`$pankuzu`・`$return.formhtml` 等）はエスケープすると表示崩れを起こすため対象外とした。整数主キー（`$pid`・`$eid` 等）は PHP 側で数値検証済みのため低リスク除外とした（詳細: `low-risk-note-decision-report-20260520.md`）
+
+---
+
+## #B — セッション値 XSS
+
+### 問題
+
+`$_SESSION['user']['name']` 等のセッション値がエスケープなしで Smarty テンプレートに出力されていた。  
+セッション値はログイン時に DB から取得した文字列であり、特殊文字を含む氏名・弁護士番号等が登録されている場合に HTML インジェクションが成立しうる。
+
+### 修正内容
+
+#### テンプレート（受講者サイト 各画面）
+
+```smarty
+<!-- 修正前 -->
+<!--{$smarty.session.user.name}-->
+
+<!-- 修正後 -->
+<!--{$smarty.session.user.name|escape}-->
+```
+
+| ファイル | 修正変数 |
+|---|---|
+| `default/login/login.tpl` | `$smarty.session.user.*` 系 |
+| `smartphone/login/login.tpl` | 同上 |
+| `default/mypage/buy_detail.tpl` | `$smarty.session.user.*` 系 |
+| `smartphone/mypage/buy_detail.tpl` | 同上 |
+| `default/mypage/buy_list.tpl` | `$smarty.session.user.*` 系 |
+| `smartphone/mypage/buy_list.tpl` | 同上 |
+| `default/mypage/index.tpl` | `$smarty.session.user.*` 系 |
+| `smartphone/mypage/index.tpl` | 同上 |
+| `default/search/index.tpl` | `$smarty.session.user.*` 系 |
+| `smartphone/search/index.tpl` | 同上 |
+
+---
+
+## #A — 管理画面 Smarty テンプレート `|escape` 漏れ
+
+### 問題
+
+`alfproduct/smarty/templates/admin/` 配下のテンプレートで、DB から取得した文字列（商品名・受講者名・検索日付・エラーメッセージ等）がエスケープなしで出力されていた。  
+管理者権限を持つユーザーが操作する画面であるが、DB 改ざんによってスクリプトが管理画面上で実行されうるリスクがある（Stored XSS）。
+
+### 修正内容
+
+#### テンプレート（admin/ 配下 約35ファイル）
+
+```smarty
+<!-- 修正前 -->
+<!--{$arr_product_flg.$val}-->
+<!--{$upload_file_new_name}-->
+<!--{$row.branch_list}-->
+<!--{$search_start_buy_date}-->
+
+<!-- 修正後 -->
+<!--{$arr_product_flg.$val|escape}-->
+<!--{$upload_file_new_name|escape}-->
+<!--{$row.branch_list|escape}-->
+<!--{$search_start_buy_date|escape}-->
+```
+
+| ファイル | 修正変数 |
+|---|---|
+| `admin/product/add_confirm.tpl` | `$arr_product_flg.$val`、`$arr_product_disp_warning_word.$val` |
+| `admin/product/info.tpl` | `$mid`、`$arr_product_flg.$val`、`$arr_product_disp_warning_word.$val` |
+| `admin/product/info_review.tpl` | `$mid`、`$arr_product_flg.$val`、`$arr_product_disp_warning_word.$val` |
+| `admin/product/add_review.tpl` | `$msg`（`foreach` アイテム） |
+| `admin/product_ethics/add_confirm.tpl` | `$arr_product_flg.$val` |
+| `admin/product_ethics/info.tpl` | `$ethic_group[$arr_input.ethic_group_id]` |
+| `admin/product_live/info.tpl` | `$mid`、`$mtb_live_training_type[...]`、`$mtb_live_target_flg[...]` |
+| `admin/product_live_branch/info.tpl` | `$mid`、`$mtb_live_training_type[...]`、`$mtb_live_target_flg[...]` |
+| `admin/product_live_branch/add.tpl` | `$mtb_live_training_type[...]`、`$mtb_live_target_flg[...]`、`$val.name`、`$branch.name` |
+| `admin/product_live_branch/add_confirm.tpl` | `$mtb_live_training_type[...]`、`$mtb_live_target_flg[...]` |
+| `admin/product_lecture/index.tpl` | `$row.branch_list` |
+| `admin/product_lecture2/index.tpl` | `$row.branch_list` |
+| `admin/product_lecture/info_user.tpl` | `$arr_input_2.dates` |
+| `admin/product_lecture/info_user_import.tpl` | `$upload_file_new_name`、`$row.lawyer_number`、`$row.student_name`、`$row.bar_association_name` |
+| `admin/product_lecture2/info_user.tpl` | `$arr_input_2.product_name` |
+| `admin/product_lecture2/info_user_import.tpl` | `$arr_input_2.product_name`、`$upload_file_new_name`、`$row.lawyer_number`、`$row.student_name`、`$row.bar_association_name`、`$res_msg` |
+| `admin/product_lecture_ethics/info_user_import.tpl` | `$upload_file_new_name` |
+| `admin/amount_product/index.tpl` | `$search_start_buy_date`、`$search_end_buy_date` |
+| `admin/amount_user/info.tpl` | `$sid`（hidden input・CSV href） |
+| `admin/mailmagazine/form.tpl` | `$mid`、`$start_regist_date`、`$end_regist_date`、`$submit_datetime` |
+| `admin/mailmagazine/index.tpl` | `$search_start_date`、`$search_end_date`、`$search_start_regist_date`、`$search_end_regist_date` |
+| `admin/inquiry/index.tpl` | `$search_start_date`、`$search_end_date` |
+
+---
+
+## #C — 受講者サイト Smarty テンプレート `|escape` 漏れ
+
+### 問題
+
+`alfproduct/smarty/templates/default/` および `smartphone/` 配下のテンプレートで、DB 取得値（問題文・受講者名・試験回答・商品名等）がエスケープなしで出力されていた。  
+特にテキストエリア内の試験回答プリフィル（`exam_answer_contents`・`arr_exam_answer_contents[0]`・`answer3`）は受講者自身の入力が DB を経由して再表示される Stored XSS の対象として高リスクと判断し優先修正とした。
+
+### 修正内容
+
+#### 会員登録・マイページ エラーメッセージ（member / mypage）
+
+入力バリデーションエラーメッセージ（`$err_msg.*`）が DB 値や POST パラメータ由来のまま出力されていた。
+
+```smarty
+<!-- 修正前 -->
+<span style="color:red;"><!--{$err_msg.name1}--></span>
+
+<!-- 修正後 -->
+<span style="color:red;"><!--{$err_msg.name1|escape}--></span>
+```
+
+| ファイル（default + smartphone 各） | 修正変数 |
+|---|---|
+| `member/regist.tpl` | `$err_msg.*`（name1・name2・kana1・kana2・zip・pref_id・address1〜3・email・email_conf・password・password_conf・password_question・password_answer・age・gender・mail_magazine_flag 計18フィールド） |
+| `mypage/edit.tpl` | 同上 18フィールド |
+
+#### 受講証明書印刷（mypage）
+
+```smarty
+<!-- 修正前 -->
+<!--{$student_info.lawyer_number}-->
+<!--{$student_info.student_name}-->
+
+<!-- 修正後 -->
+<!--{$student_info.lawyer_number|escape}-->
+<!--{$student_info.student_name|escape}-->
+```
+
+| ファイル | 修正変数 |
+|---|---|
+| `default/mypage/lesson_list1_print.tpl` | `$student_info.lawyer_number`、`$student_info.student_name` |
+| `smartphone/mypage/lesson_list1_print.tpl` | 同上 |
+
+#### 倫理研修（ethic_treaning 14ファイル）
+
+`$question`・`$reference` は CMS CSV インポート経由で `tbl_ethic_question` テーブルに格納されるプレーンテキスト。PHP 側で `<br>` → `\n` 変換済みであり、HTML タグを含まない想定だがエスケープが必要。
+
+```smarty
+<!-- 修正前 -->
+<!--{$question}-->
+<!--{$reference}-->
+<!--{$item.question}-->
+
+<!-- 修正後 -->
+<!--{$question|escape}-->
+<!--{$reference|escape}-->
+<!--{$item.question|escape}-->
+```
+
+| ファイル（default + smartphone 各） | 修正変数 |
+|---|---|
+| `ethic_treaning/answer_history.tpl` | `$question`、`$reference` |
+| `ethic_treaning/answer_history_all.tpl` | `$item.question`、`$item.reference` |
+| `ethic_treaning/question.tpl` | `$question`、`$reference`（各2箇所） |
+| `ethic_treaning/question_answer.tpl` | `$question`、`$reference` |
+| `ethic_treaning/question_answer_retry.tpl` | `$question`、`$reference` |
+| `ethic_treaning/question_retry.tpl` | `$question`、`$reference`（各2箇所） |
+| `ethic_treaning/result_history_detail.tpl` | `$question`、`$reference` |
+
+#### 試験・アンケート（exam 約24ファイル）
+
+`<textarea>` 内の受講者回答プリフィル（`exam_answer_contents`・`arr_exam_answer_contents[0]`・`answer3`）は Stored XSS のリスクが高く優先修正対象とした。
+
+```smarty
+<!-- 修正前（textarea 内プリフィル — Stored XSS） -->
+<textarea ...><!--{$answered_info[$row.exam_problem_id].exam_answer_contents[0]}--></textarea>
+
+<!-- 修正後 -->
+<textarea ...><!--{$answered_info[$row.exam_problem_id].exam_answer_contents[0]|escape}--></textarea>
+```
+
+```smarty
+<!-- 修正前（問題名） -->
+<!--{$row.exam_problem_name}-->
+
+<!-- 修正後 -->
+<!--{$row.exam_problem_name|escape}-->
+```
+
+| ファイル（default + smartphone 各） | 主な修正変数 |
+|---|---|
+| `exam/answer_check1.tpl` | `$row.exam_problem_name`、`$row_q.exam_problem_name`、`.exam_answer_contents[0]`、`.correct_answer_str`、`.exam_answer_contents_str` |
+| `exam/confirm1.tpl` | `.arr_exam_answer_contents[0]`（textarea）、`.correct_answer_str`、`.exam_answer_contents_str` |
+| `exam/confirm2.tpl` | `.arr_exam_answer_contents[0]`（textarea） |
+| `exam/index.tpl` | `$row.exam_problem_name`、`$row_q.exam_problem_name`、`.answer3`（textarea） |
+| `exam/index1.tpl` | `$row.exam_problem_name`、`.exam_answer_contents`（textarea） |
+| `exam/index2.tpl` | `$row.exam_problem_name`、`$row_q.exam_problem_name`、`.exam_answer_contents` |
+| `exam/result.tpl` | `$row.exam_problem_name`、`$row_q.exam_problem_name` |
+| `exam/resubmit_exec_result1.tpl` | `$row.exam_problem_name`、`$row_q.exam_problem_name` |
+| `exam/resubmit_index1.tpl` | `$row.exam_problem_name`、`$row_q.exam_problem_name`、`$eflg`（hidden input） |
+| `exam/resubmit_index2.tpl` | `$row.exam_problem_name`、`$row_q.exam_problem_name` |
+
+#### フレームテンプレート
+
+```smarty
+<!-- 修正前 -->
+<title><!--{$html_head_title}--></title>
+
+<!-- 修正後 -->
+<title><!--{$html_head_title|escape}--></title>
+```
+
+| ファイル | 修正変数 | 備考 |
+|---|---|---|
+| `default/alfstream_frame.tpl` | `$html_head_title` | `<title>` タグ内。`$product_list['product_name']`（DB 商品名）由来 |
+
+---
+
+## 除外判定
+
+以下は意図的 HTML または低リスクとして `|escape` 修正対象外とした。
+
+| 変数 / パターン | 判定 | 理由 |
+|---|---|---|
+| `$return.formhtml`、`$return.html` | 意図的 HTML | PHP 側で `htmlspecialchars()` を適用して生成したフォーム HTML。`|escape` を付与すると二重エスケープで表示崩れ |
+| `$style_background`、`$str_disp` | 意図的 HTML | Smarty `<!--{assign}-->` でテンプレート内に定義した固定 CSS / HTML リテラル（DB 値・ユーザー入力と無関係） |
+| `$val.disp_sponsor` | 意図的 HTML | PHP 側でマスターデータに `<br />` を連結して組み立てた表示文字列 |
+| `$pankuzu` | 意図的 HTML | `get_product_pankuzu()` が生成するパンくず HTML |
+| `$pager`、`$admin_main_side_menu` | 意図的 HTML | PHP 生成のページネーション・サイドメニュー HTML |
+| `$product_list.free_html_area1` | 意図的 HTML | CMS 管理のリッチテキスト領域。かつ Smarty コメントブロック `<!--{* *}-->` 内で未レンダリング |
+| `$pid`、`$aid`、`$ccno`、`$eid`、`$qid` 等 | 低リスク除外 | PHP 側で `intval()` / `cmCheckInput('CK_NUM')` 検証済みの整数 ID |
+| `$row.exam_problem_id`、`$row1.no`、`$row_no1` 等 | 低リスク除外 | DB の数値主キー・選択肢番号・ループカウンター |
+| `$smarty.session.user.exp_date_passport` 等 | 低リスク除外 | DB 日付値（`YYYY-MM-DD` 形式、特殊文字を含まない） |
+| `$pref_id_style` 等 `*_style` 変数群 | 意図的 HTML | PHP 側でハードコードされた CSS 文字列を代入（ユーザー入力と無関係） |
+| `$product_list.contents_baisoku_flg1/2/3` | 低リスク除外 | HTML コメント `<!-- -->` 内の記述でブラウザにレンダリングされない |
+
+> 低リスク除外の詳細方針は `low-risk-note-decision-report-20260520.md` に準拠。
+
+---
+
+# Ph.15 修正レポート
+
+- 対象フェーズ: Ph.15
+- 脆弱性ID: CMS-H-01〜16、F-8b、#5、F-5、F-6、F-7
+- 修正日: 2026-06-29
+- 優先度: 高（CMS-H-01〜16・#5）、中（F-8b・F-5・F-6・F-7）
+
+---
+
+## 概要
+
+CMS 商品一覧の SQL インジェクション、デバッグ情報の露出（var_dump/print_r）、SSO ログインのオープンリダイレクト、試験テンプレートの JS コンテキスト XSS、戻り先 URL の外部ドメインリダイレクト、倫理研修テンプレートの `$qid` エスケープ漏れを一括修正した。
+
+---
+
+## CMS-H-01〜16 — CMS 商品一覧 日付パラメータ SQL インジェクション
+
+### 問題
+
+`alflearning-cms/alfproduct/product/index.php` の検索フォームで `$_POST["search_start_date"]` / `$_POST["search_end_date"]` を正規化せずに WHERE 句へ直接埋め込んでいた。  
+日付パラメータに `' OR '1'='1` 等を送信することで任意 SQL を注入可能であった。
+
+### 修正内容
+
+```php
+// 修正前
+$search_start_date = isset($_POST["search_start_date"]) ? $_POST["search_start_date"] : "" ;
+$search_end_date   = isset($_POST["search_end_date"])   ? $_POST["search_end_date"]   : "" ;
+
+// 修正後
+$search_start_date = isset($_POST["search_start_date"]) ? preg_replace('/[^0-9\-]/', '', $_POST["search_start_date"]) : "" ;
+$search_end_date   = isset($_POST["search_end_date"])   ? preg_replace('/[^0-9\-]/', '', $_POST["search_end_date"])   : "" ;
+```
+
+`preg_replace('/[^0-9\-]/', '', ...)` により数字とハイフン（`YYYY-MM-DD` 形式）のみを許可し、SQL 特殊文字を除去する。
+
+| ファイル | 修正箇所 |
+|---|---|
+| `alflearning/alflearning-cms/alfproduct/product/index.php` | `$search_start_date` / `$search_end_date` の取得処理（L128-129） |
+
+---
+
+## F-8b — デバッグ出力の露出
+
+### 問題
+
+本番コードにデバッグ用の `var_dump()`・`print_r()` 出力が残存しており、HTML コメント内に内部データ構造（SQL 結果・セッション情報）が露出していた。
+
+### 修正内容
+
+#### Welcome.php — デバッグ echo 無効化
+
+`index()` メソッドに SQL スキーマ情報を echo するデバッグコードが存在した。`show_404()` に差し替えて直アクセスを封鎖した。
+
+```php
+// 修正前
+public function index()
+{
+    // (SQL スキーマを echo するデバッグコード)
+    $query = $this->db->query("DESCRIBE students");
+    foreach ($query->result() as $row) {
+        echo $row->Field . '<br>';
+    }
+    echo $this->session->userdata('test_key');
+}
+
+// 修正後
+public function index()
+{
+    show_404();
+}
+```
+
+| ファイル |
+|---|
+| `alflearning/alflearning-cms/application/controllers/Welcome.php` |
+
+#### Curl.php — debug() メソッド無効化
+
+`debug()` メソッドが cURL リクエスト情報（URL・タイムアウト・レスポンスコード等）を HTML 出力していた。メソッド本体を空にして情報露出を防止した。
+
+```php
+// 修正前
+public function debug()
+{
+    echo '<pre>';
+    print_r($this->info);
+    echo '</pre>';
+}
+
+// 修正後
+public function debug()
+{
+    // デバッグ出力は本番環境では無効
+}
+```
+
+| ファイル |
+|---|
+| `alflearning/alflearning-cms/application/libraries/Curl.php` |
+
+#### answer_set_list.php / answer_set_list_review.php — var_dump 削除
+
+ファイル先頭の `print("<!--[\n"); var_dump($export_data); print("]\n-->");` ブロックおよび解答種類処理内の `var_dump($arr_temp)` を削除した。
+
+```php
+// 修正前
+<?php
+print("\n<!--[\n");
+var_dump($export_data);
+print("\n]-->\n");
+?>
+
+// (answer_kind 分岐内)
+print(  "<!--[answer_kind:".$export_data[...]["answer_kind"]."]-->"  );
+$arr_temp = json_decode( ... );
+print(  "<!--["  );
+var_dump($arr_temp);
+print(  "]-->"  );
+
+// 修正後
+// （ブロック全体を削除）
+$arr_temp = json_decode( ... );
+```
+
+| ファイル | 削除箇所 |
+|---|---|
+| `alflearning/alflearning-cms/application/views/cms_exam2/answer_set_list.php` | ファイル先頭 var_dump ブロック + answer_kind 1/2/3 各分岐内の debug print/var_dump |
+| `alflearning/alflearning-cms/application/views/cms_exam2/answer_set_list_review.php` | ファイル先頭 var_dump ブロック |
+
+---
+
+## #5 — SSO ログイン burl オープンリダイレクト
+
+### 問題
+
+SSO ログイン完了後に `$_GET["burl"]` を検証なしで `header("Location: ...)` に渡していた。  
+攻撃者が `?burl=https://evil.com` を含む SSO リンクを送付することでフィッシングサイトへ誘導可能であった。
+
+### 修正内容
+
+`$burl` が `/` で始まる相対 URL でかつプロトコル相対 URL（`//`）でない場合のみリダイレクトを許可する。
+
+```php
+// 修正前
+if( isset($_GET["burl"]) && trim($_GET["burl"])!="" ){
+    header("Location: ".$_GET["burl"]);
+} else {
+    header("Location: /");
+}
+
+// 修正後
+$burl = isset($_GET["burl"]) ? trim($_GET["burl"]) : "";
+if( $burl !== "" && substr($burl, 0, 1) === '/' && substr($burl, 0, 2) !== '//' ){
+    header("Location: ".$burl);
+} else {
+    header("Location: /");
+}
+```
+
+| ファイル | 修正箇所 |
+|---|---|
+| `alfproduct/public/login/login_sso.php` | burl リダイレクト処理（L72-76） |
+| `alfproduct/public/login/login_sso_new.php` | burl リダイレクト処理（L115-121） |
+
+---
+
+## F-5 — 試験テンプレート `$qid` JavaScript コンテキスト XSS
+
+### 問題
+
+`exam/index.tpl` の JavaScript 内で `$qid` を Smarty の `<!--{$qid}-->` としてそのまま埋め込んでいた。  
+`$qid` に `'; alert(1); //` 等を渡すと `document.examForm.action` の設定コードを破壊して任意 JavaScript が実行される。
+
+### 修正内容
+
+JavaScript 文字列コンテキストに適した `|escape:'javascript'` modifier を適用した。
+
+```smarty
+<!-- 修正前 -->
+document.examForm.action = "/exam/answer_check.php?eid="+eid+"&pid="+pid+"&ccno="+ccno+"&qid="+<!--{$qid}-->;
+
+<!-- 修正後 -->
+document.examForm.action = "/exam/answer_check.php?eid="+eid+"&pid="+pid+"&ccno="+ccno+"&qid="+<!--{$qid|escape:'javascript'}-->;
+```
+
+| ファイル |
+|---|
+| `alfproduct/smarty/templates/default/exam/index.tpl` |
+| `alfproduct/smarty/templates/smartphone/exam/index.tpl` |
+
+---
+
+## F-6 — `get_back_url()` 外部ドメインリダイレクト
+
+### 問題
+
+`get_back_url()` は `HTTP_REFERER` のスキームを検証していたが、ホスト名は検証していなかった。  
+`Referer: https://evil.com/page` のヘッダーを細工したリクエストにより、戻るリンクが外部ドメインを指す状態にできた。
+
+### 修正内容
+
+`parse_url()` で取得した `host` が `$_SERVER['HTTP_HOST']` と一致しない場合は `/` にフォールバックするチェックを追加した。
+
+```php
+// 修正前
+function get_back_url(){
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+        $back_url = $_SERVER['HTTP_REFERER'];
+        $parsed = parse_url($back_url);
+        if (isset($parsed['scheme']) && !in_array(strtolower($parsed['scheme']), ['http', 'https'])) {
+            $back_url = '/';
+        }
+    } else {
+        $back_url = '/';
+    }
+    return $back_url;
+}
+
+// 修正後
+function get_back_url(){
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+        $back_url = $_SERVER['HTTP_REFERER'];
+        $parsed = parse_url($back_url);
+        if (isset($parsed['scheme']) && !in_array(strtolower($parsed['scheme']), ['http', 'https'])) {
+            $back_url = '/';
+        } elseif (isset($parsed['host']) && $parsed['host'] !== $_SERVER['HTTP_HOST']) {
+            $back_url = '/';
+        }
+    } else {
+        $back_url = '/';
+    }
+    return $back_url;
+}
+```
+
+| ファイル |
+|---|
+| `alfproduct/module/functions.php` |
+| `alfproduct/module/functions_mst.php` |
+
+---
+
+## F-7 — 倫理研修テンプレート `$qid` エスケープ漏れ
+
+### 問題
+
+倫理研修の各テンプレートで `<form action="...&qid=<!--{$qid}-->">` と記述されており、`$pid` には `|escape` が付いているにもかかわらず `$qid` はエスケープなしで出力されていた。  
+`$qid` に `"><script>alert(1)</script>` を注入することで form action 属性を閉じて任意 HTML を挿入可能であった。
+
+### 修正内容
+
+```smarty
+<!-- 修正前 -->
+<form action="/ethic_treaning/question_answer.php?pid=<!--{$pid|escape}-->&qid=<!--{$qid}-->" method="post" name="form_answer">
+
+<!-- 修正後 -->
+<form action="/ethic_treaning/question_answer.php?pid=<!--{$pid|escape}-->&qid=<!--{$qid|escape}-->" method="post" name="form_answer">
+```
+
+| ファイル（default + smartphone 各） | 修正変数 |
+|---|---|
+| `ethic_treaning/answer_history.tpl` | `$qid` |
+| `ethic_treaning/question.tpl` | `$qid` |
+| `ethic_treaning/question_answer.tpl` | `$qid` |
+| `ethic_treaning/question_retry.tpl` | `$qid` |
+| `ethic_treaning/result_history_detail.tpl` | `$qid` |
+
+---
+
+# Ph.16 修正レポート
+
+- 対象フェーズ: Ph.16
+- 脆弱性ID: F-15
+- 修正日: 2026-06-30
+- 優先度: 最優先
+
+---
+
+## 概要
+
+受講者サイトの試験2・倫理研修・会員・決済各モジュールの POST フォームに CSRF 保護が不足していた。  
+テンプレートへの hidden input 追加、PHP 側への `csrf_token_get()` assign 追加、POST 受信ハンドラへの `csrf_token_verify()` 追加を一括実施した。
+
+既存の `csrf_token_get()` / `csrf_token_verify()` 関数はセッション固定トークン方式（`bin2hex(random_bytes(32))`）で、`hash_equals()` による定数時間比較を使用している。
+
+---
+
+## F-15 — POST フォーム CSRF 未対策
+
+### 問題
+
+試験2 / 倫理研修 / 会員 / 決済の各 POST フォームで CSRF トークンの検証が欠落していた。  
+攻撃者が細工した外部ページを経由して被害者のブラウザに意図しない POST リクエストを送信させることが可能であった。
+
+### 修正内容
+
+---
+
+#### テンプレート修正（hidden CSRF input 追加）
+
+フォームに `<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />` を追加した。
+
+| ファイル | 対象フォーム |
+|---|---|
+| `smarty/templates/default/ethic_treaning/answer_history.tpl` | question_answer.php への POST フォーム |
+| `smarty/templates/smartphone/ethic_treaning/answer_history.tpl` | 同上 |
+| `smarty/templates/default/ethic_treaning/question_answer.tpl` | question_answer.php への POST フォーム（確認画面） |
+| `smarty/templates/smartphone/ethic_treaning/question_answer.tpl` | 同上 |
+| `smarty/templates/default/ethic_treaning/result_history_detail.tpl` | question_answer.php への POST フォーム |
+| `smarty/templates/smartphone/ethic_treaning/result_history_detail.tpl` | 同上 |
+| `smarty/templates/default/member/zip.tpl` | 郵便番号検索 POST フォーム |
+| `smarty/templates/smartphone/member/zip.tpl` | 同上 |
+
+---
+
+#### PHP 修正 — `csrf_token_get()` assign 追加
+
+フォームを表示する PHP ファイルに `$template->assign('csrf_token', csrf_token_get());` を追加した。
+
+```php
+// 修正前
+$template->assign('...', ...);
+$template->layout_noside('...');
+
+// 修正後
+$template->assign('...', ...);
+$template->assign('csrf_token', csrf_token_get());
+$template->layout_noside('...');
+```
+
+| ファイル | テンプレート |
+|---|---|
+| `alfproduct/public/ethic_treaning/answer_history.php` | `ethic_treaning/answer_history.tpl` |
+| `alfproduct/public/ethic_treaning/question_answer.php` | `ethic_treaning/question_answer.tpl` |
+| `alfproduct/public/ethic_treaning/result_history_detail.php` | `ethic_treaning/result_history_detail.tpl` |
+| `alfproduct/public/member/input_zip.php` | `member/zip.tpl` |
+| `alfproduct/public/exam2/result_mst.php` | `exam2/result.tpl` |
+| `alfproduct/public/exam2/result_review.php` | `exam2/result.tpl` |
+
+---
+
+#### PHP 修正 — `csrf_token_verify()` 追加（POST ハンドラ）
+
+POST 受信ハンドラに CSRF 検証を追加した。
+
+**決済処理ファイル（POST 条件内）:**
+
+```php
+// 修正前
+if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
+    $objGMOPaymentProtocol = new GMOPaymentProtocol();
+
+// 修正後
+if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
+    csrf_token_verify();
+    $objGMOPaymentProtocol = new GMOPaymentProtocol();
+```
+
+| ファイル | 決済種別 |
+|---|---|
+| `alfproduct/public/settlement/payment_cvs.php` | コンビニ |
+| `alfproduct/public/settlement/payment_edy.php` | Edy |
+| `alfproduct/public/settlement/payment_id.php` | ID 決済 |
+| `alfproduct/public/settlement/payment_payeasy.php` | ペイジー |
+| `alfproduct/public/settlement/payment_suica.php` | Suica |
+| `alfproduct/public/settlement/payment_webmoney.php` | WebMoney |
+
+**パスポートユーザー注文処理（POST 専用ハンドラ）:**
+
+```php
+// 修正前
+if (strpos($_SERVER['HTTP_REFERER'], '/settlement') === false){
+    header("Location: /");
+    exit;
+}
+
+$order_id = 0;
+
+// 修正後
+if (strpos($_SERVER['HTTP_REFERER'], '/settlement') === false){
+    header("Location: /");
+    exit;
+}
+csrf_token_verify();
+
+$order_id = 0;
+```
+
+| ファイル |
+|---|
+| `alfproduct/public/settlement/order_passport_user.php` |
+
+---
+
+### 対象外としたファイル（理由付き）
+
+| ファイル | 理由 |
+|---|---|
+| `settlement/end_*.php` | 決済結果表示ページ。セッション値のみ参照し、ユーザー POST フォームなし |
+| `settlement/payment_au.php`, `payment_docomo.php`, `payment_paypal.php`, `payment_sb.php` | POST データなし・テンプレート描画なし。決済ゲートウェイへのリダイレクト処理のみ |
+| `settlement/payment_free.php` | POST データなし。セッション参照のみ。リファラチェックが保護機能として機能 |
+| `settlement/araigae_download.php`, `araigae_upload.php` | 内部管理ツール。呼び出し元フォームが特定できないため変更を保留 |
+| `login/login_sso.php`, `login_sso_new.php`, `sso_auth_callback.php` | SSO コールバック。外部 IdP から受け取るため CSRF トークン検証は非適用 |
+| `ethic_treaning/answer_history_all.php`, `result.php`, `result_retry.php` | 表示専用ページ。対応テンプレートに POST フォームなし |
+
+---
+
+### 補足：既修正済みファイル（Ph.16 以前）
+
+以下のファイルは過去フェーズで既に CSRF 対応済みであることを確認した。
+
+| 領域 | 対応状況 |
+|---|---|
+| `exam/` 全ファイル | 既対応（csrf_token_get / csrf_token_verify 実装済み） |
+| `exam2/answer_*.php`, `resubmit_*.php`, `index.php`, `result.php` | 既対応 |
+| `ethic_treaning/question_answer.php`, `retry.php`, `result_history.php` 等 | csrf_token_verify 既存、今回 csrf_token_get assign を追加 |
+| `member/regist.php` | 既対応 |
+| `settlement/index.php`, `payment_card.php`, `payment_bank.php`, `alert_passport.php` 等 | 既対応 |
+
+---
+
+# Ph.17 修正レポート
+
+- 対象フェーズ: Ph.17
+- 脆弱性ID: #D
+- 修正日: 2026-06-30
+- 優先度: 中
+
+---
+
+## 概要
+
+`alflearning-cms/application/views/` 以下の CI3 ビューファイル群で `htmlspecialchars()` が未適用の変数出力が存在した。  
+セキュリティレポート (#D) で指摘された 84 ファイルを全確認し、未適用箇所に `htmlspecialchars($var, ENT_QUOTES, 'UTF-8')` を適用した。  
+`nl2br()` を使用している箇所は **`nl2br(htmlspecialchars($var, ENT_QUOTES, 'UTF-8'))`** の順序（エスケープ後に nl2br）で修正した。  
+配列を `implode()` で結合している箇所は `array_map(function($v){ return htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); }, $arr)` で各要素をエスケープ後に結合した。
+
+---
+
+## 修正ファイル一覧（新規修正 32 件）
+
+### エラービュー・ヘッダー
+
+| ファイル | 修正変数 |
+|---|---|
+| `errors/html/error_404.php` | `$heading`, `$message` |
+| `errors/html/error_db.php` | `$heading`, `$message` |
+| `errors/html/error_exception.php` | `get_class($exception)`, `$message`, `$exception->getFile()`, `$exception->getLine()`, backtrace: `$error['file']`, `$error['line']`, `$error['function']` |
+| `errors/html/error_general.php` | `$heading`, `$message` |
+| `errors/html/error_php.php` | `$severity`, `$message`, `$filepath`, backtrace |
+| `errors/cli/error_exception.php` | `$message` |
+| `errors/cli/error_php.php` | `$severity`, `$message`, `$filepath` |
+| `header/body_header.php` | `get_teacher_name()`, `$temp_school_name` |
+
+### 認証・コース系
+
+| ファイル | 修正変数 |
+|---|---|
+| `cms_auth/confirm.php` | `$teacher['authnames']` (implode → `array_map` + `htmlspecialchars`) |
+| `cms_auth/index.php` | `$teacher['auth_names']` (implode → `array_map` + `htmlspecialchars`) |
+| `cms_book_library/edit.php` | `$upload_error` |
+| `cms_category/edit.php` | `$overlap_error_msg` |
+
+### 試験系
+
+| ファイル | 修正変数 |
+|---|---|
+| `cms_exam/confirm.php` | `$string_exam_answer_data`, `$exam['teacher_name']` |
+| `cms_exam/edit.php` | `$upload_error` |
+| `cms_exam2/edit.php` | `$upload_error` |
+| `cms_exam2_problem/edit.php` | `$problem_error_msg`, `$answer_error_msg`, `$answer_explain_error_msg` |
+| `cms_exam2_problem_group/edit.php` | `$overlap_error_msg` |
+| `cms_exam_problem/edit.php` | `$problem_error_msg`, `$answer_error_msg`, `$answer_explain_error_msg` |
+| `cms_exam_problem_group/edit.php` | `$overlap_error_msg` |
+| `cms_exam_problem_import/edit.php` | `$upload_error`, `$lecture_error`, `$local_file_error` |
+| `cms_exam2_problem_import/edit.php` | `$upload_error`, `$lecture_error`, `$local_file_error` |
+
+### 情報・教材・レポート系
+
+| ファイル | 修正変数 |
+|---|---|
+| `cms_issue/edit.php` | `$upload_error` |
+| `cms_material/edit.php` | `$upload_error` |
+| `cms_ranking/index.php` | `$error_msg` |
+
+### 受講者・学校管理・ビデオ系
+
+| ファイル | 修正変数 |
+|---|---|
+| `cms_school_manage/edit.php` | `$error_msg` |
+| `cms_student_csv_upload/index.php` | `$upload_error` |
+| `cms_student_group/edit.php` | `$error_msg` |
+| `cms_student/edit.php` | `$error_msg`, `$elm_message` |
+| `cms_student_sub_auth/confirm.php` | `$elm_message` (アクティブ部分) |
+| `cms_student_sub_auth/edit.php` | `$error_msg` |
+| `cms_teacher/edit.php` | `$error_msg` |
+| `cms_video/edit.php` | `$upload_error`, `$overlap_error` |
+
+---
+
+## スキップ（既に修正済み）
+
+以下の多数のファイルは確認の結果、すでに `htmlspecialchars()` が正しく適用されていた（Ph.1〜Ph.16 で対応済み）。
+
+- `book_library_error.php`, `course_class_error.php`, `issue_error.php`, `material_error.php`, `teacher_error.php` (5ファイル) — `$error_message` 適用済み
+- `admin_top/` 全6ファイル — 全対象変数適用済み
+- `header/header.php` — `$title_box[$callview]` 適用済み
+- `cms_auth/edit.php`, `login/login_page.php`, `school_select/index.php` — 適用済み
+- `cms_book_library/commit.php`, `cms_cource/` 全4ファイル, `cms_class/` 全4ファイル — 適用済み
+- `cms_exam/confirm_answer.php`, `cms_exam/index.php` — 適用済み
+- `cms_exam2/confirm.php`, `cms_exam2/confirm_answer.php`, `cms_exam2/index.php` — 適用済み
+- `cms_exam2_problem/confirm.php`, `cms_exam2_problem/index.php`, `cms_exam2_problem_group/confirm.php`, `cms_exam2_problem_group/index.php` — 適用済み
+- `cms_exam_problem/confirm.php`, `cms_exam_problem/index.php`, `cms_exam_problem_group/confirm.php`, `cms_exam_problem_group/index.php` — 適用済み
+- `cms_exam2_download/` 全2ファイル, `cms_exam_problem_import/confirm.php`, `cms_exam2_problem_import/confirm.php` — 適用済み
+- `cms_information/` 全2ファイル, `cms_information_old/` 全3ファイル, `cms_issue/confirm.php`, `cms_issue/index.php` — 適用済み
+- `cms_material/commit.php`, `cms_material/confirm.php`, `cms_material/index.php` — 適用済み
+- `cms_report/` 全7ファイル — 適用済み
+- `cms_school_manage/commit.php`, `cms_school_manage/confirm.php`, `cms_school_manage/index.php` — 適用済み
+- `cms_student/confirm.php`, `cms_student/index.php`, `cms_student_group/confirm.php`, `cms_student_group/index.php` — 適用済み
+- `cms_student_sub_auth/index.php` — 適用済み
+- `cms_teacher/photo_upload.php` — 適用済み
+- `cms_video/confirm.php`, `cms_video/edit_moviecut.php`, `cms_video/index.php`, `cms_video/newdata1.php`, `cms_video/newdata2.php` — 適用済み
+- `mail_templates/class_notification.php` — 適用済み
+
+---
+
+## 修正パターン
+
+### HTML コンテキスト
+
+```php
+// 修正前
+<?= $var ?>
+
+// 修正後
+<?= htmlspecialchars($var, ENT_QUOTES, 'UTF-8') ?>
+```
+
+### PHP 文字列連結内
+
+```php
+// 修正前
+'<div class="error">'.$error_msg.'</div>'
+
+// 修正後
+'<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8').'</div>'
+```
+
+### nl2br（エスケープ後に nl2br を適用）
+
+```php
+// 修正前
+nl2br($text)
+
+// 修正後
+nl2br(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'))
+```
+
+### implode（各要素をエスケープ後に結合）
+
+```php
+// 修正前
+implode(', ', $arr)
+
+// 修正後
+implode(', ', array_map(function($v){ return htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); }, $arr))
+```
+
+---
+
+# Ph.18 修正レポート
+
+- 対象フェーズ: Ph.18
+- 脆弱性ID: #A（高リスク）
+- 修正日: 2026-06-30
+- 優先度: 高
+
+---
+
+## 概要
+
+`alfproduct/smarty/templates/admin/` 以下の Smarty 管理者テンプレート 77 ファイルを全件調査した。  
+セキュリティレポート (#A) で指摘された約 110 行の高リスク箇所を確認した結果、大部分はPh.1〜Ph.17 の修正コミット（`35b4584 Smartyテンプレートをエスケープするように`等）で対応済みであった。  
+調査の結果、実際に修正が必要な未エスケープ箇所は以下の 2 ファイル（計 9 行）であった。
+
+---
+
+## 修正内容
+
+### 1. `amount_product/index.tpl`（3行）
+
+| 変数 | コンテキスト | 修正内容 |
+|---|---|---|
+| `$row.name` | HTMLラベルテキスト（商品種別checkbox） | `<!--{$row.name|escape}-->` |
+| `$row.name` | HTMLラベルテキスト（決済方法checkbox） | `<!--{$row.name|escape}-->` |
+| `$row.name` | HTMLラベルテキスト（請求書checkbox） | `<!--{$row.name|escape}-->` |
+
+これらはマスターデータ（商品種別・決済方法・請求書フラグ）の表示名をcheckboxラベルに出力するもの。  
+DBのマスターデータが改ざんされた場合の二次的XSS対策として `|escape` を適用。
+
+### 2. `mailmagazine/info.tpl`（6行）
+
+| 変数 | コンテキスト | 修正内容 |
+|---|---|---|
+| `$mid` | JS `location.href = "delete.php?mid=..."` | `<!--{$mid|escape:'javascript'}-->` |
+| `$mid` | JS `location.href = "edit.php?mid=..."` | `<!--{$mid|escape:'javascript'}-->` |
+| `$page` | JS `onclick="location.href='index.php?page=...'"` | `<!--{$page|escape:'javascript'}-->` |
+| `$mid` | 上記の else ブランチ（重複） | `<!--{$mid|escape:'javascript'}-->` |
+| `$mid` | 上記の else ブランチ（重複） | `<!--{$mid|escape:'javascript'}-->` |
+| `$page` | 上記の else ブランチ（重複） | `<!--{$page|escape:'javascript'}-->` |
+
+`$mid`（メルマガID）と `$page`（ページ番号）はDB主キー・整数値のため実質安全だが、  
+JS文字列コンテキストへの埋め込みのため `|escape:'javascript'` を適用。
+
+---
+
+## スキップ（調査済み・修正不要）
+
+### Ph.1〜Ph.17 で対応済み（高リスク変数）
+
+以下の変数は調査の結果、すでに `|escape` または `|escape:'javascript'` が適用されていた。
+
+| ファイル | 変数 |
+|---|---|
+| `main_frame.tpl` | `admin_main_title|escape` ✓ |
+| `amount_order/info.tpl` | `student_name|escape`, `lawyer_number|escape`, `association_name|escape`, `student_name|escape:'javascript'`（JS confirm内）✓ |
+| `amount_passport/index.tpl` | `passport_target_name|escape`, `row.name|escape` ✓ |
+| `amount_user/info.tpl` | `arr_student.student_name|escape`, `arr_student.lawyer_number|escape`, `arr_student.association_name|escape` ✓ |
+| `amount_order/index.tpl` | `row.name|escape` ✓ |
+| `amount_user/index.tpl` | `row.name|escape` ✓ |
+| `bank_upload/index.tpl` | `err_msg|escape`, `ok_msg|escape` ✓ |
+| `inquiry/conf.tpl` | `prev_url|escape`, `next_url|escape` ✓ |
+| `inquiry/form.tpl` | `err|escape`, `next_url|escape` ✓ |
+| `inquiry/index.tpl` | `search_keyword|escape`, `search_lawyer_number|escape` ✓ |
+| `inquiry/info.tpl` | `iid|escape` ✓ |
+| `inquiry/status.tpl` | `err|escape`, `next_url|escape` ✓ |
+| `inquiry/status_conf.tpl` | `prev_url|escape`, `next_url|escape` ✓ |
+| `mailmagazine/conf.tpl` | URL変数 `|escape` ✓ |
+| `mailmagazine/form.tpl` | `err|escape`, `next_url|escape`, `row.name|escape` ✓ |
+| `mailmagazine/index.tpl` | `search_keyword|escape`, `row.mail_title|escape` ✓ |
+| `product/info.tpl` | `arr_input.*|escape` ✓ |
+| `product/search_student.tpl` | `row.student_name|escape` ✓ |
+| `product/search_elive.tpl` | `row.product_name|escape` ✓ |
+| `product/search_product.tpl` | `row.product_name|escape` ✓ |
+| `product/search_product_ranking.tpl` | `row.product_name|escape` ✓ |
+| `product_ethics/info.tpl` | `arr_input.*|escape` ✓ |
+| `product_ethics/add_confirm.tpl` | `arr_product_flg.*|escape` ✓ |
+| `product_lecture/info_user.tpl` | `arr_input_2.*|escape` ✓ |
+| `product_lecture/info_user_import.tpl` | `arr_input_2.*|escape`, `row.student_name|escape` 等 ✓ |
+| `product_lecture/info_user_regist.tpl` | `arr_input_2.*|escape` ✓ |
+| `product_lecture2/` 系（5ファイル） | `arr_input.*|escape` ✓ |
+| `product_lecture2/product_lecture2/` 系（5ファイル） | `arr_input.*|escape` ✓ |
+| `product_lecture_ethics/` 系（4ファイル） | `arr_input_2.*|escape` ✓ |
+| `product_live/` 系（6ファイル） | `arr_input.*|escape`, `val.name|escape` 等 ✓ |
+| `product_live_branch/` 系（4ファイル） | `arr_input.*|escape`, `branch.*|escape` ✓ |
+| `product_passport/` 系（5ファイル） | `arr_passport_target.*|escape` ✓ |
+| `report_product/` 系（2ファイル） | `row.name|escape` ✓ |
+
+### コメントブロック内（出力されないため修正不要）
+
+以下のファイルでは未エスケープ変数が見つかったが、Smarty コメントブロック `<!--{* ... *}-->` または HTML コメント内のため実際には出力されない。
+
+| ファイル | 変数 | 理由 |
+|---|---|---|
+| `mailmagazine/index.tpl:59-112` | `$row.name`（都道府県・年代・職業・業種・学年・カテゴリ） | `<!--{* ... *}-->` 内（未使用機能） |
+| `mailmagazine/form.tpl:98-151` | `$row.name`（都道府県・年代・職業・業種・学年・カテゴリ） | HTMLコメント内（未使用機能） |
+| `product_lecture_ethics/index.tpl:195` | `$row.name`（主催弁護士会） | `<!--{* ... *}-->` 内 |
+| `product_lecture_ethics/index.tpl:234` | `$row2.name`（弁護士会） | `<!--{* ... *}-->` 内 |
+
+### 安全と判断した未エスケープ変数
+
+| 変数パターン | 理由 |
+|---|---|
+| `$row.id`、`$product_id`、`$student_id` 等のID系 | DB主キー（整数）のため |
+| `$list_start`、`$list_end`、`$all_count` 等のカウント系 | 整数のため |
+| `$row.start_date`、`$row.end_date`、`$regist_date` 等の日付系 | DB日付フォーマット文字列のため |
+| `$smarty.section.*.index` | Smartyセクションループカウンタ（整数） |
+| `$pager` | ページネーションライブラリが生成するHTML断片（`|escape`適用不可） |
+| `$admin_main_side_menu` | サーバー側で生成されるHTMLメニュー（`|escape`適用不可） |
+| `$temp_param_dummy_val` | キャッシュバスティング用タイムスタンプ（整数） |
+
+---
+
+## 修正パターン
+
+### HTML コンテキスト
+```smarty
+<!-- 修正前 -->
+<!--{$row.name}-->
+
+<!-- 修正後 -->
+<!--{$row.name|escape}-->
+```
+
+### JavaScript コンテキスト
+```smarty
+<!-- 修正前 -->
+location.href = "delete.php?mid=<!--{$mid}-->";
+
+<!-- 修正後 -->
+location.href = "delete.php?mid=<!--{$mid|escape:'javascript'}-->";
+```
+
+---
+
+# Ph.19 修正レポート
+
+- 対象フェーズ: Ph.19
+- 脆弱性ID: F-5、F-7、F-8
+- 修正日: 2026-06-30
+- 優先度: 中〜低
+
+---
+
+## 概要
+
+セキュリティレポートの F-5（試験テンプレート href XSS）、F-7（倫理研修テンプレート onclick/href XSS）、F-8（プレイヤーファイルのデバッグ出力）を調査・修正した。
+
+調査の結果、大部分は Ph.1〜Ph.18 で対応済みであった。  
+実際に修正が必要だった箇所は F-5 の 2 ファイル（3 行）のみ。F-7・F-8 は対応済みと確認。
+
+---
+
+## 修正内容
+
+### F-5: href 属性への直接挿入 — 試験結果・確認画面
+
+#### 修正ファイル 1: `smartphone/exam/answer_check1.tpl`（3行）
+
+| 行 | 変数 | コンテキスト | 修正内容 |
+|---|---|---|---|
+| 189 | `$pid` `$ccno` `$eid` `$qid` | `href="/exam/confirm1.php?..."` | `|escape` 追加 |
+| 192 | `$pid` `$ccno` `$eid` `$qid` | `href="/exam/confirm1.php?..."` | `|escape` 追加 |
+| 194 | `$pid` `$ccno` `$eid` `$qid` | `href="/exam/index1.php?..."` | `|escape` 追加 |
+
+#### 修正ファイル 2: `smartphone/exam/answer_check2.tpl`（1行）
+
+| 行 | 変数 | コンテキスト | 修正内容 |
+|---|---|---|---|
+| 49 | `$pid` `$ccno` `$eid` `$qid` | `href="/exam/answer_save2.php?..."` | `|escape` 追加 |
+
+---
+
+## スキップ（調査済み・修正不要）
+
+### F-5 — 対応済み（7ファイル）
+
+| ファイル | 状況 |
+|---|---|
+| `default/exam/result2.tpl` 行183, 238 | `$pid\|escape`, `$ccno\|escape`, `$eid\|escape`, `$qid\|escape` 適用済み |
+| `default/exam/result1.tpl` 行183, 238 | 同上 |
+| `default/exam/confirm1.tpl` 行183, 238, 259 | 同上 |
+| `smartphone/exam/result2.tpl` 行183, 238, 252 | 同上 |
+| `smartphone/exam/result1.tpl` 行183, 238, 252 | 同上 |
+| `smartphone/exam/confirm1.tpl` 行183, 238, 259 | 同上 |
+| `smartphone/exam/confirm2.tpl` 行191, 202, 262, 269 | 同上 |
+
+### F-7 — 全14ファイル対応済み
+
+セキュリティレポート記載の 14 件の倫理研修テンプレートを全件確認した結果、すべて `$pid|escape` が適用済みであった。
+
+確認済みファイル（代表）:
+- `default/ethic_treaning/answer_history.tpl` — `$pid|escape` ✓
+- `smartphone/ethic_treaning/retry.tpl` — `$pid|escape` ✓（行105, 107）
+- その他 12 ファイル — `|escape` 適用済み ✓
+
+### F-8 — 対応済み（2ファイル）
+
+| ファイル | 報告内容 | 現状 |
+|---|---|---|
+| `alfproduct/public/player/index.php` 行134-142 | セッション値を HTML コメント出力 | デバッグ行削除済み |
+| `alfproduct/public/player/sample.php` 行17 | `print("<!--[".$idkey."]-->");` | 削除済み |
+
+---
+
+## 修正パターン
+
+### HTML 属性（href）コンテキスト
+
+```smarty
+<!-- 修正前 -->
+<a href="/exam/confirm1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">
+
+<!-- 修正後 -->
+<a href="/exam/confirm1.php?pid=<!--{$pid|escape}-->&ccno=<!--{$ccno|escape}-->&eid=<!--{$eid|escape}--><!--{if $qid!=''}-->&qid=<!--{$qid|escape}--><!--{/if}-->">
+```
+
+---
+
+# Ph.20 修正レポート
+
+- 対象フェーズ: Ph.20
+- 脆弱性ID: F-10（補完）、#D（補完）
+- 修正日: 2026-06-30
+- 優先度: 高
+
+---
+
+## 概要
+
+Ph.11 で有効化した CI3 CSRF 保護（`csrf_protection = TRUE`）に対して、以下の 2 点が未対応だった。
+
+1. **CMS ログインフォームへの CSRF トークンフィールド追加** — ログインフォームは `form_open()` を使わず手書きの `<form>` タグのため、CSRF トークンが含まれずログイン POST が CSRF エラーで拒否される。
+2. **jQuery AJAX リクエストへのグローバル CSRF トークン自動付与** — CI3 CSRF 保護は通常フォームの POST のみ検証するが、CMS 内の AJAX POST も保護対象に含めるため。
+
+また、`form_dropdown()` で描画する講師選択セレクトボックスの option テキスト（DB 取得値）に `htmlspecialchars()` が適用されておらず、DB に格納された悪意あるデータがそのまま HTML 出力される格納型 XSS が発見された（#D 補完）。対象コントローラー 25 ファイルに適用した。
+
+---
+
+## 修正内容
+
+### 1. CMS ログインフォーム CSRF トークンフィールド追加（F-10 補完）
+
+**ファイル:** `alflearning/alflearning-cms/application/views/login/login_page.php`
+
+**修正前:**
+```html
+<form action="/login_page/login?backurl=..." name="form1" method="post">
+    <table class="form">
+```
+
+**修正後:**
+```html
+<form action="/login_page/login?backurl=..." name="form1" method="post">
+    <?= form_hidden($this->security->get_csrf_token_name(), $this->security->get_csrf_hash()) ?>
+    <table class="form">
+```
+
+---
+
+### 2. jQuery AJAX グローバル CSRF トークン自動付与（F-10 補完）
+
+**ファイル:** `alflearning/alflearning-cms/application/views/header/header.php`
+
+全ページのヘッダーに以下を追加。POST メソッドの AJAX リクエストに対し、FormData・クエリ文字列・オブジェクト形式を問わず CSRF トークンを自動付与する。
+
+**追加コード:**
+```javascript
+<script type="text/javascript">
+    var ciCsrfTokenName = '<?= $this->security->get_csrf_token_name() ?>';
+    var ciCsrfToken     = '<?= $this->security->get_csrf_hash() ?>';
+    $(document).ajaxSend(function(event, jqxhr, settings) {
+        if ((settings.type || '').toUpperCase() === 'POST') {
+            if (settings.data instanceof FormData) {
+                settings.data.append(ciCsrfTokenName, ciCsrfToken);
+            } else if (typeof settings.data === 'string') {
+                settings.data += (settings.data ? '&' : '') + ciCsrfTokenName + '=' + encodeURIComponent(ciCsrfToken);
+            } else {
+                if (!settings.data) { settings.data = {}; }
+                settings.data[ciCsrfTokenName] = ciCsrfToken;
+            }
+        }
+    });
+</script>
+```
+
+---
+
+### 3. CSRF トークン再生成を無効化（F-10 補完）
+
+**ファイル:** `alflearning/alflearning-cms/application/config/config.php`
+
+`csrf_regenerate = TRUE`（デフォルト）のままでは、フォーム送信のたびにトークンが再生成されるため、マルチタブ操作や前後ページ遷移で「トークン不一致」エラーが頻発する。
+
+**修正:**
+```php
+// 修正前
+$config['csrf_regenerate'] = TRUE;  // (デフォルト値)
+
+// 修正後
+$config['csrf_regenerate'] = FALSE;
+```
+
+---
+
+### 4. `form_dropdown()` 講師名 格納型 XSS 修正（#D 補完）
+
+**問題:**  
+`_get_teacher_list_array()` メソッドで講師名（DB 取得値）を `$data['teachers']` 配列へ格納する際、`htmlspecialchars()` が未適用だった。CI3 の `form_dropdown()` は option テキストを HTML エスケープしないため、DB に悪意あるデータ（例: `<script>alert(); </script>`）が格納されている場合、講師選択ドロップダウンを含む全 CMS ページで格納型 XSS が実行される。
+
+**修正前:**
+```php
+$data['teachers'][$teacher['teacher_id']] = $teacher['teacher_name'];
+```
+
+**修正後:**
+```php
+$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
+```
+
+**修正対象コントローラー（25 ファイル）:**
+
+| ファイル |
+|---|
+| `application/controllers/Cms_book_library.php` |
+| `application/controllers/Cms_exam.php` |
+| `application/controllers/Cms_exam2.php` |
+| `application/controllers/Cms_exam2_download.php` |
+| `application/controllers/Cms_exam2_problem.php` |
+| `application/controllers/Cms_exam2_problem_import.php` |
+| `application/controllers/Cms_exam2_review.php` |
+| `application/controllers/Cms_exam_problem.php` |
+| `application/controllers/Cms_exam_problem_import.php` |
+| `application/controllers/Cms_issue.php` |
+| `application/controllers/Cms_material.php` |
+| `application/controllers/Cms_video.php` |
+| `application/controllers/ver_xss_clear/Cms_book_library.php` |
+| `application/controllers/ver_xss_clear/Cms_class.php` |
+| `application/controllers/ver_xss_clear/Cms_exam.php` |
+| `application/controllers/ver_xss_clear/Cms_exam2.php` |
+| `application/controllers/ver_xss_clear/Cms_exam2_download.php` |
+| `application/controllers/ver_xss_clear/Cms_exam2_problem.php` |
+| `application/controllers/ver_xss_clear/Cms_exam2_problem_import.php` |
+| `application/controllers/ver_xss_clear/Cms_exam2_review.php` |
+| `application/controllers/ver_xss_clear/Cms_exam_problem.php` |
+| `application/controllers/ver_xss_clear/Cms_exam_problem_import.php` |
+| `application/controllers/ver_xss_clear/Cms_issue.php` |
+| `application/controllers/ver_xss_clear/Cms_material.php` |
+| `application/controllers/ver_xss_clear/Cms_video.php` |
+
+※ `application/controllers/Cms_class.php` は Ph.17 以前に対応済みのため対象外。
+
+---
+
+## 発見の経緯
+
+ステージング環境で `cms_issue` の新規・編集ページを開いた際に JavaScript アラートが実行されることが確認された。調査の結果、teacher_id=190 の講師名フィールドに `<script>alert(); </script>` が格納されており、`form_dropdown()` が option テキストを HTML エスケープしないまま出力していたことが原因と判明。
+
+---
