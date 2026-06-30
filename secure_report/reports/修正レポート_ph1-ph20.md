@@ -1175,6 +1175,7 @@ Cookie の **発行** は CI3 の Session ライブラリ（CMS 側）が担う�
 # Ph.7 修正レポート — セキュリティ HTTP ヘッダー追加
 
 **作成日:** 2026-06-25  
+**更新日:** 2026-06-30（COEP 削除対応を追記）  
 **対応区分:** CMS-M-01〜03 / CMS-L-01 / STU-M-01〜03 / STU-L-01  
 **優先度:** 中（M-系：Medium / L-系：Low）  
 **作業場所:** サーバー直接修正 — `/etc/httpd/vhost.d/vhost.conf`
@@ -1187,7 +1188,7 @@ Cookie の **発行** は CI3 の Session ライブラリ（CMS 側）が担う�
 |------|-----|
 | 対象ファイル | `/etc/httpd/vhost.d/vhost.conf`（サーバー上） |
 | 対象 VirtualHost | product × 2（HTTP/HTTPS）、CMS × 2（HTTP/HTTPS）、API × 2（HTTP/HTTPS） |
-| 追加ヘッダー種別 | COOP / CORP / COEP / CSP — 4 種 |
+| 追加ヘッダー種別 | COOP / CORP / CSP — 3 種（COEP は後述の理由により削除） |
 | 指摘 ID | CMS-M-01, 02, 03, L-01 / STU-M-01, 02, 03, L-01（計 8 件） |
 
 > **注意:** vhost.conf はリポジトリ管理外（サーバー上の `/etc/httpd/vhost.d/`）。  
@@ -1195,7 +1196,38 @@ Cookie の **発行** は CI3 の Session ライブラリ（CMS 側）が担う�
 
 ---
 
+## COEP 削除の経緯と判断根拠
+
+### 問題
+
+`Cross-Origin-Embedder-Policy: require-corp` を適用したところ、受講者サイトの動画プレーヤーが外部動画配信サーバーからメディアファイルを取得できなくなった。
+
+**原因:** COEP `require-corp` は「このページが読み込む全クロスオリジンリソースに `Cross-Origin-Resource-Policy` ヘッダーを要求する」ポリシーである。外部動画配信サーバーが CORP ヘッダーを返していないため、ブラウザがメディアリクエストをブロックした。
+
+### 解決方針の比較検討
+
+| 案 | 内容 | 採否 |
+|---|---|---|
+| 外部動画サーバーに `CORP: cross-origin` を追加 | 動画配信サーバーの設定変更が必要。動画へのアクセスにセッション認証が必要な場合は別途考慮が必要 | 動画サーバー設定変更可能であれば検討 |
+| COEP を `credentialless` に変更 | クロスオリジンリソースをクッキーなし（匿名）で読み込む。動画に認証が不要な公開ファイルなら有効 | 認証付き動画の場合は不可 |
+| COEP を削除し COOP + CORP を維持 | COOP・CORP は COEP と独立して機能し、有効な保護を提供する。COEP の主目的（`SharedArrayBuffer` 有効化）はこのアプリでは不要 | **採用** |
+
+### 判断
+
+COEP の主目的は `SharedArrayBuffer` や `performance.measureUserAgentSpecificMemory()` を有効にするための前提条件であり、Spectre 系サイドチャネル攻撃の緩和に寄与する。しかし本システムはこれらの API を使用していないため、COEP を削除しても機能上の影響はない。
+
+COOP と CORP はそれぞれ独立して有効であり、COEP なしでも以下の保護は維持される：
+
+- **COOP `same-origin`**: 他オリジンのポップアップ・タブからの `window.opener` 参照を遮断
+- **CORP `same-origin`**: 自サーバーのリソースが他オリジンにサブリソースとして読み込まれることを防止
+
+**結論: COEP を削除し、COOP + CORP のみを適用する。**
+
+---
+
 ## 修正前後の差分（全 VirtualHost 共通）
+
+### 当初適用（Ph.7 初版）
 
 ```diff
   <IfModule mod_headers.c>
@@ -1207,11 +1239,23 @@ Cookie の **発行** は CI3 の Session ライブラリ（CMS 側）が担う�
   </IfModule>
 ```
 
+### 現在の確定版（COEP 削除後）
+
+```diff
+  <IfModule mod_headers.c>
+      Header set Referrer-Policy "strict-origin-when-cross-origin"
+      Header set Cross-Origin-Opener-Policy "same-origin"
+      Header set Cross-Origin-Resource-Policy "same-origin"
+-     Header set Cross-Origin-Embedder-Policy "require-corp"   ← 削除（外部動画サーバーとの互換性のため）
+      Header set Content-Security-Policy "..."
+  </IfModule>
+```
+
 ---
 
 ## ヘッダー別説明
 
-### 1. COOP（Cross-Origin-Opener-Policy）— CMS-M-01 / STU-M-01
+### 1. COOP（Cross-Origin-Opener-Policy）— CMS-M-01 / STU-M-01　✅ 適用
 
 ```
 Header set Cross-Origin-Opener-Policy "same-origin"
@@ -1222,7 +1266,7 @@ Header set Cross-Origin-Opener-Policy "same-origin"
 
 ---
 
-### 2. CORP（Cross-Origin-Resource-Policy）— CMS-M-02 / STU-M-02
+### 2. CORP（Cross-Origin-Resource-Policy）— CMS-M-02 / STU-M-02　✅ 適用
 
 ```
 Header set Cross-Origin-Resource-Policy "same-origin"
@@ -1234,25 +1278,14 @@ Header set Cross-Origin-Resource-Policy "same-origin"
 
 ---
 
-### 3. COEP（Cross-Origin-Embedder-Policy）— CMS-M-03 / STU-M-03
+### 3. COEP（Cross-Origin-Embedder-Policy）— CMS-M-03 / STU-M-03　❌ 削除
 
 ```
-Header set Cross-Origin-Embedder-Policy "require-corp"
+# Header set Cross-Origin-Embedder-Policy "require-corp"  ← 外部動画サーバーとの互換性のため削除
 ```
 
-**効果:** ページが読み込むすべてのサブリソース（画像・JS・iframe 等）に CORP ヘッダーが必要となる。SharedArrayBuffer 有効化の前提条件でもある。  
-
-**⚠️ 破壊的リスクが高い — 事前確認必須**
-
-| 確認項目 | 影響可能性 |
-|---------|-----------|
-| GMO 決済ページの外部 iframe | **高** — GMO 側に CORP ヘッダーがなければブロック |
-| 外部 CDN（jQuery 等）を直接読み込む場合 | **高** — CDN からのレスポンスに CORP ヘッダーがなければブロック |
-| `/alflearning-data/` の動画サムネイル（Apache Alias） | **低** — 同一オリジン配信のため問題なし |
-| 動画プレーヤーが外部ストリームを使う場合 | **要確認** |
-
-**推奨:** まず CMS VirtualHost のみに適用して動作確認後、product VirtualHost に展開する。  
-product VirtualHost で外部リソースが確認された場合は `unsafe-none` → `require-corp` の段階適用を検討。
+**削除理由:** 上記「COEP 削除の経緯と判断根拠」参照。  
+**代替策（将来対応）:** 外部動画配信サーバーに `Cross-Origin-Resource-Policy: cross-origin` を追加できれば、COEP の再適用が可能。
 
 ---
 
@@ -1324,7 +1357,7 @@ Header set Content-Security-Policy-Report-Only "default-src 'self'; script-src '
         Header set Referrer-Policy "strict-origin-when-cross-origin"
         Header set Cross-Origin-Opener-Policy "same-origin"          ← 追加
         Header set Cross-Origin-Resource-Policy "same-origin"        ← 追加
-        Header set Cross-Origin-Embedder-Policy "require-corp"       ← 追加（要確認後）
+        # Header set Cross-Origin-Embedder-Policy "require-corp"     ← 外部動画サーバーとの互換性のため削除
         Header set Content-Security-Policy "..."                     ← 追加（Step 1はReport-Onlyで）
     </IfModule>
 </VirtualHost>
@@ -1336,17 +1369,16 @@ Header set Content-Security-Policy-Report-Only "default-src 'self'; script-src '
 
 #### 修正対象ブロック一覧
 
-| VirtualHost | Port | ServerName | 追加ヘッダー数 |
-|-------------|------|-----------|-------------|
-| product | 443 | `nichibenren-stg2.alfcloud.com` | 4 |
-| product | 80 | `nichibenren-stg2.alfcloud.com` | 4 |
-| cms | 443 | `cms.nichibenren-stg2.alfcloud.com` | 4 |
-| cms | 80 | `cms.nichibenren-stg2.alfcloud.com` | 4 |
-| api | 443 | `api.nichibenren-stg2.alfcloud.com` | 3（COEPは不要） |
-| api | 80 | `api.nichibenren-stg2.alfcloud.com` | 3（COEPは不要） |
+| VirtualHost | Port | ServerName | 追加ヘッダー |
+|-------------|------|-----------|------------|
+| product | 443 | `nichibenren-stg2.alfcloud.com` | COOP / CORP / CSP |
+| product | 80 | `nichibenren-stg2.alfcloud.com` | COOP / CORP / CSP |
+| cms | 443 | `cms.nichibenren-stg2.alfcloud.com` | COOP / CORP / CSP |
+| cms | 80 | `cms.nichibenren-stg2.alfcloud.com` | COOP / CORP / CSP |
+| api | 443 | `api.nichibenren-stg2.alfcloud.com` | COOP / CORP / CSP |
+| api | 80 | `api.nichibenren-stg2.alfcloud.com` | COOP / CORP / CSP |
 
-> **API VirtualHost について:** API は JSON を返す REST エンドポイントのため COEP は不要。COOP・CORP・CSP のみ追加する。  
-> CSP は `default-src 'none'; frame-ancestors 'none'` のみで十分（API レスポンスはブラウザが直接レンダリングしない）。
+> **API VirtualHost について:** API は JSON を返す REST エンドポイントのため COEP は不要。CSP は `default-src 'none'; frame-ancestors 'none'` のみで十分（API レスポンスはブラウザが直接レンダリングしない）。
 
 ---
 
@@ -1372,13 +1404,13 @@ curl -sI https://nichibenren-stg2.alfcloud.com/ | grep -i "cross-origin\|content
 
 | 指摘 ID | 区分 | ヘッダー | VirtualHost | 対応 |
 |---------|------|---------|------------|------|
-| CMS-M-01 | Medium | COOP | cms | `same-origin` |
-| CMS-M-02 | Medium | CORP | cms | `same-origin` |
-| CMS-M-03 | Medium | COEP | cms | `require-corp`（動作確認要） |
+| CMS-M-01 | Medium | COOP | cms | ✅ `same-origin` 適用済み |
+| CMS-M-02 | Medium | CORP | cms | ✅ `same-origin` 適用済み |
+| CMS-M-03 | Medium | COEP | cms | ❌ 削除（外部動画サーバーとの互換性問題のため。COOP+CORP で代替保護） |
 | CMS-L-01 | Low | CSP | cms | Report-Only → 段階適用 |
-| STU-M-01 | Medium | COOP | product | `same-origin` |
-| STU-M-02 | Medium | CORP | product | `same-origin` |
-| STU-M-03 | Medium | COEP | product | `require-corp`（外部リソース確認要） |
+| STU-M-01 | Medium | COOP | product | ✅ `same-origin` 適用済み |
+| STU-M-02 | Medium | CORP | product | ✅ `same-origin` 適用済み |
+| STU-M-03 | Medium | COEP | product | ❌ 削除（外部動画サーバーとの互換性問題のため。COOP+CORP で代替保護） |
 | STU-L-01 | Low | CSP | product | Report-Only から開始 |
 
 ---
