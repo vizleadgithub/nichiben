@@ -54,7 +54,7 @@
 				
 				<?=form_open_multipart("cms_student_csv_upload/student_csv_upload", $form_paramattributes)?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.$upload_error.'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<table class="form">
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_file','ファイル') ?></th>

@@ -66,7 +66,7 @@
 				</h2>
 
 				<?=form_open("cms_student/commit")?>
-					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= $elm_message.'(code:'.$elm_stat.')'; ?></div><? endif; ?>
+					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= htmlspecialchars( $elm_message, ENT_QUOTES, 'UTF-8').'(code:'.htmlspecialchars( $elm_stat, ENT_QUOTES, 'UTF-8').')'; ?></div><? endif; ?>
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_name','名前') ?></th>

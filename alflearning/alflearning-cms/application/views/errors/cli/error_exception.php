@@ -3,7 +3,7 @@
 An uncaught Exception was encountered
 
 Type:        <?php echo get_class($exception), "\n"; ?>
-Message:     <?php echo $message, "\n"; ?>
+Message:     <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'), "\n"; ?>
 Filename:    <?php echo $exception->getFile(), "\n"; ?>
 Line Number: <?php echo $exception->getLine(); ?>
 

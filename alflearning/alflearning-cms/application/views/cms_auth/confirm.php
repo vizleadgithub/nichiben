@@ -74,7 +74,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_practice_authority','実行権限') ?></th>
 							<td class="auth_list">
-								<?= '<div>'.implode('</div><div>',$teacher['authnames']).'</div>'; ?>
+								<?= '<div>'.implode('</div><div>', array_map(function($v){ return htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); }, $teacher['authnames'])).'</div>'; ?>
 							</td>
 						</tr>
 					</table>

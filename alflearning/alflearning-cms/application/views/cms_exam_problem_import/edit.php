@@ -228,9 +228,9 @@
  
 				<?=form_open_multipart("cms_exam_problem_import/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.$upload_error.'</div>':'')?>
-					<?=(isset($lecture_error)?'<div class="error">'.$lecture_error.'</div>':'')?>
-					<?=(isset($local_file_error)?'<div class="error">'.$local_file_error.'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
+					<?=(isset($lecture_error)?'<div class="error">'.htmlspecialchars($lecture_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
+					<?=(isset($local_file_error)?'<div class="error">'.htmlspecialchars($local_file_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<table class="form">
 						<tr>
 							<th colspan="2">■インポート</th>

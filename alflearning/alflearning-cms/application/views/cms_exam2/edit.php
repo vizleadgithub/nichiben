@@ -1132,7 +1132,7 @@
 
 				<?=form_open_multipart("cms_exam2/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.$upload_error.'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type="hidden" name="update_flg" value='<?=set_value('update_flg', $exam2['update_flg'])?>'>
 					<input type="hidden" name="exam2_id"   value='<?=set_value('exam2_id',   $exam2['exam2_id'])?>'>
 					<table class="form">

@@ -167,7 +167,7 @@
 
 				<?=form_open_multipart("cms_issue/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.$upload_error.'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type="hidden" name="update_flg" value='<?=set_value('update_flg', $issue['update_flg'])?>'>
 					<input type="hidden" name="issue_id"   value='<?=set_value('issue_id',   $issue['issue_id'])?>'>
 					<table class="form">

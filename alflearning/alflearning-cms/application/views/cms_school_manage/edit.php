@@ -84,7 +84,7 @@
 
 				<?=form_open("cms_school_manage/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.$error_msg.'</div>' : ''); ?>
+					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8').'</div>' : ''); ?>
 					<input type="hidden" name="update_flg" value='<?=set_value('update_flg' ,$school['update_flg'])?>'>
 					<input type="hidden" name="school_id" value='<?=set_value('school_id'  ,$school['school_id'])?>'>
 					<table class="form">

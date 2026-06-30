@@ -31,7 +31,7 @@
 
 				<!--<h2><?= $this->lang->line_or_def('msg_search','検索する内容を入力してください') ?></h2>-->
 				<?=validation_errors('<div class="error">', '</div>'); ?>
-				<?= (isset($error_msg) && $error_msg ? '<div class="error">'.$error_msg.'</div>' : ''); ?>
+				<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8').'</div>' : ''); ?>
 
 				<table class="list___">
 					<tr style="border-bottom: solid 1px #666666;">

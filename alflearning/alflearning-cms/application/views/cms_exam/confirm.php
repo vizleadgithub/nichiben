@@ -493,7 +493,7 @@
 						<? if( getenv('URL_SERVICE')!='mitemo' ): ?>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
-							<td ><?= $exam['teacher_name'] ?>
+							<td ><?= htmlspecialchars($exam['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<? endif; ?>
@@ -676,7 +676,7 @@
 								<?php if(!empty($exam['answer_date'][0])): ?>
 								
 								<?php $string_exam_answer_data = (isset($exam['string_exam_answer_data']))?$exam['string_exam_answer_data']:""; ?>
-								<input type="hidden" id="string_exam_answer_data" value='<?= $string_exam_answer_data; ?>' />
+								<input type="hidden" id="string_exam_answer_data" value='<?= htmlspecialchars($string_exam_answer_data, ENT_QUOTES, 'UTF-8') ?>' />
 								
 								<ul>
 									<li>

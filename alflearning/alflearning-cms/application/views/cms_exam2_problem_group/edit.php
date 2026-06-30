@@ -215,7 +215,7 @@
 
 				<?=form_open_multipart("cms_exam2_problem_group/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($overlap_error_msg)?'<div class="error">'.$overlap_error_msg.'</div>':'')?>
+					<?=(isset($overlap_error_msg)?'<div class="error">'.htmlspecialchars($overlap_error_msg, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type="hidden" name="update_flg"            value='<?=set_value('update_flg'                , $exam2_problem_group['update_flg'])?>'>
 					<input type="hidden" name="exam2_problem_group_id" value='<?=set_value('cms_exam2_problem_group_id' , $exam2_problem_group['exam2_problem_group_id'])?>'>
 					<table class="form">

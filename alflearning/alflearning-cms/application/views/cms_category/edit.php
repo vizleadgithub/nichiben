@@ -69,7 +69,7 @@
 
 				<?=form_open_multipart("cms_category/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($overlap_error_msg)?'<div class="error">'.$overlap_error_msg.'</div>':'')?>
+					<?=(isset($overlap_error_msg)?'<div class="error">'.htmlspecialchars($overlap_error_msg, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type="hidden" name="update_flg"            value='<?=set_value('update_flg'                , $category['update_flg'])?>'>
 					<input type="hidden" name="term_id" value='<?=set_value('cms_category_id' , $category['term_id'])?>'>
 					<table class="form">

@@ -139,7 +139,7 @@
 
 				<?=form_open_multipart("cms_book_library/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.$upload_error.'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $book_library['update_flg'])?>'>
 					<input type=hidden name=book_library_id value='<?=set_value('book_library_id', $book_library['book_library_id'])?>'>
 					<input type=hidden name=book_library_logic_name value='<?=set_value('book_library_logic_name', $book_library['book_library_logic_name'])?>'>

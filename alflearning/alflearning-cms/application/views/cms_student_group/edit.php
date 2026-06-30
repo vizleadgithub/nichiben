@@ -180,7 +180,7 @@
 
 				<?=form_open("cms_student_group/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.$error_msg.'</div>' : ''); ?>
+					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8').'</div>' : ''); ?>
 					<input type="hidden" name="update_flg"       value='<?=set_value('update_flg'       , $student_group['update_flg'])?>'>
 					<input type="hidden" name="student_group_id" value='<?=set_value('student_group_id' , $student_group['student_group_id'])?>'>
 

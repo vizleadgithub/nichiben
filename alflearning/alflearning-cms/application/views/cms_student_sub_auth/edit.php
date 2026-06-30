@@ -198,7 +198,7 @@
 
 				<?=form_open("cms_student/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.$error_msg.'</div>' : ''); ?>
+					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8').'</div>' : ''); ?>
 					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= htmlspecialchars( $elm_message, ENT_QUOTES, 'UTF-8').'(code:'.htmlspecialchars( $elm_stat, ENT_QUOTES, 'UTF-8').')'; ?></div><? endif; ?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $student['update_flg'])?>'>
 					<input type=hidden name=student_id value='<?=set_value('student_id', $student['student_id'])?>'>

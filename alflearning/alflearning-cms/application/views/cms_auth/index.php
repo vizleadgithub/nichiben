@@ -80,7 +80,7 @@
 								<td class="tdc"><a href="/cms_auth/edit/<?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?></td>
 								<td class="tdc"><?= htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
 								<td class="tdc"><?= htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8') ?></td>
-								<td class="tdc"><?= '<div>'.implode('</div><div>', $teacher['auth_names']).'</div>'; ?></td>
+								<td class="tdc"><?= '<div>'.implode('</div><div>', array_map(function($v){ return htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); }, $teacher['auth_names'])).'</div>'; ?></td>
 							</tr>
 						<?php } ?>
 					<?php } ?>

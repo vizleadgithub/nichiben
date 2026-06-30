@@ -40,7 +40,7 @@
 				//-->
 
 					<div class="login_teacher_name">
-						<?= $this->libauth->get_teacher_name(); ?>
+						<?= htmlspecialchars($this->libauth->get_teacher_name(), ENT_QUOTES, 'UTF-8'); ?>
 
 						<?php
 							if($this->libauth->get_teacher_id() < 0){
@@ -82,7 +82,7 @@
 						<?php
 							$temp_school_name = $this->libauth->get_school_name();
 							if( strlen($temp_school_name) > 0 ){
-								print '['.$temp_school_name.']';
+								print '['.htmlspecialchars($temp_school_name, ENT_QUOTES, 'UTF-8').']';
 							}
 							print $this->lang->line_or_def('common_management_page','管理ページ');
 						?>

@@ -470,8 +470,8 @@
 
 				<?=form_open_multipart("cms_video/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.$upload_error.'</div>':'')?>
-					<?=(isset($overlap_error)?'<div class="error">'.$overlap_error.'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
+					<?=(isset($overlap_error)?'<div class="error">'.htmlspecialchars($overlap_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $video['update_flg'])?>'>
 					<input type=hidden name=video_id value='<?=set_value('video_id', $video['video_id'])?>'>
 					<input type=hidden name=video_logic_name value='<?=set_value('video_logic_name', $video['video_logic_name'])?>'>
