@@ -100,7 +100,14 @@
 			form.setAttribute("method", "post");
 			form.style.display = "none";
 			document.body.appendChild(form);
-			
+
+			// CSRF token
+			var csrf = document.createElement('input');
+			csrf.setAttribute('type', 'hidden');
+			csrf.setAttribute('name', '<?= $this->security->get_csrf_token_name() ?>');
+			csrf.setAttribute('value', '<?= $this->security->get_csrf_hash() ?>');
+			form.appendChild(csrf);
+
 			// パラメタの設定
 			$("#exam_answer_ul LI").map(function() {
 				var exam_answer_data  = '';  // 解答ID・正誤（正解:1、不正解:0）・解答配点
@@ -138,7 +145,14 @@
 			form.setAttribute("method", "post");
 			form.style.display = "none";
 			document.body.appendChild(form);
-			
+
+			// CSRF token
+			var csrf = document.createElement('input');
+			csrf.setAttribute('type', 'hidden');
+			csrf.setAttribute('name', '<?= $this->security->get_csrf_token_name() ?>');
+			csrf.setAttribute('value', '<?= $this->security->get_csrf_hash() ?>');
+			form.appendChild(csrf);
+
 			// パラメタの設定
 			$("#cource_ul li").map(function() {
 			//	eval_data = $(this).children("input:hidden").val();

@@ -165,14 +165,21 @@
 		//**************************************************
 		function edit_item(){
 			//location.href ="<?=base_url()?>cms_exam2/edit/";
-			
+
 			// Set Form
 			var form = document.createElement("form");
 			form.setAttribute("action", "<?=base_url()?>cms_exam2/edit/");
 			form.setAttribute("method", "post");
 			form.style.display = "none";
 			document.body.appendChild(form);
-			
+
+			// CSRF token
+			var csrf = document.createElement('input');
+			csrf.setAttribute('type', 'hidden');
+			csrf.setAttribute('name', '<?= $this->security->get_csrf_token_name() ?>');
+			csrf.setAttribute('value', '<?= $this->security->get_csrf_hash() ?>');
+			form.appendChild(csrf);
+
 			// Set Parameter
 			$("*[name='exam2_students[]']").map(function() {
 				var input = document.createElement('input');
@@ -356,7 +363,14 @@
 			form.setAttribute("method", "post");
 			form.style.display = "none";
 			document.body.appendChild(form);
-			
+
+			// CSRF token
+			var csrf = document.createElement('input');
+			csrf.setAttribute('type', 'hidden');
+			csrf.setAttribute('name', '<?= $this->security->get_csrf_token_name() ?>');
+			csrf.setAttribute('value', '<?= $this->security->get_csrf_hash() ?>');
+			form.appendChild(csrf);
+
 			// パラメタの設定
 			$("#exam2_answer_ul LI").map(function() {
 				var exam2_answer_id    = '';  // 解答ID

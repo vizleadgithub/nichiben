@@ -571,15 +571,9 @@ if(!isset($_POST['act'])){
 										for($i=1; $i<=MAX_CONTENTS; $i++){
 											$str_disp_warning_word = '';
 											if ($arr_input["disp_warning_word$i"] != ''){
-												foreach ($arr_input["disp_warning_word$i"] as $val){
-													if($str_disp_warning_word == ''){
-														$str_disp_warning_word.= $val;
-													} else {
-														$str_disp_warning_word.= ','.$val;
-													}
-												}
+												$str_disp_warning_word = $arr_input["disp_warning_word$i"];
 											}
-											
+
 											if($arr_input["exam_id_test$i"]!='' || $arr_input["exam_id_question$i"]!=''){
 												$sql = "INSERT INTO rel_product_contents";
 												$sql.= "  (";
@@ -837,15 +831,9 @@ if(!isset($_POST['act'])){
 									for($i=1; $i<=MAX_CONTENTS; $i++){
 										$str_disp_warning_word = '';
 										if ($arr_input["disp_warning_word$i"] != ''){
-											foreach ($arr_input["disp_warning_word$i"] as $val){
-												if($str_disp_warning_word == ''){
-													$str_disp_warning_word.= $val;
-												} else {
-													$str_disp_warning_word.= ','.$val;
-												}
-											}
+											$str_disp_warning_word = $arr_input["disp_warning_word$i"];
 										}
-										
+
 										if($arr_input["exam_id_test$i"]!='' || $arr_input["exam_id_question$i"]!=''){
 											$sql = "INSERT INTO rel_product_contents";
 											$sql.= "  (";
