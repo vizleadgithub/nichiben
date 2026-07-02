@@ -1,5 +1,5 @@
 <ifmodule mod_headers.c>
-    Header always edit Set-Cookie (.*) "$1; secure; SameSite=Lax"
+    Header always edit Set-Cookie (.*) "$1; secure; SameSite=Strict"
     Header always set X-Frame-Options "SAMEORIGIN"
 </ifmodule>
 <IfModule mod_headers.c>
