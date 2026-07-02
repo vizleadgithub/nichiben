@@ -181,7 +181,7 @@ if (!$product_list){
 // 共通
 // -----
 $product_list['memo_old'] = $product_list['memo'];
-$product_list['memo'] = url2link($product_list['memo']);
+$product_list['memo'] = purify_memo(url2link($product_list['memo']));
 for($i=1; $i<=MAX_CONTENTS; $i++){
 	$product_list["contents_contents".$i."_memo"] = $product_list["contents_contents".$i."_memo"];
 }

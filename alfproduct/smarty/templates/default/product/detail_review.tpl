@@ -233,7 +233,7 @@ a.test_btn_none{
 					</td></tr>
 					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">総時間</th><td style="padding: 3px 10px;text-align:left;"><!--{$product_list.all_play_time|escape}--></td></tr>
 					<!--<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">価格</th><td style="padding: 3px 10px;text-align:left;"><!--{if $product_list.price_intax==0}-->無料<!--{else}--><!--{$product_list.price_intax|escape|number_format}-->円(税込)<!--{/if}--></td></tr>-->
-					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">商品説明</th><td style="padding: 3px 10px;text-align:left;word-break:break-all;"><!--{$product_list.memo|escape|nl2br}--></td></tr>
+					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">商品説明</th><td style="padding: 3px 10px;text-align:left;word-break:break-all;"><!--{$product_list.memo|nl2br}--></td></tr>
 				</table>
 			</center>
 
@@ -394,7 +394,7 @@ a.test_btn_none{
 					</td></tr>
 					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">総時間</th><td style="padding: 3px 10px;text-align:left;"><!--{$product_list.all_play_time|escape}--></td></tr>
 					<!--<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">価格</th><td style="padding: 3px 10px;text-align:left;"><!--{if $product_list.price_intax==0}-->無料<!--{else}--><!--{$product_list.price_intax|escape|number_format}-->円(税込)<!--{/if}--></td></tr>-->
-					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">商品説明</th><td style="padding: 3px 10px;text-align:left;word-break:break-all;"><!--{$product_list.memo|escape|nl2br}--></td></tr>
+					<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">商品説明</th><td style="padding: 3px 10px;text-align:left;word-break:break-all;"><!--{$product_list.memo|nl2br}--></td></tr>
 				</table>
 			</center>
 
@@ -2813,7 +2813,7 @@ a.test_btn_none{
 	</div>
 	<div class="detail_title" style="font-size:14px;color:#22730e; text-align:center;">商品説明</div>
 	<div style="padding:10px 40px;word-break:break-all;">
-		<!--{$product_list.memo|escape|nl2br}-->
+		<!--{$product_list.memo|nl2br}-->
 		<br />
 		<!--
 		マニュアルは<a href="/rinri-kenshu-manual.pdf" target="_blank" rel="noopener noreferrer">こちら</a><br />
@@ -2869,7 +2869,7 @@ a.test_btn_none{
 			未定
 		<!--{/if}-->
 	</td></tr>
-	<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">備考</th><td style="padding: 3px 10px;text-align:left;"><!--{$product_list.memo|escape|nl2br}--></td></tr>
+	<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:70px;text-align:left;">備考</th><td style="padding: 3px 10px;text-align:left;"><!--{$product_list.memo|nl2br}--></td></tr>
 	</table>
 
 	<br style="clear:both;" /><div style="height:3px;width:100%;border-top:solid 1px #F7F6F0;border-bottom:solid 1px #F7F6F0;margin:25px 0;clear:both;"></div>
@@ -3080,7 +3080,7 @@ a.test_btn_none{
 		<div class="detail_title" style="font-size:14px;color:#22730e; text-align:center;"><!--{$product_list.product_name|escape}--></div>
 	<table style="background-color:#F5F8EF;float:right;width:290px;">
 		<!--<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:30px;text-align:left;">価格</th><td style="padding: 3px 10px;text-align:left;"><!--{if $product_list.price_intax==0}-->無料<!--{else}--><!--{$product_list.price_intax|escape|number_format}-->円(税込)<!--{/if}--></td></tr>-->
-		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:30px;text-align:left;">備考</th><td style="padding: 3px 10px;text-align:left;"><!--{$product_list.memo|escape|nl2br}--></td></tr>
+		<tr style=" border: 2px #FFFFFF solid;"><th style="color:#663333;padding: 3px 10px;text-align:left;width:30px;text-align:left;">備考</th><td style="padding: 3px 10px;text-align:left;"><!--{$product_list.memo|nl2br}--></td></tr>
 	</table>
 	</div>
 	

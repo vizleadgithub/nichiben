@@ -3215,4 +3215,16 @@ function csrf_token_verify(): void {
 		exit;
 	}
 }
+
+function purify_memo(string $html): string {
+	static $purifier = null;
+	if ($purifier === null) {
+		require_once dirname(__FILE__) . '/vendor/autoload.php';
+		$config = HTMLPurifier_Config::createDefault();
+		$config->set('HTML.Allowed', 'a[href|target|rel],br,p,font[color|size|face],strong,b,em,i,ul,ol,li,span[style]');
+		$config->set('Attr.AllowedFrameTargets', ['_blank']);
+		$purifier = new HTMLPurifier($config);
+	}
+	return $purifier->purify($html);
+}
 ?>

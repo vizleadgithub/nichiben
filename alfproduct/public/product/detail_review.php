@@ -1889,6 +1889,7 @@ $template->assign('arr_exam2', $arr_exam2);
 //print("\n<!--[\n");
 //var_dump($product_list);
 //print("\n]-->\n");
+$product_list['memo'] = purify_memo($product_list['memo']);
 $template->assign('product_list', $product_list);
 $template->assign('arr_related_list', $arr_related_list);
 $template->assign('arr_recommend_list', $arr_recommend_list);
@@ -1930,7 +1931,7 @@ $template->assign('disp_web_flg', $disp_web_flg);
 $template->assign('nichibenren_tandoku_flg', $nichibenren_tandoku_flg);
 $template->assign('kaijo_moushikomi_flg', $kaijo_moushikomi_flg);
 
-$GLOBALS['meta_description'] = $product_list['memo'];
+$GLOBALS['meta_description'] = strip_tags($product_list['memo']);
 $GLOBALS['meta_keywords'] = get_product_gategory_meta_keywords($objDbConnect, $pid);
 
 // Android、iPad、iPhoneのFLG
