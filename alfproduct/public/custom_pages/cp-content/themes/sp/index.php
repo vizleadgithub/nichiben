@@ -56,7 +56,7 @@ get_header(); ?>
 									}
 									?>
 								</div>
-								<a href="<?php the_permalink(); ?>" style="color:#ff0000;width:600px;float:left;"><?php echo get_the_title(); ?></a>
+								<a href="<?php the_permalink(); ?>" style="color:#ff0000;width:600px;float:left;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></a>
 							</div>
 							<br style="clear:both;" />
 						</li>
@@ -432,7 +432,7 @@ if (!empty($ret)){
 						<?php if ($val["url"] != ""){ ?>
 							<a class="" style="display:block;width:500px;float:left;" href="<?php echo htmlspecialchars($val["url"], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($val["post_title"], ENT_QUOTES, 'UTF-8'); ?></a>
 						<?php } else { ?>
-							<a class="" style="display:block;width:500px;float:left;" href="/archives/<?php echo $val["ID"]; ?>"><?php echo $val["post_title"]; ?></a>
+							<a class="" style="display:block;width:500px;float:left;" href="/archives/<?php echo (int)$val["ID"]; ?>"><?php echo htmlspecialchars($val["post_title"], ENT_QUOTES, 'UTF-8'); ?></a>
 						<?php }  ?>
 					<?php } ?>
 				</div>
@@ -457,7 +457,7 @@ if (!empty($ret)){
 						<?php if ($val["url"] != ""){ ?>
 							<a class="" style="display:block;width:500px;float:left;" href="<?php echo htmlspecialchars($val["url"], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($val["post_title"], ENT_QUOTES, 'UTF-8'); ?></a>
 						<?php } else { ?>
-							<a class="" style="display:block;width:500px;float:left;" href="/archives/<?php echo $val["ID"]; ?>"><?php echo $val["post_title"]; ?></a>
+							<a class="" style="display:block;width:500px;float:left;" href="/archives/<?php echo (int)$val["ID"]; ?>"><?php echo htmlspecialchars($val["post_title"], ENT_QUOTES, 'UTF-8'); ?></a>
 						<?php }  ?>
 					<?php } ?>
 				</div>
@@ -494,9 +494,9 @@ if (!empty($ret)){
 									?>
 								</div>
 								<?php if (intval($post->product_id) != 0){ ?>
-									<a class="" style="display:block;width:600px;float:left;" href="/product/detail.php?pid=<?php echo $post->product_id; ?>"><?php echo get_the_title(); ?></a>
+									<a class="" style="display:block;width:600px;float:left;" href="/product/detail.php?pid=<?php echo $post->product_id; ?>"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></a>
 								<?php } else { ?>
-									<a class="" style="display:block;width:600px;float:left;" href="<?php the_permalink(); ?>"><?php echo get_the_title(); ?></a>
+									<a class="" style="display:block;width:600px;float:left;" href="<?php the_permalink(); ?>"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></a>
 								<?php } ?>
 							</div>
 							<br style="clear:both;" />
@@ -537,9 +537,9 @@ if (!empty($ret)){
 									<?php echo get_str_product_type_add($post->product_type_add); ?>
 								</div>
 								<?php if (intval($post->product_id) != 0){ ?>
-									<a class="" style="display:block;width:600px;float:left;" href="/product/detail.php?pid=<?php echo $post->product_id; ?>"><?php echo get_the_title(); ?></a>
+									<a class="" style="display:block;width:600px;float:left;" href="/product/detail.php?pid=<?php echo $post->product_id; ?>"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></a>
 								<?php } else { ?>
-									<a class="" style="display:block;width:600px;float:left;" href="<?php the_permalink(); ?>"><?php echo get_the_title(); ?></a>
+									<a class="" style="display:block;width:600px;float:left;" href="<?php the_permalink(); ?>"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></a>
 								<?php } ?>
 							</div>
 							<br style="clear:both;" />

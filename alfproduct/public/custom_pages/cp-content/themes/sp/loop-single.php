@@ -57,7 +57,7 @@ if ($cate_flg == 1){
 			<div style="background-color:#fcfcfc;border:solid 1px #ff0000;width:730px;">
 				<!-- <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>> -->
 					<div id="single_title" style="border:none;padding:10px 20px; width:680px;background: url(/img/lecture/h2_back_red.png) no-repeat 50% 95%;">
-						<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php the_title(); ?></h3>
+						<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
 					</div>
 					<div class="entry-content" style="padding:5px 20px; width:680px;">
 						<?php the_content(); ?>
@@ -73,7 +73,7 @@ if ($cate_flg == 1){
 			<div style="background-color:#fcfcfc;border:solid 1px #cccccc;width:730px;">
 				<!-- <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>> -->
 					<div id="single_title" style="border:none;padding:10px 20px; width:680px;">
-						<h3 class="entry-title" style="color:#579748;font-size:17px;font-weight:bold;margin:0;"><?php the_title(); ?></h3>
+						<h3 class="entry-title" style="color:#579748;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
 					</div>
 
 					<div class="entry-content" style="padding:5px 20px; width:680px;">
@@ -122,7 +122,7 @@ if ($cate_flg == 1){
 			<div style="background-color:#fcfcfc;border:solid 1px #ff0000;width:730px;">
 				<!-- <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>> -->
 				<div id="single_title" style="border:none;padding:10px 20px; width:680px;background: url(/img/lecture/h2_back_red.png) no-repeat 50% 95%;">
-					<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php the_title(); ?></h3>
+					<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
 				</div>
 				<div class="entry-content" style="padding:5px 20px; width:680px;">
 					<?php the_content(); ?>
