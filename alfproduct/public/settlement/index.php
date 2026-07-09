@@ -1,11 +1,8 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('HTTP/1.1 405 Method Not Allowed');
-    header('Allow: POST');
-    exit;
-}
 include(dirname(__FILE__) ."./../../module/module.php");
-csrf_token_verify();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_token_verify();
+}
 $_SESSION['wp_page_head_title'] = '講座購入';
 $objDbConnect = new DbConnect();
 $template = new Template();
