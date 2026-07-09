@@ -1,9 +1,4 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('HTTP/1.1 405 Method Not Allowed');
-    header('Allow: POST');
-    exit;
-}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //include(dirname(__FILE__) ."./../../module/module.php");
 include("/srv/alfproduct/module/module.php");
@@ -30,8 +25,8 @@ $template->assign('login_bar_association_id', $login_bar_association_id);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if(isset($_POST["pid"])){
-	$pid = intval($_POST["pid"]);
+if(isset($_REQUEST["pid"])){
+	$pid = intval($_REQUEST["pid"]);
 }
 if (strlen($pid) == 0) {
 	header('Location: index.php');
@@ -58,8 +53,8 @@ if (!$arr_input) {
 // 弁護士会支部ID
 $aid = '';
 //$atype = '';
-if(isset($_POST["aid"])){
-	$aid = $_POST["aid"];
+if(isset($_REQUEST["aid"])){
+	$aid = $_REQUEST["aid"];
 }
 //if(isset($_POST["atype"])){
 //	$atype = $_POST["atype"];
@@ -198,8 +193,8 @@ if(isset($_POST["odid"])){
 	$odid = $_POST["odid"];
 }
 $res = '';
-if(isset($_POST["res"])){
-	$res = $_POST["res"];
+if(isset($_GET["res"])){
+	$res = $_GET["res"];
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 初期表示
