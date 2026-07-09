@@ -581,6 +581,43 @@ class Libauth
 		return $result;
 	}
 
+	/**
+	 * DBのteacherレコードとセッションを比較し、乖離があればセッションを最新化する。
+	 * 他の管理者がログイン中のユーザーの属性（弁護士会ID・所属学校等）を変更した場合に
+	 * 次のリクエスト時点でセッションを自動的に更新するために使用する。
+	 * @return bool 更新した場合 true、変更なし or スキップの場合 false
+	 */
+	public function sync_session_from_db()
+	{
+		$teacher_id = $this->get_teacher_id();
+		// 未ログインまたはSuperUser(-1)はスキップ
+		if (empty($teacher_id) || (int)$teacher_id === -1) {
+			return false;
+		}
+
+		$this->ci->load->model('model_auth', 'model_auth');
+		$query = $this->ci->model_auth->get_teacher_data($teacher_id);
+		if (!$query || $query->num_rows() != 1) {
+			return false;
+		}
+
+		$row = $query->row();
+
+		// セッション値とDB値を比較（bar_association_id / school_id が主要な判定対象）
+		$session_bar    = (string)$this->get_bar_association_id();
+		$db_bar         = (string)$row->bar_association_id;
+		$session_school = (string)$this->get_school_id();
+		$db_school      = (string)$row->school_id;
+
+		if ($session_bar !== $db_bar || $session_school !== $db_school) {
+			// 乖離あり → セッションをDB値で上書き
+			$this->update_login_session($teacher_id);
+			return true;
+		}
+
+		return false;
+	}
+
 	// [2012/10/01] update login session
 	public function update_login_session($teacher_id)
 	{

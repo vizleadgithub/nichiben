@@ -347,7 +347,7 @@ if(!isset($_POST['mode'])){
 	if($arr_session["cms_master.login.teacher_auth"]["school_admin"]==1){
 		$template->admin_name($arr_session["cms_master.login.teacher_name"].$temp_bar_association_name);
 	} else {
-		$template->admin_name($arr_session["cms_master.login.teacher_name"].$temp_bar_association_name);
+	$template->admin_name($arr_session["cms_master.login.teacher_name"]);
 	}
 	$template->admin_school($arr_session["cms_master.login.school_name"]);
 

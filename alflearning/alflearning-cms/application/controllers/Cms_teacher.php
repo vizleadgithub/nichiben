@@ -789,7 +789,11 @@ class Cms_teacher extends CI_Controller {
 			$data = $this->model_teacher->update_teacher($data_param);
 
 			// [2012/10/01]セッションの更新
-			$result_data = $this->libauth->update_login_session($this->libauth->get_teacher_id());
+			// 自分自身のアカウントを編集した場合のみセッションを更新する
+			// （他の管理者を編集した場合に呼ぶと、編集者のセッションが上書きされてしまうため）
+			if ((int)$edit_form_data['teacher_id'] === (int)$this->libauth->get_teacher_id()) {
+				$result_data = $this->libauth->update_login_session($this->libauth->get_teacher_id());
+			}
 
 			//ビュー設定引数設定
 			$disp_param = array(

@@ -36,6 +36,30 @@ class AlfSession extends Smarty {
 				$user_data = $items;
 				$_SESSION = array_merge($user_data, $this->prev_session);
 
+				// DBとセッションのteacher情報を同期する
+				// 他の管理者がログイン中ユーザーの属性（弁護士会ID等）を変更した場合に
+				// 次のリクエストでセッションを自動更新する
+				$teacher_id = $_SESSION["cms_master.login.teacher_id"] ?? '';
+				if ($teacher_id !== '' && (int)$teacher_id !== -1) {
+					$escaped_teacher_id = mysqli_real_escape_string($objDbConnect->connect, $teacher_id);
+					$sql_sync = "SELECT t.bar_association_id, t.school_id, t.teacher_name, s.school_name"
+						. " FROM teacher t"
+						. " INNER JOIN school s ON s.school_id = t.school_id"
+						. " WHERE t.teacher_id = '$escaped_teacher_id' AND t.status = 0 AND s.status = 0";
+					$row_teacher = $objDbConnect->query_fetch($sql_sync);
+					if (!empty($row_teacher)) {
+						$needs_sync =
+							(string)($_SESSION["cms_master.login.bar_association_id"] ?? '') !== (string)$row_teacher['bar_association_id'] ||
+							(string)($_SESSION["cms_master.login.school_id"]           ?? '') !== (string)$row_teacher['school_id'];
+						if ($needs_sync) {
+							$_SESSION["cms_master.login.bar_association_id"] = $row_teacher['bar_association_id'];
+							$_SESSION["cms_master.login.school_id"]          = $row_teacher['school_id'];
+							$_SESSION["cms_master.login.teacher_name"]       = $row_teacher['teacher_name'];
+							$_SESSION["cms_master.login.school_name"]        = $row_teacher['school_name'];
+						}
+					}
+				}
+
 				if(is_array($_SESSION)){
 					if($_SESSION["cms_master.login.logged_in"]){
 						if($_SESSION["cms_master.login.teacher_id"]!=""){

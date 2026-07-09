@@ -130,8 +130,12 @@ $arr_session = $objAlfSession->session_check();
 		<div id="header_navi" style="<!--{if $menu_count>11}-->height:70px;<!--{/if}-->">
 			<ul>
 				<li><a href="/admin_top?_=<!--{$temp_param_dummy_val}-->">トップ</a></li><!--{assign var='menu_count' value=0}-->
-				<li><a href="/cms_student?_=<!--{$temp_param_dummy_val}-->">受講者</a></li>
-				<li><a href="/cms_teacher?_=<!--{$temp_param_dummy_val}-->">管理者</a></li>
+				<!--{php}-->if (is_array($arr_session["cms_master.login.teacher_auth"]) && $arr_session["cms_master.login.teacher_auth"]["student"] == 1){<!--{/php}-->
+					<li><a href="/cms_student?_=<!--{$temp_param_dummy_val}-->">受講者</a></li>
+				<!--{php}-->}<!--{/php}-->
+				<!--{php}-->if (is_array($arr_session["cms_master.login.teacher_auth"]) && $arr_session["cms_master.login.teacher_auth"]["teacher"] == 1){<!--{/php}-->
+					<li><a href="/cms_teacher?_=<!--{$temp_param_dummy_val}-->">管理者</a></li>
+				<!--{php}-->}<!--{/php}-->
 
 				<!--{php}-->if ($arr_session["cms_master.login.teacher_id"] == '-1'){<!--{/php}-->
 					<li><a href="/cms_material?_=<!--{$temp_param_dummy_val}-->">資料</a></li>
