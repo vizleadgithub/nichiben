@@ -134,6 +134,7 @@
 									</form>
 								</td>
 							</tr>
+							<!--{if $all_count > 1}-->
 							<tr style="border: none;border-style: none;font-size:14px;">
 								<td colspan="2" style="text-align:center;font-size:14px;padding-top:5px;">
 									この講座を
@@ -166,6 +167,7 @@
 									<!--{/if}-->
 								</td>
 							</tr>
+							<!--{/if}-->
 							</table>
 						</div>
 					</div>

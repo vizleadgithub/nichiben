@@ -35,6 +35,41 @@ if( isset($_GET["pagemax"]) && is_numeric($_GET["pagemax"]) ){
 $objPager->setNowPage( $page );
 $objPager->setPageMax( $pagemax );
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// 表示条件を満たさないお気に入りを削除（非公開になった商品をお気に入りから除去）
+$_now = date("Y-m-d H:i:s");
+$_bar_association_id = mysqli_real_escape_string($objDbConnect->connect, $_SESSION['user']['bar_association_id']);
+$sql = "
+	DELETE tbl_favorite FROM tbl_favorite
+		LEFT JOIN tbl_product
+			ON tbl_favorite.product_id = tbl_product.product_id
+		LEFT JOIN tbl_product_add
+			ON tbl_product.product_id = tbl_product_add.product_id
+		LEFT JOIN tbl_product_live_training
+			ON tbl_product.product_id = tbl_product_live_training.product_id
+	WHERE
+		tbl_favorite.member_id = '".$_SESSION['user']['id']."'
+		AND NOT (
+			tbl_product.del_flg = '0'
+			AND (
+				  (tbl_product.start_date <= '".$_now."' AND tbl_product.end_date >= '".$_now."')
+				OR (tbl_product.start_date <= '".$_now."' AND tbl_product.end_date IS NULL)
+				OR (tbl_product.start_date IS NULL        AND tbl_product.end_date >= '".$_now."')
+				OR (tbl_product.start_date IS NULL        AND tbl_product.end_date IS NULL)
+			)
+			AND tbl_product_add.product_type_add IN (1, 2)
+			AND (
+				  tbl_product_live_training.ethic_flg = 0
+				OR tbl_product_live_training.ethic_flg IS NULL
+				OR (tbl_product_live_training.ethic_flg = 1 AND tbl_product_live_training.app_flg = 1)
+			)
+			AND (
+				  tbl_product_live_training.target LIKE '%|".$_bar_association_id."|%'
+				OR tbl_product_live_training.target IS NULL
+			)
+		)
+";
+$objDbConnect->execute($sql);
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $sql = "SELECT * FROM tbl_favorite WHERE member_id='".$_SESSION['user']['id']."' ORDER BY `rank` ";
 $ret = $objDbConnect->query_fetch_arr($sql);
 $update_index = 0;
