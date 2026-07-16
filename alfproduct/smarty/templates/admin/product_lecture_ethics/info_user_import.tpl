@@ -53,7 +53,7 @@ function formSubmit(formName, mode){
 	<input type="hidden" name="mode" value="">
 	<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
 	<div style="color:red;">
-		<!--{$err_msg|escape}-->
+		<!--{$err_msg|escape|nl2br}-->
 	</div>
 	<table class="list">
 		<tr>

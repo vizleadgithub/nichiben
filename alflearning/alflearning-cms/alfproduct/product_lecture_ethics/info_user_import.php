@@ -139,7 +139,7 @@ if ($mode == "upload") {
 				$take_date     = date('Y/m/d'); // 取込日
 				//========================================
 				if ($lawyer_number==""){
-					$err_msg .= '<br>'.$i.'行目：登録番号が記載されていません。';
+					$err_msg .= "\n".$i.'行目：登録番号が記載されていません。';
 				} else {
 					if(is_numeric($lawyer_number)){
 						// ユーザー情報取得
@@ -150,21 +150,21 @@ if ($mode == "upload") {
 							$student_name = $result['student_name'];
 							
 						} else {
-							$err_msg .= '<br>'.$i.'行目：ユーザー登録されていない登録番号です。';
+							$err_msg .= "\n".$i.'行目：ユーザー登録されていない登録番号です。';
 						}
 					} else {
-						$err_msg .= '<br>'.$i.'行目：登録番号は半角数字で記載してください。';
+						$err_msg .= "\n".$i.'行目：登録番号は半角数字で記載してください。';
 					}
 				}
 				//========================================
 				if($entry_date==""){
-					$err_msg .= '<br>'.$i.'行目：申込日が記載されていません。';
+					$err_msg .= "\n".$i.'行目：申込日が記載されていません。';
 				} else {
 					$arr_date = explode("|", str_replace(":", "|", str_replace(" ", "|", str_replace("-", "|", str_replace("/", "|", trim($entry_date))))) );
 					if( checkdate( intval($arr_date[1]), intval($arr_date[2]), intval($arr_date[0]) ) ){
 						//$entry_date = $arr_date[0]."-".$arr_date[1]."-".$arr_date[2]."";
 					} else {
-						$err_msg .= '<br>'.$i.'行目：申込日は「YYYY/MM/DD」の形式で記載してください。['.$entry_date.']';
+						$err_msg .= "\n".$i.'行目：申込日は「YYYY/MM/DD」の形式で記載してください。['.$entry_date.']';
 					}
 				}
 				//========================================
@@ -276,7 +276,7 @@ elseif ($mode == "add") {
 			}
 			
 		} else {
-			$err_msg .= '登録に失敗しました。<br />ファイルを再アップロードしてください。';
+			$err_msg .= "登録に失敗しました。\nファイルを再アップロードしてください。";
 		}
 		
 	} else {
@@ -353,7 +353,7 @@ elseif ($mode == "report") {
 			}
 			
 		} else {
-			$err_msg .= '登録に失敗しました。<br />ファイルを再アップロードしてください。';
+			$err_msg .= "登録に失敗しました。\nファイルを再アップロードしてください。";
 		}
 		
 	} else {
@@ -429,7 +429,7 @@ elseif ($mode == "end") {
 			}
 			
 		} else {
-			$err_msg .= '登録に失敗しました。<br />ファイルを再アップロードしてください。';
+			$err_msg .= "登録に失敗しました。\nファイルを再アップロードしてください。";
 		}
 		
 	} else {
