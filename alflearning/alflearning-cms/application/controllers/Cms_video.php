@@ -290,21 +290,25 @@ class Cms_video extends CI_Controller {
 		//セッションデータ取得
 		$edit_form_data = unserialize($this->session->userdata('edit_form_data'));
 		
-		// video_id あり、alfstream_status ONLINE
+		// video_id あり
 		//if(isset($edit_form_data['video_id']) &&  $edit_form_data['video_id'] <> ''){
-		if( (isset($edit_form_data['video_id'])) && ($edit_form_data['video_id'] <> '') && ($edit_form_data['alfstream_status'] == 'ONLINE') ){
+		if( (isset($edit_form_data['video_id'])) && ($edit_form_data['video_id'] <> '') ){
 			$edit_form_data['video_id'] = intval($edit_form_data['video_id']) ?? 0;
 			//画面表示用データ設定
 			$data['video'] = $edit_form_data;
-			
-			//チャプターの取得
+
 			$this->load->model('model_video');
 			$stream_param = array(
 							'video_id'		=> $data['video']['video_id'],
 							'contract_param'	=> $this->libauth->get_login_school_contract_param($data['video']['school_id']),
 							'idkey'			=> $data['video']['idkey'],
 						);
-			$data['chapter_data'] = $this->model_video->get_video_chapter($stream_param);
+			// チャプターの取得（ONLINE時のみ）
+			if ($edit_form_data['alfstream_status'] == 'ONLINE') {
+				$data['chapter_data'] = $this->model_video->get_video_chapter($stream_param);
+			} else {
+				$data['chapter_data'] = [];
+			}
 
 			//ビュー設定引数設定
 			$disp_param = array(
