@@ -204,18 +204,19 @@ if(!isset($_POST['mode'])){
 
 // 削除
 elseif($_POST['mode'] == 'delete') {
+	csrf_token_verify();
 	// 生徒ID
 	$sid = '';
 	if(isset($_GET["sid"])){
-		$sid = $_GET["sid"];
+		$sid = intval($_GET["sid"]);
 	}
 	if (strlen($sid) == 0) {
 		header('Location: index.php');
 		exit;
 	}
-	
+
 	if (strlen($sid) > 0 && strlen($pid) > 0) {
-		$sql = "delete from tbl_ethic_question_history where student_id = '$sid' and product_id = '$pid'";
+		$sql = "delete from tbl_ethic_question_history where student_id = '".mysqli_real_escape_string($objDbConnect->connect,$sid)."' and product_id = '".mysqli_real_escape_string($objDbConnect->connect,$pid)."'";
 		$objDbConnect->execute($sql);
 		
 		header('Location: info.php?pid='.$pid.'&res=success');

@@ -18,7 +18,8 @@ function searchButton(formAct){
 <h2>商品の内容を確認</h2>
 
 <form name="form1" action="#" method="post">
-<input type="hidden" name="mid" id="mid" value="<!--{$mid}-->" />
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+<input type="hidden" name="mid" id="mid" value="<!--{$mid|escape}-->" />
 <input type="hidden" name="act" id="act" value="" />
 <!--{foreach from=$arr_input item=item key=key}-->
 <input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />

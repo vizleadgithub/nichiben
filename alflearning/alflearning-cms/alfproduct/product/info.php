@@ -137,6 +137,8 @@ $template->assign('btn_type_list', $btn_type_list);
 $mid = '';
 if(isset($_GET["mid"])){
 	$mid = intval($_GET["mid"]);
+} elseif(isset($_POST["mid"])){
+	$mid = intval($_POST["mid"]);
 }
 $template->assign('mid', $mid);
 
@@ -251,7 +253,8 @@ if(!isset($_POST['act'])){
 	
 // 削除
 } elseif($_POST['act'] == 'delete') {
-	$sql = "update tbl_product set del_flg = '1' where product_id = '$mid'";
+	csrf_token_verify();
+	$sql = "update tbl_product set del_flg = '1' where product_id = '".mysqli_real_escape_string($objDbConnect->connect,$mid)."'";
 	$objDbConnect->execute($sql);
 	
 	header('Location: index.php');

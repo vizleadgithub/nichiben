@@ -158,6 +158,8 @@ $template->assign('mtb_live_target_flg', $mtb_live_target_flg);
 $mid = '';
 if(isset($_GET["mid"])){
 	$mid = intval($_GET["mid"]);
+} elseif(isset($_POST["mid"])){
+	$mid = intval($_POST["mid"]);
 }
 $template->assign('mid', $mid);
 
@@ -362,10 +364,12 @@ FROM
 	$template->assign('branch_info', $branch_info);
 	$template->assign('arr_term_id', $arr_term_id);
 	$template->assign('term_name', $term_name);
+	$template->assign('csrf_token', csrf_token_get());
 	$template->admin_layout('product_live_branch/info.tpl');
-	
+
 // 削除
 } elseif($_POST['act'] == 'delete') {
+	csrf_token_verify();
 	//$sql = "update tbl_product set del_flg = '1' where product_id = '$mid'";
 	//$objDbConnect->execute($sql);
 	

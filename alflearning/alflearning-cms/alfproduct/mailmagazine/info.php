@@ -57,7 +57,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$mail_title = strip_tags($_POST["mail_title"]);
 	$mail_body = strip_tags($_POST["mail_body"]);
 } else {
-	$mid = $_GET["mid"];
+	$mid = intval($_GET["mid"]);
 
 	//$sql = "select mailmagazine_id,target_parameter,DATE_FORMAT(submit_datetime,'%Y/%m/%d %k:%i')as submit_datetime, submit_status, mail_title,mail_body from tbl_mailmagazine where mailmagazine_id='".$mid."'";
 	$sql = "";
@@ -87,7 +87,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$sql.= "from ";
 	$sql.= "tbl_mailmagazine ";
 	$sql.= "where ";
-	$sql.= "mailmagazine_id='".$mid."'";
+	$sql.= "mailmagazine_id='".mysqli_real_escape_string($objDbConnect->connect,$mid)."'";
 
 	$ret = $objDbConnect->query_fetch_arr($sql);
 	//$temp_arr = unserialize( $ret[0]["target_parameter"] );

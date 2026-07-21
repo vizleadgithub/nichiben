@@ -202,13 +202,13 @@ if(!isset($_POST['act'])){
 		'str_term_id' => "",
 	);
 	for($i=1; $i<=MAX_CONTENTS; $i++){
-		$arr_input["disp_warning_word".$i] = ( isset($_POST["disp_warning_word".$i]) && $_POST["disp_warning_word".$i]=="3" ) ?? "";
+		$arr_input["disp_warning_word".$i] = $_POST["disp_warning_word".$i] ?? "";
 	}
 
 	// 講師受講者の取得
 	$arr_input["teacher_student"] = false;
 	if ($arr_input["teacher_student_id"] >0){
-		$sql = "select student.* from student where student_id='".$arr_input["teacher_student_id"]."' limit 1";
+		$sql = "select student.* from student where student_id='".mysqli_real_escape_string($objDbConnect->connect,$arr_input["teacher_student_id"])."' limit 1";
 		$ret2 = $objDbConnect->query_fetch($sql);
 		if ($ret2){
 			$arr_input["teacher_student"] = $ret2;
@@ -290,37 +290,37 @@ if(!isset($_POST['act'])){
 		} else {
 			$arr_input["contents_thumbnail$i"] = '';
 		}
-		$arr_input["contents_contents$i"] = $_POST["contents_contents$i"];
-		$arr_input["contents_contents$i".'_name'] = $_POST["contents_contents$i".'_name'];
+		$arr_input["contents_contents$i"] = $_POST["contents_contents$i"] ?? "";
+		$arr_input["contents_contents$i".'_name'] = $_POST["contents_contents$i".'_name'] ?? "";
 		if( trim($arr_input["contents_contents$i".'_name']) == ""){
 			$arr_input["contents_contents$i"] = "";
 		}
 
-		$arr_input["contents_contents$i"."so"] = $_POST["contents_contents$i"."so"];
-		$arr_input["contents_contents$i".'so_name'] = $_POST["contents_contents$i".'so_name'];
+		$arr_input["contents_contents$i"."so"] = $_POST["contents_contents$i"."so"] ?? "";
+		$arr_input["contents_contents$i".'so_name'] = $_POST["contents_contents$i".'so_name'] ?? "";
 		if( trim($arr_input["contents_contents$i".'so_name']) == ""){
 			$arr_input["contents_contents$i"."so"] = "";
 		}
 
-		$arr_input["contents_free_time$i"] = $_POST["contents_free_time$i"];
-		$arr_input["contents_start_date$i"] = $_POST["contents_start_date$i"];
+		$arr_input["contents_free_time$i"] = $_POST["contents_free_time$i"] ?? "";
+		$arr_input["contents_start_date$i"] = $_POST["contents_start_date$i"] ?? "";
 		if($arr_input["contents_start_date$i"] == "0000-00-00 00:00:00"){
 			$arr_input["contents_start_date$i"] = "";
 		}
-		$arr_input["contents_end_date$i"] = $_POST["contents_end_date$i"];
+		$arr_input["contents_end_date$i"] = $_POST["contents_end_date$i"] ?? "";
 		if($arr_input["contents_end_date$i"] == "0000-00-00 00:00:00"){
 			$arr_input["contents_end_date$i"] = "";
 		}
-		$arr_input["contents_memo$i"] = $_POST["contents_memo$i"];
-		$arr_input["contents_teacher$i"] = $_POST["contents_teacher$i"];
-		
-		$arr_input["exam_id_test$i"] = $_POST["exam_id_test$i"];
-		$arr_input["exam_id_question$i"] = $_POST["exam_id_question$i"];
-		$arr_input["btn_type$i"] = $_POST["btn_type$i"];
+		$arr_input["contents_memo$i"] = $_POST["contents_memo$i"] ?? "";
+		$arr_input["contents_teacher$i"] = $_POST["contents_teacher$i"] ?? "";
+
+		$arr_input["exam_id_test$i"] = $_POST["exam_id_test$i"] ?? "";
+		$arr_input["exam_id_question$i"] = $_POST["exam_id_question$i"] ?? "";
+		$arr_input["btn_type$i"] = $_POST["btn_type$i"] ?? "";
 		$arr_input["disp_warning_word$i"] = $_POST["disp_warning_word$i"] ?? "";
 
 		for($j=1; $j<=MAX_CONTENTS_DOWNLOAD; $j++){
-			if($_POST['contents_download'.$i.'_'.$j] != ''){
+			if(isset($_POST['contents_download'.$i.'_'.$j]) && $_POST['contents_download'.$i.'_'.$j] != ''){
 				$arr_input['contents_download'.$i.'_'.$j] = $_POST['contents_download'.$i.'_'.$j];
 				$arr_input['contents_download_before'.$i.'_'.$j] = $_POST['contents_download_before'.$i.'_'.$j];
 			} elseif(isset($_POST['hid_contents_download'.$i.'_'.$j])){
@@ -332,8 +332,8 @@ if(!isset($_POST['act'])){
 		}
 	}
 	for($i=1; $i<=MAX_RELATED_PRODUCTS; $i++){
-		$arr_input["related_products$i"] = $_POST["related_products$i"];
-		$arr_input["related_products$i".'_name'] = $_POST["related_products$i".'_name'];
+		$arr_input["related_products$i"] = $_POST["related_products$i"] ?? "";
+		$arr_input["related_products$i".'_name'] = $_POST["related_products$i".'_name'] ?? "";
 	}
 /*
 	for($i=1; $i<=MAX_FREE_HTML_AREA; $i++){
@@ -755,7 +755,7 @@ if(!isset($_POST['act'])){
 						$sql.= "  '".mysqli_real_escape_string($objDbConnect->connect,$arr_input["free_html_area$i"."_sp"])."',";
 					}
 				*/
-					$sql.= "  '".$arr_input["term_id"]."',";
+					$sql.= "  '".mysqli_real_escape_string($objDbConnect->connect,$arr_input["term_id"])."',";
 					$sql.= "  '".date('Y-m-d H:i:s')."'";
 					$sql.= " )";
 					$ret = $objDbConnect->execute($sql);
