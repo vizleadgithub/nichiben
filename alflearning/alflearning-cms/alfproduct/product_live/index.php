@@ -142,8 +142,8 @@ if( isset($_GET["search"]) && $_GET["search"]=="new" ){
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$search_product_name = isset($_POST["search_product_name"]) ? $_POST["search_product_name"] : "" ;
 	$search_product_code = isset($_POST["search_product_code"]) ? $_POST["search_product_code"] : "" ;
-	$search_start_date = isset($_POST["search_start_date"]) ? $_POST["search_start_date"] : "" ;
-	$search_end_date = isset($_POST["search_end_date"]) ? $_POST["search_end_date"] : "" ;
+	$search_start_date = isset($_POST["search_start_date"]) ? preg_replace('/[^0-9\/: \-]/', '', $_POST["search_start_date"]) : "" ;
+	$search_end_date = isset($_POST["search_end_date"]) ? preg_replace('/[^0-9\/: \-]/', '', $_POST["search_end_date"]) : "" ;
 	$search_category = isset($_POST["search_category"]) && is_array($_POST["search_category"]) ? $_POST["search_category"] : [] ;
 	$search_open = isset($_POST["search_open"]) ? $_POST["search_open"] : "0" ;
 	$search_teacher = isset($_POST["search_teacher"]) ? $_POST["search_teacher"] : "" ;

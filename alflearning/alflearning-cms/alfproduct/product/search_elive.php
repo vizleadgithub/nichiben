@@ -33,8 +33,8 @@ if( isset($_SESSION["selive.search_end_date"]) && !empty($_SESSION["selive.searc
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$search_product_name = trim($_POST["search_product_name"]);
 	$search_product_code = trim($_POST["search_product_code"]);
-	$search_start_date = trim($_POST["search_start_date"]);
-	$search_end_date = trim($_POST["search_end_date"]);
+	$search_start_date = preg_replace('/[^0-9\/: \-]/', '', trim($_POST["search_start_date"]));
+	$search_end_date = preg_replace('/[^0-9\/: \-]/', '', trim($_POST["search_end_date"]));
 	$_SESSION["selive.search_product_name"] = $search_product_name;
 	$_SESSION["selive.search_product_code"] = $search_product_code;
 	$_SESSION["selive.search_start_date"] = $search_start_date;

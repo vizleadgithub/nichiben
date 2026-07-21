@@ -100,8 +100,8 @@ if( isset($_GET["search"]) && $_GET["search"]=="new" ){
 	}
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_start_date = trim($_POST["search_start_date"]);
-	$search_end_date = trim($_POST["search_end_date"]);
+	$search_start_date = preg_replace('/[^0-9\/: \-]/', '', trim($_POST["search_start_date"]));
+	$search_end_date = preg_replace('/[^0-9\/: \-]/', '', trim($_POST["search_end_date"]));
 	$search_start_regist_date = trim($_POST["search_start_regist_date"]);
 	$search_end_regist_date = trim($_POST["search_end_regist_date"]);
 	$search_keyword = trim($_POST["search_keyword"]);

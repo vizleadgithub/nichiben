@@ -10,3 +10,5 @@
 /secure_report/additional
 /alfproduct/smarty/templates_c
 /alfproduct/module/vendor
+
+.vscode/
