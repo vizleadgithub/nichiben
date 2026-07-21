@@ -104,12 +104,13 @@ if (!$nichibenren_flg){
 }
 $sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE tbl_order_detail.payment_status=2 AND tbl_order_detail.product_type_add=1 AND tbl_order_detail.product_id=tbl_product.product_id $product_type_add_where ) AS product_type_add1_count, ";
 $sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE tbl_order_detail.payment_status=2 AND tbl_order_detail.product_type_add=1 AND tbl_order_detail.product_id=tbl_product.product_id AND tbl_order_detail.video_complete_flg=1 $product_type_add_where ) AS product_type_add1_end_count, ";
+// [NBR-239] payment_status=3（仮払い等）はフロント受講履歴(lesson_list2.php)と揃えて対象外にする
 if ($pid <= 19233) {
-$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=tbl_product.product_id $product_type_add_where ) AS product_type_add2_count, ";
-$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=tbl_product.product_id AND tbl_order_detail.participation_flg=1 $product_type_add_where ) AS product_type_add2_end_count, ";
+$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=tbl_product.product_id $product_type_add_where ) AS product_type_add2_count, ";
+$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=tbl_product.product_id AND tbl_order_detail.participation_flg=1 $product_type_add_where ) AS product_type_add2_end_count, ";
 } else {
-$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.bar_association_branch_id=rel_product_bar_association_branch_bar_association_branch_id AND tbl_order_detail.product_id=tbl_product.product_id $product_type_add_where ) AS product_type_add2_count, ";
-$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.bar_association_branch_id=rel_product_bar_association_branch_bar_association_branch_id AND tbl_order_detail.product_id=tbl_product.product_id AND tbl_order_detail.participation_flg=1 $product_type_add_where ) AS product_type_add2_end_count, ";
+$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.bar_association_branch_id=rel_product_bar_association_branch_bar_association_branch_id AND tbl_order_detail.product_id=tbl_product.product_id $product_type_add_where ) AS product_type_add2_count, ";
+$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.bar_association_branch_id=rel_product_bar_association_branch_bar_association_branch_id AND tbl_order_detail.product_id=tbl_product.product_id AND tbl_order_detail.participation_flg=1 $product_type_add_where ) AS product_type_add2_end_count, ";
 }
 $sql.= " (  SELECT COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE tbl_ethic_question_history.product_id=tbl_product.product_id $product_type_add3_where ) AS product_type_add3_count, ";
 $sql.= " (  SELECT COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE tbl_ethic_question_history.product_id=tbl_product.product_id AND (tbl_ethic_question_history.status=2 OR tbl_ethic_question_history.status=5 OR tbl_ethic_question_history.status=7) $product_type_add3_where ) AS product_type_add3_end_count ";
@@ -511,6 +512,7 @@ if( $arr_product["product_type_add"]==1 ){
 	$sql.= "           ON student.bar_association_id = mtb_bar_association.id";
 	$sql.= "     WHERE";
 	$sql.= "       report_user_video_viewed.video_id IN($in_video_id)";
+	$sql.= "       AND report_user_video_viewed.percent >= 1"; // [NBR-239] フロント受講履歴(lesson_list1.php)と同じ「視聴開始」基準に統一
 	$sql.= "       AND student.student_id>0";
 	if (!$nichibenren_flg){
 		$sql.= "   AND student.bar_association_id='".$login_bar_association_id."'";
@@ -700,12 +702,16 @@ if( $arr_product["product_type_add"]==1 ){
 							$video_duration_reading += $aruvv_val['duration_reading_sec'];
 						}
 					}
-					$percent = $video_duration_reading / $all_video_duration * 100;
-					if (!is_int($percent)){
-						$percent = (int)round($percent);
-					}
-					if ($percent>100){
-						$percent = 100;
+					// [NBR-239対応時に判明した既存バグ] video_alfstream_status に対象動画の再生時間データが無い場合、
+					// $all_video_duration が NULL/0 になり DivisionByZeroError（PHP8）になるためガードを追加
+					if (!empty($all_video_duration)){
+						$percent = $video_duration_reading / $all_video_duration * 100;
+						if (!is_int($percent)){
+							$percent = (int)round($percent);
+						}
+						if ($percent>100){
+							$percent = 100;
+						}
 					}
 				}
 //print("[percent:".$percent."]");
@@ -1133,6 +1139,7 @@ if( $arr_product["product_type_add"]==1 ){
 	$sql.= "     WHERE";
 	$sql.= "       report_user_video_viewed.video_id IN($in_video_id)";
 	$sql.= "       AND report_user_video_viewed.complete_flag = 1";
+	$sql.= "       AND student.student_id>0"; // [NBR-239] サブクエリ外(student未JOIN)を参照していたバグを修正。studentはT1内でJOINされているためここに移動
 	if (!$nichibenren_flg){
 		$sql.= "   AND student.bar_association_id='".$login_bar_association_id."' ";
 	}
@@ -1141,7 +1148,6 @@ if( $arr_product["product_type_add"]==1 ){
 	$sql.= "   ) AS T1";
 	$sql.= " WHERE";
 	$sql.= "   T1.product_video_comp_count = '$in_video_count'";
-	$sql.= " AND student.student_id>0 ";
 	$arr_count = $objDbConnect->query_fetch_arr($sql);
 	if ($arr_count){
 		$arr_product['product_type_add1_end_count'] = $arr_count[0]['product_type_add1_end_count'];
