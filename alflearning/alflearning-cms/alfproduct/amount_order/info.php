@@ -24,17 +24,21 @@ $mode = "";
 $order_id = "";
 $order_detail_id = "";
 $payment_status = "";
-if( isset($_GET["mode"]) && !empty($_GET["mode"]) ){
-	$mode = strip_tags($_GET["mode"]);
+$request_data = $_GET;
+if( $_SERVER["REQUEST_METHOD"] == "POST" ){
+	$request_data = array_merge($_GET, $_POST);
 }
-if( isset($_GET["oid"]) && !empty($_GET["oid"]) ){
-	$order_id = intval($_GET["oid"]);
+if( isset($request_data["mode"]) && trim($request_data["mode"]) !== "" ){
+	$mode = strip_tags($request_data["mode"]);
 }
-if( isset($_GET["order_detail_id"]) && !empty($_GET["order_detail_id"]) ){
-	$order_detail_id = intval($_GET["order_detail_id"]);
+if( isset($request_data["oid"]) && !empty($request_data["oid"]) ){
+	$order_id = intval($request_data["oid"]);
 }
-if( isset($_GET["payment_status"]) && !empty($_GET["payment_status"]) ){
-	$payment_status = strip_tags($_GET["payment_status"]);
+if( isset($request_data["order_detail_id"]) && !empty($request_data["order_detail_id"]) ){
+	$order_detail_id = intval($request_data["order_detail_id"]);
+}
+if( isset($request_data["payment_status"]) && !empty($request_data["payment_status"]) ){
+	$payment_status = strip_tags($request_data["payment_status"]);
 }
 
 if($order_id == ""){
@@ -61,8 +65,35 @@ $arr_payment_status = array(
 				array("id"=>"3",	"name"=>"一部未入金"),
 				array("id"=>"9",	"name"=>"キャンセル"),
 			);
+$order_payment_status_sql = "";
+$order_payment_status_sql.= "(CASE ";
+$order_payment_status_sql.= "WHEN NOT EXISTS (";
+$order_payment_status_sql.= " SELECT 1 FROM tbl_order_detail AS summary_detail";
+$order_payment_status_sql.= " WHERE summary_detail.order_id = tbl_order.order_id";
+$order_payment_status_sql.= "   AND summary_detail.product_id IS NOT NULL";
+$order_payment_status_sql.= "   AND summary_detail.payment_status <> '9'";
+$order_payment_status_sql.= ") THEN '9' ";
+$order_payment_status_sql.= "WHEN NOT EXISTS (";
+$order_payment_status_sql.= " SELECT 1 FROM tbl_order_detail AS summary_detail";
+$order_payment_status_sql.= " WHERE summary_detail.order_id = tbl_order.order_id";
+$order_payment_status_sql.= "   AND summary_detail.product_id IS NOT NULL";
+$order_payment_status_sql.= "   AND summary_detail.payment_status <> '9'";
+$order_payment_status_sql.= "   AND summary_detail.payment_status <> '2'";
+$order_payment_status_sql.= ") THEN '2' ";
+$order_payment_status_sql.= "WHEN NOT EXISTS (";
+$order_payment_status_sql.= " SELECT 1 FROM tbl_order_detail AS summary_detail";
+$order_payment_status_sql.= " WHERE summary_detail.order_id = tbl_order.order_id";
+$order_payment_status_sql.= "   AND summary_detail.product_id IS NOT NULL";
+$order_payment_status_sql.= "   AND summary_detail.payment_status <> '9'";
+$order_payment_status_sql.= "   AND summary_detail.payment_status NOT IN ('0', '1')";
+$order_payment_status_sql.= ") THEN '1' ";
+$order_payment_status_sql.= "ELSE '3' END)";
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $sql_update_student = '';
+
+if(in_array($mode, array("pay","nopay","cancel","nocancel"))){
+	csrf_token_verify();
+}
 
 if($mode=="pay"){
 	$sql = "";
@@ -174,7 +205,6 @@ if(!$ret){
 	$arr_err["db"] = "更新に失敗しました。";
 } else {
 	if ($sql_update_student != ''){
-var_dump($sql_update_student);
 		$objDbConnect->execute($sql_update_student);
 	}
 }
@@ -349,7 +379,7 @@ $sql.= "student.lawyer_number, ";//登録番号
 $sql.= "student.regist_date, ";//登録年月日
 $sql.= "mtb_bar_association.name as association_name, ";//弁護士会
 //$sql.= "tbl_order_detail.payment_status, ";//支払いステータス
-$sql.= "tbl_order.payment_status, ";//支払いステータス
+$sql.= $order_payment_status_sql." AS payment_status, ";//支払いステータス
 $sql.= "tbl_order.create_date, ";//購入日
 $sql.= "tbl_order.payment_type, ";//支払い方法（1：カード　12：銀行振込）
 $sql.= "tbl_order.claim_flg, ";//請求書希望
@@ -364,7 +394,7 @@ $where = "";
 $where.= "WHERE ";
 $where.= " student.school_id='".$arr_session["cms_master.login.school_id"]."' ";
 $where.= " and tbl_order.order_id='".$order_id."' ";
-$where.= " and tbl_order.payment_status>='1' ";//支払いステータス
+$where.= " and ".$order_payment_status_sql." >= '1' ";//支払いステータス
 //-----------------------------------
 if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 } else {
@@ -437,7 +467,7 @@ if( $temp_bar_association_id>1 ){
 if($arr_session["cms_master.login.teacher_auth"]["school_admin"]==1){
 	$template->admin_name($arr_session["cms_master.login.teacher_name"].$temp_bar_association_name);
 } else {
-	$template->admin_name($arr_session["cms_master.login.teacher_name"].$temp_bar_association_name);
+	$template->admin_name($arr_session["cms_master.login.teacher_name"]);
 }
 
 $template->admin_school($arr_session["cms_master.login.school_name"]);
@@ -457,6 +487,8 @@ if ($nichibenren_flg){
 $sidemenu_html.= '</ul>';
 $template->admin_sidemenu($sidemenu_html);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$csrf_token = csrf_token_get();
+$template->assign('csrf_token', $csrf_token);
 $template->assign('arr_student', $arr_student[0]);
 
 $template->assign('oid', $order_id);

@@ -90,6 +90,7 @@
 </div>
 <table class="list2">
 	<form accept-charset="utf-8" method="post" name="list_form" action="#">
+		<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 		<input type="hidden" name="mode" value="">
 		<input type="hidden" name="order_detail_id" value="">
 	</form>
