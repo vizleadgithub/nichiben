@@ -557,7 +557,7 @@ if( $arr_product["product_type_add"]==1 ){
 	$where = "";
 	$where.= "WHERE ";
 	$where.= " tbl_order_detail.product_id='".$pid."'";
-	$where.= " AND ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) ";
+	$where.= " AND ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) "; // [NBR-239] payment_status=3を除外しヘッダーの総受講者数と統一
 	$where.= " AND student.student_id>0 ";
 	if (!$nichibenren_flg){
 		//$where.= " AND tbl_order_detail.bar_association_id='".$login_bar_association_id."'";
@@ -1083,7 +1083,7 @@ if( $arr_product["product_type_add"]==1 ){
 	$where = "";
 	$where.= "WHERE ";
 	$where.= " tbl_order_detail.product_id='".$pid."' ";
-	$where.= " AND ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) ";
+	$where.= " AND ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) "; // [NBR-239] payment_status=3を除外しヘッダーの総受講者数と統一
 	$where.= " AND student.student_id>0 ";
 	// 新システム商品の場合
 	if ($pid > 19233) {

@@ -533,37 +533,50 @@ if ($disp_flg){
 			$ret[$i]["product_type_add1_end_count"] = $ret_sub[0]["c"];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
+		// product_type_add2_count / end_count
+		// [NBR-239] 詳細側(info.php)と条件を統一：旧システム商品(pid<=19233)は実施会(branch)で絞らない／非日弁連ログイン時は所属弁護士会で絞る／payment_status=3(仮払い等)は対象外にしてフロント受講履歴(lesson_list2.php)と揃える
+		$sql_sub_where2 = " ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=".$pid." ";
+		if ($pid > 19233){
+			$sql_sub_where2.= " AND tbl_order_detail.bar_association_branch_id=".$rel_babid." ";
+		}
+		if (!$nichibenren_flg){
+			$sql_sub_where2.= " AND tbl_order_detail.bar_association_id='".$login_bar_association_id."' ";
+		}
 		//product_type_add2_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.bar_association_branch_id=".$rel_babid." AND tbl_order_detail.product_id=".$pid." ";
+		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ".$sql_sub_where2;
 		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
 		if( !empty($ret_sub) ){
 			$ret[$i]["product_type_add2_count"] = $ret_sub[0]["c"];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
 		//product_type_add2_end_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.bar_association_branch_id=".$rel_babid." AND tbl_order_detail.product_id=".$pid." AND tbl_order_detail.participation_flg=1 ";
+		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ".$sql_sub_where2." AND tbl_order_detail.participation_flg=1 ";
 		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
 		if( !empty($ret_sub) ){
 			$ret[$i]["product_type_add2_end_count"] = $ret_sub[0]["c"];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
-		//product_type_add2_count_kako
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=".$pid." ";
+		//product_type_add2_count_kako（実施会不問の全期間合計。参考値のため絞り込みカラムは変更せず、payment_status のみフロント基準に統一）
+		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=".$pid." ";
 		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
 		if( !empty($ret_sub) ){
 			$ret[$i]["product_type_add2_count_kako"] = $ret_sub[0]["c"];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
 		//product_type_add2_end_count_kako
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=".$pid." AND tbl_order_detail.participation_flg=1 ";
+		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=".$pid." AND tbl_order_detail.participation_flg=1 ";
 		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
 		if( !empty($ret_sub) ){
 			$ret[$i]["product_type_add2_end_count_kako"] = $ret_sub[0]["c"];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
+		// [NBR-239] 詳細側(info.php)と条件を統一：非日弁連ログイン時は所属弁護士会で絞る
+		$sql_sub_where3 = "";
+		if (!$nichibenren_flg){
+			$sql_sub_where3 = " AND student.bar_association_id='".$login_bar_association_id."' ";
+		}
 		//product_type_add3_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_ethic_question_history WHERE tbl_ethic_question_history.product_id=".$pid." ";
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE tbl_ethic_question_history.product_id=".$pid." ";
+		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE tbl_ethic_question_history.product_id=".$pid.$sql_sub_where3." ";
 		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
 		if( !empty($ret_sub) ){
 			$ret[$i]["product_type_add3_count"] = $ret_sub[0]["c"];
@@ -572,8 +585,7 @@ if ($disp_flg){
 
 		//+++++++++++++++++++++++++++++++++++++++
 		//product_type_add3_end_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_ethic_question_history WHERE tbl_ethic_question_history.product_id=".$pid." AND (tbl_ethic_question_history.status=2 OR tbl_ethic_question_history.status=5 OR tbl_ethic_question_history.status=7) ";
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE tbl_ethic_question_history.product_id=".$pid." AND (tbl_ethic_question_history.status=2 OR tbl_ethic_question_history.status=5 OR tbl_ethic_question_history.status=7) ";
+		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE tbl_ethic_question_history.product_id=".$pid." AND (tbl_ethic_question_history.status=2 OR tbl_ethic_question_history.status=5 OR tbl_ethic_question_history.status=7)".$sql_sub_where3." ";
 		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
 		if( !empty($ret_sub) ){
 			$ret[$i]["product_type_add3_end_count"] = $ret_sub[0]["c"];
@@ -742,6 +754,7 @@ if ($disp_flg){
 				$sql.= "     WHERE";
 				$sql.= "       report_user_video_viewed.video_id IN($in_video_id)";
 				$sql.= "       AND report_user_video_viewed.complete_flag = 1";
+				$sql.= "       AND student.student_id>0"; // [NBR-239] 詳細側(info.php)と条件を統一：無効な受講生(student未紐付け)のログを除外
 				if (!$nichibenren_flg){
 					$sql.= "   AND student.bar_association_id='".$login_bar_association_id."' ";
 				}
@@ -754,8 +767,10 @@ if ($disp_flg){
 				if ($arr_count){
 					$ret[$i]['product_type_add1_end_count'] = $arr_count[0]['product_type_add1_end_count'];
 				}
-				
+
 				// 受講済み数
+				// [NBR-239] 詳細側(info.php)・フロント受講履歴(lesson_list1.php)と条件を統一：
+				// student JOIN・無効studentの除外・非日弁連ログイン時の弁護士会絞り込み・percent>=1（視聴開始）を追加
 				$arr_count = array();
 				$sql = "";
 				$sql.= " SELECT";
@@ -763,13 +778,21 @@ if ($disp_flg){
 				$sql.= " FROM";
 				$sql.= "   (";
 				$sql.= "     SELECT";
-				$sql.= "       student_id";
+				$sql.= "       report_user_video_viewed.student_id";
 				$sql.= "     FROM";
 				$sql.= "       report_user_video_viewed";
+				$sql.= "         LEFT JOIN";
+				$sql.= "       student";
+				$sql.= "           ON report_user_video_viewed.student_id = student.student_id";
 				$sql.= "     WHERE";
-				$sql.= "       video_id IN($in_video_id)";
+				$sql.= "       report_user_video_viewed.video_id IN($in_video_id)";
+				$sql.= "       AND report_user_video_viewed.percent >= 1";
+				$sql.= "       AND student.student_id>0";
+				if (!$nichibenren_flg){
+					$sql.= "       AND student.bar_association_id='".$login_bar_association_id."'";
+				}
 				$sql.= "     GROUP BY";
-				$sql.= "       student_id";
+				$sql.= "       report_user_video_viewed.student_id";
 				$sql.= "   ) AS T1";
 				$arr_count = $objDbConnect->query_fetch_arr($sql);
 				if ($arr_count){
