@@ -30,8 +30,9 @@ session_set_save_handler(
 		},
 	function ($id, $data) {
 		$objDbConnect = new DbConnect();
-		$data = addslashes($data); // SQLインジェクション対策
-		$query = "REPLACE INTO ci_sessions (id, timestamp, data) VALUES ('$id', '".time()."', '$data')";
+		$escaped_id   = mysqli_real_escape_string($objDbConnect->connect, $id);
+		$escaped_data = mysqli_real_escape_string($objDbConnect->connect, $data);
+		$query = "REPLACE INTO ci_sessions (id, ip_address, timestamp, data) VALUES ('$escaped_id', '".mysqli_real_escape_string($objDbConnect->connect, $_SERVER['REMOTE_ADDR'] ?? '')."', '".time()."', '$escaped_data')";
 		return $objDbConnect->execute($query);
 	},
 	function ($id) {
@@ -44,7 +45,4 @@ session_set_save_handler(
 	}
 );
 session_start();
-$data = $session_temp; // データベースから取得した値
-if( isset($data) && !empty($data) && $data!=null ){
-	session_decode($data);
-}
+// 注: セッションデータはsession_set_save_handlerのreadコールバックで自動的にロードされる

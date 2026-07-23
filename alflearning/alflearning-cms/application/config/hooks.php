@@ -17,3 +17,11 @@ $hook['post_controller_constructor'][] = array(
     'filename' => 'RefererCheck.php',
     'filepath' => 'hooks'
 );
+
+// DBのteacher情報とセッションの乖離を検出してセッションを自動更新する
+$hook['post_controller_constructor'][] = array(
+    'class'    => 'SessionSyncHook',
+    'function' => 'sync',
+    'filename' => 'SessionSyncHook.php',
+    'filepath' => 'hooks'
+);
