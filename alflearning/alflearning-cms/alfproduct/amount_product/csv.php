@@ -74,11 +74,11 @@ if( $search_monthly=="" ){
 	}
 	//----------------------------------------------------------
 	if( $search_start_buy_date != "" ){
-		$where.= " and tbl_order.create_date>='".$search_start_buy_date."' ";
+		$where.= " and tbl_order_detail.create_date>='".$search_start_buy_date."' ";
 	}
 	//----------------------------------------------------------
 	if( $search_end_buy_date != "" ){
-		$where.= " and tbl_order.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
+		$where.= " and tbl_order_detail.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
 	}
 	//----------------------------------------------------------
 	if( $search_product_name != "" ){
@@ -186,8 +186,8 @@ if( $search_monthly=="" ){
 	//----------------------------------------------------------
 	$sql = "";
 	$sql.= "SELECT ";
-	$sql.= " DATE_FORMAT(tbl_order.create_date,'%Y') as buy_y, ";
-	$sql.= " DATE_FORMAT(tbl_order.create_date,'%m') as buy_m, ";
+	$sql.= " DATE_FORMAT(tbl_order_detail.create_date,'%Y') as buy_y, ";
+	$sql.= " DATE_FORMAT(tbl_order_detail.create_date,'%m') as buy_m, ";
 	$sql.= " COUNT( tbl_order_detail.product_id ) AS buy_count, ";
 	$sql.= " SUM( tbl_order_detail.pay_total ) AS all_pay_total ";
 	//$sql.= " tbl_order_detail.product_id, ";
@@ -209,11 +209,11 @@ if( $search_monthly=="" ){
 	}
 	//----------------------------------------------------------
 	if( $search_start_buy_date != "" ){
-		$where.= " and tbl_order.create_date>='".$search_start_buy_date."' ";
+		$where.= " and tbl_order_detail.create_date>='".$search_start_buy_date."' ";
 	}
 	//----------------------------------------------------------
 	if( $search_end_buy_date != "" ){
-		$where.= " and tbl_order.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
+		$where.= " and tbl_order_detail.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
 	}
 	//----------------------------------------------------------
 	if( $search_product_name != "" ){
@@ -265,10 +265,10 @@ if( $search_monthly=="" ){
 	//----------------------------------------------------------
 	$group = "";
 	$group.= " GROUP BY ";
-	$group.= " DATE_FORMAT(tbl_order.create_date,'%Y'), ";
-	$group.= " DATE_FORMAT(tbl_order.create_date,'%m') ";
+	$group.= " DATE_FORMAT(tbl_order_detail.create_date,'%Y'), ";
+	$group.= " DATE_FORMAT(tbl_order_detail.create_date,'%m') ";
 	//----------------------------------------------------------
-	$order = " ORDER BY DATE_FORMAT(tbl_order.create_date,'%Y') DESC,DATE_FORMAT(tbl_order.create_date,'%m') DESC ";
+	$order = " ORDER BY DATE_FORMAT(tbl_order_detail.create_date,'%Y') DESC,DATE_FORMAT(tbl_order_detail.create_date,'%m') DESC ";
 	//----------------------------------------------------------
 	$ret = $objDbConnect->query_fetch_arr($sql.$where.$group.$order);
 	if( !empty($ret) ){

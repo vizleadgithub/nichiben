@@ -91,38 +91,48 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 
 if( isset( $_GET["post_data"]) && $_GET["post_data"] != "" ){
 	$temp = unserialize( $_GET["post_data"] );
-	$temp_y = trim( $_GET["buy_y"] );
-	$temp_m = trim( $_GET["buy_m"] );
-	$temp_d = date("t", mktime(0, 0, 0, $temp_m, 1, $temp_y));
-
-	$search_start_buy_date = $temp_y."/".$temp_m."/01 00:00";
-	$search_end_buy_date = $temp_y."/".$temp_m."/".$temp_d." 23:00";
-	$search_monthly = "";
-	$search_product_name = trim($temp["search_product_name"]);
-	$search_product_code = trim($temp["search_product_code"]);
-	$search_product_type_add = $temp["search_product_type_add"]??[];
-	if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
-		$search_payment_type = $temp["search_payment_type"]??[];
-		$search_claim_flg = $temp["search_claim_flg"]??[];
-	} else {
-		$search_payment_type = array();
-		$search_claim_flg = array();
+	if( !is_array($temp) ){
+		$temp = unserialize( htmlspecialchars_decode($_GET["post_data"], ENT_QUOTES) );
 	}
+	$temp_y = trim( $_GET["buy_y"] ?? "" );
+	$temp_m = trim( $_GET["buy_m"] ?? "" );
+	if(
+		is_array($temp)
+		&& ctype_digit($temp_y)
+		&& ctype_digit($temp_m)
+		&& checkdate((int)$temp_m, 1, (int)$temp_y)
+	){
+		$temp_d = date("t", mktime(0, 0, 0, (int)$temp_m, 1, (int)$temp_y));
 
-	$_SESSION["amount_product.search_start_buy_date"] = $search_start_buy_date;
-	$_SESSION["amount_product.search_end_buy_date"] = $search_end_buy_date;
-	$_SESSION["amount_product.search_monthly"] = "";
-	$_SESSION["amount_product.search_product_name"] = $search_product_name;
-	$_SESSION["amount_product.search_product_code"] = $search_product_code;
-	$_SESSION["amount_product.search_product_type_add"] = $search_product_type_add??[];
-	if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
-		$_SESSION["amount_product.search_payment_type"] = $search_payment_type??[];
-		$_SESSION["amount_product.search_claim_flg"] = $search_claim_flg??[];
-	} else {
-		$_SESSION["amount_product.search_payment_type"] = array();
-		$_SESSION["amount_product.search_claim_flg"] = array();
+		$search_start_buy_date = $temp_y."/".$temp_m."/01 00:00";
+		$search_end_buy_date = $temp_y."/".$temp_m."/".$temp_d." 23:00";
+		$search_monthly = "";
+		$search_product_name = trim($temp["search_product_name"]);
+		$search_product_code = trim($temp["search_product_code"]);
+		$search_product_type_add = $temp["search_product_type_add"]??[];
+		if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
+			$search_payment_type = $temp["search_payment_type"]??[];
+			$search_claim_flg = $temp["search_claim_flg"]??[];
+		} else {
+			$search_payment_type = array();
+			$search_claim_flg = array();
+		}
+
+		$_SESSION["amount_product.search_start_buy_date"] = $search_start_buy_date;
+		$_SESSION["amount_product.search_end_buy_date"] = $search_end_buy_date;
+		$_SESSION["amount_product.search_monthly"] = "";
+		$_SESSION["amount_product.search_product_name"] = $search_product_name;
+		$_SESSION["amount_product.search_product_code"] = $search_product_code;
+		$_SESSION["amount_product.search_product_type_add"] = $search_product_type_add??[];
+		if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
+			$_SESSION["amount_product.search_payment_type"] = $search_payment_type??[];
+			$_SESSION["amount_product.search_claim_flg"] = $search_claim_flg??[];
+		} else {
+			$_SESSION["amount_product.search_payment_type"] = array();
+			$_SESSION["amount_product.search_claim_flg"] = array();
+		}
+		$_SESSION["amount_product.page"] = 1;
 	}
-	$_SESSION["amount_product.page"] = 1;
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if (empty($_POST) && empty($_GET)){
@@ -217,11 +227,11 @@ if( $search_monthly=="" ){
 	}
 	//----------------------------------------------------------
 	if( $search_start_buy_date != "" ){
-		$where.= " and tbl_order.create_date>='".$search_start_buy_date."' ";
+		$where.= " and tbl_order_detail.create_date>='".$search_start_buy_date."' ";
 	}
 	//----------------------------------------------------------
 	if( $search_end_buy_date != "" ){
-		$where.= " and tbl_order.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
+		$where.= " and tbl_order_detail.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
 	}
 	//----------------------------------------------------------
 	if( $search_product_name != "" ){
@@ -326,8 +336,8 @@ if( $search_monthly=="" ){
 	//----------------------------------------------------------
 	$sql = "";
 	$sql.= "SELECT ";
-	$sql.= " DATE_FORMAT(tbl_order.create_date,'%Y') as buy_y, ";
-	$sql.= " DATE_FORMAT(tbl_order.create_date,'%m') as buy_m, ";
+	$sql.= " DATE_FORMAT(tbl_order_detail.create_date,'%Y') as buy_y, ";
+	$sql.= " DATE_FORMAT(tbl_order_detail.create_date,'%m') as buy_m, ";
 	$sql.= " COUNT( tbl_order_detail.product_id ) AS buy_count, ";
 	$sql.= " SUM( tbl_order_detail.pay_total ) AS all_pay_total ";
 	//$sql.= " tbl_order_detail.product_id, ";
@@ -349,11 +359,11 @@ if( $search_monthly=="" ){
 	}
 	//----------------------------------------------------------
 	if( $search_start_buy_date != "" ){
-		$where.= " and tbl_order.create_date>='".$search_start_buy_date."' ";
+		$where.= " and tbl_order_detail.create_date>='".$search_start_buy_date."' ";
 	}
 	//----------------------------------------------------------
 	if( $search_end_buy_date != "" ){
-		$where.= " and tbl_order.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
+		$where.= " and tbl_order_detail.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
 	}
 	//----------------------------------------------------------
 	if( $search_product_name != "" ){
@@ -405,10 +415,10 @@ if( $search_monthly=="" ){
 	//----------------------------------------------------------
 	$group = "";
 	$group.= " GROUP BY ";
-	$group.= " DATE_FORMAT(tbl_order.create_date,'%Y'), ";
-	$group.= " DATE_FORMAT(tbl_order.create_date,'%m') ";
+	$group.= " DATE_FORMAT(tbl_order_detail.create_date,'%Y'), ";
+	$group.= " DATE_FORMAT(tbl_order_detail.create_date,'%m') ";
 	//----------------------------------------------------------
-	$order = " ORDER BY DATE_FORMAT(tbl_order.create_date,'%Y') DESC,DATE_FORMAT(tbl_order.create_date,'%m') DESC ";
+	$order = " ORDER BY DATE_FORMAT(tbl_order_detail.create_date,'%Y') DESC,DATE_FORMAT(tbl_order_detail.create_date,'%m') DESC ";
 	//----------------------------------------------------------
 	$ret = $objDbConnect->query_fetch_arr($sql.$where.$group.$order);
 	//var_dump($sql.$where.$group.$order);
@@ -458,7 +468,17 @@ $template->assign('all_pay_total', $all_pay_total);
 $template->assign('all_buy_count', $all_buy_count);
 
 $template->assign('bar_association_id', $arr_session["cms_master.login.bar_association_id"]);
-$template->assign('post_data', serialize($_POST));
+$post_data = array(
+	"search_start_buy_date" => $search_start_buy_date,
+	"search_end_buy_date" => $search_end_buy_date,
+	"search_monthly" => $search_monthly,
+	"search_product_name" => $search_product_name,
+	"search_product_code" => $search_product_code,
+	"search_product_type_add" => $search_product_type_add,
+	"search_payment_type" => $search_payment_type,
+	"search_claim_flg" => $search_claim_flg,
+);
+$template->assign('post_data', serialize($post_data));
 
 $template->assign('page_name', 'amount_product');
 $template->admin_layout('amount_product/index.tpl');
