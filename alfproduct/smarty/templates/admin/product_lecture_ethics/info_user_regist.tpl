@@ -55,6 +55,7 @@ function formSubmit(formName, mode){
 <form action="info_user_regist.php" accept-charset="utf-8" method="post" name="list_form">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="pid" value="<!--{$pid|escape}-->">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->">
 
 <!--{if $res_msg != ""}-->
 <div style="color:red;">

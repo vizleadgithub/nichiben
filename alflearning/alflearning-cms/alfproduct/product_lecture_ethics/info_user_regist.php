@@ -62,6 +62,7 @@ if($mode == ""){
 
 // 代替倫理研修権限を付与する
 elseif ($mode == "add") {
+	csrf_token_verify();
 	if (isset($_POST['lawyer_numbers'])){
 		//テキストエリアの値
 		$textarea = $_POST['lawyer_numbers'];
@@ -140,6 +141,7 @@ elseif ($mode == "add") {
 
 // 追試×をレポートにする
 elseif ($mode == "report") {
+	csrf_token_verify();
 	if (isset($_POST['lawyer_numbers'])){
 		//テキストエリアの値
 		$textarea = $_POST['lawyer_numbers'];
@@ -195,6 +197,7 @@ elseif ($mode == "report") {
 
 // 完了を済とする
 elseif ($mode == "end") {
+	csrf_token_verify();
 	if (isset($_POST['lawyer_numbers'])){
 		//テキストエリアの値
 		$textarea = $_POST['lawyer_numbers'];
@@ -274,6 +277,7 @@ $template->assign('res', $res);
 //$template->assign('arr_input', $arr_input);
 $template->assign('arr_input_2', $arr_input_2);
 $template->assign('res_msg', $res_msg);
+$template->assign('csrf_token', csrf_token_get());
 
 $template->assign('page_name', 'product_lecture_ethics');
 $template->admin_layout('product_lecture_ethics/info_user_regist.tpl');

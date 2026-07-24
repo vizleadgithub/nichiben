@@ -46,6 +46,10 @@ function formSubmitStatus(formName, mode, sid, pid, flg){
 		}
 	}
 }
+function formSubmitUserRegist(formName, pid){
+	document.forms[formName].elements['pid'].value = pid;
+	document.forms[formName].submit();
+}
 </script>
 <!--{/if}-->
 
@@ -58,7 +62,8 @@ function formSubmitStatus(formName, mode, sid, pid, flg){
 
 <!--<h2>検索する内容を入力してください</h2>-->
 
-<form action="#" accept-charset="utf-8" method="post" name="search_form">
+<form action="info_user_regist.php" accept-charset="utf-8" method="post" name="search_form">
+	<input type="hidden" name="pid" value="">
 	<table class="form">
 		<tr>
 			<th colspan="2">
@@ -66,7 +71,7 @@ function formSubmitStatus(formName, mode, sid, pid, flg){
 			<!--{if $nichibenren_flg}-->
 			<a href="csv.php?type=info&pid=<!--{$pid}-->">CSV取得</a>
 			<!--{* <a href="csv.php?type=info_list&pid=<!--{$pid}-->">受付用リスト作成</a> *}-->
-			<a href="info_user_regist.php?pid=<!--{$pid}-->">個別登録</a>
+			<a href="javascript:void(0);" onclick="formSubmitUserRegist('search_form', <!--{$pid}-->);return false;">個別登録</a>
 			<a href="info_user_import.php?pid=<!--{$pid}-->">CSV取り込み</a>
 			<!--{/if}-->
 			</th>
@@ -88,6 +93,7 @@ function formSubmitStatus(formName, mode, sid, pid, flg){
 <input type="hidden" name="sid" value="">
 <input type="hidden" name="pid" value="">
 <input type="hidden" name="flg" value="">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->">
 <!--{if $res == "success"}-->
 <h3 style="color:blue; font-weight:bold">更新しました</h3>
 <!--{elseif $res == "failed"}-->

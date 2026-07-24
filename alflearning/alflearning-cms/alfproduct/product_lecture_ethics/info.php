@@ -23,7 +23,9 @@ $template->assign('nichibenren_flg', $nichibenren_flg);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if(isset($_GET["pid"])){
+if(isset($_POST["pid"])){
+	$pid = intval($_POST["pid"]);
+} elseif(isset($_GET["pid"])){
 	$pid = intval($_GET["pid"]);
 }
 if (strlen($pid) == 0) {
@@ -195,6 +197,7 @@ if(!isset($_POST['mode'])){
 	$template->assign('arr_list', $arr_list);
 	$template->assign('res', $res);
 	$template->assign('mtb_bar_association', $mtb_bar_association);
+	$template->assign('csrf_token', csrf_token_get());
 
 	$template->assign('page_name', 'product_lecture');
 	$template->admin_layout('product_lecture_ethics/info.tpl');
@@ -207,7 +210,9 @@ elseif($_POST['mode'] == 'delete') {
 	csrf_token_verify();
 	// 生徒ID
 	$sid = '';
-	if(isset($_GET["sid"])){
+	if(isset($_POST["sid"])){
+		$sid = intval($_POST["sid"]);
+	} elseif(isset($_GET["sid"])){
 		$sid = intval($_GET["sid"]);
 	}
 	if (strlen($sid) == 0) {
@@ -230,10 +235,13 @@ elseif($_POST['mode'] == 'delete') {
 
 // 完了変更
 elseif($_POST['mode'] == 'complete') {
+	csrf_token_verify();
 	// 生徒ID
 	$sid = '';
-	if(isset($_GET["sid"])){
-		$sid = $_GET["sid"];
+	if(isset($_POST["sid"])){
+		$sid = intval($_POST["sid"]);
+	} elseif(isset($_GET["sid"])){
+		$sid = intval($_GET["sid"]);
 	}
 	if (strlen($sid) == 0) {
 		header('Location: index.php');
@@ -262,10 +270,13 @@ elseif($_POST['mode'] == 'complete') {
 
 // ステイタス変更
 elseif($_POST['mode'] == 'status') {
+	csrf_token_verify();
 	// 生徒ID
 	$sid = '';
-	if(isset($_GET["sid"])){
-		$sid = $_GET["sid"];
+	if(isset($_POST["sid"])){
+		$sid = intval($_POST["sid"]);
+	} elseif(isset($_GET["sid"])){
+		$sid = intval($_GET["sid"]);
 	}
 	if (strlen($sid) == 0) {
 		header('Location: index.php');
