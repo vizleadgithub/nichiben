@@ -10,6 +10,13 @@ include("/srv/alfproduct/module/module.php");
 $objDbConnect = new DbConnect();
 //$objAdminPager = new AdminPager();
 $template = new Template();
+
+function append_error_message(&$err_msg, $message){
+	if ($err_msg !== '') {
+		$err_msg .= "\n";
+	}
+	$err_msg .= $message;
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objAlfSession = new AlfSession();
 $arr_session = $objAlfSession->session_check();
@@ -271,7 +278,7 @@ if ($mode == "upload") {
 				$take_date             = date('Y/m/d'); // 取込日
 				//========================================
 				if ($lawyer_number==""){
-					$err_msg .= '<br>'.$i.'行目：登録番号が記載されていません。';
+					append_error_message($err_msg, $i.'行目：登録番号が記載されていません。');
 				} else {
 					if(is_numeric($lawyer_number)){
 						// ユーザー情報取得
@@ -288,21 +295,21 @@ if ($mode == "upload") {
 							}
 							
 						} else {
-							$err_msg .= '<br>'.$i.'行目：ユーザー登録されていない登録番号です。';
+							append_error_message($err_msg, $i.'行目：ユーザー登録されていない登録番号です。');
 						}
 					} else {
-						$err_msg .= '<br>'.$i.'行目：登録番号は半角数字で記載してください。';
+						append_error_message($err_msg, $i.'行目：登録番号は半角数字で記載してください。');
 					}
 				}
 				//========================================
 				if($entry_date==""){
-					$err_msg .= '<br>'.$i.'行目：申込日が記載されていません。';
+					append_error_message($err_msg, $i.'行目：申込日が記載されていません。');
 				} else {
 					$arr_date = explode("|", str_replace(":", "|", str_replace(" ", "|", str_replace("-", "|", str_replace("/", "|", trim($entry_date))))) );
 					if( checkdate($arr_date[1], $arr_date[2], $arr_date[0]) ){
 						//$entry_date = $arr_date[0]."-".$arr_date[1]."-".$arr_date[2]."";
 					} else {
-						$err_msg .= '<br>'.$i.'行目：申込日は「YYYY/MM/DD」の形式で記載してください。';
+						append_error_message($err_msg, $i.'行目：申込日は「YYYY/MM/DD」の形式で記載してください。');
 					}
 				}
 				//========================================
@@ -323,7 +330,7 @@ if ($mode == "upload") {
 			// 定員を超えているか
 			$remaining = $arr_input_2['capacity'] - $arr_input_2['entry_number'] + 1;
 			if ($remaining < ($i - 1) ){
-				$err_msg .= '<br>定員オーバーしない行数で記載してください。';
+				append_error_message($err_msg, '定員オーバーしない行数で記載してください。');
 			}
 			
 			if ($err_msg != ''){
@@ -546,11 +553,12 @@ elseif ($mode == "regist") {
 			}
 			
 		} else {
-			$err_msg .= '登録に失敗しました。<br />ファイルを再アップロードしてください。';
+			append_error_message($err_msg, '登録に失敗しました。');
+			append_error_message($err_msg, 'ファイルを再アップロードしてください。');
 		}
 		
 	} else {
-		$err_msg .= '登録に失敗しました。';
+		append_error_message($err_msg, '登録に失敗しました。');
 	}
 }
 
@@ -597,11 +605,12 @@ elseif ($mode == "change") {
 			}
 			
 		} else {
-			$err_msg .= '更新に失敗しました。<br />ファイルを再アップロードしてください。';
+			append_error_message($err_msg, '更新に失敗しました。');
+			append_error_message($err_msg, 'ファイルを再アップロードしてください。');
 		}
 		
 	} else {
-		$err_msg .= '更新に失敗しました。';
+		append_error_message($err_msg, '更新に失敗しました。');
 	}
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
