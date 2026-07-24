@@ -181,29 +181,6 @@ $arr_claim_flg = array(
 				array("id"=>"0",	"name"=>"希望しない"),
 				array("id"=>"1",	"name"=>"希望する"),
 			);
-$order_payment_status_sql = "";
-$order_payment_status_sql.= "(CASE ";
-$order_payment_status_sql.= "WHEN NOT EXISTS (";
-$order_payment_status_sql.= " SELECT 1 FROM tbl_order_detail AS summary_detail";
-$order_payment_status_sql.= " WHERE summary_detail.order_id = tbl_order.order_id";
-$order_payment_status_sql.= "   AND summary_detail.product_id IS NOT NULL";
-$order_payment_status_sql.= "   AND summary_detail.payment_status <> '9'";
-$order_payment_status_sql.= ") THEN '9' ";
-$order_payment_status_sql.= "WHEN NOT EXISTS (";
-$order_payment_status_sql.= " SELECT 1 FROM tbl_order_detail AS summary_detail";
-$order_payment_status_sql.= " WHERE summary_detail.order_id = tbl_order.order_id";
-$order_payment_status_sql.= "   AND summary_detail.product_id IS NOT NULL";
-$order_payment_status_sql.= "   AND summary_detail.payment_status <> '9'";
-$order_payment_status_sql.= "   AND summary_detail.payment_status <> '2'";
-$order_payment_status_sql.= ") THEN '2' ";
-$order_payment_status_sql.= "WHEN NOT EXISTS (";
-$order_payment_status_sql.= " SELECT 1 FROM tbl_order_detail AS summary_detail";
-$order_payment_status_sql.= " WHERE summary_detail.order_id = tbl_order.order_id";
-$order_payment_status_sql.= "   AND summary_detail.product_id IS NOT NULL";
-$order_payment_status_sql.= "   AND summary_detail.payment_status <> '9'";
-$order_payment_status_sql.= "   AND summary_detail.payment_status NOT IN ('0', '1')";
-$order_payment_status_sql.= ") THEN '1' ";
-$order_payment_status_sql.= "ELSE '3' END)";
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $sql_c = "";
 $sql_c.= "SELECT ";
@@ -235,7 +212,7 @@ $sql.= "tbl_product.product_name AS product_name_TP, ";//商品名
 $sql.= "tbl_product.product_code AS product_code_TP, ";//商品コード
 
 //$sql.= "tbl_order_detail.payment_status, ";//支払いステータス
-$sql.= $order_payment_status_sql." AS payment_status, ";//支払いステータス
+$sql.= "tbl_order.payment_status, ";//支払いステータス
 $sql.= "tbl_order.create_date, ";//購入日
 $sql.= "tbl_order.payment_type, ";//支払い方法（1：カード　12：銀行振込）
 $sql.= "tbl_order.claim_flg, ";//請求書希望
@@ -251,7 +228,7 @@ $where = "";
 $where.= "WHERE ";
 $where.= " student.school_id='".$arr_session["cms_master.login.school_id"]."' ";
 $where.= " and tbl_order_detail.product_id IS NOT NULL ";
-$where.= " and ".$order_payment_status_sql." >= '1' ";//支払いステータス
+$where.= " and tbl_order.payment_status>='1' ";//支払いステータス
 //-----------------------------------
 if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 } else {
@@ -303,17 +280,17 @@ if( 0<count($search_payment_status) ){
 		if($i>0){ $temp_where.= " or "; }
 		if($search_payment_status[$i]=="1"){
 			$temp_where.= " ( ";
-			$temp_where.= " ".$order_payment_status_sql." = '2' ";//完了
+			$temp_where.= " tbl_order.payment_status = '2' ";//完了
 			$temp_where.= " ) ";
 		}
 		if($search_payment_status[$i]=="2"){
 			$temp_where.= " ( ";
-			$temp_where.= " ".$order_payment_status_sql." = '1' ";//全て未入金
+			$temp_where.= " tbl_order.payment_status = '1' ";//全て未入金
 			$temp_where.= " ) ";
 		}
 		if($search_payment_status[$i]=="3"){
 			$temp_where.= " ( ";
-			$temp_where.= " ".$order_payment_status_sql." = '3' ";//一部未入金
+			$temp_where.= " tbl_order.payment_status = '3' ";//一部未入金
 			$temp_where.= " ) ";
 		}
 	}
@@ -357,9 +334,9 @@ if( $search_orderby=="1" ){
 } elseif( $search_orderby=="2" ){
 	$order = " ORDER BY student.lawyer_number DESC ";
 } elseif( $search_orderby=="3" ){
-	$order = " ORDER BY ".$order_payment_status_sql." ASC ";
+	$order = " ORDER BY tbl_order.payment_status ASC ";
 } elseif( $search_orderby=="4" ){
-	$order = " ORDER BY ".$order_payment_status_sql." DESC ";
+	$order = " ORDER BY tbl_order.payment_status DESC ";
 } else {
 	$order = " ORDER BY tbl_order.order_id DESC ";
 }
