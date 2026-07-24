@@ -97,8 +97,8 @@ function formSubmitFpFix(formName, mode, pid, aid){
 			研修内容
 			<a href="csv.php?type=info_user&pid=<!--{$pid}-->&aid=<!--{$aid}-->">CSV取得</a>
 			<a href="csv.php?type=info_user_list&pid=<!--{$pid}-->&aid=<!--{$aid}-->">受付用リスト作成</a>
-			<a href="info_user_regist.php?pid=<!--{$pid}-->&aid=<!--{$aid}-->">個別登録</a>
-			<a href="info_user_import.php?pid=<!--{$pid}-->&aid=<!--{$aid}-->">CSV取り込み</a>
+			<a href="javascript:void(0);" onclick="document.forms['info_user_regist_form'].submit(); return false;">個別登録</a>
+			<a href="javascript:void(0);" onclick="document.forms['info_user_import_form'].submit(); return false;">CSV取り込み</a>
 			</th>
 		</tr>
 		<tr>
@@ -150,6 +150,16 @@ function formSubmitFpFix(formName, mode, pid, aid){
 			<div style="padding:5px 5px 0 0;"><!--{$disp_fp_fix_date|escape}--></div>
 		<!--{/if}-->
 	</div>
+</form>
+
+<form action="info_user_regist.php" accept-charset="utf-8" method="post" name="info_user_regist_form">
+<input type="hidden" name="pid" value="<!--{$pid}-->">
+<input type="hidden" name="aid" value="<!--{$aid}-->">
+</form>
+
+<form action="info_user_import.php" accept-charset="utf-8" method="post" name="info_user_import_form">
+<input type="hidden" name="pid" value="<!--{$pid}-->">
+<input type="hidden" name="aid" value="<!--{$aid}-->">
 </form>
 
 <form action="info_user.php" accept-charset="utf-8" method="post" name="list_form">
