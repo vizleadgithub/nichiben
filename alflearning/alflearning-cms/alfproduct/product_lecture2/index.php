@@ -406,7 +406,7 @@ WHERE
 	 ";
 //var_dump($sql3);
 	$ret3 = $objDbConnect->query_fetch_arr($sql3);
-	$ret[$ke]['branch_list'] = $ret3[0]["branch_list"];
+	$ret[$ke]['branch_list'] = str_replace('<br>', "\n", $ret3[0]["branch_list"]);
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $template->admin_title("講座管理");

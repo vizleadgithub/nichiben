@@ -528,7 +528,7 @@ WHERE
 		$res = $objDbConnect->query_fetch_arr($sql);
 		if ($res){
 			foreach ($res as $key => $val){
-				$ret[$ke]['branch_list'] .= $val['bar_association_branch_name']."<br>";
+				$ret[$ke]['branch_list'] .= $val['bar_association_branch_name']."\n";
 				//var_dump($val['bar_association_branch_name']);
 			}
 		}

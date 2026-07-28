@@ -21,7 +21,9 @@ if ($login_bar_association_id == 1){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $member_id = "";
-if( isset($_GET["sid"]) && !empty($_GET["sid"]) ){
+if( isset($_POST["sid"]) && !empty($_POST["sid"]) ){
+	$member_id = intval($_POST["sid"]);
+} elseif( isset($_GET["sid"]) && !empty($_GET["sid"]) ){
 	$member_id = intval($_GET["sid"]);
 }
 if($member_id == ""){

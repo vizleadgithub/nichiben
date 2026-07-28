@@ -54,6 +54,10 @@ if(isset($_POST["res"])){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $res_msg = '';
+$lawyer_numbers_input = '';
+if (isset($_POST['lawyer_numbers'])) {
+	$lawyer_numbers_input = $_POST['lawyer_numbers'];
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 初期表示
 if($mode == ""){
@@ -277,6 +281,7 @@ $template->assign('res', $res);
 //$template->assign('arr_input', $arr_input);
 $template->assign('arr_input_2', $arr_input_2);
 $template->assign('res_msg', $res_msg);
+$template->assign('lawyer_numbers', $lawyer_numbers_input);
 $template->assign('csrf_token', csrf_token_get());
 
 $template->assign('page_name', 'product_lecture_ethics');

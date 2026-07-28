@@ -11,7 +11,7 @@
 	<tr>
 		<td>
 			<!--{if $err_msg!=""}-->
-			<!--{$err_msg|escape}-->
+			<!--{$err_msg|escape|nl2br}-->
 			<!--{/if}-->
 			<!--{if $ok_msg!=""}-->
 			<!--{$ok_msg|escape}-->

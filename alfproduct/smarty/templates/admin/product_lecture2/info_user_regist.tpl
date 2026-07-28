@@ -56,7 +56,7 @@ function formSubmit(formName, mode){
 
 <!--{if $res_msg != ""}-->
 <div style="color:red;">
-	<!--{$res_msg|escape}-->
+	<!--{$res_msg|escape|nl2br}-->
 </div>
 <!--{/if}-->
 

@@ -25,8 +25,10 @@ $template->assign('nichibenren_flg', $nichibenren_flg);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if(isset($_REQUEST["pid"])){
-	$pid = $_REQUEST["pid"];
+if (isset($_POST["pid"]) && strlen($_POST["pid"]) > 0) {
+	$pid = $_POST["pid"];
+} elseif (isset($_GET["pid"]) && strlen($_GET["pid"]) > 0) {
+	$pid = $_GET["pid"];
 }
 if (strlen($pid) == 0) {
 	header('Location: index.php');

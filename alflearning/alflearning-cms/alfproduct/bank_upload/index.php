@@ -18,6 +18,12 @@ $file_form_name = '';
 $new_name = "";
 $err_msg = "";
 $upload_dir_name = "";
+function append_error_message(&$err_msg, $message) {
+	if ($err_msg !== '') {
+		$err_msg .= "\n";
+	}
+	$err_msg .= $message;
+}
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 
 	if (isset($_FILES["csv_upload"])){
@@ -85,7 +91,7 @@ if( $err_msg=="" ){
 			//========================================
 			$data["order_no"] = "";
 			if( $data[0]=="" ){
-				$err_msg .= '<br>'.$i.'行目：注文Noが記載されていません。';
+				append_error_message($err_msg, $i.'行目：注文Noが記載されていません。');
 			} else {
 				//if(  is_numeric( $data[0] )  ){
 					$data["order_no"] = $data[0];
@@ -96,35 +102,35 @@ if( $err_msg=="" ){
 			//========================================
 			$data["product_id"] = "";
 			if( $data[1]=="" ){
-				$err_msg .= '<br>'.$i.'行目：商品IDが記載されていません。';
+				append_error_message($err_msg, $i.'行目：商品IDが記載されていません。');
 			} else {
 				if(  is_numeric( $data[1] )  ){
 					$data["product_id"] = $data[1];
 				} else {
-					$err_msg .= '<br>'.$i.'行目：商品IDは半角数字で記載してください。';
+					append_error_message($err_msg, $i.'行目：商品IDは半角数字で記載してください。');
 				}
 			}
 			//========================================
 			$data["pay_total"] = "";
 			if( $data[2]=="" ){
-				$err_msg .= '<br>'.$i.'行目：振込金額が記載されていません。';
+				append_error_message($err_msg, $i.'行目：振込金額が記載されていません。');
 			} else {
 				if(  is_numeric( $data[2] )  ){
 					$data["pay_total"] = $data[2];
 				} else {
-					$err_msg .= '<br>'.$i.'行目：振込金額は半角数字で記載してください。';
+					append_error_message($err_msg, $i.'行目：振込金額は半角数字で記載してください。');
 				}
 			}
 			//========================================
 			$data["receipt_date"] = "";
 			if( $data[3]=="" ){
-				$err_msg .= '<br>'.$i.'行目：入金日が記載されていません。';
+				append_error_message($err_msg, $i.'行目：入金日が記載されていません。');
 			} else {
 				$arr_date = explode("|", str_replace(":", "|", str_replace(" ", "|", str_replace("-", "|", str_replace("/", "|", trim($data[3]))))) );
 				if( checkdate($arr_date[1], $arr_date[2], $arr_date[0]) ){
 					$data["receipt_date"] = $arr_date[0]."-".$arr_date[1]."-".$arr_date[2]."";
 				} else {
-					$err_msg .= '<br>'.$i.'行目：入金日は「YYYY/MM/DD」の形式で記載してください。';
+					append_error_message($err_msg, $i.'行目：入金日は「YYYY/MM/DD」の形式で記載してください。');
 				}
 			}
 			//========================================
@@ -145,10 +151,10 @@ if( $err_msg=="" ){
 				$data["student_name"] = $ret[0]["student_name"];
 				if($ret[0]["payment_type"]=="12"){
 				} else {
-					$err_msg .= '<br>'.$i.'行目：該当する注文は銀行振込ではありません。';
+					append_error_message($err_msg, $i.'行目：該当する注文は銀行振込ではありません。');
 				}
 			} else {
-				$err_msg .= '<br>'.$i.'行目：該当する注文Noが存在しません。';
+				append_error_message($err_msg, $i.'行目：該当する注文Noが存在しません。');
 			}
 			//========================================
 			$data["order_detail_id"] = "";
@@ -171,10 +177,10 @@ if( $err_msg=="" ){
 				$data["product_id"] = $ret[0]["product_id"];
 				if($ret[0]["pay_total"]==$data[2]){
 				} else {
-					$err_msg .= '<br>'.$i.'行目：該当する注文金額と振込金額が一致しません。';
+					append_error_message($err_msg, $i.'行目：該当する注文金額と振込金額が一致しません。');
 				}
 			} else {
-				$err_msg .= '<br>'.$i.'行目：該当する商品注文が存在しません。';
+				append_error_message($err_msg, $i.'行目：該当する商品注文が存在しません。');
 			}
 			//========================================
 			$data["take_date"] = date("Y-m-d");
@@ -213,7 +219,7 @@ if( $err_msg=="" ){
 		$ret = $objDbConnect->execute($sql.$where);
 
 		if( !$ret ){
-			$err_msg .= '<br>'.($i+1).'行目：銀行振込の取り込みに失敗しました。';
+			append_error_message($err_msg, ($i+1).'行目：銀行振込の取り込みに失敗しました。');
 			//$objDbConnect->rollback();
 		} else {
 			// パスポート商品の場合は、studentテーブルのデータを更新する

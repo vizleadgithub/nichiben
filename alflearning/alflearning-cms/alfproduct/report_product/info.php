@@ -24,7 +24,10 @@ $mode = "";
 $pid = "";
 $product_id = "";
 $search_orderby = "1";
-if( isset($_GET["pid"]) && !empty($_GET["pid"]) ){
+if( isset($_POST["pid"]) && !empty($_POST["pid"]) ){
+	$pid = intval($_POST["pid"]);
+	$product_id = intval($_POST["pid"]);
+} elseif( isset($_GET["pid"]) && !empty($_GET["pid"]) ){
 	$pid = intval($_GET["pid"]);
 	$product_id = intval($_GET["pid"]);
 }

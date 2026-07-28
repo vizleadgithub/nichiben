@@ -127,6 +127,12 @@ if(isset($_POST["res"])){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $res_msg = '';
+function append_result_message(&$res_msg, $message) {
+	if ($res_msg !== '') {
+		$res_msg .= "\n";
+	}
+	$res_msg .= $message;
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 初期表示
 if(!isset($_POST['mode'])){
@@ -149,6 +155,7 @@ elseif($_POST['mode'] == 'regist') {
 		
 		$i = 1;
 		$res_cnt = 0;
+		$has_fatal_error = false;
 		foreach ($lawyer_numbers as $lawyer_number){
 			$menber_id = '';
 			$temp_no   = '';
@@ -168,7 +175,7 @@ elseif($_POST['mode'] == 'regist') {
 					$sql = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE member_id = '".mysqli_real_escape_string($objDbConnect->connect, $menber_id)."' AND product_id = '".$arr_input_2['product_id']."' AND payment_status IN(1,2) AND bar_association_branch_id = '".$arr_input_2['bar_association_branch_id']."'";
 					$result2 = $objDbConnect->query_fetch($sql);
 					if ($result2['c'] >= 1){
-						$res_msg .= '<br>'.$i.'行目：申込済みのユーザーです。';
+						append_result_message($res_msg, $i.'行目：申込済みのユーザーです。');
 						$i += 1;
 						continue;
 					}
@@ -196,14 +203,15 @@ elseif($_POST['mode'] == 'regist') {
 					$objDbConnect->tran_begin();
 					
 					// order_noの取得と更新
-					$sql = "select create_date, no from tbl_order_no where create_date='".date("Y-m-d")."' ORDER BY no DESC LIMIT 1";
+					$order_no_date = date("Ymd");
+					$sql = "select create_date, no from tbl_order_no where create_date='".$order_no_date."' ORDER BY no DESC LIMIT 1";
 					$ret = $objDbConnect->query_fetch_arr($sql);
 					if( count($ret)>0 ){
 						$temp_no = $ret[0]["no"] + 1;
-						$temp_date = date("Ymd");
+						$temp_date = $order_no_date;
 					} else {
 						$temp_no = 10001;
-						$temp_date = date("Ymd");
+						$temp_date = $order_no_date;
 					}
 					
 					$sql = "INSERT INTO tbl_order_no( create_date, no ) values('".$temp_date."','".$temp_no."')";
@@ -313,6 +321,7 @@ elseif($_POST['mode'] == 'regist') {
 						// ロールバック
 						$objDbConnect->rollback();
 						$res_msg = '申込状況の追加に失敗しました。';
+						$has_fatal_error = true;
 						break;
 						
 					} else {
@@ -321,17 +330,19 @@ elseif($_POST['mode'] == 'regist') {
 						$res_cnt += 1;
 					}
 				} else {
-					$res_msg .= '<br>'.$i.'行目：登録番号のユーザーが存在しないため、追加することができませんでした。';
+					append_result_message($res_msg, $i.'行目：登録番号のユーザーが存在しないため、追加することができませんでした。');
 				}
 				
 			} else {
-				$res_msg .= '<br>'.$i.'行目：登録番号は半角数字で記載してください。';
+				append_result_message($res_msg, $i.'行目：登録番号は半角数字で記載してください。');
 			}
 			
 			$i += 1;
 		}
 		
-		$res_msg .= '<br>'.'【合計'.$res_cnt.'名】を研修登録しました。';
+		if (!$has_fatal_error) {
+			append_result_message($res_msg, '【合計'.$res_cnt.'名】を研修登録しました。');
+		}
 		
 		// 登録した人数を申込人数にプラスする
 		$arr_input_2['entry_number'] = $arr_input_2['entry_number'] + $res_cnt;

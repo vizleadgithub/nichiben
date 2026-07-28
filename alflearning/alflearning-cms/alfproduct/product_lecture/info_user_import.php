@@ -335,14 +335,15 @@ elseif ($mode == "regist") {
 					$objDbConnect->tran_begin();
 					
 					// order_noの取得と更新
-					$sql = "select create_date, no from tbl_order_no where create_date='".date("Y-m-d")."' ORDER BY no DESC LIMIT 1";
+					$order_no_date = date("Ymd");
+					$sql = "select create_date, no from tbl_order_no where create_date='".$order_no_date."' ORDER BY no DESC LIMIT 1";
 					$ret = $objDbConnect->query_fetch_arr($sql);
 					if( count($ret)>0 ){
 						$temp_no = $ret[0]["no"] + 1;
-						$temp_date = date("Ymd");
+						$temp_date = $order_no_date;
 					} else {
 						$temp_no = 10001;
-						$temp_date = date("Ymd");
+						$temp_date = $order_no_date;
 					}
 					
 					$sql = "INSERT INTO tbl_order_no( create_date, no ) values('".$temp_date."','".$temp_no."')";
