@@ -125,69 +125,67 @@ $arr_session = $objAlfSession->session_check();
 <!--{php}-->if ($arr_session["cms_master.login.bar_association_id"] == '1'){<!--{/php}-->
 	<!--{assign var='menu_count' value=$menu_count+1}--><!--{*お問い合わせ*}-->
 <!--{php}-->}<!--{/php}-->
-
-		<!--{assign var=temp_param_dummy_val value=$smarty.now|date_format:"%Y%m%d%H%M%S"}-->
 		<div id="header_navi" style="<!--{if $menu_count>11}-->height:70px;<!--{/if}-->">
 			<ul>
-				<li><a href="/admin_top?_=<!--{$temp_param_dummy_val}-->">トップ</a></li><!--{assign var='menu_count' value=0}-->
+				<li><a href="/admin_top">トップ</a></li><!--{assign var='menu_count' value=0}-->
 				<!--{php}-->if (is_array($arr_session["cms_master.login.teacher_auth"]) && $arr_session["cms_master.login.teacher_auth"]["student"] == 1){<!--{/php}-->
-					<li><a href="/cms_student?_=<!--{$temp_param_dummy_val}-->">受講者</a></li>
+					<li><a href="/cms_student">受講者</a></li>
 				<!--{php}-->}<!--{/php}-->
 				<!--{php}-->if (is_array($arr_session["cms_master.login.teacher_auth"]) && $arr_session["cms_master.login.teacher_auth"]["teacher"] == 1){<!--{/php}-->
-					<li><a href="/cms_teacher?_=<!--{$temp_param_dummy_val}-->">管理者</a></li>
+					<li><a href="/cms_teacher">管理者</a></li>
 				<!--{php}-->}<!--{/php}-->
 
 				<!--{php}-->if ($arr_session["cms_master.login.teacher_id"] == '-1'){<!--{/php}-->
-					<li><a href="/cms_material?_=<!--{$temp_param_dummy_val}-->">資料</a></li>
+					<li><a href="/cms_material">資料</a></li>
 				<!--{php}-->}<!--{/php}-->
 
 				<!--{php}-->if ($arr_session["cms_master.login.teacher_id"] == '-1'){<!--{/php}-->
-					<li><a href="/cms_book_library?_=<!--{$temp_param_dummy_val}-->">図書室</a></li>
+					<li><a href="/cms_book_library">図書室</a></li>
 				<!--{php}-->}<!--{/php}-->
 
 				<!--{php}-->if ($arr_session["cms_master.login.bar_association_id"] == '1'){<!--{/php}-->
-					<li><a href="/cms_video?_=<!--{$temp_param_dummy_val}-->">コンテンツ*</a></li>
+					<li><a href="/cms_video">コンテンツ*</a></li>
 				<!--{php}-->}<!--{/php}-->
 
 				<!--{php}-->if ($arr_session["cms_master.login.teacher_id"] == '-1'){<!--{/php}-->
-					<li><a href="/cms_issue?_=<!--{$temp_param_dummy_val}-->">課題</a></li>
+					<li><a href="/cms_issue">課題</a></li>
 				<!--{php}-->}<!--{/php}-->
 
 				<!--{php}-->if ($arr_session["cms_master.login.bar_association_id"] == '1'){<!--{/php}-->
-					<li><a href="/cms_information?_=<!--{$temp_param_dummy_val}-->">お知らせ</a></li>
+					<li><a href="/cms_information">お知らせ</a></li>
 				<!--{php}-->}<!--{/php}-->
 
 				<!--{php}-->if ($arr_session["cms_master.login.teacher_id"] == '-1'){<!--{/php}-->
-					<li><a href="/cms_school_manage?_=<!--{$temp_param_dummy_val}-->">学校管理</a></li>
+					<li><a href="/cms_school_manage">学校管理</a></li>
 				<!--{php}-->}<!--{/php}-->
 
-				<li<!--{if $page_name=="product"}--> class="selected"<!--{/if}-->><a href="/alfproduct/product_live/?_=<!--{$temp_param_dummy_val}-->">商品</a></li>
-				<li<!--{if $page_name=="product_lecture" || $page_name=="product_lecture2" || $page_name=="product_lecture_ethics" }--> class="selected"<!--{/if}-->><a href="/alfproduct/product_lecture/?_=<!--{$temp_param_dummy_val}-->">講座管理</a></li>
+				<li<!--{if $page_name=="product"}--> class="selected"<!--{/if}-->><a href="/alfproduct/product_live/">商品</a></li>
+				<li<!--{if $page_name=="product_lecture" || $page_name=="product_lecture2" || $page_name=="product_lecture_ethics" }--> class="selected"<!--{/if}-->><a href="/alfproduct/product_lecture/">講座管理</a></li>
 
 				<!--{php}-->if ($arr_session["cms_master.login.bar_association_id"] == '1'){<!--{/php}-->
-					<li<!--{if $page_name=="report" || $page_name=="report_product" || $page_name=="report_all"}--> class="selected"<!--{/if}-->><a href="/cms_report?_=<!--{$temp_param_dummy_val}-->">レポート</a></li>
+					<li<!--{if $page_name=="report" || $page_name=="report_product" || $page_name=="report_all"}--> class="selected"<!--{/if}-->><a href="/cms_report">レポート</a></li>
 				<!--{php}-->} else {<!--{/php}-->
-					<li<!--{if $page_name=="report" || $page_name=="report_product" || $page_name=="report_all"}--> class="selected"<!--{/if}-->><a href="/alfproduct/report_product?_=<!--{$temp_param_dummy_val}-->">レポート</a></li>
+					<li<!--{if $page_name=="report" || $page_name=="report_product" || $page_name=="report_all"}--> class="selected"<!--{/if}-->><a href="/alfproduct/report_product">レポート</a></li>
 				<!--{php}-->}<!--{/php}-->
 
-				<li<!--{if $page_name=="amount_user" || $page_name=="amount_product" || $page_name=="amount_order" || $page_name=="bank_upload" || $page_name=="amount_passport"}--> class="selected"<!--{/if}-->><a href="/alfproduct/amount_order/?_=<!--{$temp_param_dummy_val}-->">集計</a></li>
+				<li<!--{if $page_name=="amount_user" || $page_name=="amount_product" || $page_name=="amount_order" || $page_name=="bank_upload" || $page_name=="amount_passport"}--> class="selected"<!--{/if}-->><a href="/alfproduct/amount_order/">集計</a></li>
 
 				<!--{php}-->if ($arr_session["cms_master.login.bar_association_id"] == '1'){<!--{/php}-->
-					<li><a href="/cms_exam?_=<!--{$temp_param_dummy_val}-->">問題</a></li>
-					<li><a href="/cms_exam2?_=<!--{$temp_param_dummy_val}-->">アンケート</a></li>
-					<li><a href="/cms_ranking?_=<!--{$temp_param_dummy_val}-->">ランキング</a></li>
-					<li><a href="/cms_category?_=<!--{$temp_param_dummy_val}-->">カテゴリ</a></li>
+					<li><a href="/cms_exam">問題</a></li>
+					<li><a href="/cms_exam2">アンケート</a></li>
+					<li><a href="/cms_ranking">ランキング</a></li>
+					<li><a href="/cms_category">カテゴリ</a></li>
 				<!--{php}-->}<!--{/php}-->
 
 				<!--{php}-->if ($arr_session["cms_master.login.bar_association_id"] == '1'){<!--{/php}-->
-					<li<!--{if $page_name=="inquiry"}--> class="selected"<!--{/if}-->><a href="/alfproduct/inquiry/?_=<!--{$temp_param_dummy_val}-->">お問い合わせ*</a></li>
+					<li<!--{if $page_name=="inquiry"}--> class="selected"<!--{/if}-->><a href="/alfproduct/inquiry/">お問い合わせ*</a></li>
 				<!--{php}-->}<!--{/php}-->
 
 
-				<!--{*<li><a href="/cms_report?_=<!--{$temp_param_dummy_val}-->">レポート</a></li>*}-->
-				<!--{*<li><a href="/cms_auth?_=<!--{$temp_param_dummy_val}-->">権限</a></li>*}-->
-				<!--{*<li><a href="/cms_cource?_=<!--{$temp_param_dummy_val}-->">講座</a></li>*}-->
-				<!--{* <li<!--{if $page_name=="mailmagazine"}--> class="selected"<!--{/if}-->><a href="/alfproduct/mailmagazine/?_=<!--{$temp_param_dummy_val}-->">メルマガ*</a></li> *}-->
+				<!--{*<li><a href="/cms_report">レポート</a></li>*}-->
+				<!--{*<li><a href="/cms_auth">権限</a></li>*}-->
+				<!--{*<li><a href="/cms_cource">講座</a></li>*}-->
+				<!--{* <li<!--{if $page_name=="mailmagazine"}--> class="selected"<!--{/if}-->><a href="/alfproduct/mailmagazine/">メルマガ*</a></li> *}-->
 			</ul>
 		</div>
 	</div>

@@ -134,6 +134,7 @@ $template->assign('list_end', $objPager->getOffsetEnd());
 $template->assign('page_max', $pagemax);
 
 $template->assign('ymd', date("Ymd"));
+$template->assign('csrf_token', csrf_token_get());
 
 $template->layout_noside('mypage/buy_list.tpl');
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -25,8 +25,8 @@ if (!st_login_check()){
 $objDbConnect = new DbConnect();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $oid = "";
-if( isset($_GET["oid"]) && !empty($_GET["oid"]) && is_numeric($_GET["oid"]) ){
-	$oid = $_GET["oid"];
+if( isset($_POST["oid"]) && !empty($_POST["oid"]) && is_numeric($_POST["oid"]) ){
+	$oid = $_POST["oid"];
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 購入履歴詳細の取得＆ログインユーザーの購入履歴かチェック

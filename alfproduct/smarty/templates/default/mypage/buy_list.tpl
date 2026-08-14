@@ -80,12 +80,17 @@
 											if (confirm("宛名を指定して発行したい場合は、詳細ページから発行してください。\n\nこのページから発行した場合、宛名は「<!--{$smarty.session.user.name|escape:'javascript'}--> 様」となります。\n\nこのまま発行しても宜しいですか？")){
 												document.getElementById('download_btn<!--{$val.order_id|escape}-->').disabled = true;
 												document.getElementById('download_div<!--{$val.order_id|escape}-->').innerHTML = '<img src="/img/mypage/issue_btn_comp.png">';
-												window.open("receipt_download.php?oid=<!--{$val.order_id|escape}-->", "", "width=10,height=10");
+											window.open("", "receipt_download_<!--{$val.order_id|escape:'javascript'}-->", "width=10,height=10");
+											document.getElementById('receipt_download_form<!--{$val.order_id|escape:'javascript'}-->').submit();
 											}
 										}
 									</script>
 									<div id="download_div<!--{$val.order_id|escape}-->">
+										<form id="receipt_download_form<!--{$val.order_id|escape}-->" action="receipt_download.php" method="post" target="receipt_download_<!--{$val.order_id|escape}-->">
+											<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
+											<input type="hidden" name="oid" value="<!--{$val.order_id|escape}-->" />
 										<a id="download_btn<!--{$val.order_id|escape}-->" href="javascript: void(0);" onclick="non_download<!--{$val.order_id|escape}-->();" ><img src="/img/mypage/issue_btn.png"></a>
+										</form>
 									</div>
 								<!--{else}-->
 									未発行

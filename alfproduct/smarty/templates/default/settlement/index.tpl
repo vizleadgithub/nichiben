@@ -68,7 +68,7 @@ function buy__close(){
 		</tr>
 		<!--{foreach from=$cart item=val key=key}-->
 		<tr>
-			<td style="border:solid 1px #cccccc;text-align:center;padding:15px;vertical-align:middle;"><a href="?mode=delete&pid=<!--{$key}-->">削除</a></td>
+			<td style="border:solid 1px #cccccc;text-align:center;padding:15px;vertical-align:middle;"><button type="submit" name="delete_pid" value="<!--{$key|escape}-->" style="border:0;background:none;color:#0000ee;text-decoration:underline;cursor:pointer;padding:0;">削除</button></td>
 			<td style="border:solid 1px #cccccc;text-align:left;padding:15px;vertical-align:middle;"><!--{$val.product_name|escape}--></td>
 			<td style="border:solid 1px #cccccc;text-align:right;padding:15px;vertical-align:middle;"><!--{$val.price|escape|number_format}-->円</td>
 		</tr>

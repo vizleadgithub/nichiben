@@ -65,7 +65,7 @@
 <br />
 
 <!--{if $disp_flg}-->
-	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
+	<a href="csv.php?data=<!--{$post_data|urlencode|escape}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
 	（全<!--{$all_count}-->件）
 
 	<!--{if $search_monthly==""}-->
@@ -124,7 +124,13 @@
 		<!--{foreach from=$arr_list item="row"}-->
 		<!--{cycle values="0,1" assign="cycle_bg"}-->
 		<tr style="">
-			<td class="tdc" style=""><a href=""><a href="?post_data=<!--{$post_data|escape}-->&buy_y=<!--{$row.buy_y|escape}-->&buy_m=<!--{$row.buy_m|escape}-->">[<!--{$row.buy_y|escape}-->/<!--{$row.buy_m|escape}-->]</a></td>
+			<td class="tdc" style="">
+				<!--{if $row.buy_y != "" && $row.buy_m != ""}-->
+					<a href="?post_data=<!--{$post_data|urlencode|escape}-->&buy_y=<!--{$row.buy_y|escape|urlencode}-->&buy_m=<!--{$row.buy_m|escape|urlencode}-->">[<!--{$row.buy_y|escape}-->/<!--{$row.buy_m|escape}-->]</a>
+				<!--{else}-->
+					-
+				<!--{/if}-->
+			</td>
 			<td class="tdc" style=""><!--{$row.buy_count|escape|number_format}--><!--{*$row.product_id|escape|number_format*}--></td>
 			<td class="tdc" style=""><!--{$row.all_pay_total|escape|number_format}--><!--{*$row.pay_total|escape|number_format*}-->円</td>
 		</tr>

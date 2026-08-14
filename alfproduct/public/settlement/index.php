@@ -10,7 +10,8 @@ $template = new Template();
 $back_url = "/";
 
 $err_msg = '';
-$mode = $_POST["mode"] ?? '';
+$delete_pid = $_POST['delete_pid'] ?? null;
+$mode = $delete_pid !== null ? 'delete' : ($_POST['mode'] ?? '');
 $product_type_add = $_POST['hid_product_type_add'] ?? '';
 
 // ログインチェック
@@ -24,7 +25,7 @@ if (!$st_login_check){
 }
 
 $pid = "";
-if (isset($_POST['pid'])){
+if (isset($_POST['pid']) || $delete_pid !== null){
 	if (strpos($_SERVER['HTTP_REFERER'], '/product/detail.php') !== false
 	 && strpos($_SERVER['HTTP_REFERER'], '/settlement/index.php') !== false){
 		$template->layout_noside('settlement/err.tpl');
@@ -32,7 +33,7 @@ if (isset($_POST['pid'])){
 		exit;
 	}
 
-	$pid = intval($_POST['pid'] ?? 0);
+	$pid = intval($delete_pid ?? ($_POST['pid'] ?? 0));
 	if(cmCheckInput($pid, 'CK_NUM')){
 		$template->layout_noside('settlement/err.tpl');
 		$objDbConnect->close();
