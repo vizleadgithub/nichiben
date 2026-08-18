@@ -1,5 +1,8 @@
 <?php
 include(dirname(__FILE__) ."./../../module/module.php");
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	csrf_token_verify();
+}
 $objDbConnect = new DbConnect();
 $template = new Template();
 
@@ -91,7 +94,7 @@ if( !$arrTemp ) {
 	}
 }
 
-if ($_POST["mode"] == "settlement_exe"){
+if (($_POST["mode"] ?? '') == "settlement_exe"){
 	$claim_flg = 0;
 	if (isset($_POST["claim_flg"])){
 		$claim_flg = $_POST["claim_flg"];
