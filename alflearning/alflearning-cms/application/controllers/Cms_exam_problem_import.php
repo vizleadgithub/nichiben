@@ -118,10 +118,12 @@ class Cms_exam_problem_import extends CI_Controller {
 		// 配列型の所属講座・設問グループの値をチェック
 		$this->load->helper('string_inspection_helper');
 
-		$check_exam_problem_lectures = $this->input->post('exam_problem_lectures') ? intval($this->input->post('exam_problem_lectures')):array();
-		$check_exam_problem_groups   = $this->input->post('exam_problem_groups') ? intval($this->input->post('exam_problem_groups')):array();
+		$check_exam_problem_lectures = $this->input->post('exam_problem_lectures');
+		$check_exam_problem_groups   = $this->input->post('exam_problem_groups');
+		$check_exam_problem_lectures = is_null($check_exam_problem_lectures) ? array() : $check_exam_problem_lectures;
+		$check_exam_problem_groups   = is_null($check_exam_problem_groups) ? array() : $check_exam_problem_groups;
 
-		if(!check_array_data_num(array($check_exam_problem_lectures, $check_exam_problem_groups))){
+		if(!is_array($check_exam_problem_lectures) || !is_array($check_exam_problem_groups) || !check_array_data_num(array($check_exam_problem_lectures, $check_exam_problem_groups))){
 			$this->lang->load('error');
 			$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout'); 
 			$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
@@ -138,7 +140,6 @@ class Cms_exam_problem_import extends CI_Controller {
 		}else{
 			//管理講師と所属講座の関係チェック
 			$check_teacher_id                  = $this->input->post('teacher_id') ? intval($this->input->post('teacher_id')):0;
-			$check_exam_problem_lectures       = $this->input->post('exam_problem_lectures') ? intval($this->input->post('exam_problem_lectures')):array();
 			$check_exam_problem_lectures_count = count($check_exam_problem_lectures);
 			$lecture_error_msg                 = "";
 			$local_file_error_msg              = "";
@@ -175,8 +176,8 @@ class Cms_exam_problem_import extends CI_Controller {
 				//失敗
 				//受け渡し変数初期化（未定義エラー回避の為）
 				$data['exam_problem']['teacher_id']            = intval( $this->input->post('teacher_id') );
-				$data['exam_problem']['exam_problem_lectures'] = $this->input->post('exam_problem_lectures') ? intval($this->input->post('exam_problem_lectures')):array();
-				$data['exam_problem']['exam_problem_groups']   = $this->input->post('exam_problem_groups')  ? intval($this->input->post('exam_problem_groups'))  :array();
+				$data['exam_problem']['exam_problem_lectures'] = $check_exam_problem_lectures;
+				$data['exam_problem']['exam_problem_groups']   = $check_exam_problem_groups;
 				$data['exam_problem']['local_file']            = '';
 
 				//エラーメッセージ設定
