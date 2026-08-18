@@ -319,6 +319,9 @@ class Cms_exam2_problem_import extends CI_Controller {
 				
 				// カンマ区切り文字列を配列化（文字コードも変更）
 				$arrayRecord = $this->fgetcsv($fp,  filesize($csv_file_name), ",");
+				if($arrayRecord === false){
+					break;
+				}
 				
 				$temp_import_result = array();  // 戻り値情報格納
 				$exam2_problem       = array();  // テーブル登録情報格納
