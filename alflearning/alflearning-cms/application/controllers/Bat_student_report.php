@@ -15,6 +15,8 @@ class Bat_student_report extends CI_Controller {
 
 		//DB接続
 		$this->load->database();
+		// 長時間バッチでSQL履歴を溜め込むとメモリを圧迫するため無効化
+		$this->db->save_queries = FALSE;
 	}
 
 	//----------------------------------------------
@@ -29,6 +31,15 @@ class Bat_student_report extends CI_Controller {
 	//----------------------------------------------
 	public function student_report($start_date = '', $end_date = ''){
 		print "[".date('Y-m-d H:i:s')."]"."start student_report \n";
+		$start_student_id = 0;
+		$end_student_id = 0;
+		if (is_numeric($start_date) && intval($start_date) > 0){
+			$start_student_id = intval($start_date);
+		}
+		if (is_numeric($end_date) && intval($end_date) > 0){
+			$end_student_id = intval($end_date);
+		}
+		print "[".date('Y-m-d H:i:s')."][start_student_id:".$start_student_id."][end_student_id:".$end_student_id."]\n";
 		//+++++++++++++++++++++++++++++++++++++++++++++++
 		/*
 		直近再生日時が登録済み、視聴完了フラグが完了、視聴完了日時が未登録のものに対し、
@@ -54,8 +65,8 @@ class Bat_student_report extends CI_Controller {
 			"UPDATE report_user_video_viewed SET duration=(select video_alfstream_status.alfstream_duration from video_alfstream_status where video_alfstream_status.video_id=report_user_video_viewed.video_id), duration_reading=(select video_alfstream_status.alfstream_duration from video_alfstream_status where video_alfstream_status.video_id=report_user_video_viewed.video_id), percent=100, update_at='".date("Y-m-d H:i:s")."' WHERE duration='00:00:00' AND duration_reading='00:00:00' AND complete_date>'0000-00-00 00:00:00' AND complete_flag=1 AND percent=0"
 		);
 		//+++++++++++++++++++++++++++++++++++++++++++++++
-		$test_flg = 1;//テスト用に集計対象を限定する場合（範囲の指定はソース内を「対象のユーザを指定する場合」で検索した箇所で）
-		$one_day_flg = 1;//集計対象の日付を過去1日に限定
+		$test_flg = 0;//テスト用に集計対象を限定する場合（範囲の指定はソース内を「対象のユーザを指定する場合」で検索した箇所で）
+		$one_day_flg = 0;//集計対象の日付を過去1日に限定
 
 		$add_history_recode_flg = 1;//ベースレコード作成
 		$add_history_recode_sub_flg = 1;//サブベース情報作成
@@ -113,6 +124,12 @@ class Bat_student_report extends CI_Controller {
 			$sql.= "tbl_order_detail ";
 			$sql.= "WHERE 1=1 ";
 			$sql.= " AND member_id>0 ";
+			if( $start_student_id > 0 ){
+				$sql.= " AND member_id>=".$start_student_id." ";
+			}
+			if( $end_student_id > 0 ){
+				$sql.= " AND member_id<=".$end_student_id." ";
+			}
 			if( $test_flg == 1 ){
 				//対象のユーザを指定する場合
 				//$sql.= " AND member_id>0 ";
@@ -125,6 +142,7 @@ class Bat_student_report extends CI_Controller {
 				$sql.= " AND update_date>='".date("Y-m-d H:i:s",strtotime(" -2 day "))."' ";
 			}
 			$sql.= " GROUP BY member_id, product_id ";
+			$sql.= " ORDER BY member_id ASC, product_id ASC ";
 			$query = $this->db->query($sql);
 			print "1[".date('Y-m-d H:i:s')."]"."row ".$query->num_rows()."\n";
 			if ($query->num_rows() > 0) {
@@ -161,6 +179,12 @@ class Bat_student_report extends CI_Controller {
 			$sql.= " report_user_video_viewed  ";
 			$sql.= "WHERE 1=1 ";
 			$sql.= " AND  student_id>0 ";
+			if( $start_student_id > 0 ){
+				$sql.= " AND student_id>=".$start_student_id." ";
+			}
+			if( $end_student_id > 0 ){
+				$sql.= " AND student_id<=".$end_student_id." ";
+			}
 			if( $test_flg == 1 ){
 				//対象のユーザを指定する場合
 				//$sql.= " AND student_id>0 ";
@@ -178,10 +202,11 @@ class Bat_student_report extends CI_Controller {
 			}
 			$sql.= " GROUP BY  ";
 			$sql.= "  student_id ";
+			$sql.= " ORDER BY student_id ASC ";
 			$query_student = $this->db->query($sql);
 			print "2[".date('Y-m-d H:i:s')."]"."query_student row ".$query_student->num_rows()."\n";
 			if ($query_student->num_rows() > 0) {
-				foreach($query_student->result_array() as $student_row){
+				while($student_row = $query_student->unbuffered_row('array')){
 					$sql = "";
 					$sql.= "   SELECT ";
 					$sql.= "    tbl_product.product_id ";
@@ -256,6 +281,7 @@ class Bat_student_report extends CI_Controller {
 					}
 				}
 			}
+			$query_student->free_result();
 		}
 		//+++++++++++++++++++++++++++++++++++++++++++++++
 		print "3[".date('Y-m-d H:i:s')."]"."商品情報\n";
@@ -531,6 +557,12 @@ class Bat_student_report extends CI_Controller {
 			$sql.= " exam_answer ";
 			$sql.= "WHERE 1=1 ";
 			$sql.= " AND question_flg=0 ";
+			if( $start_student_id > 0 ){
+				$sql.= " AND student_id>=".$start_student_id." ";
+			}
+			if( $end_student_id > 0 ){
+				$sql.= " AND student_id<=".$end_student_id." ";
+			}
 			if( $test_flg == 1 ){
 				//対象のユーザを指定する場合
 				//$sql.= " AND student_id>0 ";
@@ -546,6 +578,7 @@ class Bat_student_report extends CI_Controller {
 			$sql.= " GROUP BY ";
 			$sql.= "  student_id ";
 			$sql.= " ,product_id ";
+			$sql.= " ORDER BY student_id ASC, product_id ASC ";
 			$query = $this->db->query($sql);
 
 			print "[".date('Y-m-d H:i:s')."]"."exam_answer row ".$query->num_rows()."\n";
@@ -625,6 +658,12 @@ class Bat_student_report extends CI_Controller {
 			$sql.= " report_user_video_viewed  ";
 			$sql.= "WHERE 1=1 ";
 			$sql.= " AND  student_id>0 ";
+			if( $start_student_id > 0 ){
+				$sql.= " AND student_id>=".$start_student_id." ";
+			}
+			if( $end_student_id > 0 ){
+				$sql.= " AND student_id<=".$end_student_id." ";
+			}
 			if( $test_flg == 1 ){
 				//対象のユーザを指定する場合
 				//$sql.= " AND student_id>0 ";
@@ -642,6 +681,7 @@ class Bat_student_report extends CI_Controller {
 			}
 			$sql.= " GROUP BY  ";
 			$sql.= "  student_id ";
+			$sql.= " ORDER BY student_id ASC ";
 			//$sql.= " LIMIT 100 ";
 			//if( $one_day_flg == 1 ){
 			//	$sql.= " AND update_date>='".date("Y-m-d H:i:s",strtotime(" -2 day "))."' ";
@@ -650,7 +690,7 @@ class Bat_student_report extends CI_Controller {
 			$query_student = $this->db->query($sql);
 			print "[".date('Y-m-d H:i:s')."]"."query_student row ".$query_student->num_rows()."\n";
 			if ($query_student->num_rows() > 0) {
-				foreach($query_student->result_array() as $student_row){
+				while($student_row = $query_student->unbuffered_row('array')){
 					print "[".date('Y-m-d H:i:s')."]"."row student_id:".$student_row["student_id"]." \n";
 					//+++++++++++++++++++++++++++++++++++++++++++++++
 					$now_date = date("Y-m-d h:i:s");
@@ -867,6 +907,7 @@ class Bat_student_report extends CI_Controller {
 					//+++++++++++++++++++++++++++++++++++++++++++++++
 				}
 			}
+			$query_student->free_result();
 		}
 		//+++++++++++++++++++++++++++++++++++++++++++++++
 		//+++++++++++++++++++++++++++++++++++++++++++++++
@@ -880,6 +921,12 @@ class Bat_student_report extends CI_Controller {
 			$sql.= " report_user_video_viewed  ";
 			$sql.= "WHERE 1=1 ";
 			$sql.= " AND  student_id>0 ";
+			if( $start_student_id > 0 ){
+				$sql.= " AND student_id>=".$start_student_id." ";
+			}
+			if( $end_student_id > 0 ){
+				$sql.= " AND student_id<=".$end_student_id." ";
+			}
 			if( $test_flg == 1 ){
 				//対象のユーザを指定する場合
 				//$sql.= " AND student_id>0 ";
@@ -898,6 +945,7 @@ class Bat_student_report extends CI_Controller {
 			$sql.= " GROUP BY  ";
 			$sql.= "  student_id ";
 			$sql.= " ,video_id ";
+			$sql.= " ORDER BY student_id ASC, video_id ASC ";
 			//$sql.= " LIMIT 100 ";
 			//if( $one_day_flg == 1 ){
 			//	$sql.= " AND update_date>='".date("Y-m-d H:i:s",strtotime(" -2 day "))."' ";
@@ -906,7 +954,7 @@ class Bat_student_report extends CI_Controller {
 			$query_student = $this->db->query($sql);
 			print "[".date('Y-m-d H:i:s')."]"."query_student row ".$query_student->num_rows()."\n";
 			if ($query_student->num_rows() > 0) {
-				foreach($query_student->result_array() as $student_row){
+				while($student_row = $query_student->unbuffered_row('array')){
 					//+++++++++++++++++++++++++++++++++++++++++++++++
 					$now_date = date("Y-m-d h:i:s");
 					$student_id = $student_row["student_id"];
@@ -1000,6 +1048,7 @@ class Bat_student_report extends CI_Controller {
 					//+++++++++++++++++++++++++++++++++++++++++++++++
 				}
 			}
+			$query_student->free_result();
 		}
 		//+++++++++++++++++++++++++++++++++++++++++++++++
 		print "[".date('Y-m-d H:i:s')."]"."end 'student_report'\n";

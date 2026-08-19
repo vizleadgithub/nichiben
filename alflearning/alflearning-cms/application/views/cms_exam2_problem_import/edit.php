@@ -265,16 +265,16 @@
 												<li>
 												<input type="checkbox" name="exam2_problem_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
-													if( isset($exam2_problem['exam2_problem_lectures']) ) {
-														foreach( $exam2_problem['exam2_problem_lectures'] as $lecture) { 
-															if($lecture == $cource['cource_id']) {
-														?>
-																checked
+														if( isset($exam2_problem['exam2_problem_lectures']) ) {
+															foreach( $exam2_problem['exam2_problem_lectures'] as $lecture) { 
+																if($lecture == $cource['cource_id']) {
+																?>
+																	checked
 																<?php
-																break;
+																	break;
+																}
 															}
 														}
-													}
 													?>
 													>
 												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
@@ -362,18 +362,6 @@
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
 												<input type="checkbox" name="exam2_problem_lectures_ex[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>_ex" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
-													<?php 
-													if( isset($exam2_problem['exam2_problem_lectures']) ) {
-														foreach( $exam2_problem['exam2_problem_lectures'] as $lecture) { 
-															if($lecture == $cource['cource_id']) {
-														?>
-																checked
-																<?php
-																break;
-															}
-														}
-													}
-													?>
 													>
 												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>_ex"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
@@ -400,18 +388,7 @@
 									<?php if( isset($exam2_problem_groups) ): ?>
 										<?php foreach( $exam2_problem_groups as $exam2_problem_group ): ?>
 											<li>
-												<?php
-													$checked_flag = '';
-													if( isset($exam2_problem['exam2_problem_groups']) ) {
-														foreach( $exam2_problem['exam2_problem_groups'] as $group) { 
-															if($group == $exam2_problem_group['exam2_problem_group_id']) {
-																$checked_flag = 'checked';
-																break;
-															}
-														}
-													}
-												?>
-												<input type="checkbox" name="exam2_problem_groups_ex[]" id="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>_ex" value=<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?> <?= $checked_flag ?> />
+												<input type="checkbox" name="exam2_problem_groups_ex[]" id="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>_ex" value=<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?> />
 												<label for="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>_ex">
 													<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8') ?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?=$exam2_problem_group['exam2_problem_count'];?>]
 												</label>
