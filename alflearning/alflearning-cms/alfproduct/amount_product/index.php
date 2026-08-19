@@ -185,7 +185,9 @@ $arr_claim_flg = array(
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $all_pay_total = 0;
 $all_buy_count = 0;
-if( $search_monthly=="" ){
+$ret = array();
+if( $disp_flg ){
+	if( $search_monthly=="" ){
 	//----------------------------------------------------------
 	$sql = "";
 	$sql.= "SELECT ";
@@ -417,6 +419,7 @@ if( $search_monthly=="" ){
 		$all_pay_total += $ret[$i]["all_pay_total"];
 		//$all_pay_total += $ret[$i]["pay_total"];
 		$all_buy_count += $ret[$i]["buy_count"];
+	}
 	}
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
