@@ -124,15 +124,17 @@
 <script type="text/javascript">
 	var ciCsrfTokenName = '<?= $this->security->get_csrf_token_name() ?>';
 	var ciCsrfToken     = '<?= $this->security->get_csrf_hash() ?>';
-	$(document).ajaxSend(function(event, jqxhr, settings) {
-		if ((settings.type || '').toUpperCase() === 'POST') {
-			if (settings.data instanceof FormData) {
-				settings.data.append(ciCsrfTokenName, ciCsrfToken);
-			} else if (typeof settings.data === 'string') {
-				settings.data += (settings.data ? '&' : '') + ciCsrfTokenName + '=' + encodeURIComponent(ciCsrfToken);
+	$.ajaxPrefilter(function(options) {
+		if ((options.type || '').toUpperCase() === 'POST') {
+			if (options.data instanceof FormData) {
+				options.data.append(ciCsrfTokenName, ciCsrfToken);
+			} else if (typeof options.data === 'string') {
+				options.data += (options.data ? '&' : '') + ciCsrfTokenName + '=' + encodeURIComponent(ciCsrfToken);
 			} else {
-				if (!settings.data) { settings.data = {}; }
-				settings.data[ciCsrfTokenName] = ciCsrfToken;
+				if (!options.data) { options.data = {}; }
+				options.data[ciCsrfTokenName] = ciCsrfToken;
+				// jQuery 3系の後続処理はdataを文字列として扱うため、ここで整形する。
+				options.data = $.param(options.data);
 			}
 		}
 	});
