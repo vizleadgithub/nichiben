@@ -15,6 +15,8 @@ include( "/srv/alfproduct/module/DbConnect.php" );
 $objDbConnect = new DbConnect();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 変更対象データの取得
+// 日付条件は列を関数で包まず「order_date <= 実行日時 - SCPC_CANCEL_DAY 日」の形にして
+// tbl_order.order_date の索引が使えるようにしている（F-024 B-5）。抽出される注文は従来と同一
 $sql = "
 SELECT
   T1.order_detail_id,
@@ -32,7 +34,7 @@ WHERE
   AND ( T3.training_kind_flg <> 1 OR T3.training_kind_flg IS NULL )
   AND ( T3.ethic_flg = 0 OR T3.ethic_flg IS NULL )
   AND ( T3.sponsor <> '|1|' OR T3.sponsor IS NULL )
-  AND ADDDATE( T2.order_date, INTERVAL " . SCPC_CANCEL_DAY . " DAY) <= '" . date('Y-m-d H:i:s') . "'
+  AND T2.order_date <= '" . date('Y-m-d H:i:s', strtotime('-' . SCPC_CANCEL_DAY . ' day')) . "'
   AND T2.order_date >= '2013-12-01 00:00:00'
 ";
 $arr_order_info = $objDbConnect->query_fetch_arr($sql);

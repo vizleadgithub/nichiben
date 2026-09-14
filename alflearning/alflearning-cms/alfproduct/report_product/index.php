@@ -220,17 +220,24 @@ $sql.= " tbl_product_live_training.ethic_flg, ";
 $sql.= " rel_product_bar_association_branch.bar_association_branch_id, ";
 $sql.= " rel_product_bar_association_branch.bar_association_branch_id as rel_product_bar_association_branch_bar_association_branch_id ";
 //$sql.= " (  SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.bar_association_branch_id=rel_product_bar_association_branch_bar_association_branch_id AND tbl_order_detail.product_id=tbl_product.product_id ) AS product_type_add2_count ";
-$sql.= "FROM ";
-$sql.= " tbl_product ";
-//$sql.= " INNER JOIN tbl_product_add ON tbl_product.product_id = tbl_product_add.product_id ";
-//$sql.= " INNER JOIN tbl_product_elearning ON tbl_product.product_id = tbl_product_elearning.product_id ";
-$sql.= " LEFT JOIN tbl_product_add ON tbl_product.product_id=tbl_product_add.product_id ";
-$sql.= " LEFT JOIN tbl_product_elearning ON tbl_product.product_id=tbl_product_elearning.product_id ";
-$sql.= " LEFT JOIN tbl_product_live_training ON tbl_product.product_id=tbl_product_live_training.product_id ";
-$sql.= " LEFT JOIN rel_product_bar_association_branch ON tbl_product.product_id=rel_product_bar_association_branch.product_id ";
-$sql.= " LEFT JOIN import_kenshu_count ON tbl_product.product_id=import_kenshu_count.KENSHU_ID + 10000 ";
-$sql.= " LEFT JOIN mtb_bar_association_branch ON rel_product_bar_association_branch.bar_association_branch_id=mtb_bar_association_branch.bar_association_branch_id AND tbl_product_add.product_type_add<>3 ";
-$sql.= " LEFT JOIN mtb_bar_association ON mtb_bar_association_branch.bar_association_id=mtb_bar_association.id ";
+// FROM 句は件数用（COUNT(*)）と一覧用で共有するため変数へ切り出す（F-024 A-1）
+$from = "";
+$from.= "FROM ";
+$from.= " tbl_product ";
+//$from.= " INNER JOIN tbl_product_add ON tbl_product.product_id = tbl_product_add.product_id ";
+//$from.= " INNER JOIN tbl_product_elearning ON tbl_product.product_id = tbl_product_elearning.product_id ";
+$from.= " LEFT JOIN tbl_product_add ON tbl_product.product_id=tbl_product_add.product_id ";
+$from.= " LEFT JOIN tbl_product_elearning ON tbl_product.product_id=tbl_product_elearning.product_id ";
+$from.= " LEFT JOIN tbl_product_live_training ON tbl_product.product_id=tbl_product_live_training.product_id ";
+$from.= " LEFT JOIN rel_product_bar_association_branch ON tbl_product.product_id=rel_product_bar_association_branch.product_id ";
+// 結合条件に計算式（KENSHU_ID + 10000）を書くと索引が使えないため、
+// import_kenshu_count 側の生成列 product_id_join（= CAST(KENSHU_ID AS UNSIGNED) + 10000）と突き合わせる（F-024 A-3）
+$from.= " LEFT JOIN import_kenshu_count ON tbl_product.product_id=import_kenshu_count.product_id_join ";
+$from.= " LEFT JOIN mtb_bar_association_branch ON rel_product_bar_association_branch.bar_association_branch_id=mtb_bar_association_branch.bar_association_branch_id AND tbl_product_add.product_type_add<>3 ";
+$from.= " LEFT JOIN mtb_bar_association ON mtb_bar_association_branch.bar_association_id=mtb_bar_association.id ";
+$sql.= $from;
+// 件数取得は結合後の行数を DB 側で数える（従来は LIMIT なしで全件フェッチして PHP の count()）
+$sql_count = "SELECT COUNT(*) AS c " . $from;
 $where = "";
 $where.= "WHERE ";
 $where.= " tbl_product.del_flg=0 ";
@@ -407,9 +414,9 @@ $where.= "
 		(
 			tbl_product_add.product_type_add=2
 			AND tbl_product_live_training.training_kind_flg=1
-			AND (  
+			AND EXISTS (
 				SELECT 
-					COUNT(*) AS c 
+					1
 				FROM 
 					tbl_order_detail 
 				WHERE 
@@ -421,7 +428,7 @@ $where.= "
 					AND tbl_order_detail.product_type_add=2 
 					AND tbl_order_detail.bar_association_branch_id=rel_product_bar_association_branch.bar_association_branch_id 
 					AND tbl_order_detail.product_id=tbl_product.product_id 
-			)>0
+			)
 		)
 		OR (
 			tbl_product_add.product_type_add<>2
@@ -435,8 +442,8 @@ $all_count = 0;
 $order = " ORDER BY tbl_product.product_id DESC ";
 
 if ($disp_flg){
-	$ret = $objDbConnect->query_fetch_arr($sql.$where.$order);
-	$all_count = count($ret);
+	$ret_count = $objDbConnect->query_fetch($sql_count.$where);
+	$all_count = isset($ret_count["c"]) ? (int)$ret_count["c"] : 0;
 
 	$objAdminPager->setListMax($all_count);
 	$objAdminPager->setPagerUrl("?page=");
@@ -491,7 +498,7 @@ if ($disp_flg){
 	$sql.= " LEFT JOIN tbl_product_elearning ON tbl_product.product_id=tbl_product_elearning.product_id ";
 	$sql.= " LEFT JOIN tbl_product_live_training ON tbl_product.product_id=tbl_product_live_training.product_id ";
 	$sql.= " LEFT JOIN rel_product_bar_association_branch ON tbl_product.product_id=rel_product_bar_association_branch.product_id AND tbl_product_add.product_type_add<>3 ";
-	$sql.= " LEFT JOIN import_kenshu_count ON tbl_product.product_id=import_kenshu_count.KENSHU_ID + 10000 ";
+	$sql.= " LEFT JOIN import_kenshu_count ON tbl_product.product_id=import_kenshu_count.product_id_join ";
 	$sql.= " LEFT JOIN mtb_bar_association_branch ON rel_product_bar_association_branch.bar_association_branch_id=mtb_bar_association_branch.bar_association_branch_id ";
 	$sql.= " LEFT JOIN mtb_bar_association ON mtb_bar_association_branch.bar_association_id=mtb_bar_association.id ";
 
@@ -514,197 +521,239 @@ if ($disp_flg){
 
 
 	// 【】各レコード数の再計算 --------------------------------------------------------------
+	// 表示対象（最大 20 件）の集計を product_id IN (...) でまとめて取得する（F-024 A-4）。
+	// 従来は 1 行ごとに COUNT(*) を発行しており、1 画面で最大 300 本弱のクエリが出ていた。
+	// 絞り込み条件は [NBR-239] 適用後のものをそのまま踏襲しており、集計値は変わらない。
+	$arr_pid = array();
+	$arr_pid_old = array();			// 旧システム商品（pid<=19233）: 実施会で絞らない
+	$arr_pid_new = array();			// pid>19233: 実施会で絞る
+	$arr_pid_elearning = array();
+	for($i=0;$i<count($ret);$i++){
+		$pid_pre = (int)$ret[$i]["product_id"];
+		$arr_pid[] = $pid_pre;
+		if ($pid_pre > 19233){ $arr_pid_new[] = $pid_pre; } else { $arr_pid_old[] = $pid_pre; }
+		if ($ret[$i]["product_type_add"] == 1){ $arr_pid_elearning[] = $pid_pre; }
+	}
+	$arr_pid           = array_values(array_unique($arr_pid));
+	$arr_pid_old       = array_values(array_unique($arr_pid_old));
+	$arr_pid_new       = array_values(array_unique($arr_pid_new));
+	$arr_pid_elearning = array_values(array_unique($arr_pid_elearning));
+
+	// [NBR-239] 非日弁連ログイン時の弁護士会絞り込み（ページ内で一定なので条件文字列として使い回す）
+	$where_assoc_od = "";
+	$where_assoc_st = "";
+	if (!$nichibenren_flg){
+		$where_assoc_od = " AND tbl_order_detail.bar_association_id='".$login_bar_association_id."' ";
+		$where_assoc_st = " AND student.bar_association_id='".$login_bar_association_id."' ";
+	}
+
+	$fn_agg_map = function($pid_list, $sql_prefix, $sql_suffix, $with_branch) use ($objDbConnect) {
+		$map = array();
+		if ( empty($pid_list) ){ return $map; }
+		$sql_agg = $sql_prefix.implode(",", $pid_list).$sql_suffix;
+		foreach ( (array)$objDbConnect->query_fetch_arr($sql_agg) as $row ){
+			$key = $with_branch
+				? ((string)$row["product_id"]."-".(string)$row["bar_association_branch_id"])
+				: (string)$row["product_id"];
+			$map[$key] = $row["c"];
+		}
+		return $map;
+	};
+
+	$od_group  = ") GROUP BY tbl_order_detail.product_id ";
+	$od_group2 = ") GROUP BY tbl_order_detail.product_id, tbl_order_detail.bar_association_branch_id ";
+	$od_head   = "SELECT tbl_order_detail.product_id, COUNT(*) AS c FROM tbl_order_detail WHERE ";
+	$od_head2  = "SELECT tbl_order_detail.product_id, tbl_order_detail.bar_association_branch_id, COUNT(*) AS c FROM tbl_order_detail WHERE ";
+	$pay12     = " ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 ";
+
+	// e ラーニング
+	$agg_add1 = $fn_agg_map($arr_pid,
+		$od_head." tbl_order_detail.payment_status=2 AND tbl_order_detail.product_type_add=1 AND tbl_order_detail.product_id IN (", $od_group, false);
+	$agg_add1_end = $fn_agg_map($arr_pid,
+		$od_head." tbl_order_detail.payment_status=2 AND tbl_order_detail.product_type_add=1 AND tbl_order_detail.video_complete_flg=1 AND tbl_order_detail.product_id IN (", $od_group, false);
+
+	// ライブ実務研修（旧システム商品：実施会で絞らない）
+	$agg_add2_old = $fn_agg_map($arr_pid_old,
+		$od_head.$pay12.$where_assoc_od." AND tbl_order_detail.product_id IN (", $od_group, false);
+	$agg_add2_end_old = $fn_agg_map($arr_pid_old,
+		$od_head.$pay12." AND tbl_order_detail.participation_flg=1 ".$where_assoc_od." AND tbl_order_detail.product_id IN (", $od_group, false);
+
+	// ライブ実務研修（pid>19233：実施会別）。
+	// 実施会 ID が NULL の行は除外する（従来は一覧行の実施会 ID が空だとクエリが成立せず件数 0 だったため）
+	$agg_add2_new = $fn_agg_map($arr_pid_new,
+		$od_head2.$pay12." AND tbl_order_detail.bar_association_branch_id IS NOT NULL ".$where_assoc_od." AND tbl_order_detail.product_id IN (", $od_group2, true);
+	$agg_add2_end_new = $fn_agg_map($arr_pid_new,
+		$od_head2.$pay12." AND tbl_order_detail.participation_flg=1 AND tbl_order_detail.bar_association_branch_id IS NOT NULL ".$where_assoc_od." AND tbl_order_detail.product_id IN (", $od_group2, true);
+
+	// ライブ実務研修（実施会不問の全期間合計。[NBR-239] でも弁護士会絞り込みは掛けていない）
+	$agg_add2_kako = $fn_agg_map($arr_pid,
+		$od_head.$pay12." AND tbl_order_detail.product_id IN (", $od_group, false);
+	$agg_add2_end_kako = $fn_agg_map($arr_pid,
+		$od_head.$pay12." AND tbl_order_detail.participation_flg=1 AND tbl_order_detail.product_id IN (", $od_group, false);
+
+	// 倫理研修
+	$eth_head = "SELECT tbl_ethic_question_history.product_id, COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE 1=1 ";
+	$agg_add3 = $fn_agg_map($arr_pid,
+		$eth_head.$where_assoc_st." AND tbl_ethic_question_history.product_id IN (",
+		") GROUP BY tbl_ethic_question_history.product_id ", false);
+	$agg_add3_end = $fn_agg_map($arr_pid,
+		$eth_head.$where_assoc_st." AND (tbl_ethic_question_history.status=2 OR tbl_ethic_question_history.status=5 OR tbl_ethic_question_history.status=7) AND tbl_ethic_question_history.product_id IN (",
+		") GROUP BY tbl_ethic_question_history.product_id ", false);
+
+	// e ラーニングの動画 ID（contents_contents1〜25）
+	$map_contents = array();
+	if ( !empty($arr_pid_elearning) ){
+		$sql_agg = "SELECT product_id, ";
+		for($n=1;$n<=25;$n++){ $sql_agg.= " contents_contents".$n.", "; }
+		$sql_agg.= " 1 AS dummy FROM tbl_product WHERE product_id IN (".implode(",", $arr_pid_elearning).") ";
+		foreach ( (array)$objDbConnect->query_fetch_arr($sql_agg) as $row ){
+			$map_contents[(string)$row["product_id"]] = $row;
+		}
+	}
+
+	// 【】重複会員を除外した e ラーニング受講者数・受講完了者数（F-024 A-4）。
+	// 従来は 1 行あたり最大 4 本（重複会員の抽出＋除外後の再カウント）を発行していた。
+	// 除外する会員は商品ごとに異なるため、商品単位の条件を OR で並べて 1 本にまとめている。
+	$fn_adjust_duplicate = function($pid_list, $filter_where) use ($objDbConnect) {
+		$adjusted = array();
+		if ( empty($pid_list) ){ return $adjusted; }
+		$in_list = implode(",", $pid_list);
+
+		// 同一商品で (product_id, member_id) が重複している会員を商品ごとに拾う
+		$sql_dup = "";
+		$sql_dup.= "SELECT tbl_order_detail.product_id, tbl_order_detail.member_id ";
+		$sql_dup.= "  FROM tbl_order_detail ";
+		$sql_dup.= " WHERE tbl_order_detail.product_id IN (".$in_list.") ";
+		$sql_dup.= "   AND (tbl_order_detail.product_id, tbl_order_detail.member_id) ";
+		$sql_dup.= "        IN ( ";
+		$sql_dup.= "          SELECT A.product_id, A.member_id ";
+		$sql_dup.= "            FROM tbl_order_detail AS A ";
+		$sql_dup.= "           WHERE A.product_id IN (".$in_list.") ";
+		$sql_dup.= "           GROUP BY A.product_id, A.member_id ";
+		$sql_dup.= "          HAVING COUNT(*) > 1 ";
+		$sql_dup.= "       )";
+		$sql_dup.= $filter_where;
+
+		$arr_dup = array();
+		foreach ( (array)$objDbConnect->query_fetch_arr($sql_dup) as $row ){
+			$arr_dup[(string)$row["product_id"]][] = $row["member_id"];
+		}
+		if ( empty($arr_dup) ){ return $adjusted; }
+
+		$arr_cond = array();
+		foreach ( $arr_dup as $dup_pid => $arr_member ){
+			$duplicate_member_id = "-1";
+			for($m=0;$m<count($arr_member);$m++){
+				$duplicate_member_id .= ','.$arr_member[$m];
+			}
+			$arr_cond[] = " ( tbl_order_detail.product_id ='".$dup_pid."' AND NOT (tbl_order.member_id IN (".$duplicate_member_id.") AND tbl_order.web_flg = 1) ) ";
+			// 該当商品は必ず再カウント結果で上書きする（一致行が無い場合は 0 件）
+			$adjusted[(string)$dup_pid] = 0;
+		}
+
+		$sql_cnt = "";
+		$sql_cnt.= "SELECT tbl_order_detail.product_id, COUNT(*) AS r_count ";
+		$sql_cnt.= " FROM tbl_order_detail INNER JOIN tbl_order ON tbl_order_detail.order_id = tbl_order.order_id ";
+		$sql_cnt.= "WHERE 1=1 ";
+		$sql_cnt.= "  AND ( ".implode(" OR ", $arr_cond)." ) ";
+		$sql_cnt.= $filter_where;
+		$sql_cnt.= " GROUP BY tbl_order_detail.product_id ";
+		foreach ( (array)$objDbConnect->query_fetch_arr($sql_cnt) as $row ){
+			$adjusted[(string)$row["product_id"]] = $row["r_count"];
+		}
+		return $adjusted;
+	};
+
+	// 従来は「集計値が 0 以外の行」だけ重複会員判定に入っていたため、対象商品を同じ条件で絞る
+	$pid_dup1     = array();
+	$pid_dup1_end = array();
+	for($i=0;$i<count($ret);$i++){
+		$pid_key_pre = (string)$ret[$i]["product_id"];
+		if ( !empty($agg_add1[$pid_key_pre]) ){     $pid_dup1[]     = (int)$ret[$i]["product_id"]; }
+		if ( !empty($agg_add1_end[$pid_key_pre]) ){ $pid_dup1_end[] = (int)$ret[$i]["product_id"]; }
+	}
+	$where_dup1 = "";
+	$where_dup1.= " AND tbl_order_detail.payment_status   = 2 ";
+	$where_dup1.= " AND tbl_order_detail.product_type_add = 1 ";
+	$where_dup1_end = $where_dup1;
+	$where_dup1_end.= " AND tbl_order_detail.video_complete_flg = 1 ";
+
+	$adj_add1     = $fn_adjust_duplicate(array_values(array_unique($pid_dup1)),     $where_dup1);
+	$adj_add1_end = $fn_adjust_duplicate(array_values(array_unique($pid_dup1_end)), $where_dup1_end);
+
 	$arr_list = array();
 	for($i=0;$i<count($ret);$i++){
 		$pid = $ret[$i]["product_id"];
 		$rel_babid = $ret[$i]["rel_product_bar_association_branch_bar_association_branch_id"];
+		$pid_key = (string)$pid;
+		// 実施会 ID が入っていない行は従来も件数 0 だったため、キーを作らずスキップする
+		$babid_key = ( $rel_babid === null || $rel_babid === "" ) ? null : $pid_key."-".(string)$rel_babid;
+		$is_old_pid = ( (int)$pid <= 19233 );
 		//+++++++++++++++++++++++++++++++++++++++
 		//product_type_add1_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE tbl_order_detail.payment_status=2 AND tbl_order_detail.product_type_add=1 AND tbl_order_detail.product_id=".$pid." ";
-		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
-		if( !empty($ret_sub) ){
-			$ret[$i]["product_type_add1_count"] = $ret_sub[0]["c"];
+		if( isset($agg_add1[$pid_key]) ){
+			$ret[$i]["product_type_add1_count"] = $agg_add1[$pid_key];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
 		//product_type_add1_end_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE tbl_order_detail.payment_status=2 AND tbl_order_detail.product_type_add=1 AND tbl_order_detail.product_id=".$pid." AND tbl_order_detail.video_complete_flg=1 ";
-		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
-		if( !empty($ret_sub) ){
-			$ret[$i]["product_type_add1_end_count"] = $ret_sub[0]["c"];
+		if( isset($agg_add1_end[$pid_key]) ){
+			$ret[$i]["product_type_add1_end_count"] = $agg_add1_end[$pid_key];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
-		// product_type_add2_count / end_count
-		// [NBR-239] 詳細側(info.php)と条件を統一：旧システム商品(pid<=19233)は実施会(branch)で絞らない／非日弁連ログイン時は所属弁護士会で絞る／payment_status=3(仮払い等)は対象外にしてフロント受講履歴(lesson_list2.php)と揃える
-		$sql_sub_where2 = " ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=".$pid." ";
-		if ($pid > 19233){
-			$sql_sub_where2.= " AND tbl_order_detail.bar_association_branch_id=".$rel_babid." ";
-		}
-		if (!$nichibenren_flg){
-			$sql_sub_where2.= " AND tbl_order_detail.bar_association_id='".$login_bar_association_id."' ";
-		}
-		//product_type_add2_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ".$sql_sub_where2;
-		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
-		if( !empty($ret_sub) ){
-			$ret[$i]["product_type_add2_count"] = $ret_sub[0]["c"];
+		//product_type_add2_count（[NBR-239] 旧システム商品は実施会で絞らない）
+		if( $is_old_pid ){
+			if( isset($agg_add2_old[$pid_key]) ){
+				$ret[$i]["product_type_add2_count"] = $agg_add2_old[$pid_key];
+			}
+		} elseif( $babid_key !== null && isset($agg_add2_new[$babid_key]) ){
+			$ret[$i]["product_type_add2_count"] = $agg_add2_new[$babid_key];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
 		//product_type_add2_end_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ".$sql_sub_where2." AND tbl_order_detail.participation_flg=1 ";
-		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
-		if( !empty($ret_sub) ){
-			$ret[$i]["product_type_add2_end_count"] = $ret_sub[0]["c"];
+		if( $is_old_pid ){
+			if( isset($agg_add2_end_old[$pid_key]) ){
+				$ret[$i]["product_type_add2_end_count"] = $agg_add2_end_old[$pid_key];
+			}
+		} elseif( $babid_key !== null && isset($agg_add2_end_new[$babid_key]) ){
+			$ret[$i]["product_type_add2_end_count"] = $agg_add2_end_new[$babid_key];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
-		//product_type_add2_count_kako（実施会不問の全期間合計。参考値のため絞り込みカラムは変更せず、payment_status のみフロント基準に統一）
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=".$pid." ";
-		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
-		if( !empty($ret_sub) ){
-			$ret[$i]["product_type_add2_count_kako"] = $ret_sub[0]["c"];
+		//product_type_add2_count_kako
+		if( isset($agg_add2_kako[$pid_key]) ){
+			$ret[$i]["product_type_add2_count_kako"] = $agg_add2_kako[$pid_key];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
 		//product_type_add2_end_count_kako
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_order_detail WHERE ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) AND tbl_order_detail.product_type_add=2 AND tbl_order_detail.product_id=".$pid." AND tbl_order_detail.participation_flg=1 ";
-		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
-		if( !empty($ret_sub) ){
-			$ret[$i]["product_type_add2_end_count_kako"] = $ret_sub[0]["c"];
+		if( isset($agg_add2_end_kako[$pid_key]) ){
+			$ret[$i]["product_type_add2_end_count_kako"] = $agg_add2_end_kako[$pid_key];
 		}
 		//+++++++++++++++++++++++++++++++++++++++
-		// [NBR-239] 詳細側(info.php)と条件を統一：非日弁連ログイン時は所属弁護士会で絞る
-		$sql_sub_where3 = "";
-		if (!$nichibenren_flg){
-			$sql_sub_where3 = " AND student.bar_association_id='".$login_bar_association_id."' ";
-		}
 		//product_type_add3_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE tbl_ethic_question_history.product_id=".$pid.$sql_sub_where3." ";
-		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
-		if( !empty($ret_sub) ){
-			$ret[$i]["product_type_add3_count"] = $ret_sub[0]["c"];
+		if( isset($agg_add3[$pid_key]) ){
+			$ret[$i]["product_type_add3_count"] = $agg_add3[$pid_key];
 		}
-
-
 		//+++++++++++++++++++++++++++++++++++++++
 		//product_type_add3_end_count
-		$sql_sub = "SELECT COUNT(*) AS c FROM tbl_ethic_question_history INNER JOIN student ON tbl_ethic_question_history.student_id = student.student_id WHERE tbl_ethic_question_history.product_id=".$pid." AND (tbl_ethic_question_history.status=2 OR tbl_ethic_question_history.status=5 OR tbl_ethic_question_history.status=7)".$sql_sub_where3." ";
-		$ret_sub = $objDbConnect->query_fetch_arr($sql_sub);
-		if( !empty($ret_sub) ){
-			$ret[$i]["product_type_add3_end_count"] = $ret_sub[0]["c"];
+		if( isset($agg_add3_end[$pid_key]) ){
+			$ret[$i]["product_type_add3_end_count"] = $agg_add3_end[$pid_key];
 		}
-
 		//+++++++++++++++++++++++++++++++++++++++
 
 
-		// 【】重複するmember_id（student_id）を探す //
-		$sql2 = "";
-		$sql2.= "SELECT tbl_order_detail.member_id ";
-		$sql2.= "  FROM tbl_order_detail ";
-		$sql2.= " WHERE tbl_order_detail.product_id ='".$pid."' ";
-		$sql2.= "   AND (tbl_order_detail.product_id, tbl_order_detail.member_id) ";
-		$sql2.= "        IN ( ";
-		$sql2.= "          SELECT A.product_id, A.member_id ";
-		$sql2.= "            FROM tbl_order_detail AS A ";
-		$sql2.= "           WHERE A.product_id  ='".$pid."' ";
-		$sql2.= "           GROUP BY A.product_id, A.member_id ";
-		$sql2.= "          HAVING COUNT(*) > 1 ";
-		$sql2.= "       )";
-
+		// 【】重複するmember_id（student_id）を除外した件数（ループ前にまとめて算出済み）F-024 A-4
 		// product_type_add1_count -----------------------------------------------------------
-		if($ret[$i]["product_type_add1_count"]){
-			$sql2_where = "";
-			$sql2_where.= " AND tbl_order_detail.payment_status   = 2 ";
-			$sql2_where.= " AND tbl_order_detail.product_type_add = 1 ";
-
-			$res = $objDbConnect->query_fetch_arr($sql2.$sql2_where);
-			
-			if($res){
-				$duplicate_member_id = "-1";
-				for($j=0;$j<count($res);$j++){
-					$duplicate_member_id .= ','.$res[$j]["member_id"];
-				}
-				
-				if($duplicate_member_id != "-1"){
-					$sql3 = "";
-					$sql3.= "SELECT COUNT(*) AS r_count ";
-					$sql3.= " FROM tbl_order_detail INNER JOIN tbl_order ON tbl_order_detail.order_id = tbl_order.order_id ";
-					$sql3.= "WHERE 1=1 ";
-					$sql3.= "  AND tbl_order_detail.product_id ='".$pid."' ";
-					$sql3.= "  AND NOT (tbl_order.member_id IN (".$duplicate_member_id.") AND tbl_order.web_flg = 1) ";
-					
-					$res_count = $objDbConnect->query_fetch_arr($sql3.$sql2_where);
-
-					for($k=0;$k<count($res_count);$k++){
-						$ret[$i]["product_type_add1_count"] = $res_count[0]['r_count'];
-					}
-				}
-			}
+		if( isset($adj_add1[$pid_key]) ){
+			$ret[$i]["product_type_add1_count"] = $adj_add1[$pid_key];
 		}
 
 		// product_type_add1_end_count -----------------------------------------------------------
-		if($ret[$i]["product_type_add1_end_count"]){
-			$sql2_where = "";
-			$sql2_where.= " AND tbl_order_detail.payment_status   = 2 ";
-			$sql2_where.= " AND tbl_order_detail.product_type_add = 1 ";
-			$sql2_where.= " AND tbl_order_detail.video_complete_flg = 1 ";
-
-			$res = $objDbConnect->query_fetch_arr($sql2.$sql2_where);
-			
-			if($res){
-				$duplicate_member_id = "-1";
-				for($j=0;$j<count($res);$j++){
-					$duplicate_member_id .= ','.$res[$j]["member_id"];
-				}
-				
-				if($duplicate_member_id != "-1"){
-					$sql3 = "";
-					$sql3.= "SELECT COUNT(*) AS r_count ";
-					$sql3.= " FROM tbl_order_detail INNER JOIN tbl_order ON tbl_order_detail.order_id = tbl_order.order_id ";
-					$sql3.= "WHERE 1=1 ";
-					$sql3.= "  AND tbl_order_detail.product_id ='".$pid."' ";
-					$sql3.= " AND NOT (tbl_order.member_id IN (".$duplicate_member_id.") AND tbl_order.web_flg = 1) ";
-					
-					$res_count = $objDbConnect->query_fetch_arr($sql3.$sql2_where);
-					
-					for($k=0;$k<count($res_count);$k++){
-						$ret[$i]["product_type_add1_end_count"] = $res_count[0]['r_count'];
-					}
-				}
-			}
+		if( isset($adj_add1_end[$pid_key]) ){
+			$ret[$i]["product_type_add1_end_count"] = $adj_add1_end[$pid_key];
 		}
 
 		if ($ret[$i]["product_type_add"] == 1){
-			$res1 = array();
-			$sql = "";
-			$sql.= "SELECT ";
-			$sql.= " contents_contents1, ";
-			$sql.= " contents_contents2, ";
-			$sql.= " contents_contents3, ";
-			$sql.= " contents_contents4, ";
-			$sql.= " contents_contents5, ";
-			$sql.= " contents_contents6, ";
-			$sql.= " contents_contents7, ";
-			$sql.= " contents_contents8, ";
-			$sql.= " contents_contents9, ";
-			$sql.= " contents_contents10, ";
-			$sql.= " contents_contents11, ";
-			$sql.= " contents_contents12, ";
-			$sql.= " contents_contents13, ";
-			$sql.= " contents_contents14, ";
-			$sql.= " contents_contents15, ";
-			$sql.= " contents_contents16, ";
-			$sql.= " contents_contents17, ";
-			$sql.= " contents_contents18, ";
-			$sql.= " contents_contents19, ";
-			$sql.= " contents_contents20, ";
-			$sql.= " contents_contents21, ";
-			$sql.= " contents_contents22, ";
-			$sql.= " contents_contents23, ";
-			$sql.= " contents_contents24, ";
-			$sql.= " contents_contents25 ";
-			$sql.= "FROM ";
-			$sql.= " tbl_product ";
-			$sql.= "WHERE ";
-			$sql.= " product_id='".mysqli_real_escape_string($objDbConnect->connect,  $ret[$i]["product_id"] )."' ";
-			$res1 = $objDbConnect->query_fetch_arr($sql);
+			// 動画 ID（contents_contents1〜25）はループ前に 1 クエリでまとめて取得済み（F-024 A-4）
+			$res1 = isset($map_contents[$pid_key]) ? array($map_contents[$pid_key]) : array();
 			$video_count = 0;
 			$arr_video_id = array();
 			$in_video_id = '';

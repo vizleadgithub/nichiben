@@ -27,7 +27,7 @@ if (isset($_GET['student_id']) && isset($_GET['movie_id']) && isset($_GET['time'
 
 	if(!cmCheckInput($student_id, 'CK_NUM') && !cmCheckInput($movie_id, 'CK_NUM')){
 		// ブックマークの更新
-		$sql = "REPLACE INTO";
+		$sql = "INSERT INTO";
 		$sql.= " tbl_bookmark";
 		$sql.= "  (";
 		$sql.= "   student_id,";
@@ -40,6 +40,9 @@ if (isset($_GET['student_id']) && isset($_GET['movie_id']) && isset($_GET['time'
 		$sql.= "   '".mysqli_escape_string($objDbConnect->connect,  $movie_id )."',";
 		$sql.= "   '".mysqli_escape_string($objDbConnect->connect,  gmdate('H:i:s', $time) )."'";
 		$sql.= "  )";
+		$sql.= " ON DUPLICATE KEY UPDATE";
+		$sql.= "   bookmark_time      = VALUES(bookmark_time),";
+		$sql.= "   bookmark_timestamp = CURRENT_TIMESTAMP";
 		$ret = $objDbConnect->execute($sql);
 //echo("[".$sql."]");
 //var_dump($ret);

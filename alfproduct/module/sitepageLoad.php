@@ -9,9 +9,9 @@ function sitepageLoad(){
 	 * 2030年の記事の公開
 	 */
 	$objDbConnect = new DbConnect();
-	$sql = "UPDATE wp_posts SET post_status='publish' WHERE post_status='future' AND DATE_FORMAT(post_date, '%Y')=2030 ";
+	$sql = "UPDATE wp_posts SET post_status='publish' WHERE post_type='post' AND post_status='future' AND DATE_FORMAT(post_date, '%Y')=2030 ";
 	$ret = $objDbConnect->execute($sql);
-	$sql = "UPDATE wp_posts SET post_status='future' WHERE post_status='publish' AND DATE_FORMAT(post_date, '%Y')<>2030 AND post_date>'".date("Y-m-d H:i:s")."' ";
+	$sql = "UPDATE wp_posts SET post_status='future' WHERE post_type='post' AND post_status='publish' AND DATE_FORMAT(post_date, '%Y')<>2030 AND post_date>'".date("Y-m-d H:i:s")."' ";
 	$ret = $objDbConnect->execute($sql);
 
 	/**

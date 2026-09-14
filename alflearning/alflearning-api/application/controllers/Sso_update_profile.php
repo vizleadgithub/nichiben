@@ -267,6 +267,9 @@ class Sso_update_profile extends CI_Controller {
 				'getLine'	=> __line__,
 			);
 		}
+		// 登録番号は student.lawyer_number（varchar）と突き合わせるため文字列へ揃える。
+		// 数値のままバインドすると列側が数値変換され idx_lawyer_number_division が使われない（F-024 B-4）
+		$param['employeenumber'] = (string)$param['employeenumber'];
 
 		// 弁護士会コード
 		// ⇒新SSOでは弁護士会コードがなければ無条件で0とする
