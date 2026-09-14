@@ -58,7 +58,7 @@ p {
 <body>
 	<div id="container">
 		<h1><?php echo htmlspecialchars($heading, ENT_QUOTES, 'UTF-8'); ?></h1>
-		<?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
+		<?php //echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
 	</div>
 </body>
 </html>
