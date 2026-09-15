@@ -40,6 +40,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+require_once dirname(__FILE__) . '/../../module/EthicHtml.php';
 $_SESSION['wp_page_head_title'] = '倫理研修代替措置研修';
 $objDbConnect = new DbConnect();
 $template = new Template();
@@ -97,7 +98,7 @@ if ($_SESSION['user']['sub_auth_ethic_training'] == 1){
 	$res = $objDbConnect->query_fetch_arr($sql);
 	if ($res){
 		foreach ($res as $val){
-			$arr_list[$val['ethic_branch_id']] = $val['question_branch'];
+			$arr_list[$val['ethic_branch_id']] = purify_ethic_html($val['question_branch'], true);
 		}
 	}
 	
