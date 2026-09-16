@@ -90,7 +90,6 @@
 
 					success: function(response) {
 						if(response){
-							var $output = '';
 							var $line_count_all = 0;
 							var $line_count_ok  = 0;
 							for (var i=0; i< response.length; i++) {
@@ -99,20 +98,14 @@
 									$line_count_ok  = $line_count_ok + 1;
 								}
 								
-								if(response[i]['value']=='NG'){
-									$output = $output + '<li class="li_error">';
-								}else{
-									$output = $output + '<li class="li_nomal">';
-								}
-								
-								$output = $output + '<div class="div_no">' + response[i]['no'] + '</div>';
-								$output = $output + '<div class="div_value">' + response[i]['value'] + '</div>';
-								$output = $output + '<div class="div_message">' + response[i]['message'] + '</div>';
-								$output = $output + '<div style="clear:both;"></div>';
-								$output = $output + '</li>';
+							$('<li>').addClass(response[i]['value']=='NG' ? 'li_error' : 'li_nomal')
+								.append($('<div class="div_no">').text(response[i]['no']))
+								.append($('<div class="div_value">').text(response[i]['value']))
+								.append($('<div class="div_message">').text(response[i]['message']))
+								.append($('<div style="clear:both;">'))
+								.appendTo('#ul_import_result_values');
 							}
 							
-							$("#ul_import_result_values").append($output);
 							
 							$("#div_loading_bar").css("display","none");
 							$("#div_import_result").css("display","block");

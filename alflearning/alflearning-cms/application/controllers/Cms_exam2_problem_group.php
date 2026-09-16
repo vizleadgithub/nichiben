@@ -53,6 +53,7 @@ class Cms_exam2_problem_group extends CI_Controller {
 	//一覧表示
 	//----------------------------------------------
 	function index($offset=0){
+		$offset = cms_paging_integer($offset);
 		// load language
 		$this->lang->load('common');
 		
@@ -257,11 +258,11 @@ class Cms_exam2_problem_group extends CI_Controller {
 					if($data['exam2_problem_group']['position_exam2_problems_name'] != ''){
 						$data['exam2_problem_group']['position_exam2_problems_name'] .= '<br/>';
 					}
-					$data['exam2_problem_group']['position_exam2_problems_name'] .= '[No'.$data_result['exam2_problem_id'].']&nbsp;'.$data_result['exam2_problem_name'].'&nbsp;';
+					$data['exam2_problem_group']['position_exam2_problems_name'] .= '[No'.htmlspecialchars((string)$data_result['exam2_problem_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars((string)$data_result['exam2_problem_name'], ENT_QUOTES, 'UTF-8').'&nbsp;';
 					if( getenv('URL_SERVICE')!='mitemo' ){
-						$data['exam2_problem_group']['position_exam2_problems_name'] .= '['.$this->lang->line_or_def('common_management_teacher','管理講師').':'.$data_result['teacher_name'].']&nbsp;';
+						$data['exam2_problem_group']['position_exam2_problems_name'] .= '['.htmlspecialchars((string)$this->lang->line_or_def('common_management_teacher','管理講師'), ENT_QUOTES, 'UTF-8').':'.htmlspecialchars((string)$data_result['teacher_name'], ENT_QUOTES, 'UTF-8').']&nbsp;';
 					}
-					$data['exam2_problem_group']['position_exam2_problems_name'] .= '['.$this->lang->line_or_def('common_exam2_answer_points','解答配点').':'.$data_result['answer_point'].']';
+					$data['exam2_problem_group']['position_exam2_problems_name'] .= '['.htmlspecialchars((string)$this->lang->line_or_def('common_exam2_answer_points','解答配点'), ENT_QUOTES, 'UTF-8').':'.htmlspecialchars((string)$data_result['answer_point'], ENT_QUOTES, 'UTF-8').']';
 				}
 			}
 			
@@ -403,11 +404,11 @@ class Cms_exam2_problem_group extends CI_Controller {
 						if($data['exam2_problem_group']['position_exam2_problems_name'] != ''){
 							$data['exam2_problem_group']['position_exam2_problems_name'] .= '<br/>';
 						}
-						$data['exam2_problem_group']['position_exam2_problems_name'] .= '[No'.$data_result['exam2_problem_id'].']&nbsp;'.$data_result['exam2_problem_name'].'&nbsp;';
+						$data['exam2_problem_group']['position_exam2_problems_name'] .= '[No'.htmlspecialchars((string)$data_result['exam2_problem_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars((string)$data_result['exam2_problem_name'], ENT_QUOTES, 'UTF-8').'&nbsp;';
 						if( getenv('URL_SERVICE')!='mitemo' ){
-							$data['exam2_problem_group']['position_exam2_problems_name'] .= '['.$this->lang->line_or_def('common_management_teacher','管理講師').':'.$data_result['teacher_name'].']&nbsp;';
+							$data['exam2_problem_group']['position_exam2_problems_name'] .= '['.htmlspecialchars((string)$this->lang->line_or_def('common_management_teacher','管理講師'), ENT_QUOTES, 'UTF-8').':'.htmlspecialchars((string)$data_result['teacher_name'], ENT_QUOTES, 'UTF-8').']&nbsp;';
 						}
-						$data['exam2_problem_group']['position_exam2_problems_name'] .= '['.$this->lang->line_or_def('common_exam2_answer_points','解答配点').':'.$data_result['answer_point'].']';
+						$data['exam2_problem_group']['position_exam2_problems_name'] .= '['.htmlspecialchars((string)$this->lang->line_or_def('common_exam2_answer_points','解答配点'), ENT_QUOTES, 'UTF-8').':'.htmlspecialchars((string)$data_result['answer_point'], ENT_QUOTES, 'UTF-8').']';
 					}
 					
 				}

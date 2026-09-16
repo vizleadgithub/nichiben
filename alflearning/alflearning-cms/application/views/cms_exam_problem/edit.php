@@ -492,9 +492,9 @@
 
 				<?=form_open_multipart("cms_exam_problem/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($problem_error_msg)?'<div class="error">'.htmlspecialchars($problem_error_msg, ENT_QUOTES, 'UTF-8').'</div>':'')?>
-					<?=(isset($answer_error_msg)?'<div class="error">'.htmlspecialchars($answer_error_msg, ENT_QUOTES, 'UTF-8').'</div>':'')?>
-					<?=(isset($answer_explain_error_msg)?'<div class="error">'.htmlspecialchars($answer_explain_error_msg, ENT_QUOTES, 'UTF-8').'</div>':'')?>
+					<?=(isset($problem_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($problem_error_msg, ENT_QUOTES, 'UTF-8')).'</div>':'')?>
+					<?=(isset($answer_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($answer_error_msg, ENT_QUOTES, 'UTF-8')).'</div>':'')?>
+					<?=(isset($answer_explain_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($answer_explain_error_msg, ENT_QUOTES, 'UTF-8')).'</div>':'')?>
 					<input type="hidden" name="update_flg"      value='<?=set_value('update_flg',       $exam_problem['update_flg'])?>'>
 					<input type="hidden" name="exam_problem_id" value='<?=set_value('exam_problem_id',  $exam_problem['exam_problem_id'])?>'>
 					<table class="form">
@@ -600,9 +600,9 @@
 										
 										<?php foreach($exam_problem['answer_contents_no'] as $ino => $answer_contents_no): ?>
 											<li id="li_answer_contents_no_<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>">
-												<input type="hidden" name="answer_contents_no[]" value='<?=set_value('answer_contents_no[]', $exam_problem['answer_contents_no'][$ino])?>' />
-												<div class="div_word">
-													<textarea name="answer_contents_word[]" class="answer_contents_word"><?=set_value('answer_contents_word[]',$exam_problem['answer_contents_word'][$ino])?></textarea>
+											<input type="hidden" name="answer_contents_no[]" value='<?=htmlspecialchars((string)$exam_problem['answer_contents_no'][$ino], ENT_QUOTES, 'UTF-8')?>' />
+											<div class="div_word">
+												<textarea name="answer_contents_word[]" class="answer_contents_word"><?=htmlspecialchars((string)$exam_problem['answer_contents_word'][$ino], ENT_QUOTES, 'UTF-8')?></textarea>
 												</div>
 												
 												<div class="div_correct">

@@ -119,7 +119,7 @@
 									[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($exam2_problem_group['position_exam2_problems']); ?>]
 								</div>
 							</th>
-							<td ><?= htmlspecialchars( $exam2_problem_group['position_exam2_problems_name'], ENT_QUOTES, 'UTF-8') ?></td>
+							<td ><?= $exam2_problem_group['position_exam2_problems_name'] ?></td>
 						</tr>
 					</table>
 					<div class="submit">

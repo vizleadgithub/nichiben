@@ -1439,13 +1439,13 @@ class Cms_exam2_problem extends CI_Controller {
 						$param
 					);
 		if( ($param['problem_kind']==1) && (empty($param['problem_contents_text'])) ){
-			if($problem_error_msg!='') $problem_error_msg .= '<br/>';
+			if($problem_error_msg!='') $problem_error_msg .= "\n";
 			$problem_error_msg .= $this->lang->line_or_def('error_no_input_problem_contents','設問内容の入力がありません。');
 		}elseif( ($param['problem_kind']==2) && ($param['problem_contents_video']<0) ){
-			if($problem_error_msg!='') $problem_error_msg .= '<br/>';
+			if($problem_error_msg!='') $problem_error_msg .= "\n";
 			$problem_error_msg .= $this->lang->line_or_def('error_not_choice_video_problem_contents','設問内容のビデオが選択されていません。');
 		}elseif( ($param['problem_kind']==3) && ($param['problem_contents_book_library']<0) ){
-			if($problem_error_msg!='') $problem_error_msg .= '<br/>';
+			if($problem_error_msg!='') $problem_error_msg .= "\n";
 			$problem_error_msg .= $this->lang->line_or_def('error_not_choice_book_library_problem_contents','設問内容の図書室が選択されていません。');
 		}
 		
@@ -1470,13 +1470,13 @@ class Cms_exam2_problem extends CI_Controller {
 						$param
 					);
 		if( ($param['answer_explain_kind']==1) && (empty($param['answer_explain_contents_text'])) ){
-			if($answer_explain_error_msg!='') $answer_explain_error_msg .= '<br/>';
+			if($answer_explain_error_msg!='') $answer_explain_error_msg .= "\n";
 			$answer_explain_error_msg .= $this->lang->line_or_def('error_no_input_answer_explain','解答解説内容の入力がありません');
 		}elseif( ($param['answer_explain_kind']==2) && ($param['answer_explain_contents_video']<0) ){
-			if($answer_explain_error_msg!='') $answer_explain_error_msg .= '<br/>';
+			if($answer_explain_error_msg!='') $answer_explain_error_msg .= "\n";
 			$answer_explain_error_msg .= $this->lang->line_or_def('error_not_choice_video_answer_explain','解答解説内容のビデオが選択されていません');
 		}elseif( ($param['answer_explain_kind']==3) && ($param['answer_explain_contents_book_library']<0) ){
-			if($answer_explain_error_msg!='') $answer_explain_error_msg .= '<br/>';
+			if($answer_explain_error_msg!='') $answer_explain_error_msg .= "\n";
 			$answer_explain_error_msg .= $this->lang->line_or_def('error_not_choice_book_library_answer_explain','解答解説内容の図書室が選択されていません');
 		}
 		
@@ -1507,7 +1507,7 @@ class Cms_exam2_problem extends CI_Controller {
 			
 			foreach($param['answer_contents_word'] as $idx => $answer_contents_word){
 				if( empty($answer_contents_word) ){
-					if($answer_error_msg!='') $answer_error_msg .= '<br/>';
+					if($answer_error_msg!='') $answer_error_msg .= "\n";
 					$answer_error_msg .= (string)($idx + 1).$this->lang->line_or_def('error_answer_contents_no_data', '行目の解答内容の入力がありません。');
 				}
 			}

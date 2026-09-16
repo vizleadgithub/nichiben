@@ -34,7 +34,7 @@
 								<?php
 								for($i2=0;$i2<count($export_data[0]["exam2_problem"]);$i2++){
 								?>
-									<th style="width:;"><?php print( $export_data[0]["exam2_problem"][$i2]["exam2_problem_name"] ); ?></th>
+									<th style="width:;"><?php print( htmlspecialchars((string)$export_data[0]["exam2_problem"][$i2]["exam2_problem_name"], ENT_QUOTES, 'UTF-8') ); ?></th>
 								<?php
 								}
 								?>
@@ -90,7 +90,7 @@
 													for($i3=0;$i3<count($arr_temp->answer_contents);$i3++){
 														$temp = $arr_temp->answer_contents[$i3];
 														if( $temp->no ==$student['answer'][$i2]["exam2_answer_contents"] ){
-															print(  "・".$temp->word  );
+																	print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8')  );
 														}
 													}
 												}
@@ -103,7 +103,7 @@
 														for($i3=0;$i3<count($arr_temp->answer_contents);$i3++){
 															$temp = $arr_temp->answer_contents[$i3];
 															if( $temp->no == $arr_answer[$i4] ){
-																print(  "・".$temp->word."<br>"  );
+																		print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8')."<br>"  );
 															}
 														}
 													}
@@ -114,9 +114,9 @@
 											} elseif( $export_data[0]["exam2_problem"][$i2]["answer_kind"] == 3 ){
 												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"] );
 												print(  '<textarea id="exam2_answer_'.$student['answer'][$i2]["exam2_answer_id"].'">'  );
-												print(  $student['answer'][$i2]["exam2_answer_contents"]  );
+											print(  htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents"], ENT_QUOTES, 'UTF-8')  );
 												if($student['answer'][$i2]["exam2_answer_contents_old"] != ""){
-													print(  "\r\n\r\n".$student['answer'][$i2]["exam2_answer_contents_old"]  );
+												print(  "\r\n\r\n".htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents_old"], ENT_QUOTES, 'UTF-8')  );
 												}
 												print(  '</textarea>'  );
 												print(  '<input type="button" name="btn_exam2_answer_'.$student['answer'][$i2]["exam2_answer_id"].'" onclick="update_exam2_answer_problem('.$student['answer'][$i2]["exam2_answer_id"].', variables['.$student['answer'][$i2]["exam2_answer_id"].'])" value="更新">'  );

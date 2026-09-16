@@ -229,7 +229,7 @@
 								<td></td>
 							<?php endif; ?>
 						</tr>
-						<!--
+						<?php if (false): // 非表示の解説項目は出力しない ?>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?></th>
 							<td ><?= $exam2_problem['answer_point']; ?>
@@ -258,21 +258,21 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') ?></th>
 							<?php if($exam2_problem['answer_explain_kind'] == 1): ?>
-								<td style="word-break: break-all;"><?= nl2br($exam2_problem['answer_explain_contents_text']); ?></td>
+								<td style="word-break: break-all;"><?= nl2br(htmlspecialchars((string)$exam2_problem['answer_explain_contents_text'], ENT_QUOTES, 'UTF-8')); ?></td>
 							<?php elseif($exam2_problem['answer_explain_kind'] == 2): ?>
-								<td><?=$exam2_problem['answer_explain_contents_video_name']; ?></td>
+								<td><?= htmlspecialchars((string)$exam2_problem['answer_explain_contents_video_name'], ENT_QUOTES, 'UTF-8'); ?></td>
 							<?php elseif($exam2_problem['answer_explain_kind'] == 3): ?>
-								<td><?=$exam2_problem['answer_explain_contents_book_library_name']; ?></td>
+								<td><?= htmlspecialchars((string)$exam2_problem['answer_explain_contents_book_library_name'], ENT_QUOTES, 'UTF-8'); ?></td>
 							<?php else: ?>
 								<td></td>
 							<?php endif; ?>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_answer_explain_note','解答解説備考') ?></th>
-								<td style="word-break: break-all;"><?= nl2br($exam2_problem['answer_explain_note']); ?></td>
+								<td style="word-break: break-all;"><?= nl2br(htmlspecialchars((string)$exam2_problem['answer_explain_note'], ENT_QUOTES, 'UTF-8')); ?></td>
 						</tr>
 						<?php endif; ?>
-						-->
+						<?php endif; ?>
 					</table>
 					<div class="submit">
 						<?php
