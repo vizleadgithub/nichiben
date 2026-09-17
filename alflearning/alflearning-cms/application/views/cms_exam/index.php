@@ -42,7 +42,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_freeword','フリーワード') ?></th>
 							<td colspan = "3">
-								<input type="text" name="s_free_word" size="45" value="<?=set_value('s_free_word',$s_free_word)?>">
+								<input type="text" name="s_free_word" size="45" value="<?= htmlspecialchars(set_value('s_free_word', $s_free_word, FALSE), ENT_QUOTES, 'UTF-8', false) ?>">
 							</td>
 						</tr>
 					</table>
@@ -70,14 +70,14 @@
 							<?php foreach($exam_list as $exam) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam/detail/<?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam['exam_name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><a href="/cms_exam/detail/<?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam['exam_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 <?php if(false){ ?>
 									<td>
 										<?= (getenv('URL_SERVICE')=='mitemo')? "": $exam['teacher_name']; ?>
 									</td>
 <?php } ?>
-									<td><?= htmlspecialchars( $exam['disp_status'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><?= htmlspecialchars( $exam['disp_status'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<?php if($exam['public_flag'] == 0){ ?>
 										<td><?= $this->lang->line_or_def('common_public','公開'); ?></td>
 									<?php }elseif($exam['public_flag'] == 9){ ?>

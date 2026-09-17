@@ -1009,6 +1009,16 @@ class Cms_cource extends CI_Controller {
 		// 学校に属する設問ID・設問名を取得
 		$this->load->model('model_exam_problem');
 		$exam_problems = $this->model_exam_problem->get_cource_exam_problem($drop_param);
+		// The Ajax views insert these labels with jQuery.text(), so return plain text.
+		foreach ($exam_problems as &$exam_problem) {
+			if (isset($exam_problem['exam_problem_name'])) {
+				$exam_problem['exam_problem_name'] = html_entity_decode($exam_problem['exam_problem_name'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+			}
+			if (isset($exam_problem['teacher_name'])) {
+				$exam_problem['teacher_name'] = html_entity_decode($exam_problem['teacher_name'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+			}
+		}
+		unset($exam_problem);
 		
 		$this->output->set_header("HTTP/1.0 200 OK");
 		$this->output->set_content_type('application/json; charset=utf-8');
