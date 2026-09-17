@@ -36,7 +36,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_category_name','カテゴリ名') ?></th>
 							<td >
-								<input type="text" name="s_free_word" size="45" value="<?=set_value('s_free_word',$s_free_word)?>">
+								<input type="text" name="s_free_word" size="45" value="<?= htmlspecialchars(set_value('s_free_word', $s_free_word, FALSE), ENT_QUOTES, 'UTF-8', false) ?>">
 							</td>
 						</tr>
 					</table>
@@ -55,8 +55,8 @@
 						<?php if(isset($category_list)) { ?>
 							<?php foreach($category_list as $index=>$category) { ?>
 								<tr class="">
-									<td><a href="/cms_category/detail/<?= htmlspecialchars( $category['term_id'], ENT_QUOTES, 'UTF-8')  ?>/"><?= htmlspecialchars( $category['term_id'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td><?= htmlspecialchars( $category['name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><a href="/cms_category/detail/<?= htmlspecialchars( $category['term_id'], ENT_QUOTES, 'UTF-8')  ?>/"><?= htmlspecialchars( $category['term_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><?= htmlspecialchars( $category['name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								</tr>
 							<?php } ?>
 						<?php } ?>

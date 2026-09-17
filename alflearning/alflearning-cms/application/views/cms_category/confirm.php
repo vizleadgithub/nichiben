@@ -105,14 +105,14 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_category_name','カテゴリ名') ?></th>
 							<td>
-								<?= htmlspecialchars( $category['name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $category['name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<!--
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_category_slug','スラッグ') ?></th>
 							<td>
-								<?= htmlspecialchars( $category['slug'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $category['slug'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						-->
@@ -123,7 +123,7 @@
 									root
 								<?php } else { ?>
 									<?php foreach( $parent_root_category_list AS $row ){ ?>
-										<?php if($row["term_id"]==$category['parent']){ print( htmlspecialchars( $row["name"], ENT_QUOTES, 'UTF-8') ); } ?>
+										<?php if($row["term_id"]==$category['parent']){ print( htmlspecialchars( $row["name"], ENT_QUOTES, 'UTF-8', false) ); } ?>
 									<?php } ?>
 								<?php } ?>
 							</td>
