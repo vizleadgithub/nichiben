@@ -116,13 +116,13 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_title','タイトル') ?></th>
 							<td>
-								<input type="text" name="information_title" size="45" value="<?=set_value('information_title',$information['information_title'])?>">
+								<input type="text" name="information_title" size="45" value="<?= htmlspecialchars(set_value('information_title', $information['information_title'], FALSE), ENT_QUOTES, 'UTF-8', false) ?>">
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
 							<td >
-								<textarea name="information_caption"><?=set_value('information_caption',$information['information_caption'])?></textarea>
+								<textarea name="information_caption"><?= htmlspecialchars(set_value('information_caption', $information['information_caption'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
 							</td>
 						</tr>
 						<tr>
