@@ -105,12 +105,12 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam2_problem_group_name','設問グループ名') ?></th>
 							<td>
-								<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam2_problem_group['exam2_problem_group_caption'], ENT_QUOTES, 'UTF-8') ) ?></td>
+							<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam2_problem_group['exam2_problem_group_caption'], ENT_QUOTES, 'UTF-8', false) ) ?></td>
 						</tr>
 						<tr>
 							<th>

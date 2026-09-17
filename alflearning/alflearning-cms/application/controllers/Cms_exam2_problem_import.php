@@ -313,6 +313,7 @@ class Cms_exam2_problem_import extends CI_Controller {
 			
 			$import_result = array();
 			$counter       = 0;
+			$has_answer_correct_columns = FALSE;
 			while(!feof($fp)){
 				// 行数
 				$counter = $counter + 1;
@@ -321,6 +322,9 @@ class Cms_exam2_problem_import extends CI_Controller {
 				$arrayRecord = $this->fgetcsv($fp,  filesize($csv_file_name), ",");
 				if($arrayRecord === false){
 					break;
+				}
+				if($counter === 1 && isset($arrayRecord[10])){
+					$has_answer_correct_columns = strpos((string)$arrayRecord[10], '正誤') !== FALSE;
 				}
 				
 				$temp_import_result = array();  // 戻り値情報格納
@@ -549,62 +553,36 @@ class Cms_exam2_problem_import extends CI_Controller {
 						
 						// インポートする行の項目数が 12 より小さい場合は、解答内容不備エラーとする
 						$select_count  = 0;
-						$correct_count = 0;
-						$contents_error_flag = 0;  // 選択肢正誤があり、選択肢内容がない場合
+						$contents_error_flag = 0;
+						$column_step = $has_answer_correct_columns ? 2 : 1;
 						
-						for($index=$arrRecordIndex + 1; $index<count($arrayRecord); $index = $index + 2){
-							// 正誤と内容、両方がある場合処理
-							if( (array_key_exists($index, $arrayRecord)) && (array_key_exists($index+1, $arrayRecord)) ){
-
-								if( (trim($arrayRecord[$index])=='') && (trim($arrayRecord[$index+1])=='') ){
-									// 正誤、内容ともに空の場合は次へ
-									continue;
-								}elseif( trim($arrayRecord[$index+1])=='' ){
-									// 内容が空の場合、エラー
-								//	$temp_import_result['no']      = $counter;
-								//	$temp_import_result['value']   = 'NG';
-								//	$temp_import_result['message'] = $this->lang->line_or_def('error_exam2_problem_import_no_answer_contents_choice','解答内容の選択肢内容がありません');
-									$contents_error_flag           = 1;
-									break;
-								}else{
-									// 選択肢数のカウントアップ
-									$select_count = $select_count + 1;
-									
-									// 正誤は空白＝ゼロとみなし、値変更
-									if( intval($arrayRecord[$index])>0 ){
-										$arrayRecord[$index] = 1;
-									}else{
-										$arrayRecord[$index] = 0;
-									}
-									$exam2_problem['answer_contents_no'][$select_count - 1]      = $select_count;
-									$exam2_problem['answer_contents_word'][$select_count - 1]    = $arrayRecord[$index+1];
-									$exam2_problem['answer_contents_correct'][$select_count - 1] = $arrayRecord[$index];
-									
-									// 正解数のカウントアップ
-									$correct_count = $correct_count + intval($arrayRecord[$index]);
-								}
+						for($index=$arrRecordIndex + 1; $index<count($arrayRecord); $index += $column_step){
+							$word_index = $has_answer_correct_columns ? $index + 1 : $index;
+							if(!array_key_exists($word_index, $arrayRecord)){
+								continue;
 							}
+							if(trim($arrayRecord[$word_index]) === ''){
+								if($has_answer_correct_columns && trim($arrayRecord[$index]) !== ''){
+									$contents_error_flag = 1;
+									break;
+								}
+								continue;
+							}
+							
+							$select_count = $select_count + 1;
+							$exam2_problem['answer_contents_no'][$select_count - 1]      = $select_count;
+							$exam2_problem['answer_contents_word'][$select_count - 1]    = $arrayRecord[$word_index];
+							// The model retains this field for schema compatibility; surveys do not use correctness.
+							$exam2_problem['answer_contents_correct'][$select_count - 1] = 1;
 						}
 						
 						if($contents_error_flag == 0){
 							if($select_count == 0){
-								// 単一形式・複数形式なのに、選択肢項目がない
 								$temp_import_result['no']      = $counter;
 								$temp_import_result['value']   = 'NG';
 								$temp_import_result['message'] = $this->lang->line_or_def('error_exam2_problem_import_no_answer_contents','解答内容の選択肢がありません');
-							}elseif($correct_count == 0){
-								// 単一形式・複数形式なのに、正解がない
-								$temp_import_result['no']      = $counter;
-								$temp_import_result['value']   = 'NG';
-								$temp_import_result['message'] = $this->lang->line_or_def('error_exam2_problem_import_no_answer_contents_correct_answer','解答内容の正解がありません');
-							}elseif( ($exam2_problem['answer_kind']==1) && ($correct_count!=1) ) {
-								// 単一形式なのに、正解が 1つでない
-								$temp_import_result['no']      = $counter;
-								$temp_import_result['value']   = 'NG';
-								$temp_import_result['message'] = $this->lang->line_or_def('error_exam2_problem_import_over_answer_contents_correct_answer','単一形式の解答内容の正解は1つです');
 							}
 						}else{
-							// 正誤があって、内容なし
 							$temp_import_result['no']      = $counter;
 							$temp_import_result['value']   = 'NG';
 							$temp_import_result['message'] = $this->lang->line_or_def('error_exam2_problem_import_no_answer_contents_choice','解答内容の選択肢内容がありません');
@@ -827,7 +805,7 @@ class Cms_exam2_problem_import extends CI_Controller {
 		if( count($data['teacher_list']) != 0 ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
+				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false);
 			}
 		}
 		
@@ -1021,15 +999,10 @@ class Cms_exam2_problem_import extends CI_Controller {
 			'解答解説内容',
 			'解答解説備考',
 			'解答内容-フリー回答',
-			'解答内容-選択肢１正誤',
 			'解答内容-選択肢１内容',
-			'解答内容-選択肢２正誤',
 			'解答内容-選択肢２内容',
-			'解答内容-選択肢３正誤',
 			'解答内容-選択肢３内容',
-			'解答内容-選択肢４正誤',
 			'解答内容-選択肢４内容',
-			'解答内容-選択肢５正誤',
 			'解答内容-選択肢５内容',
 		);
 		mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $_headClum);
@@ -1053,13 +1026,20 @@ class Cms_exam2_problem_import extends CI_Controller {
 				if($arr_answer_contents->answer_kind==1 || $arr_answer_contents->answer_kind==2){
 					$data[] = ''; // 解答内容-フリー回答
 					foreach($arr_answer_contents->answer_contents as $answer){
-						$data[] = $answer->correct; // 解答内容-選択肢n正誤
 						$data[] = $answer->word; // 解答内容-選択肢n内容
 					}
 				} elseif($arr_answer_contents->answer_kind==3){
 					$data[] = $arr_answer_contents->answer_contents[0]->word; // 解答内容-フリー回答
 				}
 			}
+			// CSV is plain text, so restore characters encoded for HTML display before conversion.
+			foreach ($data as &$value) {
+				if (is_string($value)) {
+					$value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+				}
+			}
+			unset($value);
+
 			mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $data);
 			fputcsv($fp, $data);
 		}
