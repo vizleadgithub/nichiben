@@ -190,7 +190,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>_ex"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
+												<label for="lectures_<?=$cource['cource_id']?>_ex"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></label>
 												</li>
 										<?php 
 										}

@@ -221,7 +221,7 @@ class Cms_exam2_download extends CI_Controller {
 		if( count($data['teacher_list']) != 0 ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
+				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false);
 			}
 		}
 		
@@ -437,6 +437,13 @@ class Cms_exam2_download extends CI_Controller {
 				$exam2_problem_ids[] = $export_data[$i1]["exam2"][0]["exam2_problem"][$i2]["exam2_problem_id"];
 				$row[] = $export_data[$i1]["exam2"][0]["exam2_problem"][$i2]["exam2_problem_name"];
 			}
+			// CSV is plain text, so restore characters encoded for HTML display before conversion.
+			foreach ($row as &$value) {
+				if (is_string($value)) {
+					$value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+				}
+			}
+			unset($value);
 			mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $row);
 			$data[] = $row;
 			fputcsv($fp, $row);
@@ -475,6 +482,13 @@ class Cms_exam2_download extends CI_Controller {
 				if( 0<count($export_data[$i1]["exam2"][0]["student"][$i2]["answer"]) ){
 					$row[] = $export_data[$i1]["exam2"][0]["student"][$i2]["answer"][0]["exam2_answer_date"];
 				}
+				// CSV is plain text, so restore characters encoded for HTML display before conversion.
+				foreach ($row as &$value) {
+					if (is_string($value)) {
+						$value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+					}
+				}
+				unset($value);
 				mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $row);
 				$data[] = $row;
 				fputcsv($fp, $row);
