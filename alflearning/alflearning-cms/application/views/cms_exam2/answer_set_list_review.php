@@ -34,7 +34,7 @@
 								<?php
 								for($i2=0;$i2<count($export_data[0]["exam2_problem"]);$i2++){
 								?>
-									<th style="width:;"><?php print( htmlspecialchars((string)$export_data[0]["exam2_problem"][$i2]["exam2_problem_name"], ENT_QUOTES, 'UTF-8') ); ?></th>
+									<th style="width:;"><?php print( htmlspecialchars((string)$export_data[0]["exam2_problem"][$i2]["exam2_problem_name"], ENT_QUOTES, 'UTF-8', false) ); ?></th>
 								<?php
 								}
 								?>
@@ -71,12 +71,12 @@
 									<td style="width:;">
 										<?php if( isset($student["info"]) ) { ?>
 											<?php if( isset($student["info"][0]) ) { ?>
-												<textarea id="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>" name="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>"><?php if(isset($export_data_review[$student['info'][0]['student_id']])){ ?><?= htmlspecialchars( $export_data_review[$student['info'][0]['student_id']], ENT_QUOTES, 'UTF-8') ?><?php } ?></textarea>
-												<input type="button" id="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>" name="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>" onclick="update_exam2_answer_review_contents('<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>')" value="更新">
+												<textarea id="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?php if(isset($export_data_review[$student['info'][0]['student_id']])){ ?><?= htmlspecialchars( $export_data_review[$student['info'][0]['student_id']], ENT_QUOTES, 'UTF-8', false) ?><?php } ?></textarea>
+												<input type="button" id="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" onclick="update_exam2_answer_review_contents('<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>')" value="更新">
 											<?php } ?>
 										<?php } ?>
 									</td>
-									<td style="width:;"><?php if( isset($student["info"]) ) { ?><?php if( isset($student["info"][0]) ) { ?><?= htmlspecialchars( $student["info"][0]['lawyer_number'], ENT_QUOTES, 'UTF-8') ?><?php } ?><?php } ?></td>
+									<td style="width:;"><?php if( isset($student["info"]) ) { ?><?php if( isset($student["info"][0]) ) { ?><?= htmlspecialchars( $student["info"][0]['lawyer_number'], ENT_QUOTES, 'UTF-8', false) ?><?php } ?><?php } ?></td>
 									<?php
 									for($i2=0;$i2<count($student["answer"]);$i2++){
 										if( isset($export_data[0]["exam2_problem"][$i2]) ){
@@ -90,7 +90,7 @@
 												for($i3=0;$i3<count($arr_temp->answer_contents);$i3++){
 													$temp = $arr_temp->answer_contents[$i3];
 													if( $temp->no ==$student['answer'][$i2]["exam2_answer_contents"] ){
-														print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8')  );
+														print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8', false)  );
 													}
 												}
 											} elseif( $export_data[0]["exam2_problem"][$i2]["answer_kind"] == 2 ){
@@ -102,7 +102,7 @@
 													for($i3=0;$i3<count($arr_temp->answer_contents);$i3++){
 														$temp = $arr_temp->answer_contents[$i3];
 														if( $temp->no == $arr_answer[$i4] ){
-															print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8')."<br>"  );
+															print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8', false)."<br>"  );
 														}
 													}
 												}
@@ -113,9 +113,9 @@
 												print(  "[".$export_data[0]["exam2_problem"][$i2]["answer_kind"]."]"  );
 												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"] );
 												print(  '<textarea id="exam2_answer_'.$student['answer'][$i2]["exam2_answer_id"].'">'  );
-											print(  htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents"], ENT_QUOTES, 'UTF-8')  );
+											print(  htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents"], ENT_QUOTES, 'UTF-8', false)  );
 												if($student['answer'][$i2]["exam2_answer_contents_old"] != ""){
-												print(  "\r\n\r\n".htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents_old"], ENT_QUOTES, 'UTF-8')  );
+												print(  "\r\n\r\n".htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents_old"], ENT_QUOTES, 'UTF-8', false)  );
 												}
 												print(  '</textarea>'  );
 												print(  '<input type="button" name="btn_exam2_answer_'.$student['answer'][$i2]["exam2_answer_id"].'" onclick="update_exam2_answer_problem('.$student['answer'][$i2]["exam2_answer_id"].', variables['.$student['answer'][$i2]["exam2_answer_id"].'])" value="更新">'  );
