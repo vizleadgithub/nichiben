@@ -31,7 +31,7 @@
 
 				<!--<h2><?= $this->lang->line_or_def('msg_search','検索する内容を入力してください') ?></h2>-->
 				<?=validation_errors('<div class="error">', '</div>'); ?>
-				<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8').'</div>' : ''); ?>
+				<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8', false).'</div>' : ''); ?>
 
 				<table class="list___">
 					<tr style="border-bottom: solid 1px #666666;">
@@ -106,15 +106,15 @@ function upload_ranking_form(no) {
 }
 					</script>
 					<?=form_open("cms_ranking/confirm", array('method'=>'post', 'id'=>'ranking_form'))?>
-						<input type="hidden" id="file_text1" name="file_text1" value="<?php print( htmlspecialchars($file_text1) ); ?>">
-						<input type="hidden" id="file_name1" name="file_name1" value="<?php print( htmlspecialchars($file_name1) ); ?>">
-						<input type="hidden" id="file_path1" name="file_path1" value="<?php print( htmlspecialchars($file_path1) ); ?>">
-						<input type="hidden" id="file_text2" name="file_text2" value="<?php print( htmlspecialchars($file_text2) ); ?>">
-						<input type="hidden" id="file_name2" name="file_name2" value="<?php print( htmlspecialchars($file_name2) ); ?>">
-						<input type="hidden" id="file_path2" name="file_path2" value="<?php print( htmlspecialchars($file_path2) ); ?>">
-						<input type="hidden" id="file_text3" name="file_text3" value="<?php print( htmlspecialchars($file_text3) ); ?>">
-						<input type="hidden" id="file_name3" name="file_name3" value="<?php print( htmlspecialchars($file_name3) ); ?>">
-						<input type="hidden" id="file_path3" name="file_path3" value="<?php print( htmlspecialchars($file_path3) ); ?>">
+						<input type="hidden" id="file_text1" name="file_text1" value="<?php print( htmlspecialchars($file_text1, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" id="file_name1" name="file_name1" value="<?php print( htmlspecialchars($file_name1, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" id="file_path1" name="file_path1" value="<?php print( htmlspecialchars($file_path1, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" id="file_text2" name="file_text2" value="<?php print( htmlspecialchars($file_text2, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" id="file_name2" name="file_name2" value="<?php print( htmlspecialchars($file_name2, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" id="file_path2" name="file_path2" value="<?php print( htmlspecialchars($file_path2, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" id="file_text3" name="file_text3" value="<?php print( htmlspecialchars($file_text3, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" id="file_name3" name="file_name3" value="<?php print( htmlspecialchars($file_name3, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" id="file_path3" name="file_path3" value="<?php print( htmlspecialchars($file_path3, ENT_QUOTES, 'UTF-8', false) ); ?>">
 						<?php
 						for($i=1;$i<=10;$i++){
 							$product_id = "";
@@ -131,9 +131,9 @@ function upload_ranking_form(no) {
 							<tr style="border-bottom: solid 1px #666666;">
 								<td><?php print($i); ?></td>
 								<td>
-									商品名:<span id="product_name_<?php print($i); ?>_disp"><?php print($product_name); ?></span>
-									<input type="hidden" id="product_id_<?php print($i); ?>" name="product_id_<?php print($i); ?>" value="<?php print(htmlspecialchars($product_id)); ?>">
-									<input type="hidden" id="product_name_<?php print($i); ?>" name="product_name_<?php print($i); ?>" value="<?php print(htmlspecialchars($product_name)); ?>">
+									商品名:<span id="product_name_<?php print($i); ?>_disp"><?php print(htmlspecialchars($product_name, ENT_QUOTES, 'UTF-8', false)); ?></span>
+									<input type="hidden" id="product_id_<?php print($i); ?>" name="product_id_<?php print($i); ?>" value="<?php print(htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8', false)); ?>">
+									<input type="hidden" id="product_name_<?php print($i); ?>" name="product_name_<?php print($i); ?>" value="<?php print(htmlspecialchars($product_name, ENT_QUOTES, 'UTF-8', false)); ?>">
 									<br>
 									<input type="button" id="search_button_<?php print($i); ?>" name="search_button_<?php print($i); ?>" value="　検索　" onclick="fnc_pop_search_form('<?php print($i); ?>')">
 									<input type="button" id="delete_button_<?php print($i); ?>" name="delete_button_<?php print($i); ?>" value="　削除　" onclick="fnc_del_ranking('<?php print($i); ?>')">
@@ -150,8 +150,8 @@ function upload_ranking_form(no) {
 						<td>ファイル1</td>
 						<td>
 							<form id="file_form1" name="file_form1" method="post" enctype="multipart/form-data">
-								テキスト：<input type="text" id="file_text1_disp" name="file_text1_disp" value="<?php print( htmlspecialchars($file_text1) ); ?>"><br>
-								ファイル：<span id="file_name1_disp"><?php print( htmlspecialchars($file_name1) ); ?></span><br>
+								テキスト：<input type="text" id="file_text1_disp" name="file_text1_disp" value="<?php print( htmlspecialchars($file_text1, ENT_QUOTES, 'UTF-8', false) ); ?>"><br>
+								ファイル：<span id="file_name1_disp"><?php print( htmlspecialchars($file_name1, ENT_QUOTES, 'UTF-8', false) ); ?></span><br>
 								<input type="file" id="uploader1" name="file_data" />
 								<a href="javascript:void(0);" onclick="upload_ranking_form(1)">アップロード</a>
 							</form>
@@ -161,8 +161,8 @@ function upload_ranking_form(no) {
 						<td>ファイル2</td>
 						<td>
 							<form id="file_form2" name="file_form2" method="post" enctype="multipart/form-data">
-								テキスト：<input type="text" id="file_text2_disp" name="file_text2_disp" value="<?php print( htmlspecialchars($file_text2) ); ?>"><br>
-								ファイル：<span id="file_name2_disp"><?php print( htmlspecialchars($file_name2) ); ?></span><br>
+								テキスト：<input type="text" id="file_text2_disp" name="file_text2_disp" value="<?php print( htmlspecialchars($file_text2, ENT_QUOTES, 'UTF-8', false) ); ?>"><br>
+								ファイル：<span id="file_name2_disp"><?php print( htmlspecialchars($file_name2, ENT_QUOTES, 'UTF-8', false) ); ?></span><br>
 								<input type="file" id="uploader2" name="file_data" />
 								<a href="javascript:void(0);" onclick="upload_ranking_form(2)">アップロード</a>
 							</form>
@@ -172,8 +172,8 @@ function upload_ranking_form(no) {
 						<td>ファイル3</td>
 						<td>
 							<form id="file_form3" name="file_form3" method="post" enctype="multipart/form-data">
-								テキスト：<input type="text" id="file_text3_disp" name="file_text3_disp" value="<?php print( htmlspecialchars($file_text3) ); ?>"><br>
-								ファイル：<span id="file_name3_disp"><?php print( htmlspecialchars($file_name3) ); ?></span><br>
+								テキスト：<input type="text" id="file_text3_disp" name="file_text3_disp" value="<?php print( htmlspecialchars($file_text3, ENT_QUOTES, 'UTF-8', false) ); ?>"><br>
+								ファイル：<span id="file_name3_disp"><?php print( htmlspecialchars($file_name3, ENT_QUOTES, 'UTF-8', false) ); ?></span><br>
 								<input type="file" id="uploader3" name="file_data" />
 								<a href="javascript:void(0);" onclick="upload_ranking_form(3)">アップロード</a>
 							</form>
