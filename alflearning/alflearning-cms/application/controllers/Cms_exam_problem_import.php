@@ -827,7 +827,7 @@ class Cms_exam_problem_import extends CI_Controller {
 		if( count($data['teacher_list']) != 0 ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
+				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false);
 			}
 		}
 		
@@ -1060,6 +1060,14 @@ class Cms_exam_problem_import extends CI_Controller {
 					$data[] = $arr_answer_contents->answer_contents[0]->word; // 解答内容-フリー回答
 				}
 			}
+			// CSV is plain text, so restore characters encoded for HTML display before conversion.
+			foreach ($data as &$value) {
+				if (is_string($value)) {
+					$value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+				}
+			}
+			unset($value);
+
 			mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $data);
 			fputcsv($fp, $data);
 		}
