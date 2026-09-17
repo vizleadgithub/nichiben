@@ -492,16 +492,16 @@
 
 				<?=form_open_multipart("cms_exam2_problem/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($problem_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($problem_error_msg, ENT_QUOTES, 'UTF-8')).'</div>':'')?>
-					<?=(isset($answer_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($answer_error_msg, ENT_QUOTES, 'UTF-8')).'</div>':'')?>
-					<?=(isset($answer_explain_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($answer_explain_error_msg, ENT_QUOTES, 'UTF-8')).'</div>':'')?>
+					<?=(isset($problem_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($problem_error_msg, ENT_QUOTES, 'UTF-8', false)).'</div>':'')?>
+					<?=(isset($answer_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($answer_error_msg, ENT_QUOTES, 'UTF-8', false)).'</div>':'')?>
+					<?=(isset($answer_explain_error_msg)?'<div class="error">'.nl2br(htmlspecialchars($answer_explain_error_msg, ENT_QUOTES, 'UTF-8', false)).'</div>':'')?>
 					<input type="hidden" name="update_flg"      value='<?=set_value('update_flg',       $exam2_problem['update_flg'])?>'>
 					<input type="hidden" name="exam2_problem_id" value='<?=set_value('exam2_problem_id',  $exam2_problem['exam2_problem_id'])?>'>
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam2_problem_name','設問名') ?></th>
 							<td>
-								<input type=text name="exam2_problem_name" maxlength="256" size="30" value='<?=set_value('exam2_problem_name',$exam2_problem['exam2_problem_name'])?>'>
+								<input type=text name="exam2_problem_name" maxlength="256" size="30" value='<?= htmlspecialchars(set_value('exam2_problem_name', $exam2_problem['exam2_problem_name'], FALSE), ENT_QUOTES, 'UTF-8', false) ?>'>
 							</td>
 						</tr>
 
@@ -532,7 +532,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="exam2_problem_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
+												<input type="checkbox" name="exam2_problem_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>
 													<?php 
 													if( isset($exam2_problem['exam2_problem_lectures']) ) {
 														foreach( $exam2_problem['exam2_problem_lectures'] as $lecture) { 
@@ -546,7 +546,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></label>
 												</li>
 										<?php 
 										}
@@ -571,7 +571,7 @@
 							<th width="160" style="vertical-align: top;"><?= $this->lang->line_or_def('common_problem_contents','設問内容') ?></th>
 							<td>
 								<? // 設問種類に応じて表示切替 ?>
-								<textarea name="problem_contents_text" id="problem_contents_text" ><?=set_value('problem_contents_text',$exam2_problem['problem_contents_text'])?></textarea>
+								<textarea name="problem_contents_text" id="problem_contents_text" ><?= htmlspecialchars(set_value('problem_contents_text', $exam2_problem['problem_contents_text'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
 								<?= form_dropdown('problem_contents_book_library',$problem_contents_book_library, set_value('problem_contents_book_library', $exam2_problem['problem_contents_book_library']), 'name="problem_contents_book_library" class="problem_contents_book_library" '); ?>
 								<?= form_dropdown('problem_contents_video',$problem_contents_video, set_value('problem_contents_video', $exam2_problem['problem_contents_video']), 'name="problem_contents_video" class="problem_contents_video" '); ?>
 								 <img name="problem_contents_thum" id="problem_contents_thum" style="" src="">
@@ -581,7 +581,7 @@
 						<tr>
 							<th width="160" style="vertical-align: top;"><?= $this->lang->line_or_def('common_problem_note','設問備考') ?></th>
 							<td>
-								<textarea name="problem_note" id="problem_note" style="height: 80px; width: 65%;"><?=set_value('problem_note',$exam2_problem['problem_note'])?></textarea>
+								<textarea name="problem_note" id="problem_note" style="height: 80px; width: 65%;"><?= htmlspecialchars(set_value('problem_note', $exam2_problem['problem_note'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
 							</td>
 						</tr>
 						
@@ -599,17 +599,17 @@
 									<ul id="answer_contents_choice_area">
 										
 										<?php foreach($exam2_problem['answer_contents_no'] as $ino => $answer_contents_no): ?>
-											<li id="li_answer_contents_no_<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>">
-											<input type="hidden" name="answer_contents_no[]" value='<?=htmlspecialchars((string)$exam2_problem['answer_contents_no'][$ino], ENT_QUOTES, 'UTF-8')?>' />
+											<li id="li_answer_contents_no_<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8', false) ?>">
+											<input type="hidden" name="answer_contents_no[]" value='<?=htmlspecialchars((string)$exam2_problem['answer_contents_no'][$ino], ENT_QUOTES, 'UTF-8', false)?>' />
 											<div class="div_word">
-												<textarea name="answer_contents_word[]" class="answer_contents_word"><?=htmlspecialchars((string)$exam2_problem['answer_contents_word'][$ino], ENT_QUOTES, 'UTF-8')?></textarea>
+												<textarea name="answer_contents_word[]" class="answer_contents_word"><?=htmlspecialchars((string)$exam2_problem['answer_contents_word'][$ino], ENT_QUOTES, 'UTF-8', false)?></textarea>
 												</div>
 												
 												<div class="div_correct">
 													<?php if($exam2_problem['answer_contents_correct'][$ino] == 1): ?>
-														<input type="hidden" value="<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>" name="answer_contents_correct[]">
+														<input type="hidden" value="<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8', false) ?>" name="answer_contents_correct[]">
 													<?php else: ?>
-														<input type="hidden" value="<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>" name="answer_contents_correct[]" >
+														<input type="hidden" value="<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8', false) ?>" name="answer_contents_correct[]" >
 													<?php endif; ?>
 													<!--<?= $this->lang->line_or_def('msg_correct_answer_is_check','正解はチェック') ?>-->
 													
@@ -623,7 +623,7 @@
 										<a onclick="add_answer_contents();return false;" href="#" id="btn_gray_long_button"><?= $this->lang->line_or_def('common_add','追加する') ?></a>
 									</div>
 								</div>
-								<textarea name="answer_contents_text" id="answer_contents_text"><?=set_value('answer_contents_text',$exam2_problem['answer_contents_text'])?></textarea>
+								<textarea name="answer_contents_text" id="answer_contents_text"><?= htmlspecialchars(set_value('answer_contents_text', $exam2_problem['answer_contents_text'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
 							</td>
 						</tr>
 						<!--
@@ -649,7 +649,7 @@
 							<th width="160" style="vertical-align: top;"><?= $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') ?></th>
 							<td>
 								<? // 設問種類に応じて表示切替 ?>
-								<textarea name="answer_explain_contents_text" id="answer_explain_contents_text" ><?=set_value('answer_explain_contents_text',$exam2_problem['answer_explain_contents_text'])?></textarea>
+								<textarea name="answer_explain_contents_text" id="answer_explain_contents_text" ><?= htmlspecialchars(set_value('answer_explain_contents_text', $exam2_problem['answer_explain_contents_text'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
 								<?= form_dropdown('answer_explain_contents_book_library',$problem_contents_book_library, set_value('answer_explain_contents_book_library', $exam2_problem['answer_explain_contents_book_library']), 'name="answer_explain_contents_book_library" class="answer_explain_contents_book_library" '); ?>
 								<?= form_dropdown('answer_explain_contents_video',$problem_contents_video, set_value('answer_explain_contents_video', $exam2_problem['answer_explain_contents_video']), 'name="answer_explain_contents_video" class="answer_explain_contents_video" '); ?>
 								 <img name="answer_explain_contents_thum" id="answer_explain_contents_thum" style="" src="">
@@ -659,7 +659,7 @@
 						<tr name="tr_answer_explain_note" style="<?= ($exam2_problem['answer_explain_kind'] == 9) ? "display:none" : ""; ?>">
 							<th width="160" style="vertical-align: top;"><?= $this->lang->line_or_def('common_answer_explain_note','解答解説備考') ?></th>
 							<td>
-								<textarea name="answer_explain_note" id="answer_explain_note" style="height: 80px; width: 65%;"><?=set_value('answer_explain_note',$exam2_problem['answer_explain_note'])?></textarea>
+								<textarea name="answer_explain_note" id="answer_explain_note" style="height: 80px; width: 65%;"><?= htmlspecialchars(set_value('answer_explain_note', $exam2_problem['answer_explain_note'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
 							</td>
 						</tr>
 						
