@@ -36,7 +36,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam_problem_group_name','設問グループ名') ?></th>
 							<td>
-								<input type="text" name="s_exam_problem_group_name" size="45" value="<?=set_value('s_exam_problem_group_name',$s_exam_problem_group_name)?>">
+								<input type="text" name="s_exam_problem_group_name" size="45" value="<?= htmlspecialchars(set_value('s_exam_problem_group_name', $s_exam_problem_group_name, FALSE), ENT_QUOTES, 'UTF-8', false) ?>">
 							</td>
 						</tr>
 						<tr>
@@ -49,14 +49,14 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_id','ID') ?></th>
 							<td >
-								<input type="text" name="s_id" size="10" value="<?=set_value('s_id',$s_id)?>">
+								<input type="text" name="s_id" size="10" value="<?= htmlspecialchars(set_value('s_id', $s_id, FALSE), ENT_QUOTES, 'UTF-8', false) ?>">
 							</td>
 						</tr>
 						<? endif; ?>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_freeword','フリーワード') ?></th>
 							<td >
-								<input type="text" name="s_free_word" size="45" value="<?=set_value('s_free_word',$s_free_word)?>">
+								<input type="text" name="s_free_word" size="45" value="<?= htmlspecialchars(set_value('s_free_word', $s_free_word, FALSE), ENT_QUOTES, 'UTF-8', false) ?>">
 							</td>
 						</tr>
 					</table>
@@ -78,8 +78,8 @@
 							<?php foreach($exam_problem_group_list as $exam_problem_group) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam_problem_group/detail/<?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td><?= htmlspecialchars( $exam_problem_group['exam_problem_group_name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><a href="/cms_exam_problem_group/detail/<?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><?= htmlspecialchars( $exam_problem_group['exam_problem_group_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td><?=$exam_problem_group['exam_problem_count']?></td>
 								</tr>
 							<?php } ?>

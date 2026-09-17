@@ -215,20 +215,20 @@
 
 				<?=form_open_multipart("cms_exam_problem_group/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($overlap_error_msg)?'<div class="error">'.htmlspecialchars($overlap_error_msg, ENT_QUOTES, 'UTF-8').'</div>':'')?>
+					<?=(isset($overlap_error_msg)?'<div class="error">'.htmlspecialchars($overlap_error_msg, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
 					<input type="hidden" name="update_flg"            value='<?=set_value('update_flg'                , $exam_problem_group['update_flg'])?>'>
 					<input type="hidden" name="exam_problem_group_id" value='<?=set_value('cms_exam_problem_group_id' , $exam_problem_group['exam_problem_group_id'])?>'>
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam_problem_group_name','設問グループ名') ?></th>
 							<td>
-								<input type=text name="exam_problem_group_name" maxlength="256" size="30" value='<?=set_value('exam_problem_group_name',$exam_problem_group['exam_problem_group_name'])?>'>
+								<input type=text name="exam_problem_group_name" maxlength="256" size="30" value='<?= htmlspecialchars(set_value('exam_problem_group_name', $exam_problem_group['exam_problem_group_name'], FALSE), ENT_QUOTES, 'UTF-8', false) ?>'>
 							</td>
 						</tr>
 						<tr>
 							<th style="vertical-align: top;"><?= $this->lang->line_or_def('common_caption','説明') ?></th>
 							<td >
-								<textarea name="exam_problem_group_caption" ><?=set_value('exam_problem_group_caption',$exam_problem_group['exam_problem_group_caption'])?></textarea>
+								<textarea name="exam_problem_group_caption" ><?= htmlspecialchars(set_value('exam_problem_group_caption', $exam_problem_group['exam_problem_group_caption'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
 							</td>
 						</tr>
 						<tr>
@@ -246,7 +246,7 @@
 								<input type="button" id="btn_all_exam_problem"    value="一覧" />
 								<div style="float: right; margin-top: 6px; margin-right: 10px;">
 									<label id="exam_problem_count">
-										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $exam_problem_group['exam_problem_all_count'], ENT_QUOTES, 'UTF-8') ?>
+										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $exam_problem_group['exam_problem_all_count'], ENT_QUOTES, 'UTF-8', false) ?>
 									</label>
 								</div><div style="clear:both;"></div>
 								<div id="exam_problem_list">
