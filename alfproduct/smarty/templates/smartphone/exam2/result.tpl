@@ -77,7 +77,7 @@ float:right;
 				<!--{assign var=row_no value=$smarty.foreach.loop.iteration}-->
 				<div class="problem" style="font-size: 14px;">
 					<div class="problem_title">
-						●設問<!--{$row_no}-->　<!--{$row.exam2_problem_name}-->
+						●設問<!--{$row_no}-->　<!--{$row.exam2_problem_name|escape}-->
 					</div>
 					<div class="problem_contents">
 						<!--{$row.problem_contents|escape|nl2br}-->
@@ -113,7 +113,7 @@ float:right;
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" cols="60" rows="10"><!--{$exam2_answer[$row.exam2_problem_id].exam2_answer_contents[0]}--></textarea></div>
+							<div class="problem_content"><textarea name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" cols="60" rows="10" style="width: 100%;"><!--{$exam2_answer[$row.exam2_problem_id].exam2_answer_contents[0]|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定

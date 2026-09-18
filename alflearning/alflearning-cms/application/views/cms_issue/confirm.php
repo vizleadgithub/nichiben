@@ -69,12 +69,12 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_issue_name','課題名') ?></th>
 							<td>
-								<?= htmlspecialchars( $issue['issue_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $issue['issue_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
-							<td ><?= htmlspecialchars( $issue['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+							<td ><?= htmlspecialchars( $issue['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
@@ -87,7 +87,7 @@
 											if($flg){	?>
 												,
 											<?php } ?>
-											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8', false) ?>
 										<?php
 											$flg = TRUE;
 										}
@@ -97,13 +97,13 @@
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td ><?= nl2br( htmlspecialchars( $issue['issue_caption'], ENT_QUOTES, 'UTF-8') ) ?>
+							<td ><?= nl2br( htmlspecialchars( $issue['issue_caption'], ENT_QUOTES, 'UTF-8', false) ) ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_submit_period','提出期間') ?></th>
 							<td >
-								<?= htmlspecialchars( $issue['issue_open'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $issue['issue_close'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $issue['issue_open'], ENT_QUOTES, 'UTF-8', false) ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $issue['issue_close'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
@@ -133,7 +133,7 @@
 
 												<tr style="border-top:#999999 1px solid;">
 													<td style="vertical-align: middle;text-align: left;" >
-														<?= htmlspecialchars( $issue_temp_logic_name, ENT_QUOTES, 'UTF-8') ?>
+														<?= htmlspecialchars( $issue_temp_logic_name, ENT_QUOTES, 'UTF-8', false) ?>
 													</td>
 													<td style="vertical-align: middle;text-align: center;">
 						<img src="/file_container/get_issue_template_thubmnail/<?= $this->libauth->get_school_id(); ?>/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $issue['issue_temp_id'][$id], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $issue['issue_temp_name'][$id], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 64px; padding:1px;background-color:white;border-color:#aaaaaa;border-width:1px;border-style:solid;"/ alt="image">
@@ -160,12 +160,12 @@
 										<ul class="list" id="cource_ul">
 											<?php foreach($issue['issue_submit_date'] as $id => $issue_submit_date): ?>
 												<li style="margin-left: 0px;">
-													<div style="float: left; width: 85px;"><?= htmlspecialchars( $issue_submit_date, ENT_QUOTES, 'UTF-8') ?></div>
-													<div style="float: left; width: 120px;"><?= htmlspecialchars( $issue['issue_submit_student_name'][$id], ENT_QUOTES, 'UTF-8') ?></div>
+													<div style="float: left; width: 85px;"><?= htmlspecialchars( $issue_submit_date, ENT_QUOTES, 'UTF-8', false) ?></div>
+													<div style="float: left; width: 120px;"><?= htmlspecialchars( $issue['issue_submit_student_name'][$id], ENT_QUOTES, 'UTF-8', false) ?></div>
 													<div style="float: left; width: 150px;">
-														<a href="<?= $this->config->item('stream_get_url'); ?>/school_<?= $this->session->userdata['cms_master.login.school_id']; ?>/issue_<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/student_<?= htmlspecialchars( $issue['issue_submit_student_id'][$id], ENT_QUOTES, 'UTF-8') ?>/issue_submit_<?= htmlspecialchars( $issue['issue_submit_id'][$id], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $issue['issue_submit_name'][$id], ENT_QUOTES, 'UTF-8') ?>?token=<?= $this->session->userdata('session_id'); ?>" target="_blank" rel="noopener noreferrer"><?= htmlspecialchars( $issue['issue_submit_logic_name'][$id], ENT_QUOTES, 'UTF-8') ?></a>
+														<a href="<?= $this->config->item('stream_get_url'); ?>/school_<?= $this->session->userdata['cms_master.login.school_id']; ?>/issue_<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/student_<?= htmlspecialchars( $issue['issue_submit_student_id'][$id], ENT_QUOTES, 'UTF-8') ?>/issue_submit_<?= htmlspecialchars( $issue['issue_submit_id'][$id], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $issue['issue_submit_name'][$id], ENT_QUOTES, 'UTF-8') ?>?token=<?= $this->session->userdata('session_id'); ?>" target="_blank" rel="noopener noreferrer"><?= htmlspecialchars( $issue['issue_submit_logic_name'][$id], ENT_QUOTES, 'UTF-8', false) ?></a>
 													</div>
-													<div style="float: left; width: 220px;"><?= nl2br( htmlspecialchars( $issue['issue_submit_caption'][$id], ENT_QUOTES, 'UTF-8') ) ?></div>
+													<div style="float: left; width: 220px;"><?= nl2br( htmlspecialchars( $issue['issue_submit_caption'][$id], ENT_QUOTES, 'UTF-8', false) ) ?></div>
 													<div style="clear:both;">
 												</li>
 											<?php endforeach; ?>

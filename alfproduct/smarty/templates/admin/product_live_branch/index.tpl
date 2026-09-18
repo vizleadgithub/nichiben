@@ -220,7 +220,7 @@
 	<!--{foreach from=$arr_list item="row"}-->
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="info.php?mid=<!--{$row.product_id}-->"><!--{$row.product_id}--></a></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="info.php?mid=<!--{$row.product_id|urlencode}-->"><!--{$row.product_id}--></a></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_name|mb_truncate:20:"..."|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$mtb_bar_association[$row.bar_association_id]|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.dates}--></td>

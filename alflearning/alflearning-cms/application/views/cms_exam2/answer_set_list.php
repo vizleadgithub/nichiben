@@ -46,8 +46,8 @@
 						</tr>
 
 						<form name="set_answer_form" id="set_answer_form">
-						<input type="hidden" name="exam2_id" value="<?php print( $exam2_id ); ?>">
-						<input type="hidden" name="product_id" value="<?php print( $product_id ); ?>">
+						<input type="hidden" name="exam2_id" value="<?php print( htmlspecialchars((string)$exam2_id, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" name="product_id" value="<?php print( htmlspecialchars((string)$product_id, ENT_QUOTES, 'UTF-8', false) ); ?>">
 						<?php
 						$line=0;
 						if( isset($export_data[0]["student"]) ) {
@@ -66,13 +66,13 @@
 											}
 										}
 										?>
-										<input type="checkbox" name="student_id[]" id="student_id_<?php print($student["student_id"]); ?>" value="<?php print($student["student_id"]); ?>" <?php if($checked == 1){ print("checked"); } ?> >
+										<input type="checkbox" name="student_id[]" id="student_id_<?php print( htmlspecialchars((string)$student["student_id"], ENT_QUOTES, 'UTF-8', false) ); ?>" value="<?php print( htmlspecialchars((string)$student["student_id"], ENT_QUOTES, 'UTF-8', false) ); ?>" <?php if($checked == 1){ print("checked"); } ?> >
 									</td>
 									<td style="width:;">
 										<?php if( isset($student["info"]) ) { ?>
 											<?php if( isset($student["info"][0]) ) { ?>
 												<textarea id="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?php if(isset($export_data_review[$student['info'][0]['student_id']])){ ?><?= htmlspecialchars( $export_data_review[$student['info'][0]['student_id']], ENT_QUOTES, 'UTF-8', false) ?><?php } ?></textarea>
-												<input type="button" id="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" onclick="update_exam2_answer_review_contents('<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>')" value="更新">
+												<input type="button" id="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" onclick="update_exam2_answer_review_contents('<?= (int)$student['info'][0]['student_id'] ?>')" value="更新">
 											<?php } ?>
 										<?php } ?>
 									</td>
@@ -113,18 +113,19 @@
 												//print(  $student['answer'][$i2]["exam2_answer_contents"]  );
 											} elseif( $export_data[0]["exam2_problem"][$i2]["answer_kind"] == 3 ){
 												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"] );
-												print(  '<textarea id="exam2_answer_'.$student['answer'][$i2]["exam2_answer_id"].'">'  );
+												$safe_exam2_answer_id = (int)$student['answer'][$i2]["exam2_answer_id"];
+												print(  '<textarea id="exam2_answer_'.$safe_exam2_answer_id.'">'  );
 											print(  htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents"], ENT_QUOTES, 'UTF-8', false)  );
 												if($student['answer'][$i2]["exam2_answer_contents_old"] != ""){
 												print(  "\r\n\r\n".htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents_old"], ENT_QUOTES, 'UTF-8', false)  );
 												}
 												print(  '</textarea>'  );
-												print(  '<input type="button" name="btn_exam2_answer_'.$student['answer'][$i2]["exam2_answer_id"].'" onclick="update_exam2_answer_problem('.$student['answer'][$i2]["exam2_answer_id"].', variables['.$student['answer'][$i2]["exam2_answer_id"].'])" value="更新">'  );
+												print(  '<input type="button" name="btn_exam2_answer_'.$safe_exam2_answer_id.'" onclick="update_exam2_answer_problem('.$safe_exam2_answer_id.', variables['.$safe_exam2_answer_id.'])" value="更新">'  );
 											}
 											?>
 
 											<script type="text/javascript">
-												variables['<?php print( $student['answer'][$i2]["exam2_answer_id"] ); ?>'] = <?php print( $student['answer'][$i2]["update_count"] ); ?>;
+												variables['<?php print( (int)$student['answer'][$i2]["exam2_answer_id"] ); ?>'] = <?php print( (int)$student['answer'][$i2]["update_count"] ); ?>;
 											</script>
 
 
@@ -149,8 +150,8 @@
 function update_exam2_answer_review_contents(student_id){
 	var hostUrl= '/cms_exam2/update_exam2_answer_review_contents';
 	var param1 = student_id;
-	var param2 = <?= htmlspecialchars( $exam2_id, ENT_QUOTES, 'UTF-8') ?>;
-	var param3 = <?= htmlspecialchars( $product_id, ENT_QUOTES, 'UTF-8') ?>;
+	var param2 = <?= (int)$exam2_id ?>;
+	var param3 = <?= (int)$product_id ?>;
 	var param4 = $("#exam2_answer_review_contents_"+student_id).val();
 	$.ajax({
 		url: hostUrl,
@@ -194,8 +195,8 @@ function set_answer_list(){
 	// エラーチェック
 	<?php if( isset($export_data[0]["student"]) ) { ?>
 		<?php foreach( $export_data[0]["student"] as $student ) { ?>
-			if($("#student_id_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>").prop("checked")){
-				if($("#exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>").val()==""){
+			if($("#student_id_<?= (int)$student['info'][0]['student_id'] ?>").prop("checked")){
+				if($("#exam2_answer_review_contents_<?= (int)$student['info'][0]['student_id'] ?>").val()==""){
 					$("#error_message td").html("公開するレビュー内容が空欄です。");
 					$("#error_message").show();
 					location.href = "#error_message";

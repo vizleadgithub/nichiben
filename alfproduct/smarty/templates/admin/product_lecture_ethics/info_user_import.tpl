@@ -120,6 +120,6 @@ function formSubmit(formName, mode){
 
 
 <div class="submit">
-	<a href="javascript:void(0);" onclick="window.location='info.php?pid=<!--{$pid}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
+	<a href="javascript:void(0);" onclick="window.location='info.php?pid=<!--{$pid|urlencode}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
 </div>
 <a name="page_bottom"></a>

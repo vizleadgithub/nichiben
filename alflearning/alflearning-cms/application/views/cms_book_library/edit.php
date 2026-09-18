@@ -139,7 +139,7 @@
 
 				<?=form_open_multipart("cms_book_library/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $book_library['update_flg'])?>'>
 					<input type=hidden name=book_library_id value='<?=set_value('book_library_id', $book_library['book_library_id'])?>'>
 					<input type=hidden name=book_library_logic_name value='<?=set_value('book_library_logic_name', $book_library['book_library_logic_name'])?>'>
@@ -177,7 +177,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="book_library_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
+												<input type="checkbox" name="book_library_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>
 													<?php 
 													if( isset($book_library['book_library_lectures']) ) {
 														foreach( $book_library['book_library_lectures'] as $lecture) { 
@@ -191,7 +191,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></label>
 												</li>
 										<?php 
 										}
@@ -257,7 +257,7 @@
 										<div style=" margin-top: 5px;line-height:20px;"><?= $this->lang->line_or_def('common_registered_tag','登録済みタグ') ?>&nbsp;:&nbsp;
 											<?php foreach($tags_dropdown as $tagKey => $cnt) { ?>
 												<? if(($tagKey !== 'タグなし') && ($tagKey !== '') ): ?>
-													<a href="#" onclick="set_tag('<?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?>');return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?></a>&nbsp;&nbsp;
+													<a href="#" onclick="set_tag('<?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?>');return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
 												<? endif; ?>
 											<?php } ?>
 										</div>

@@ -96,7 +96,7 @@
 
 				<?=form_open_multipart("cms_material/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $material['update_flg'])?>'>
 					<input type=hidden name=material_id value='<?=set_value('material_id', $material['material_id'])?>'>
 					<input type=hidden name=material_logic_name value='<?=set_value('material_logic_name', $material['material_logic_name'])?>'>
@@ -134,7 +134,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="material_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
+												<input type="checkbox" name="material_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>
 													<?php 
 													if( isset($material['material_lectures']) ) {
 														foreach( $material['material_lectures'] as $lecture) { 
@@ -148,7 +148,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></label>
 												</li>
 										<?php 
 										}

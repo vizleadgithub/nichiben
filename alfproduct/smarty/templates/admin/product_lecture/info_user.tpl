@@ -95,8 +95,8 @@ function formSubmitFpFix(formName, mode, pid, aid){
 		<tr>
 			<th colspan="2">
 			研修内容
-			<a href="csv.php?type=info_user&pid=<!--{$pid}-->&aid=<!--{$aid}-->">CSV取得</a>
-			<a href="csv.php?type=info_user_list&pid=<!--{$pid}-->&aid=<!--{$aid}-->">受付用リスト作成</a>
+			<a href="csv.php?type=info_user&pid=<!--{$pid|urlencode}-->&aid=<!--{$aid|urlencode}-->">CSV取得</a>
+			<a href="csv.php?type=info_user_list&pid=<!--{$pid|urlencode}-->&aid=<!--{$aid|urlencode}-->">受付用リスト作成</a>
 			<a href="javascript:void(0);" onclick="document.forms['info_user_regist_form'].submit(); return false;">個別登録</a>
 			<a href="javascript:void(0);" onclick="document.forms['info_user_import_form'].submit(); return false;">CSV取り込み</a>
 			</th>
@@ -145,7 +145,7 @@ function formSubmitFpFix(formName, mode, pid, aid){
 		</tr>
 	</table>
 	<div style="padding-top:10px;text-align:right;">
-		<input type="button" value="　パスポート状況更新　" onclick="formSubmitFpFix('list_form', 'fp_fix', <!--{$pid}-->, <!--{$aid}-->);return false;" />
+		<input type="button" value="　パスポート状況更新　" onclick="formSubmitFpFix('list_form', 'fp_fix', <!--{$pid|escape}-->, <!--{$aid|escape}-->);return false;" />
 		<!--{if $disp_fp_fix_date != ''}-->
 			<div style="padding:5px 5px 0 0;"><!--{$disp_fp_fix_date|escape}--></div>
 		<!--{/if}-->
@@ -153,13 +153,13 @@ function formSubmitFpFix(formName, mode, pid, aid){
 </form>
 
 <form action="info_user_regist.php" accept-charset="utf-8" method="post" name="info_user_regist_form">
-<input type="hidden" name="pid" value="<!--{$pid}-->">
-<input type="hidden" name="aid" value="<!--{$aid}-->">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
+<input type="hidden" name="aid" value="<!--{$aid|escape}-->">
 </form>
 
 <form action="info_user_import.php" accept-charset="utf-8" method="post" name="info_user_import_form">
-<input type="hidden" name="pid" value="<!--{$pid}-->">
-<input type="hidden" name="aid" value="<!--{$aid}-->">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
+<input type="hidden" name="aid" value="<!--{$aid|escape}-->">
 </form>
 
 <form action="info_user.php" accept-charset="utf-8" method="post" name="list_form">
@@ -202,17 +202,17 @@ function formSubmitFpFix(formName, mode, pid, aid){
 			<!--{$row.disp_payment|escape}-->
 		<!--{else}-->
 			<!--{if $row.payment_status_reserv != ''}-->
-				<a href="javascript:void(0);" onclick="formSubmitStatus('list_form', 'status', <!--{$pid}-->, <!--{$aid}-->, <!--{$row.order_detail_id}-->, <!--{$row.payment_status_reserv}-->);return false;" style="color:<!--{$row.disp_payment_reserv_color|escape}-->;"><!--{$row.disp_payment_reserv|escape}--></a>
+				<a href="javascript:void(0);" onclick="formSubmitStatus('list_form', 'status', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id}-->, <!--{$row.payment_status_reserv}-->);return false;" style="color:<!--{$row.disp_payment_reserv_color|escape}-->;"><!--{$row.disp_payment_reserv|escape}--></a>
 			<!--{else}-->
-				<a href="javascript:void(0);" onclick="formSubmitStatus('list_form', 'status', <!--{$pid}-->, <!--{$aid}-->, <!--{$row.order_detail_id}-->, <!--{$row.payment_status}-->);return false;" style="color:<!--{$row.disp_payment_color|escape}-->;"><!--{$row.disp_payment|escape}--></a>
+				<a href="javascript:void(0);" onclick="formSubmitStatus('list_form', 'status', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id}-->, <!--{$row.payment_status}-->);return false;" style="color:<!--{$row.disp_payment_color|escape}-->;"><!--{$row.disp_payment|escape}--></a>
 			<!--{/if}-->
 		<!--{/if}-->
 		</td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->">
 		<!--{if $row.participation_flg == '1'}-->
-			<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid}-->, <!--{$aid}-->, <!--{$row.order_detail_id}-->, <!--{$row.participation_flg}-->);return false;" >済</a>
+			<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id}-->, <!--{$row.participation_flg}-->);return false;" >済</a>
 		<!--{else}-->
-			<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid}-->, <!--{$aid}-->, <!--{$row.order_detail_id}-->, <!--{$row.participation_flg}-->);return false;" >未</a>
+			<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id}-->, <!--{$row.participation_flg}-->);return false;" >未</a>
 		<!--{/if}-->
 		</td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.disp_web|escape}--></td>
@@ -222,7 +222,7 @@ function formSubmitFpFix(formName, mode, pid, aid){
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.disp_fp|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.disp_fp2|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.pay_total|number_format}-->円</td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="javascript:void(0);" onclick="formSubmit('list_form', 'delete', <!--{$pid}-->, <!--{$aid}-->, <!--{$row.order_detail_id}-->);return false;" >削除</a></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="javascript:void(0);" onclick="formSubmit('list_form', 'delete', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id}-->);return false;" >削除</a></td>
 	</tr>
 	<!--{/foreach}-->
 	<!--{/if}-->
@@ -230,6 +230,6 @@ function formSubmitFpFix(formName, mode, pid, aid){
 </form>
 
 <div class="submit">
-	<a href="javascript:void(0);" onclick="window.location='info.php?pid=<!--{$pid}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
+	<a href="javascript:void(0);" onclick="window.location='info.php?pid=<!--{$pid|urlencode}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
 </div>
 <a name="page_bottom"></a>

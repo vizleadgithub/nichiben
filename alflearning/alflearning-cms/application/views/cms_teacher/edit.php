@@ -109,7 +109,7 @@
 
 				<?=form_open("cms_teacher/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8').'</div>' : ''); ?>
+					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8', false).'</div>' : ''); ?>
 					<input type=hidden name=update_flg               value='<?=set_value('update_flg', $teacher['update_flg'])?>'>
 					<input type=hidden name=teacher_id               value='<?=set_value('teacher_id', $teacher['teacher_id'])?>'>
 					<input type=hidden name=teacher_password_change  value='<?=set_value('teacher_password_change', $teacher['teacher_password_change'])?>'>
@@ -204,7 +204,7 @@
 												$val .= "";
 											}
 										?>
-										<option value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" <?= htmlspecialchars( $select_option, ENT_QUOTES, 'UTF-8') ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8') ?></option>
+										<option value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8', false) ?>" <?= htmlspecialchars( $select_option, ENT_QUOTES, 'UTF-8', false) ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8', false) ?></option>
 									<?php endforeach; ?>
 								</select>
 							</td>

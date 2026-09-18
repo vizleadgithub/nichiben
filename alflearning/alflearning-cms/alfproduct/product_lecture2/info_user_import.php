@@ -17,6 +17,64 @@ function append_error_message(&$err_msg, $message){
 	}
 	$err_msg .= $message;
 }
+
+function normalize_import_date($date_string){
+	$date_string = trim($date_string);
+	if ($date_string === '') {
+		return '';
+	}
+
+	$arr_date = explode("|", str_replace(":", "|", str_replace(" ", "|", str_replace("-", "|", str_replace("/", "|", $date_string)))));
+	if (count($arr_date) < 3) {
+		return '';
+	}
+
+	$year = (int)$arr_date[0];
+	$month = (int)$arr_date[1];
+	$day = (int)$arr_date[2];
+	if (!checkdate($month, $day, $year)) {
+		return '';
+	}
+
+	return sprintf('%04d-%02d-%02d', $year, $month, $day);
+}
+
+function sync_order_temp_auto_increment($objDbConnect){
+	$sql = "
+	SELECT
+	  GREATEST(
+	    COALESCE((SELECT MAX(order_id) FROM tbl_order), 0),
+	    COALESCE((SELECT MAX(order_id) FROM tbl_order_temp), 0)
+	  ) + 1 AS next_order_id
+	";
+	$max_info = $objDbConnect->query_fetch($sql);
+	if (!$max_info || !isset($max_info['next_order_id'])) {
+		return false;
+	}
+
+	$next_order_id = (int)$max_info['next_order_id'];
+	$sql = "
+	SELECT
+	  AUTO_INCREMENT
+	FROM
+	  information_schema.TABLES
+	WHERE
+	  TABLE_SCHEMA = DATABASE()
+	  AND TABLE_NAME = 'tbl_order_temp'
+	";
+	$table_info = $objDbConnect->query_fetch($sql);
+	$current_auto_increment = 0;
+	if ($table_info && isset($table_info['AUTO_INCREMENT'])) {
+		$current_auto_increment = (int)$table_info['AUTO_INCREMENT'];
+	}
+
+	if ($next_order_id > 0 && $next_order_id >= $current_auto_increment) {
+		$sql = "ALTER TABLE tbl_order_temp AUTO_INCREMENT = ".$next_order_id;
+		return (bool)$objDbConnect->execute($sql);
+	}
+
+	return true;
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objAlfSession = new AlfSession();
 $arr_session = $objAlfSession->session_check();
@@ -305,10 +363,7 @@ if ($mode == "upload") {
 				if($entry_date==""){
 					append_error_message($err_msg, $i.'行目：申込日が記載されていません。');
 				} else {
-					$arr_date = explode("|", str_replace(":", "|", str_replace(" ", "|", str_replace("-", "|", str_replace("/", "|", trim($entry_date))))) );
-					if( checkdate($arr_date[1], $arr_date[2], $arr_date[0]) ){
-						//$entry_date = $arr_date[0]."-".$arr_date[1]."-".$arr_date[2]."";
-					} else {
+					if (normalize_import_date($entry_date) === ''){
 						append_error_message($err_msg, $i.'行目：申込日は「YYYY/MM/DD」の形式で記載してください。');
 					}
 				}
@@ -358,11 +413,17 @@ elseif ($mode == "regist") {
 				}
 				// --------------------------
 				$lawyer_number = $data[0];      // 登録番号
-				$entry_date    = $data[1];      // 申込日
-				$take_date     = date('Y/m/d'); // 取込日
+				$entry_date    = normalize_import_date($data[1]); // 申込日
+				$take_date     = date('Y-m-d'); // 取込日
 				$menber_id     = '';
 				$temp_no       = '';
 				$temp_date     = '';
+				$sql_error     = '';
+
+				if ($entry_date === ''){
+					$res_msg = 'CSVファイルの申込日形式が不正です。再度アップロードしてください。';
+					break;
+				}
 				
 				// ユーザーID、パスポート有無の取得
 				$sql = "SELECT student_id, presence_passport FROM student WHERE lawyer_number = '".mysqli_real_escape_string($objDbConnect->connect, $lawyer_number)."'";
@@ -397,25 +458,30 @@ elseif ($mode == "regist") {
 					//	$payment_status = 1; // 入金待ち
 					//	$payment_date = NULL;
 					//}
-					
-					// トランザクション開始
-					$objDbConnect->tran_begin();
-					
-					// order_noの取得と更新
-					$order_no_date = date("Ymd");
-					$sql = "select create_date, no from tbl_order_no where create_date='".$order_no_date."' ORDER BY no DESC LIMIT 1";
-					$ret = $objDbConnect->query_fetch_arr($sql);
-					if( count($ret)>0 ){
-						$temp_no = $ret[0]["no"] + 1;
-						$temp_date = $order_no_date;
+					$tran_started = false;
+					if (!sync_order_temp_auto_increment($objDbConnect)) {
+						$err_flg = true;
+						$sql_error = mysqli_error($objDbConnect->connect);
 					} else {
-						$temp_no = 10001;
-						$temp_date = $order_no_date;
-					}
-					
-					$sql = "INSERT INTO tbl_order_no( create_date, no ) values('".$temp_date."','".$temp_no."')";
-					$ret = $objDbConnect->execute($sql);
-					if($ret){
+						// トランザクション開始
+						$objDbConnect->tran_begin();
+						$tran_started = true;
+						
+						// order_noの取得と更新
+						$order_no_date = date("Ymd");
+						$sql = "select create_date, no from tbl_order_no where create_date='".$order_no_date."' ORDER BY no DESC LIMIT 1";
+						$ret = $objDbConnect->query_fetch_arr($sql);
+						if( count($ret)>0 ){
+							$temp_no = $ret[0]["no"] + 1;
+							$temp_date = $order_no_date;
+						} else {
+							$temp_no = 10001;
+							$temp_date = $order_no_date;
+						}
+						
+						$sql = "INSERT INTO tbl_order_no( create_date, no ) values('".$temp_date."','".$temp_no."')";
+						$ret = $objDbConnect->execute($sql);
+						if($ret){
 						// 注文情報登録(tbl_order_temp→tbl_orderの順)
 						$sql = "
 						INSERT INTO tbl_order_temp
@@ -471,6 +537,7 @@ elseif ($mode == "regist") {
 								    bar_association_branch_id,
 								    take_date2,
 								    entry_date,
+								    participation_flg,
 								    payment_date,
 								    product_name,
 								    product_code,
@@ -494,6 +561,7 @@ elseif ($mode == "regist") {
 								    '".mysqli_real_escape_string($objDbConnect->connect, $arr_input_2['bar_association_branch_id'])."',
 								    '".mysqli_real_escape_string($objDbConnect->connect, $take_date)."',
 								    '".mysqli_real_escape_string($objDbConnect->connect, $entry_date)."',
+								    '0',
 								    '".mysqli_real_escape_string($objDbConnect->connect, $payment_date)."',
 								    '".mysqli_real_escape_string($objDbConnect->connect, $arr_input_2['product_name'])."',
 								    '".mysqli_real_escape_string($objDbConnect->connect, $arr_input_2['product_code'])."',
@@ -516,13 +584,24 @@ elseif ($mode == "regist") {
 							$err_flg = true;
 						}
 						
-					} else {
-						$err_flg = true;
+						} else {
+							$err_flg = true;
+							$sql_error = mysqli_error($objDbConnect->connect);
+						}
 					}
 					
 					if ($err_flg){
 						// ロールバック
-						$objDbConnect->rollback();
+						if ($tran_started){
+							$objDbConnect->rollback();
+						}
+						if ($sql_error !== '') {
+							@error_log(
+								date('Y-m-d H:i:s').': product_lecture2 info_user_import regist failed: '.$sql_error."\n",
+								3,
+								'/alflearning-data/alfproduct/logs/product_lecture2_info_user_import.log'
+							);
+						}
 						$res_msg = '申込状況の追加に失敗しました。';
 						break;
 						

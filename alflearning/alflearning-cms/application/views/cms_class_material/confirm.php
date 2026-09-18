@@ -25,9 +25,9 @@
 			<div id="contents_main">
 				<div class="toolbar clearfix"></div>
 				<?=form_open("cms_class_material/class_material_upload_exec")?>
-					<input type=hidden name=class_id value='<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>'>
-					<input type=hidden name=delete_check_list value='<?= htmlspecialchars( $delete_check_list, ENT_QUOTES, 'UTF-8') ?>'>
-					<input type=hidden name=insert_check_list value='<?= htmlspecialchars( $insert_check_list, ENT_QUOTES, 'UTF-8') ?>'>
+					<input type=hidden name=class_id value='<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8', false) ?>'>
+					<input type=hidden name=delete_check_list value='<?= htmlspecialchars( $delete_check_list, ENT_QUOTES, 'UTF-8', false) ?>'>
+					<input type=hidden name=insert_check_list value='<?= htmlspecialchars( $insert_check_list, ENT_QUOTES, 'UTF-8', false) ?>'>
 
 					<?php if(isset($class_material_list)) { ?>
 						<h3><?= $this->lang->line_or_def('msg_class_material_del_confirm','授業から削除する資料') ?></h3>
@@ -50,10 +50,10 @@
 											<img src="/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
 										</td>
 										<td style="vertical-align: middle;width: 97px;">
-											<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8', false) ?>
 										</td>
 										<td style="vertical-align: middle;width: 410px;word-wrap:break-word;">
-											<?= htmlspecialchars( $class_material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $class_material['material_logic_name'], ENT_QUOTES, 'UTF-8', false) ?>
 										</td>
 									</tr>
 								<?php } ?>
@@ -83,13 +83,13 @@
 											<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
 										</td>
 										<td style="vertical-align: middle;width: 82px;">
-											<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>
 										</td>
 										<td style="vertical-align: middle;width:301px;word-wrap:break-word;">
-											<?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8', false) ?>
 										</td>
 										<td style="vertical-align: middle;width: 147px;">
-											<?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 										</td>
 									</tr>
 								<?php } ?>

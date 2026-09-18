@@ -99,13 +99,13 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 							<td>
-								<?= htmlspecialchars( $class['cource_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $class['cource_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_datetime','日時') ?></th>
 							<td >
-								<?= htmlspecialchars( $class['class_date'], ENT_QUOTES, 'UTF-8') ?>&nbsp;<?= htmlspecialchars( $class['class_opentime'], ENT_QUOTES, 'UTF-8') ?>&nbsp;<?= $this->lang->line_or_def('common_class_time','授業時間') ?>&nbsp;<?= date("H:i", strtotime($class['class_closetime']) - strtotime($class['class_opentime']) - 32400); ?>
+								<?= htmlspecialchars( $class['class_date'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;<?= htmlspecialchars( $class['class_opentime'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;<?= $this->lang->line_or_def('common_class_time','授業時間') ?>&nbsp;<?= date("H:i", strtotime($class['class_closetime']) - strtotime($class['class_opentime']) - 32400); ?>
 							</td>
 						</tr>
 						<tr>
@@ -126,36 +126,36 @@
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_class_name','授業名') ?></th>
 							<td>
-								<?= htmlspecialchars( $class['class_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $class['class_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
 							<td>
-								<?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_teacher','講師') ?></th>
 							<td>
-								<?= htmlspecialchars( $class['sub_teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $class['sub_teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td ><?=nl2br( htmlspecialchars( $class['class_caption'], ENT_QUOTES, 'UTF-8') )?>
+							<td ><?=nl2br( htmlspecialchars( $class['class_caption'], ENT_QUOTES, 'UTF-8', false) )?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_student','受講者') ?></th>
-							<td ><?= htmlspecialchars( $class['lecture_students_name'], ENT_QUOTES, 'UTF-8') ?></td>
+							<td ><?= htmlspecialchars( $class['lecture_students_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_note','備考') ?></th>
-							<td ><?=nl2br( htmlspecialchars( $class['class_note'], ENT_QUOTES, 'UTF-8') )?>
+							<td ><?=nl2br( htmlspecialchars( $class['class_note'], ENT_QUOTES, 'UTF-8', false) )?>
 							</td>
 						</tr>
 						<tr>
@@ -175,14 +175,14 @@
 											<tr style="border: 1px #808080 solid; border-style: none none solid none ;">
 											<td style="padding-bottom: 4px; padding-top: 4px;">
 												<?php if( $class_material['kinds'] === $this->lang->line_or_def('common_material','資料') ): ?>
-													<?= htmlspecialchars( $class_material['kinds'], ENT_QUOTES, 'UTF-8')  ?>
+													<?= htmlspecialchars( $class_material['kinds'], ENT_QUOTES, 'UTF-8', false)  ?>
 												<?php else: ?>
 													<a href="" onclick = "window.open('/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_material['class_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/', 'imgwindow', 'width=846,height=624, menubar=no, toolbar=no, scrollbars=yes, location=no, status=no'); return false;">
-													<?= htmlspecialchars( $class_material['kinds'], ENT_QUOTES, 'UTF-8') ?></a>
+													<?= htmlspecialchars( $class_material['kinds'], ENT_QUOTES, 'UTF-8', false) ?></a>
 												<?php endif; ?>
 											</td>
-											<td style="padding-bottom: 4px; padding-top: 4px;"><?= htmlspecialchars( $class_material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?></td>
-											<td style="padding-bottom: 4px; padding-top: 4px;"><?= htmlspecialchars( $class_material['update_at'], ENT_QUOTES, 'UTF-8') ?></td>
+											<td style="padding-bottom: 4px; padding-top: 4px;"><?= htmlspecialchars( $class_material['material_logic_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+											<td style="padding-bottom: 4px; padding-top: 4px;"><?= htmlspecialchars( $class_material['update_at'], ENT_QUOTES, 'UTF-8', false) ?></td>
 										</tr>
 										<?php } ?>
 									</table>

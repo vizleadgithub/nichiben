@@ -84,7 +84,7 @@
 
 				<?=form_open("cms_school_manage/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8').'</div>' : ''); ?>
+					<?= (isset($error_msg) && $error_msg ? '<div class="error">'.htmlspecialchars($error_msg, ENT_QUOTES, 'UTF-8', false).'</div>' : ''); ?>
 					<input type="hidden" name="update_flg" value='<?=set_value('update_flg' ,$school['update_flg'])?>'>
 					<input type="hidden" name="school_id" value='<?=set_value('school_id'  ,$school['school_id'])?>'>
 					<table class="form">
@@ -363,22 +363,22 @@
 								<tr>
 									<th>&bull;&nbsp;Api Key</th>
 									<td colspan=3>
-										<input type="hidden" name="outside_elearningmanager_api_key" value="<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_key'], ENT_QUOTES, 'UTF-8') ?>">
+										<input type="hidden" name="outside_elearningmanager_api_key" value="<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_key'], ENT_QUOTES, 'UTF-8', false) ?>">
 										<?php if($school['contract_param_outside_elearningmanager']['api_key']==''): ?>
 											-
 										<?php else: ?>
-											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_key'], ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_key'], ENT_QUOTES, 'UTF-8', false) ?>
 										<?php endif; ?>
 									</td>
 								</tr>
 								<tr>
 									<th>&bull;&nbsp;Api URL</th>
 									<td colspan=3>
-										<input type="hidden" name="outside_elearningmanager_api_url" value="<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_url'], ENT_QUOTES, 'UTF-8') ?>">
+										<input type="hidden" name="outside_elearningmanager_api_url" value="<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_url'], ENT_QUOTES, 'UTF-8', false) ?>">
 										<?php if($school['contract_param_outside_elearningmanager']['api_url']==''): ?>
 											-
 										<?php else: ?>
-											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_url'], ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_url'], ENT_QUOTES, 'UTF-8', false) ?>
 										<?php endif; ?>
 									</td>
 								</tr>

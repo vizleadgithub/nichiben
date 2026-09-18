@@ -102,12 +102,12 @@
 					<?php if(isset($class_list)) { ?>
 						<?php foreach($class_list as $class) { ?>
 							<tr <? if($class['effective_cource']==0): ?>class="out_of_the_period"<? endif; ?> >
-								<td class="tdc"><a href="/cms_class/detail/<?= htmlspecialchars( $class['class_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $class['class_id'], ENT_QUOTES, 'UTF-8') ?></td>
-								<td><?= htmlspecialchars( $class['class_date'], ENT_QUOTES, 'UTF-8') ?></td>
-								<td><?= htmlspecialchars( $class['cource_name'], ENT_QUOTES, 'UTF-8') ?></td>
-								<td><?= htmlspecialchars( $class['class_name'], ENT_QUOTES, 'UTF-8') ?></td>
-								<td><?= htmlspecialchars( $class['class_opentime'], ENT_QUOTES, 'UTF-8') ?>～<?= htmlspecialchars( $class['class_closetime'], ENT_QUOTES, 'UTF-8') ?></td>
-								<td><?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td class="tdc"><a href="/cms_class/detail/<?= htmlspecialchars( $class['class_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $class['class_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td><?= htmlspecialchars( $class['class_date'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td><?= htmlspecialchars( $class['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td><?= htmlspecialchars( $class['class_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td><?= htmlspecialchars( $class['class_opentime'], ENT_QUOTES, 'UTF-8', false) ?>～<?= htmlspecialchars( $class['class_closetime'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td><?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 							</tr>
 						<?php } ?>
 					<?php } ?>

@@ -2,7 +2,7 @@
 #contents{
 	width:100%;
 	height:500px;
-	scroll-y:auto;
+	overflow-y: auto;
 }
 a.btn{
 display: block;

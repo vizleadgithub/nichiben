@@ -574,9 +574,9 @@ class Cms_video extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|xss_clean|required'); // 論理ファイル名
-		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim|xss_clean');
-		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim|xss_clean');
+		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|required'); // 論理ファイル名
+		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim');
+		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim');
 		$this->form_validation->set_rules('video_lectures[]'   , $this->lang->line_or_def('common_position_course','所属講座')  , 'callback_check_required_checkbox');
 
 		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|xss_clean|numeric|required');
@@ -772,9 +772,9 @@ class Cms_video extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|xss_clean|required'); // 論理ファイル名
-		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim|xss_clean');
-		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim|xss_clean');
+		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|required'); // 論理ファイル名
+		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim');
+		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim');
 		$this->form_validation->set_rules('video_lectures[]'   , $this->lang->line_or_def('common_position_course','所属講座')  , 'callback_check_required_checkbox');
 
 		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|xss_clean|numeric|required');
@@ -974,9 +974,9 @@ class Cms_video extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|xss_clean|required'); // 論理ファイル名
-		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim|xss_clean');
-		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim|xss_clean');
+		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|required'); // 論理ファイル名
+		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim');
+		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim');
 		$this->form_validation->set_rules('video_lectures[]'   , $this->lang->line_or_def('common_position_course','所属講座')  , 'callback_check_required_checkbox');
 
 		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|xss_clean|numeric|required');
@@ -1378,7 +1378,7 @@ class Cms_video extends CI_Controller {
 		if( !empty($data['teacher_list']) ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
+				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false);
 			}
 		}
 		

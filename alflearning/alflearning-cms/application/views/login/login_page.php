@@ -31,7 +31,7 @@
 					<?=validation_errors('<div class="error">', '</div>') ?>
 				<? endif; ?>
 				<? if(isset($error_msg) && $error_msg!=""): ?>
-					<div class="error"><?= htmlspecialchars( $error_msg, ENT_QUOTES, 'UTF-8') ?></div>
+					<div class="error"><?= htmlspecialchars( $error_msg, ENT_QUOTES, 'UTF-8', false) ?></div>
 				<? endif; ?>
 				<form action="/login_page/login?backurl=<?= ($this->input->get('backurl') ? urlencode($this->input->get('backurl')) : '/'); ?>" name="form1" method="post">
 					<?= form_hidden($this->security->get_csrf_token_name(), $this->security->get_csrf_hash()) ?>
@@ -50,7 +50,7 @@
 								<td align = "left">
 									<select name="school_select">
 										<? foreach($enableSchools as $enableSchool): ?>
-											<option value="<?= htmlspecialchars( $enableSchool->school_id, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $enableSchool->school_name, ENT_QUOTES, 'UTF-8') ?></option>
+											<option value="<?= htmlspecialchars( $enableSchool->school_id, ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $enableSchool->school_name, ENT_QUOTES, 'UTF-8', false) ?></option>
 										<? endforeach; ?>
 									</select>
 								</td>

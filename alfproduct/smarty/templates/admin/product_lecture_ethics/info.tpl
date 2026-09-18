@@ -69,7 +69,7 @@ function formSubmitUserRegist(formName, pid){
 			<th colspan="2">
 			研修内容
 			<!--{if $nichibenren_flg}-->
-			<a href="csv.php?type=info&pid=<!--{$pid}-->">CSV取得</a>
+			<a href="csv.php?type=info&pid=<!--{$pid|urlencode}-->">CSV取得</a>
 			<!--{* <a href="csv.php?type=info_list&pid=<!--{$pid}-->">受付用リスト作成</a> *}-->
 			<a href="javascript:void(0);" onclick="formSubmitUserRegist('search_form', <!--{$pid}-->);return false;">個別登録</a>
 			<a href="javascript:void(0);" onclick="formSubmitUserRegist('info_user_import_form', <!--{$pid}-->);return false;">CSV取り込み</a>

@@ -33,7 +33,7 @@ function searchButton(formAct){
 	<!--{elseif $key=="bar_association_target_unselect"}-->
 	<!--{elseif $key=="arr_term_id"}-->
 	<!--{else}-->
-		<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" />
 	<!--{/if}-->
 <!--{/foreach}-->
 

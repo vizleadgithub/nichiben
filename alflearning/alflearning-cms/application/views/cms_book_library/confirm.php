@@ -70,10 +70,10 @@
 							<th width="120"><?= $this->lang->line_or_def('common_file_name','ファイル名') ?></th>
 							<td>
 								<?php if($book_library['book_library_logic_name'] == ""): ?>
-									<?= htmlspecialchars( $book_library['book_library_name'], ENT_QUOTES, 'UTF-8') ?>
+									<?= htmlspecialchars( $book_library['book_library_name'], ENT_QUOTES, 'UTF-8', false) ?>
 								<?php endif; ?>
 								<?php if($book_library['book_library_logic_name'] != ""): ?>
-									<?= htmlspecialchars( $book_library['book_library_logic_name'], ENT_QUOTES, 'UTF-8') ?>
+									<?= htmlspecialchars( $book_library['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false) ?>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -88,7 +88,7 @@
 											if($flg){	?>
 												,
 											<?php } ?>
-											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8', false) ?>
 										<?php
 											$flg = TRUE;
 										}
@@ -99,15 +99,15 @@
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_registrant','登録者') ?></th>
-							<td ><?= htmlspecialchars( $book_library['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
+							<td ><?= htmlspecialchars( $book_library['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td ><?= nl2br( htmlspecialchars( $book_library['book_library_caption'], ENT_QUOTES, 'UTF-8') ) ?></td>
+							<td ><?= nl2br( htmlspecialchars( $book_library['book_library_caption'], ENT_QUOTES, 'UTF-8', false) ) ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_tag','タグ') ?></th>
-							<td ><?= htmlspecialchars( $book_library['book_library_tags'], ENT_QUOTES, 'UTF-8') ?></td>
+							<td ><?= htmlspecialchars( $book_library['book_library_tags'], ENT_QUOTES, 'UTF-8', false) ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_local_reading_of_ipad','iPadのローカル閲覧') ?></th>
@@ -115,11 +115,11 @@
 								<?php if($book_library['local_reading_flag']=='0'): ?>
 									<?= $this->lang->line_or_def('common_forbid','禁止') ?>
 								<?php else: ?>
-									<?= $this->lang->line_or_def('common_admit','許可') ?>&nbsp;(<?= htmlspecialchars( $book_library['local_reading_open'], ENT_QUOTES, 'UTF-8') ?>&nbsp;<?= $this->lang->line_or_def('common_range','～') ?>&nbsp;
+									<?= $this->lang->line_or_def('common_admit','許可') ?>&nbsp;(<?= htmlspecialchars( $book_library['local_reading_open'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;<?= $this->lang->line_or_def('common_range','～') ?>&nbsp;
 									<?php if($book_library['local_reading_close']==''): ?>
 										<?= $this->lang->line_or_def('common_no_limit','期限なし') ?>)
 									<?php else: ?>
-										<?= htmlspecialchars( $book_library['local_reading_close'], ENT_QUOTES, 'UTF-8') ?>)
+										<?= htmlspecialchars( $book_library['local_reading_close'], ENT_QUOTES, 'UTF-8', false) ?>)
 									<?php endif; ?>
 								<?php endif; ?>
 							</td>
@@ -147,9 +147,9 @@
 								<table>
 									<?php foreach($library_logs as $library_log) { ?>
 									<tr style="border: 1px #808080 solid; border-style: none none solid none ;	">
-									<td width="50px"><?= htmlspecialchars( $library_log['student_id'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td width="250px"><?= htmlspecialchars( $library_log['student_name'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td width="150px"><?= htmlspecialchars( $library_log['added_at'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td width="50px"><?= htmlspecialchars( $library_log['student_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td width="250px"><?= htmlspecialchars( $library_log['student_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td width="150px"><?= htmlspecialchars( $library_log['added_at'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									</tr>
 									<?php } ?>
 								</table>

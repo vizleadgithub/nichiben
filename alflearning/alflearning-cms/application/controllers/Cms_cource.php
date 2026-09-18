@@ -1042,6 +1042,15 @@ class Cms_cource extends CI_Controller {
 		// 学校に属する設問ID・設問名を取得
 		$this->load->model('model_exam2_problem');
 		$exam2_problems = $this->model_exam2_problem->get_cource_exam2_problem($drop_param);
+		foreach ($exam2_problems as &$exam2_problem) {
+			if (isset($exam2_problem['exam2_problem_name'])) {
+				$exam2_problem['exam2_problem_name'] = html_entity_decode($exam2_problem['exam2_problem_name'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+			}
+			if (isset($exam2_problem['teacher_name'])) {
+				$exam2_problem['teacher_name'] = html_entity_decode($exam2_problem['teacher_name'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+			}
+		}
+		unset($exam2_problem);
 		
 		$this->output->set_header("HTTP/1.0 200 OK");
 		$this->output->set_content_type('application/json; charset=utf-8');

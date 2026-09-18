@@ -298,8 +298,8 @@ class Cms_exam2_problem_group extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'                 , $this->lang->line_or_def('common_flg','flg')                                     , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('exam2_problem_group_id'      , $this->lang->line_or_def('common_id','ID')                                       , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('exam2_problem_group_name'    , $this->lang->line_or_def('common_exam2_problem_group_name_name','設問グループ名') , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('exam2_problem_group_caption' , $this->lang->line_or_def('common_caption','説明')                                , 'trim|xss_clean');
+		$this->form_validation->set_rules('exam2_problem_group_name'    , $this->lang->line_or_def('common_exam2_problem_group_name_name','設問グループ名') , 'trim|required');
+		$this->form_validation->set_rules('exam2_problem_group_caption' , $this->lang->line_or_def('common_caption','説明')                                , 'trim');
 		//$this->form_validation->set_rules('position_exam2_problems'     , $this->lang->line_or_def('common_exam2_problem','設問')                           , 'xss_clean');
 		
 		// [Ajax]選択された設問IDの整形（取得・ID昇順）

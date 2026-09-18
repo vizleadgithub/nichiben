@@ -43,7 +43,7 @@ margin-left:310px;
 				<!--{assign var=row_no value=$smarty.foreach.loop.iteration}-->
 				<div class="problem" style="font-size: 14px;">
 					<div class="problem_title">
-						●設問<!--{$row_no}-->　<!--{$row.exam2_problem_name}-->
+						●設問<!--{$row_no}-->　<!--{$row.exam2_problem_name|escape}-->
 					</div>
 					<div class="problem_contents">
 						<!--{$row.problem_contents|escape|nl2br}-->
@@ -79,7 +79,7 @@ margin-left:310px;
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" cols="60" rows="10" maxlength="1000"><!--{$answered_list.$row_no.answer3}--></textarea></div>
+							<div class="problem_content"><textarea name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" cols="60" rows="10" maxlength="1000" style="width: 100%;"><!--{$answered_list.$row_no.answer3|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定

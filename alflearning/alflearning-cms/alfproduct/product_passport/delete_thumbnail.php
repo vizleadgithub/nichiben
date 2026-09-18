@@ -56,10 +56,10 @@ if( trim($_GET["del"])!=""){
 <input type="hidden" name="act" value="upload" />
 <input type="hidden" name="fileupload" value="" />
 <?php foreach($arr_input as $key => $val){ ?>
-	<input type="hidden" name="<?php echo $key; ?>" value="<?php echo $val; ?>" />
+	<input type="hidden" name="<?php echo htmlspecialchars((string)$key, ENT_QUOTES, 'UTF-8', false); ?>" value="<?php echo htmlspecialchars((string)$val, ENT_QUOTES, 'UTF-8', false); ?>" />
 <?php } ?>
 <?php foreach($arr_input["passport_target"] as $val){ ?>
-<input type="hidden" name="passport_target[]" value="<?php echo htmlspecialchars($val); ?>" />
+<input type="hidden" name="passport_target[]" value="<?php echo htmlspecialchars((string)$val, ENT_QUOTES, 'UTF-8', false); ?>" />
 <?php } ?>
 </form>
 

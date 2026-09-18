@@ -92,7 +92,7 @@ function examFormSubmit(eid,pid,ccno){
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000"><!--{$answered_list.$row_no.answer3|escape}--></textarea></div>
+							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000" style="width: 100%;"><!--{$answered_list.$row_no.answer3|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定
@@ -141,7 +141,7 @@ function examFormSubmit(eid,pid,ccno){
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row_q.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000"><!--{$answered_list_q.$row_no_q.answer3|escape}--></textarea></div>
+							<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000" style="width: 100%;"><!--{$answered_list_q.$row_no_q.answer3|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定

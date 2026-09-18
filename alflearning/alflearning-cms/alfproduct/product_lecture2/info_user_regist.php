@@ -200,6 +200,43 @@ function append_result_message(&$res_msg, $message) {
 	}
 	$res_msg .= $message;
 }
+
+function sync_order_temp_auto_increment($objDbConnect){
+	$sql = "
+	SELECT
+	  GREATEST(
+	    COALESCE((SELECT MAX(order_id) FROM tbl_order), 0),
+	    COALESCE((SELECT MAX(order_id) FROM tbl_order_temp), 0)
+	  ) + 1 AS next_order_id
+	";
+	$max_info = $objDbConnect->query_fetch($sql);
+	if (!$max_info || !isset($max_info['next_order_id'])) {
+		return false;
+	}
+
+	$next_order_id = (int)$max_info['next_order_id'];
+	$sql = "
+	SELECT
+	  AUTO_INCREMENT
+	FROM
+	  information_schema.TABLES
+	WHERE
+	  TABLE_SCHEMA = DATABASE()
+	  AND TABLE_NAME = 'tbl_order_temp'
+	";
+	$table_info = $objDbConnect->query_fetch($sql);
+	$current_auto_increment = 0;
+	if ($table_info && isset($table_info['AUTO_INCREMENT'])) {
+		$current_auto_increment = (int)$table_info['AUTO_INCREMENT'];
+	}
+
+	if ($next_order_id > 0 && $next_order_id >= $current_auto_increment) {
+		$sql = "ALTER TABLE tbl_order_temp AUTO_INCREMENT = ".$next_order_id;
+		return (bool)$objDbConnect->execute($sql);
+	}
+
+	return true;
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 初期表示
 if(!isset($_POST['mode'])){
@@ -265,25 +302,29 @@ elseif($_POST['mode'] == 'regist') {
 					//	$payment_status = 1; // 入金待ち
 					//	$payment_date = NULL;
 					//}
-					
-					// トランザクション開始
-					$objDbConnect->tran_begin();
-					
-					// order_noの取得と更新
-					$order_no_date = date("Ymd");
-					$sql = "select create_date, no from tbl_order_no where create_date='".$order_no_date."' ORDER BY no DESC LIMIT 1";
-					$ret = $objDbConnect->query_fetch_arr($sql);
-					if( count($ret)>0 ){
-						$temp_no = $ret[0]["no"] + 1;
-						$temp_date = $order_no_date;
+					$tran_started = false;
+					if (!sync_order_temp_auto_increment($objDbConnect)) {
+						$err_flg = true;
 					} else {
-						$temp_no = 10001;
-						$temp_date = $order_no_date;
-					}
-					
-					$sql = "INSERT INTO tbl_order_no( create_date, no ) values('".$temp_date."','".$temp_no."')";
-					$ret = $objDbConnect->execute($sql);
-					if($ret){
+						// トランザクション開始
+						$objDbConnect->tran_begin();
+						$tran_started = true;
+						
+						// order_noの取得と更新
+						$order_no_date = date("Ymd");
+						$sql = "select create_date, no from tbl_order_no where create_date='".$order_no_date."' ORDER BY no DESC LIMIT 1";
+						$ret = $objDbConnect->query_fetch_arr($sql);
+						if( count($ret)>0 ){
+							$temp_no = $ret[0]["no"] + 1;
+							$temp_date = $order_no_date;
+						} else {
+							$temp_no = 10001;
+							$temp_date = $order_no_date;
+						}
+						
+						$sql = "INSERT INTO tbl_order_no( create_date, no ) values('".$temp_date."','".$temp_no."')";
+						$ret = $objDbConnect->execute($sql);
+						if($ret){
 						// 注文情報登録(tbl_order_temp→tbl_orderの順)
 						$sql = "
 						INSERT INTO tbl_order_temp
@@ -337,6 +378,7 @@ elseif($_POST['mode'] == 'regist') {
 								    product_type_add,
 								    bar_association_id,
 								    bar_association_branch_id,
+								    participation_flg,
 								    payment_date,
 								    product_name,
 								    product_code,
@@ -358,6 +400,7 @@ elseif($_POST['mode'] == 'regist') {
 								    '2',
 								    '".mysqli_real_escape_string($objDbConnect->connect , $arr_input_2['bar_association_id'])."',
 								    '".mysqli_real_escape_string($objDbConnect->connect , $arr_input_2['bar_association_branch_id'])."',
+								    '0',
 								    '".mysqli_real_escape_string($objDbConnect->connect , $payment_date)."',
 								    '".mysqli_real_escape_string($objDbConnect->connect , $arr_input_2['product_name'])."',
 								    '".mysqli_real_escape_string($objDbConnect->connect , $arr_input_2['product_code'])."',
@@ -380,13 +423,16 @@ elseif($_POST['mode'] == 'regist') {
 							$err_flg = true;
 						}
 						
-					} else {
-						$err_flg = true;
+						} else {
+							$err_flg = true;
+						}
 					}
 					
 					if ($err_flg){
 						// ロールバック
-						$objDbConnect->rollback();
+						if ($tran_started){
+							$objDbConnect->rollback();
+						}
 						$res_msg = '申込状況の追加に失敗しました。';
 						$has_fatal_error = true;
 						break;

@@ -64,9 +64,9 @@
 							<?php foreach($material_list as $material) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_material/detail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td style="word-wrap:break-word;"><?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td><?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><a href="/cms_material/detail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td style="word-wrap:break-word;"><?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<?php if($material['status'] == 1){ ?>
 										<td><?= $this->lang->line_or_def('common_conversion','変換済'); ?></td>
 									<?php }elseif($material['status'] == 11){ ?>

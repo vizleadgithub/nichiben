@@ -192,10 +192,10 @@ if( trim($_GET["del"])!=""){
 <?php foreach($arr_input as $key => $val){ ?>
 	<?php if( is_array($val) ){ ?>
 		<?php foreach($val as $key2 => $val2){ ?>
-			<input type="hidden" name="<?php echo $key; ?>[]" value="<?php echo htmlspecialchars($val2); ?>" />
+			<input type="hidden" name="<?php echo htmlspecialchars((string)$key, ENT_QUOTES, 'UTF-8', false); ?>[]" value="<?php echo htmlspecialchars((string)$val2, ENT_QUOTES, 'UTF-8', false); ?>" />
 		<?php } ?>
 	<?php } else { ?>
-		<input type="hidden" name="<?php echo $key; ?>" value="<?php echo htmlspecialchars($val); ?>" />
+		<input type="hidden" name="<?php echo htmlspecialchars((string)$key, ENT_QUOTES, 'UTF-8', false); ?>" value="<?php echo htmlspecialchars((string)$val, ENT_QUOTES, 'UTF-8', false); ?>" />
 	<?php } ?>
 <?php } ?>
 <?php foreach($arr_input["arr_term_id"] as $val){ ?>

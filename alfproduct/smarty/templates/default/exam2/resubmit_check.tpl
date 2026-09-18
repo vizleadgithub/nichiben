@@ -1,7 +1,7 @@
 <style type="text/css">
 #contents{
 width:100%;
-scroll-y:auto;
+overflow-y: auto;
 font-size: 16px;
 }
 a.btn1{

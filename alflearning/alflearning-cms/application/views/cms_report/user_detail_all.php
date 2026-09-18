@@ -116,15 +116,15 @@
 						<td><?= $this->lang->line_or_def('common_','所属弁護士会') ?></td>
 					</tr>
 					<tr style="background: none repeat scroll 0 0 #F6F6F3;">
-						<td><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8') ?></td>
-						<td><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8') ?></td>
-						<td><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8') ?></td>
+						<td><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+						<td><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8', false) ?></td>
+						<td><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8', false) ?></td>
 						<td><?= ($student['presence_passport']==1) ? '○' : '－' ; ?></td>
-						<td><?= htmlspecialchars( $student['regist_date'], ENT_QUOTES, 'UTF-8') ?></td>
+						<td><?= htmlspecialchars( $student['regist_date'], ENT_QUOTES, 'UTF-8', false) ?></td>
 						<td>
 							<?php if(isset($student['bar_association_id'])): ?>
 								<?php if( isset($mtb_bar_association[$student['bar_association_id']]) ): ?>
-									<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8') ?>
+									<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8', false) ?>
 								<?php else: ?>
 									<?= ''; ?>
 								<?php endif; ?>
@@ -147,7 +147,7 @@
 				<? // 画面中部、ページング ?>
 				<? if($total_rows > 0): ?>
 					<div style="height: 30px;line-height: 30px;text-align: center;">
-						<?= htmlspecialchars( $start_rows, ENT_QUOTES, 'UTF-8') ?>～<?= htmlspecialchars( $end_rows, ENT_QUOTES, 'UTF-8') ?>件を表示中（全<?= htmlspecialchars( $total_rows, ENT_QUOTES, 'UTF-8') ?>件）
+						<?= htmlspecialchars( $start_rows, ENT_QUOTES, 'UTF-8', false) ?>～<?= htmlspecialchars( $end_rows, ENT_QUOTES, 'UTF-8', false) ?>件を表示中（全<?= htmlspecialchars( $total_rows, ENT_QUOTES, 'UTF-8', false) ?>件）
 					</div>
 				<? endif; ?>
 

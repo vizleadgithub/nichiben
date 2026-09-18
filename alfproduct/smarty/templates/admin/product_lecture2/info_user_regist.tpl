@@ -41,9 +41,9 @@ function formSubmit(formName, mode){
 
 <form action="info_user_regist.php" accept-charset="utf-8" method="post" name="list_form">
 <input type="hidden" name="mode" value="">
-<input type="hidden" name="pid" value="<!--{$pid}-->">
-<input type="hidden" name="aid" value="<!--{$aid}-->">
-<input type="hidden" name="atype" value="<!--{$atype}-->">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
+<input type="hidden" name="aid" value="<!--{$aid|escape}-->">
+<input type="hidden" name="atype" value="<!--{$atype|escape}-->">
 
 <!--{*
 <!--{if $res == "success2"}-->
@@ -77,6 +77,6 @@ function formSubmit(formName, mode){
 </form>
 
 <div class="submit">
-	<a href="javascript:void(0);" onclick="window.location='info_user.php?pid=<!--{$pid}-->&aid=<!--{$aid}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
+	<a href="javascript:void(0);" onclick="window.location='info_user.php?pid=<!--{$pid|urlencode|escape}-->&aid=<!--{$aid|urlencode|escape}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
 </div>
 <a name="page_bottom"></a>

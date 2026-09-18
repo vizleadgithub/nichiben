@@ -107,7 +107,7 @@ margin-left:336px;
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row.exam_problem_id].exam_answer_contents[0]|escape}--></textarea></div>
+							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" disabled style="width: 100%;"><!--{$answered_info[$row.exam_problem_id].exam_answer_contents[0]|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定
@@ -172,7 +172,7 @@ margin-left:336px;
 								
 							<!--{* フリー解答 *}-->
 							<!--{elseif $row_q.answer_kind==3}-->
-								<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" disabled><!--{$answered_info[$row_q.exam_problem_id].exam_answer_contents[0]|escape}--></textarea></div>
+								<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" disabled style="width: 100%;"><!--{$answered_info[$row_q.exam_problem_id].exam_answer_contents[0]|escape}--></textarea></div>
 								
 							<!--{else}-->
 								未設定

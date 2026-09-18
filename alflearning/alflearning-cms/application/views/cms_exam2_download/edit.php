@@ -176,7 +176,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="exam2_problem_lectures_ex[]" id="lectures_<?=$cource['cource_id']?>_ex" value=<?=$cource['cource_id']?>
+												<input type="checkbox" name="exam2_problem_lectures_ex[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>_ex" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>
 													<?php 
 													if( isset($exam2_problem['exam2_problem_lectures']) ) {
 														foreach( $exam2_problem['exam2_problem_lectures'] as $lecture) { 
@@ -190,7 +190,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?=$cource['cource_id']?>_ex"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>_ex"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></label>
 												</li>
 										<?php 
 										}

@@ -70,10 +70,10 @@
 							<th width="120"><?= $this->lang->line_or_def('common_file_name','ファイル名') ?></th>
 							<td>
 								<?php if($material['material_logic_name'] == ""): ?>
-									<?= htmlspecialchars( $material['material_name'], ENT_QUOTES, 'UTF-8') ?>
+									<?= htmlspecialchars( $material['material_name'], ENT_QUOTES, 'UTF-8', false) ?>
 								<?php endif; ?>
 								<?php if($material['material_logic_name'] != ""): ?>
-									<?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?>
+									<?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8', false) ?>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -88,7 +88,7 @@
 											if($flg){	?>
 												,
 											<?php } ?>
-											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8', false) ?>
 										<?php
 											$flg = TRUE;
 										}
@@ -99,12 +99,12 @@
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_registrant','登録者') ?></th>
-							<td ><?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+							<td ><?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td ><?= nl2br( htmlspecialchars( $material['material_caption'], ENT_QUOTES, 'UTF-8') ) ?>
+							<td ><?= nl2br( htmlspecialchars( $material['material_caption'], ENT_QUOTES, 'UTF-8', false) ) ?>
 							</td>
 						</tr>
 						<tr>

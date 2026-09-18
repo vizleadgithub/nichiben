@@ -89,21 +89,21 @@
 							<tr <?php if($link_kind==1): ?> class="video_re_upload" <?php endif; ?> >
 								<td class="tdc">
 									<?php if($link_kind==1):  ?>
-										<a href="/cms_video/newdata/<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?></a>
+										<a href="/cms_video/newdata/<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8', false) ?></a>
 									<? else: ?>
-										<a href="/cms_video/detail/<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?></a>
+										<a href="/cms_video/detail/<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8', false) ?></a>
 									<? endif; ?>
 								</td>
 								
 								<?php if($video['video_logic_name'] === ""): ?>
-									<td class="tdc"><?= htmlspecialchars( $video['video_name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td class="tdc"><?= htmlspecialchars( $video['video_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								<?php endif; ?>
 								
 								<?php if($video['video_logic_name'] !== ""): ?>
-									<td class="tdc"><?= htmlspecialchars( $video['video_logic_name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td class="tdc"><?= htmlspecialchars( $video['video_logic_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								<?php endif; ?>
 								
-								<td class="tdc"><?= htmlspecialchars( $video['alfstream_duration'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td class="tdc"><?= htmlspecialchars( $video['alfstream_duration'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								
 								<td class="tdc" >
 									<?php if($video['alfstream_status'] === 'ONLINE'): ?>
@@ -111,11 +111,11 @@
 									<?php elseif($video['alfstream_status'] === 'NEW'): ?>
 										<?= $this->lang->line_or_def('common_wait_upload','アップロード待ち'); ?>
 									<?php elseif(preg_match("/^.*FAILED.*$/", $video['alfstream_status'])): ?>
-										<?= $this->lang->line_or_def('common_123','変換エラー').'['. htmlspecialchars( $video['alfstream_status'], ENT_QUOTES, 'UTF-8') .']'; ?>
+										<?= $this->lang->line_or_def('common_123','変換エラー').'['. htmlspecialchars( $video['alfstream_status'], ENT_QUOTES, 'UTF-8', false) .']'; ?>
 									<?php elseif( ($video['alfstream_status'] === 'Not Found') OR (preg_match("/^HTTP Status Code.*$/", $video['alfstream_status'])) ): ?>
-										<?= $this->lang->line_or_def('common_123','API接続エラー').'['. htmlspecialchars( $video['alfstream_status'], ENT_QUOTES, 'UTF-8') .']'; ?>
+										<?= $this->lang->line_or_def('common_123','API接続エラー').'['. htmlspecialchars( $video['alfstream_status'], ENT_QUOTES, 'UTF-8', false) .']'; ?>
 									<?php else: ?>
-										<?= $this->lang->line_or_def('common_no_conversion','未変換').'['. htmlspecialchars( $video['alfstream_status'], ENT_QUOTES, 'UTF-8') .']'; ?>
+										<?= $this->lang->line_or_def('common_no_conversion','未変換').'['. htmlspecialchars( $video['alfstream_status'], ENT_QUOTES, 'UTF-8', false) .']'; ?>
 									<?php endif; ?>
 								</td>
 								

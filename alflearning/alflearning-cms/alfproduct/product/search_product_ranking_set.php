@@ -167,12 +167,12 @@ function serchSet(rank_i, pid, pname){
 			window.opener.document.getElementById("product_name_" + rank_i).value = utf.URLdecode(pname);
 		}
 		if(window.opener.document.getElementById("product_name_" + rank_i + "_disp")!= null){
-			window.opener.document.getElementById("product_name_" + rank_i + "_disp").innerHTML = utf.URLdecode(pname);
+			window.opener.document.getElementById("product_name_" + rank_i + "_disp").textContent = utf.URLdecode(pname);
 		}
 		window.close();
 	}
 }
-window.onload = serchSet(<?php echo "'$rank_i', '$pid', '$pname'"; ?>);
+window.onload = serchSet(<?php echo json_encode($rank_i, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).", ".json_encode($pid, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).", ".json_encode($pname, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>);
 </script>
 </body>
 </html>

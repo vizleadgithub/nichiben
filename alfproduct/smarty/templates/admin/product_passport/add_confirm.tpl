@@ -14,7 +14,7 @@ function searchButton(formAct){
 <form name="form1" action="#" method="post">
 <input type="hidden" name="act" id="act" value="" />
 <!--{foreach from=$arr_input item=item key=key}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->
 <!--{foreach from=$arr_input.passport_target item=item}-->
 <input type="hidden" name="passport_target[]" value="<!--{$item|escape}-->" />

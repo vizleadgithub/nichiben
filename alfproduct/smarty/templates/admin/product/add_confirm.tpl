@@ -16,7 +16,7 @@ function searchButton(formAct){
 	<input type="hidden" name="act" id="act" value="" />
 	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />
 	<!--{foreach from=$arr_input item=item key=key}-->
-		<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+		<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" />
 	<!--{/foreach}-->
 
 	<!--{foreach from=$arr_term_id item=item}-->
@@ -36,10 +36,10 @@ function searchButton(formAct){
 		<!--{assign var=disp_warning_word_key value="disp_warning_word"|cat:$smarty.section.disp_warning_word_loop.index}-->
 		<!--{if $arr_input.$disp_warning_word_key!=''}-->
 			<!--{foreach from=$arr_input.$disp_warning_word_key item=item}-->
-			<input type="hidden" name="<!--{$disp_warning_word_key}-->[]" value="<!--{$item|escape}-->" />
+			<input type="hidden" name="<!--{$disp_warning_word_key|escape}-->[]" value="<!--{$item|escape}-->" />
 			<!--{/foreach}-->
 		<!--{else}-->
-			<input type="hidden" name="<!--{$disp_warning_word_key}-->[]" value="" />
+			<input type="hidden" name="<!--{$disp_warning_word_key|escape}-->[]" value="" />
 		<!--{/if}-->
 	<!--{/section}-->
 -->
@@ -407,7 +407,7 @@ function searchButton(formAct){
 				未設定
 			<!--{else}-->
 				<!--{foreach from=$exam_list item=exam}-->
-					<!--{if $arr_input.$exam_id_test_key==$exam.exam_id}--><!--{$exam.exam_name}--><!--{/if}-->
+					<!--{if $arr_input.$exam_id_test_key==$exam.exam_id}--><!--{$exam.exam_name|escape}--><!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -420,7 +420,7 @@ function searchButton(formAct){
 				未設定
 			<!--{else}-->
 				<!--{foreach from=$exam_list item=exam}-->
-					<!--{if $arr_input.$exam_id_question_key==$exam.exam_id}--><!--{$exam.exam_name}--><!--{/if}-->
+					<!--{if $arr_input.$exam_id_question_key==$exam.exam_id}--><!--{$exam.exam_name|escape}--><!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -433,7 +433,7 @@ function searchButton(formAct){
 				未設定
 			<!--{else}-->
 				<!--{foreach from=$btn_type_list item=btn_type_name key=btn_type_id}-->
-					<!--{if $arr_input.$btn_type_key==$btn_type_id}--><!--{$btn_type_name}--><!--{/if}-->
+					<!--{if $arr_input.$btn_type_key==$btn_type_id}--><!--{$btn_type_name|escape}--><!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -526,7 +526,7 @@ function searchButton(formAct){
 				未設定
 			<!--{else}-->
 				<!--{foreach from=$exam2_list item=exam2}-->
-					<!--{if $arr_input.exam2_id==$exam2.exam2_id}--><!--{$exam2.exam2_name}--><!--{/if}-->
+					<!--{if $arr_input.exam2_id==$exam2.exam2_id}--><!--{$exam2.exam2_name|escape}--><!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
 		</td>

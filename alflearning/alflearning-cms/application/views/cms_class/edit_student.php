@@ -200,7 +200,7 @@
 							<th width="160"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 							<td>
 								<input type=hidden name=cource_id value='<?=set_value('cource_id', $class['cource_id'])?>'>
-								<?= htmlspecialchars( $class['cource_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $class['cource_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
@@ -229,8 +229,8 @@
 									value="<?=set_value('class_opentime', ($class['class_opentime'] ? $class['class_opentime'] : date('H:00:00', time()+(60*60))))?>" 
 									id="class_opentime" readonly>
 								
-								<?= htmlspecialchars( $class['class_date'], ENT_QUOTES, 'UTF-8') ?>&nbsp;
-								<?= htmlspecialchars( $class['class_opentime'], ENT_QUOTES, 'UTF-8') ?>&nbsp;
+								<?= htmlspecialchars( $class['class_date'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;
+								<?= htmlspecialchars( $class['class_opentime'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;
 								<?= $this->lang->line_or_def('common_class_time','授業時間') ?>&nbsp;
 								
 								<?php if($class['class_maxtime_flag']==1): ?>
@@ -248,14 +248,14 @@
 							<th ><?= $this->lang->line_or_def('common_class_name','授業名') ?></th>
 							<td>
 								<input type="text" name="class_name" size="45" value="<?=set_value('class_name',$class['class_name'])?>">
-								<!-- <input type=hidden name=class_name value='<?='';//set_value('class_name', $class['class_name'])?>'><?= htmlspecialchars( $class['class_name'], ENT_QUOTES, 'UTF-8') ?> -->
+								<!-- <input type=hidden name=class_name value='<?='';//set_value('class_name', $class['class_name'])?>'><?= htmlspecialchars( $class['class_name'], ENT_QUOTES, 'UTF-8', false) ?> -->
 							</td>
 						</tr>
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
 							<td>
 								<input type=hidden name=teacher_id value='<?=set_value('teacher_id', $class['teacher_id'])?>'>
-								<?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $class['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 
@@ -265,14 +265,14 @@
 								<?php $count = 0; ?>
 								<?php if(isset($class['sub_teacher_id'])) { ?>
 									<?php foreach($class['sub_teacher_id'] as $class_teacher) { ?>
-										<input type="hidden" name="sub_teacher_id[]" value='<?= htmlspecialchars( $class_teacher, ENT_QUOTES, 'UTF-8') ?>'>
+										<input type="hidden" name="sub_teacher_id[]" value='<?= htmlspecialchars( $class_teacher, ENT_QUOTES, 'UTF-8', false) ?>'>
 										<?php $count = $count + 1; ?>
 									<?php } ?>
 								<?php } ?>
 								<?php //for($i=$count; $i<5; $i++) { ?>
 								<!--	<input type="hidden" name="sub_teacher_id[]" value=''>-->
 								<?php //} ?>
-								<?= htmlspecialchars( $class['sub_teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $class['sub_teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 
@@ -280,7 +280,7 @@
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
 							<td >
 								<textarea name="class_caption" ><?=set_value('class_caption',$class['class_caption'])?></textarea>
-								<!-- <input type=hidden name=class_caption value='<?='';//set_value('class_caption', $class['class_caption'])?>'><?=nl2br( htmlspecialchars( $class['class_caption'], ENT_QUOTES, 'UTF-8') )?> -->
+								<!-- <input type=hidden name=class_caption value='<?='';//set_value('class_caption', $class['class_caption'])?>'><?=nl2br( htmlspecialchars( $class['class_caption'], ENT_QUOTES, 'UTF-8', false) )?> -->
 							</td>
 						</tr>
 						<tr>
@@ -291,7 +291,7 @@
 									<?php if( isset($student_group) ): ?>
 										<?php foreach( $student_group as $key => $value): ?>
 											<div>
-												<a onclick="select_student_group('<?= htmlspecialchars( $value, ENT_QUOTES, 'UTF-8') ?>');return false;" href="#"><?= htmlspecialchars( $key, ENT_QUOTES, 'UTF-8') ?></a>
+												<a onclick="select_student_group('<?= htmlspecialchars( $value, ENT_QUOTES, 'UTF-8') ?>');return false;" href="#"><?= htmlspecialchars( $key, ENT_QUOTES, 'UTF-8', false) ?></a>
 											</div>
 										<?php endforeach; ?>
 									<?php endif; ?>
@@ -311,19 +311,19 @@
 													<?php foreach( $class['lecture_students'] as $lecture): ?>
 														<?php if($lecture == $student['student_id']): ?>
 															■
-															<input type="hidden" name="lecture_students[]"     id="student_<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?> >
-															<input type="hidden" name="lecture_students_old[]" id="student_<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?> >
+															<input type="hidden" name="lecture_students[]"     id="student_<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?> >
+															<input type="hidden" name="lecture_students_old[]" id="student_<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?> >
 															<?php $checkflag = 1; ?>
 															<?php break; ?>
 														<?php endif; ?>
 													<?php endforeach; ?>
 													
 													<?php if($checkflag == 0): ?>
-														<input type="checkbox" name="lecture_students[]" id="student_<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?> >
+														<input type="checkbox" name="lecture_students[]" id="student_<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?> >
 													<?php endif; ?>
 													
 												<?php endif; ?>
-												<label for="student_<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>">[No<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>]&nbsp;<?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8') ?>&nbsp;&lt;<?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8') ?>&gt;</label>
+												<label for="student_<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>">[No<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>]&nbsp;<?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;&lt;<?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8', false) ?>&gt;</label>
 											</div>
 										<?php endforeach; ?>
 									<?php endif; ?>
@@ -334,7 +334,7 @@
 							<th><?= $this->lang->line_or_def('common_note','備考') ?></th>
 							<td >
 								<textarea name="class_note" ><?=set_value('class_note',$class['class_note'])?></textarea>
-								<!-- <input type=hidden name=class_note value='<?='';//set_value('class_note', $class['class_note'])?>'><?=nl2br( htmlspecialchars( $class['class_note'], ENT_QUOTES, 'UTF-8') )?> -->
+								<!-- <input type=hidden name=class_note value='<?='';//set_value('class_note', $class['class_note'])?>'><?=nl2br( htmlspecialchars( $class['class_note'], ENT_QUOTES, 'UTF-8', false) )?> -->
 							</td>
 						</tr>
 					</table>

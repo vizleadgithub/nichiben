@@ -83,9 +83,9 @@ function formSubmitStatus(formName, mode, pid, aid, odid, flg){
 		<tr>
 			<th colspan="2">
 			研修内容
-			<a href="csv.php?type=info_user&pid=<!--{$pid}-->&aid=<!--{$aid}-->">CSV取得</a>
+			<a href="csv.php?type=info_user&pid=<!--{$pid|urlencode}-->&aid=<!--{$aid|urlencode}-->">CSV取得</a>
 			<!--{if $nichibenren_flg}-->
-			<a href="csv.php?type=info_user_list&pid=<!--{$pid}-->&aid=<!--{$aid}-->">受付用リスト作成</a>
+			<a href="csv.php?type=info_user_list&pid=<!--{$pid|urlencode}-->&aid=<!--{$aid|urlencode}-->">受付用リスト作成</a>
 			<a href="javascript:void(0);" onclick="document.forms['info_user_regist_form'].submit(); return false;">個別登録</a>
 			<a href="javascript:void(0);" onclick="document.forms['info_user_import_form'].submit(); return false;">CSV取り込み</a>
 			<!--{/if}-->
@@ -103,13 +103,13 @@ function formSubmitStatus(formName, mode, pid, aid, odid, flg){
 </form>
 
 <form action="info_user_regist.php" accept-charset="utf-8" method="post" name="info_user_regist_form">
-<input type="hidden" name="pid" value="<!--{$pid}-->">
-<input type="hidden" name="aid" value="<!--{$aid}-->">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
+<input type="hidden" name="aid" value="<!--{$aid|escape}-->">
 </form>
 
 <form action="info_user_import.php" accept-charset="utf-8" method="post" name="info_user_import_form">
-<input type="hidden" name="pid" value="<!--{$pid}-->">
-<input type="hidden" name="aid" value="<!--{$aid}-->">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
+<input type="hidden" name="aid" value="<!--{$aid|escape}-->">
 </form>
 
 <form action="info_user.php" accept-charset="utf-8" method="post" name="list_form">
@@ -147,9 +147,9 @@ function formSubmitStatus(formName, mode, pid, aid, odid, flg){
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->">
 		<!--{if $nichibenren_flg}-->
 			<!--{if $row.participation_flg == '1'}-->
-				<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid}-->, <!--{$aid}-->, <!--{$row.order_detail_id}-->, <!--{$row.participation_flg}-->);return false;" >済</a>
+				<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id|escape}-->, <!--{$row.participation_flg|escape}-->);return false;" >済</a>
 			<!--{else}-->
-				<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid}-->, <!--{$aid}-->, <!--{$row.order_detail_id}-->, <!--{$row.participation_flg}-->);return false;" >未</a>
+				<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id|escape}-->, <!--{$row.participation_flg|escape}-->);return false;" >未</a>
 			<!--{/if}-->
 		<!--{else}-->
 			<!--{if $row.participation_flg == '1'}-->
@@ -162,7 +162,7 @@ function formSubmitStatus(formName, mode, pid, aid, odid, flg){
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.lawyer_number|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_name|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$mtb_bar_association[$row.bar_association_id]|escape}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="javascript:void(0);" onclick="formSubmit('list_form', 'delete', <!--{$pid}-->, <!--{$aid}-->, <!--{$row.order_detail_id}-->);return false;" >削除</a></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="javascript:void(0);" onclick="formSubmit('list_form', 'delete', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id|escape}-->);return false;" >削除</a></td>
 	</tr>
 	<!--{/foreach}-->
 	<!--{/if}-->
@@ -170,6 +170,6 @@ function formSubmitStatus(formName, mode, pid, aid, odid, flg){
 </form>
 
 <div class="submit">
-	<a href="javascript:void(0);" onclick="window.location='info.php?pid=<!--{$pid}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
+	<a href="javascript:void(0);" onclick="window.location='info.php?pid=<!--{$pid|urlencode|escape}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
 </div>
 <a name="page_bottom"></a>

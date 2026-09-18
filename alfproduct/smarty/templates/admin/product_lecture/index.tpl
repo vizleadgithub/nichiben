@@ -191,7 +191,7 @@
 				<select name="search_bar_association">
 					<option value="">--------------------</option>
 				<!--{foreach from=$arr_bar_association item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$search_bar_association}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
+					<option value="<!--{$row.id|escape}-->"<!--{if $row.id==$search_bar_association}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -204,7 +204,7 @@
 					<option value="">--------------------</option>
 				<!--{/if}-->
 				<!--{foreach from=$arr_bar_association2 item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$search_bar_association2}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
+					<option value="<!--{$row.id|escape}-->"<!--{if $row.id==$search_bar_association2}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -234,7 +234,7 @@
 	<!--{foreach from=$arr_list item="row"}-->
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="info.php?pid=<!--{$row.product_id}-->"><!--{$row.product_id}--></a></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="info.php?pid=<!--{$row.product_id|urlencode}-->"><!--{$row.product_id}--></a></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.product_name|mb_truncate:60:"..."|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->">
 		<!--{foreach from=$row.bar_association item="row2"}-->

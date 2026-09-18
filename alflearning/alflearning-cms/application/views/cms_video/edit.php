@@ -470,8 +470,8 @@
 
 				<?=form_open_multipart("cms_video/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
-					<?=(isset($overlap_error)?'<div class="error">'.htmlspecialchars($overlap_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
+					<?=(isset($overlap_error)?'<div class="error">'.htmlspecialchars($overlap_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $video['update_flg'])?>'>
 					<input type=hidden name=video_id value='<?=set_value('video_id', $video['video_id'])?>'>
 					<input type=hidden name=video_logic_name value='<?=set_value('video_logic_name', $video['video_logic_name'])?>'>
@@ -594,7 +594,7 @@
 										<div style=" margin-top: 5px;line-height:20px;"><?= $this->lang->line_or_def('common_registered_tag','登録済みタグ') ?>&nbsp;:&nbsp;
 											<?php foreach($tags_dropdown as $tagKey => $cnt) { ?>
 												<? if(($tagKey !== 'タグなし') && ($tagKey !== '') ): ?>
-													<a href="#" onclick="set_tag('<?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?>');return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?></a>&nbsp;&nbsp;
+													<a href="#" onclick="set_tag('<?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?>');return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
 												<? endif; ?>
 											<?php } ?>
 										</div>
@@ -622,7 +622,7 @@
 										<?php foreach($video['exclusive_tag'] as $ino => $exclusive_tag): ?>
 											<tr sytle="height:100px;" id="exclusive_<?= $ino; ?>">
 												<td style="vertical-align: middle;text-align: center;">
-													<input type=text name="exclusive_tag[]" maxlength="256" size="15" value='<?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8') ?>'><!--   -->
+													<input type=text name="exclusive_tag[]" maxlength="256" size="15" value='<?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8', false) ?>'><!--   -->
 												</td>
 												
 												<td style="vertical-align: middle;text-align: center;">
@@ -781,11 +781,11 @@
 										<?php $style = 'style="background:none repeat scroll 0 0 #E9E9E9; padding: 2px 5px;"'; ?>
 										<?php foreach($chapter_data as $chapter): ?>
 											<?php $counter += 1; ?>
-											<?php $chapter_text = $chapter['chapter_time']."　".$chapter['chapter_name']; ?>
+											<?php $chapter_text = htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8', false)."　".htmlspecialchars((string)$chapter['chapter_name'], ENT_QUOTES, 'UTF-8', false); ?>
 											<?php if($counter % 2 == 0): ?>
-												<option value="<?= $chapter['chapter_time']; ?>"><?= $chapter_text; ?></option>
+												<option value="<?= htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8', false); ?>"><?= $chapter_text; ?></option>
 											<?php else: ?>
-												<option class="colors" value="<?= $chapter['chapter_time']; ?>"><?= $chapter_text; ?></option>
+												<option class="colors" value="<?= htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8', false); ?>"><?= $chapter_text; ?></option>
 											<?php endif; ?>
 										<?php endforeach; ?>
 										<?php for ($i = $counter; $i < 10; $i++): ?>

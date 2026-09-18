@@ -192,7 +192,7 @@
 				<select name="search_bar_association">
 					<option value="">--------------------</option>
 				<!--{foreach from=$arr_bar_association item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$search_bar_association}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id|escape}-->"<!--{if $row.id==$search_bar_association}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -222,7 +222,7 @@
 	<!--{foreach from=$arr_list item="row"}-->
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
-		<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id}-->"><!--{$row.product_id}--></a></td>
+		<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|urlencode}-->"><!--{$row.product_id}--></a></td>
 		<td class="tdc" style=""><!--{$row.product_name|mb_truncate:60:"..."|escape}--></td>
 		<td class="tdc" style="">
 			<!--{$row.start_date}--><!--{if $row.start_date!="" && $row.end_date!=""}-->～<!--{/if}--><!--{$row.end_date}-->
@@ -231,7 +231,7 @@
 		<!--{*
 		<td class="tdc" style="">
 		<!--{foreach from=$row.bar_association item="row2"}-->
-		<!--{$row2.name}--><br>
+		<!--{$row2.name|escape}--><br>
 		<!--{/foreach}-->
 		</td>
 		<!--{<td class="tdc" style=""><!--{$row.live_start_date}--></td>}-->

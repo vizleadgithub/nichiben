@@ -54,7 +54,7 @@
 					<?php if(isset($information_list)) { ?>
 						<?php foreach($information_list as $information) { ?>
 							<tr style="" >
-								<td class="tdc"><a href="/cms_information/detail/<?= htmlspecialchars( $information['ID'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $information['ID'], ENT_QUOTES, 'UTF-8', false) ?>
+								<td class="tdc"><a href="/cms_information/detail/<?= htmlspecialchars( $information['ID'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $information['ID'], ENT_QUOTES, 'UTF-8', false) ?>
 								</td>
 								<td class="tdc"><?= date("Y/m/d", strtotime($information['post_date']))?></td>
 								<td class="tdc"><?= htmlspecialchars( $information['post_title'], ENT_QUOTES, 'UTF-8', false) ?></td>

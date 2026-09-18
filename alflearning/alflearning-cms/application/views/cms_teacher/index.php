@@ -80,10 +80,10 @@
 							<?php foreach($teacher_list as $teacher) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td class="tdc"><a href="/cms_teacher/detail/<?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td class="tdc"><?= htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td class="tdc"><a href="/cms_teacher/detail/<?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td class="tdc"><?= htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td class="tdc">
-										<?= htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8') ?>
+										<?= htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8', false) ?>
 										<?php
 										if($teacher['lock']==1){
 											print('<span style="color:red;">アカウントロック中</span>');
@@ -96,7 +96,7 @@
 												if(!$teacher['teacher_note']){
 													print "　";
 												}else{
-													print str_replace(array("\r\n","\r","\n"), '　', htmlspecialchars( $teacher['teacher_note'], ENT_QUOTES, 'UTF-8') );
+													print str_replace(array("\r\n","\r","\n"), '　', htmlspecialchars( $teacher['teacher_note'], ENT_QUOTES, 'UTF-8', false) );
 												}
 											?>
 										</div>

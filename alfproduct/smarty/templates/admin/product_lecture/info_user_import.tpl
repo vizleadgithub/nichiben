@@ -93,10 +93,10 @@ function formSubmit(formName, mode){
 
 <form action="info_user_import.php" accept-charset="utf-8" method="post" name="form_csv_upload" enctype="multipart/form-data">
 <input type="hidden" name="mode" value="">
-<input type="hidden" name="pid" value="<!--{$pid}-->">
-<input type="hidden" name="aid" value="<!--{$aid}-->">
-<input type="hidden" name="atype" value="<!--{$atype}-->">
-<input type="hidden" name="oid" value="<!--{$oid}-->">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
+<input type="hidden" name="aid" value="<!--{$aid|escape}-->">
+<input type="hidden" name="atype" value="<!--{$atype|escape}-->">
+<input type="hidden" name="oid" value="<!--{$oid|escape}-->">
 
 <!--{*
 <!--{if $res == "success"}-->
@@ -149,10 +149,10 @@ function formSubmit(formName, mode){
 
 <form action="info_user_import.php" accept-charset="utf-8" method="post" name="list_form">
 <input type="hidden" name="mode" value="">
-<input type="hidden" name="pid" value="<!--{$pid}-->">
-<input type="hidden" name="aid" value="<!--{$aid}-->">
-<input type="hidden" name="atype" value="<!--{$atype}-->">
-<input type="hidden" name="oid" value="<!--{$oid}-->">
+<input type="hidden" name="pid" value="<!--{$pid|escape}-->">
+<input type="hidden" name="aid" value="<!--{$aid|escape}-->">
+<input type="hidden" name="atype" value="<!--{$atype|escape}-->">
+<input type="hidden" name="oid" value="<!--{$oid|escape}-->">
 <input type="hidden" name="ufnn" value="<!--{$upload_file_new_name|escape}-->">
 	<table class="list">
 		<tr>
@@ -202,7 +202,7 @@ function formSubmit(formName, mode){
 
 
 <div class="submit">
-	<a href="javascript:void(0);" onclick="window.location='info_user.php?pid=<!--{$pid}-->&aid=<!--{$aid}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
+	<a href="javascript:void(0);" onclick="window.location='info_user.php?pid=<!--{$pid|urlencode}-->&aid=<!--{$aid|urlencode}-->';" /><img src="/alfproduct/images/btn_back.png"></a>
 	<!--{if $mode == "upload" && $err_msg == ""}-->
 	<!--{*
 		<a href="javascript:void(0);" onclick="formSubmit('list_form', 'regist');return false;" >申込状況に追加する</a>

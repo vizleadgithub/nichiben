@@ -181,7 +181,7 @@
 													$select_option = "selected";
 												}
 											?>
-											<option value="<?= $index ?>" <?= $select_option; ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8') ?></option>
+											<option value="<?= $index ?>" <?= $select_option; ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8', false) ?></option>
 										<?php //endif; ?>
 									<?php endforeach; ?>
 								</select>
@@ -268,9 +268,9 @@
 							<?php $line++;?>
 							<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
 							<!--<td class="tdc"><a href="/cms_student/detail/<?= $student['student_id'] ?>"><?=$student['lawyer_number']?></td> -->
-								<td class="tdc"><a onclick='edit_item("<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>");return false;' style="text-decoration: underline;"><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8') ?></a></td>
-								<td class="tdc"><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8') ?></td>
-								<td class="tdc"><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td class="tdc"><a onclick='edit_item("<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>");return false;' style="text-decoration: underline;"><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8', false) ?></a></td>
+								<td class="tdc"><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td class="tdc"><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								<td class="tdc">
 									<?= ($student['presence_passport']==1) ? '○' : '－' ; ?>
 								</td>
@@ -280,7 +280,7 @@
 								<td class="tdc">
 									<?php if(isset($student['bar_association_id'])): ?>
 										<?php if( isset($mtb_bar_association[$student['bar_association_id']]) ): ?>
-											<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8') ?>
+											<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8', false) ?>
 										<?php else: ?>
 											<?= ''; ?>
 										<?php endif; ?>
@@ -288,7 +288,7 @@
 								</td>
 
 								<td class="tdc">
-									<input type="checkbox" class="sub_auth_ethic_training" name="sub_auth_ethic_training[]" value='<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>' />
+									<input type="checkbox" class="sub_auth_ethic_training" name="sub_auth_ethic_training[]" value='<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>' />
 								</td>
 							</tr>
 						<?php } ?>

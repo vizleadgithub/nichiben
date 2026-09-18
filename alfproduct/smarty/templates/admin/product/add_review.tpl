@@ -546,7 +546,7 @@ function contentsOpen(contentsNo){
 			<select name="<!--{$exam_id_test_key}-->" id="<!--{$exam_id_test_key}-->">
 				<option value=""></option>
 				<!--{foreach from=$exam_list item=exam}-->
-					<option value="<!--{$exam.exam_id}-->" <!--{if $arr_input.$exam_id_test_key==$exam.exam_id}-->selected<!--{/if}-->><!--{$exam.exam_name}--></option>
+					<option value="<!--{$exam.exam_id|escape}-->" <!--{if $arr_input.$exam_id_test_key==$exam.exam_id}-->selected<!--{/if}-->><!--{$exam.exam_name|escape}--></option>
 				<!--{/foreach}-->
 			</select>
 		</td>
@@ -558,7 +558,7 @@ function contentsOpen(contentsNo){
 			<select name="<!--{$exam_id_question_key}-->" id="<!--{$exam_id_question_key}-->">
 				<option value=""></option>
 				<!--{foreach from=$exam_list item=exam}-->
-					<option value="<!--{$exam.exam_id}-->" <!--{if $arr_input.$exam_id_question_key==$exam.exam_id}-->selected<!--{/if}-->><!--{$exam.exam_name}--></option>
+					<option value="<!--{$exam.exam_id|escape}-->" <!--{if $arr_input.$exam_id_question_key==$exam.exam_id}-->selected<!--{/if}-->><!--{$exam.exam_name|escape}--></option>
 				<!--{/foreach}-->
 			</select>
 		</td>
@@ -571,7 +571,7 @@ function contentsOpen(contentsNo){
 			<select name="<!--{$btn_type_key}-->" id="<!--{$btn_type_key}-->">
 				<option value=""></option>
 				<!--{foreach from=$btn_type_list item=btn_type_name key=btn_type_id}-->
-					<option value="<!--{$btn_type_id}-->" <!--{if $arr_input.$btn_type_key==$btn_type_id}-->selected<!--{/if}-->><!--{$btn_type_name}--></option>
+					<option value="<!--{$btn_type_id|escape}-->" <!--{if $arr_input.$btn_type_key==$btn_type_id}-->selected<!--{/if}-->><!--{$btn_type_name|escape}--></option>
 				<!--{/foreach}-->
 			</select>
 		</td>
@@ -668,7 +668,7 @@ function contentsOpen(contentsNo){
 			<select name="<!--{$exam2_id_key}-->" id="<!--{$exam2_id_key}-->">
 				<option value=""></option>
 				<!--{foreach from=$exam2_list item=exam2}-->
-					<option value="<!--{$exam2.exam2_id}-->" <!--{if $arr_input.$exam2_id_key==$exam2.exam2_id}-->selected<!--{/if}-->><!--{$exam2.exam2_name}--></option>
+					<option value="<!--{$exam2.exam2_id|escape}-->" <!--{if $arr_input.$exam2_id_key==$exam2.exam2_id}-->selected<!--{/if}-->><!--{$exam2.exam2_name|escape}--></option>
 				<!--{/foreach}-->
 			</select>
 		</td>

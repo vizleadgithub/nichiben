@@ -131,7 +131,7 @@ function examFormSubmit(flg){
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10"><!--{$exam_answer[$row.exam_problem_id].exam_answer_contents[0]}--></textarea></div>
+							<div class="problem_content"><textarea name="exam_problem_<!--{$row.exam_problem_id}-->[]" cols="115" rows="10" style="width: 100%;"><!--{$exam_answer[$row.exam_problem_id].exam_answer_contents[0]|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定
@@ -147,7 +147,7 @@ function examFormSubmit(flg){
 							<div class="problem_contents problem_result">
 								<div><!--{if $exam_answer[$row.exam_problem_id].exam_answer_mark==1}-->正解<!--{else}-->不正解<!--{/if}--></div>
 								<!--{if $exam_answer[$row.exam_problem_id].exam_answer_mark==1 || !$hantei_ari}-->
-									<div>正解は「<!--{$exam_answer[$row.exam_problem_id].correct_answer_str}-->」、あなたの解答は「<!--{$exam_answer[$row.exam_problem_id].exam_answer_contents_str}-->」</div>
+									<div>正解は「<!--{$exam_answer[$row.exam_problem_id].correct_answer_str|escape}-->」、あなたの解答は「<!--{$exam_answer[$row.exam_problem_id].exam_answer_contents_str|escape}-->」</div>
 								<!--{/if}-->
 							</div>
 						<!--{/if}-->
@@ -203,7 +203,7 @@ function examFormSubmit(flg){
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row_q.answer_kind==3}-->
-							<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10"><!--{$exam_answer_q[$row_q.exam_problem_id].exam_answer_contents[0]}--></textarea></div>
+							<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" style="width: 100%;"><!--{$exam_answer_q[$row_q.exam_problem_id].exam_answer_contents[0]|escape}--></textarea></div>
 							
 						<!--{else}-->
 							未設定

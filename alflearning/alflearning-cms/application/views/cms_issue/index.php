@@ -65,10 +65,10 @@
 							<?php foreach($issue_list as $issue) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_issue/detail/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td style="word-wrap:break-word;"><?= htmlspecialchars( $issue['issue_name'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td><?= htmlspecialchars( $issue['teacher_name'], ENT_QUOTES, 'UTF-8') ?></td>
-									<td><?= htmlspecialchars( $issue['disp_status'], ENT_QUOTES, 'UTF-8') ?></td>
+									<td><a href="/cms_issue/detail/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td style="word-wrap:break-word;"><?= htmlspecialchars( $issue['issue_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><?= htmlspecialchars( $issue['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><?= htmlspecialchars( $issue['disp_status'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<?php if($issue['public_flag'] == 0){ ?>
 										<td><?= $this->lang->line_or_def('common_public','公開'); ?></td>
 									<?php }elseif($issue['public_flag'] == 9){ ?>

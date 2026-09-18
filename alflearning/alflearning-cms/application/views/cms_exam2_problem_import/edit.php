@@ -314,9 +314,9 @@
 														}
 													}
 												?>
-												<input type="checkbox" name="exam2_problem_groups[]" id="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?> <?= $checked_flag ?> />
+												<input type="checkbox" name="exam2_problem_groups[]" id="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?> <?= htmlspecialchars( $checked_flag, ENT_QUOTES, 'UTF-8', false) ?> />
 												<label for="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?>">
-													<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?=$exam2_problem_group['exam2_problem_count'];?>]
+													<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?= htmlspecialchars( $exam2_problem_group['exam2_problem_count'], ENT_QUOTES, 'UTF-8', false) ?>]
 												</label>
 											</li>
 										<?php endforeach; ?>
@@ -390,7 +390,7 @@
 											<li>
 												<input type="checkbox" name="exam2_problem_groups_ex[]" id="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?>_ex" value=<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?> />
 												<label for="groups_<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?>_ex">
-													<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?=$exam2_problem_group['exam2_problem_count'];?>]
+													<?= htmlspecialchars( $exam2_problem_group['exam2_problem_group_name'], ENT_QUOTES, 'UTF-8', false) ?>&nbsp;&nbsp;[<?= $this->lang->line_or_def('common_position_exam2_problem_count','所属設問数') ?>&nbsp;:&nbsp;<?= htmlspecialchars( $exam2_problem_group['exam2_problem_count'], ENT_QUOTES, 'UTF-8', false) ?>]
 												</label>
 											</li>
 										<?php endforeach; ?>

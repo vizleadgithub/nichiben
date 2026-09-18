@@ -6,10 +6,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <h4>An uncaught Exception was encountered</h4>
 
-<p>Type: <?php echo htmlspecialchars(get_class($exception), ENT_QUOTES, 'UTF-8'); ?></p>
-<p>Message: <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p>
-<p>Filename: <?php echo htmlspecialchars($exception->getFile(), ENT_QUOTES, 'UTF-8'); ?></p>
-<p>Line Number: <?php echo htmlspecialchars((string)$exception->getLine(), ENT_QUOTES, 'UTF-8'); ?></p>
+<p>Type: <?php echo htmlspecialchars(get_class($exception), ENT_QUOTES, 'UTF-8', false); ?></p>
+<p>Message: <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8', false); ?></p>
+<p>Filename: <?php echo htmlspecialchars($exception->getFile(), ENT_QUOTES, 'UTF-8', false); ?></p>
+<p>Line Number: <?php echo htmlspecialchars((string)$exception->getLine(), ENT_QUOTES, 'UTF-8', false); ?></p>
 
 <?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
 
@@ -19,9 +19,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php if (isset($error['file']) && strpos($error['file'], realpath(BASEPATH)) !== 0): ?>
 
 			<p style="margin-left:10px">
-			File: <?php echo htmlspecialchars($error['file'], ENT_QUOTES, 'UTF-8'); ?><br />
-			Line: <?php echo htmlspecialchars((string)$error['line'], ENT_QUOTES, 'UTF-8'); ?><br />
-			Function: <?php echo htmlspecialchars($error['function'], ENT_QUOTES, 'UTF-8'); ?>
+			File: <?php echo htmlspecialchars($error['file'], ENT_QUOTES, 'UTF-8', false); ?><br />
+			Line: <?php echo htmlspecialchars((string)$error['line'], ENT_QUOTES, 'UTF-8', false); ?><br />
+			Function: <?php echo htmlspecialchars($error['function'], ENT_QUOTES, 'UTF-8', false); ?>
 			</p>
 		<?php endif ?>
 

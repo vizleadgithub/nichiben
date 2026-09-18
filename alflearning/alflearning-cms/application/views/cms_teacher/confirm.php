@@ -63,21 +63,21 @@
 						}
 					?>
 				</h2>
-			<!--<h2><?= $this->lang->line_or_def('msg_search','検索する内容を入力してください') ?> <?= htmlspecialchars( $teacher['update_flg'], ENT_QUOTES, 'UTF-8') ?></h2>-->
+			<!--<h2><?= $this->lang->line_or_def('msg_search','検索する内容を入力してください') ?> <?= htmlspecialchars( $teacher['update_flg'], ENT_QUOTES, 'UTF-8', false) ?></h2>-->
 
 				<?=form_open("cms_teacher/commit")?>
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_name','名前') ?></th>
 							<td>
-								<?= htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 							<th>
 								<?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?>
 							</th>
 							<td>
-								<?= htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8') ?>
+								<?= htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8', false) ?>
 								<?php
 								if(isset($teacher['lock']) && $teacher['lock']==1){
 									print('<span style="color:red;">アカウントロック中</span>');
@@ -109,9 +109,9 @@
 									<?php if( isset($mtb_bar_association[ $teacher['bar_association_id'] ]) ): ?>
 										<?= '';//$mtb_bar_association[$teacher['bar_association_id']]; ?>
 										<? if($teacher['bar_association_id']==1): ?>
-											<?= htmlspecialchars( $mtb_bar_association[$teacher['bar_association_id']], ENT_QUOTES, 'UTF-8')."（管理者）"; ?>
+											<?= htmlspecialchars( $mtb_bar_association[$teacher['bar_association_id']], ENT_QUOTES, 'UTF-8', false)."（管理者）"; ?>
 										<? else: ?>
-											<?= htmlspecialchars( $mtb_bar_association[$teacher['bar_association_id']], ENT_QUOTES, 'UTF-8').""; ?>
+											<?= htmlspecialchars( $mtb_bar_association[$teacher['bar_association_id']], ENT_QUOTES, 'UTF-8', false).""; ?>
 										<? endif; ?>
 									<?php else: ?>
 										<?= ''; ?>
@@ -125,7 +125,7 @@
 						
 						<tr>
 							<th><?= $this->lang->line_or_def('common_note','備考') ?></th>
-							<td style="word-break: break-all;"><?=nl2br( htmlspecialchars( $teacher['teacher_note'] ?? "", ENT_QUOTES, 'UTF-8')  ); ?></td>
+							<td style="word-break: break-all;"><?=nl2br( htmlspecialchars( $teacher['teacher_note'] ?? "", ENT_QUOTES, 'UTF-8', false)  ); ?></td>
 						</tr>
 					<!--
 						<tr>

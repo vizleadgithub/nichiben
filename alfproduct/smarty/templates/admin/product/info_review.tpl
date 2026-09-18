@@ -24,7 +24,7 @@ function exam2Button(formAct){
 <input type="hidden" name="mid" id="mid" value="<!--{$mid|escape}-->" />
 <input type="hidden" name="act" id="act" value="" />
 <!--{foreach from=$arr_input item=item key=key}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|escape}-->" />
+<input type="hidden" name="<!--{$key|escape}-->" value="<!--{$item|escape}-->" />
 <!--{/foreach}-->
 <!--{foreach from=$arr_term_id item=item}-->
 <input type="hidden" name="arr_term_id[]" value="<!--{$item|escape}-->" />
@@ -40,10 +40,10 @@ function exam2Button(formAct){
 	<!--{assign var=disp_warning_word_key value="disp_warning_word"|cat:$smarty.section.disp_warning_word_loop.index}-->
 	<!--{if $arr_input.$disp_warning_word_key!=''}-->
 		<!--{foreach from=$arr_input.$disp_warning_word_key item=item}-->
-		<input type="hidden" name="<!--{$disp_warning_word_key}-->[]" value="<!--{$item|escape}-->" />
+		<input type="hidden" name="<!--{$disp_warning_word_key|escape}-->[]" value="<!--{$item|escape}-->" />
 		<!--{/foreach}-->
 	<!--{else}-->
-		<input type="hidden" name="<!--{$disp_warning_word_key}-->[]" value="" />
+		<input type="hidden" name="<!--{$disp_warning_word_key|escape}-->[]" value="" />
 	<!--{/if}-->
 <!--{/section}-->
 
@@ -400,7 +400,7 @@ function exam2Button(formAct){
 				未設定
 			<!--{else}-->
 				<!--{foreach from=$exam_list item=exam}-->
-					<!--{if $arr_input.$exam_id_test_key==$exam.exam_id}--><!--{$exam.exam_name}--><!--{/if}-->
+					<!--{if $arr_input.$exam_id_test_key==$exam.exam_id}--><!--{$exam.exam_name|escape}--><!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -413,7 +413,7 @@ function exam2Button(formAct){
 				未設定
 			<!--{else}-->
 				<!--{foreach from=$exam_list item=exam}-->
-					<!--{if $arr_input.$exam_id_question_key==$exam.exam_id}--><!--{$exam.exam_name}--><!--{/if}-->
+					<!--{if $arr_input.$exam_id_question_key==$exam.exam_id}--><!--{$exam.exam_name|escape}--><!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -426,7 +426,7 @@ function exam2Button(formAct){
 				未設定
 			<!--{else}-->
 				<!--{foreach from=$btn_type_list item=btn_type_name key=btn_type_id}-->
-					<!--{if $arr_input.$btn_type_key==$btn_type_id}--><!--{$btn_type_name}--><!--{/if}-->
+					<!--{if $arr_input.$btn_type_key==$btn_type_id}--><!--{$btn_type_name|escape}--><!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -522,7 +522,7 @@ function exam2Button(formAct){
 				未設定
 			<!--{else}-->
 				<!--{foreach from=$exam2_list item=exam2}-->
-					<!--{if $arr_input.exam2_id==$exam2.exam2_id}--><!--{$exam2.exam2_name}--><!--{/if}-->
+					<!--{if $arr_input.exam2_id==$exam2.exam2_id}--><!--{$exam2.exam2_name|escape}--><!--{/if}-->
 				<!--{/foreach}-->
 			<!--{/if}-->
 		</td>
@@ -532,7 +532,7 @@ function exam2Button(formAct){
 		<tr>
 			<th style="vertical-align:middle;"></th>
 			<td>
-				<a href="javascript:void(0);" onclick="exam2Button('/cms_exam2/exam2_set_list?product_id=<!--{$mid}-->&exam2_id=<!--{$arr_input.exam2_id}-->');">アンケートのレビュー表示</a>
+				<a href="javascript:void(0);" onclick="exam2Button('/cms_exam2/exam2_set_list?product_id=<!--{$mid|urlencode}-->&exam2_id=<!--{$arr_input.exam2_id|urlencode}-->');">アンケートのレビュー表示</a>
 			</td>
 		</tr>
 	<!--{/if}-->

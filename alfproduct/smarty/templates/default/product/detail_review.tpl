@@ -3376,7 +3376,7 @@ a.test_btn_none{
 	<hr>
 	<!--{foreach from=$arr_exam2 key='exam2_i' item='exam2_row'}-->
 		<div>
-			<!--{$exam2_row|nl2br}-->
+			<!--{$exam2_row|escape|nl2br}-->
 		</div>
 		<hr>
 	<!--{/foreach}-->

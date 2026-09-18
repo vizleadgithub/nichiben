@@ -11,7 +11,7 @@
 	<table class="form">
 		<tr>
 			<th colspan="2">
-			研修内容 <a href="csv.php?type=info&pid=<!--{$pid}-->">CSV取得</a>
+			研修内容 <a href="csv.php?type=info&pid=<!--{$pid|urlencode}-->">CSV取得</a>
 			</th>
 		</tr>
 		<tr>
@@ -55,7 +55,7 @@
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.entry_number|number_format}-->(<!--{$row.entry_number_passport|number_format}-->)</td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.attend_number|number_format}-->(<!--{$row.attend_number_passport|number_format}-->)</td></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.number_percent|number_format}-->%</td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{if $row.kanri_flg}--><a href="info_user.php?pid=<!--{$pid}-->&aid=<!--{$row.bar_association_branch_id}-->">管理</a><!--{/if}--></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{if $row.kanri_flg}--><a href="info_user.php?pid=<!--{$pid|urlencode}-->&aid=<!--{$row.bar_association_branch_id|urlencode}-->">管理</a><!--{/if}--></td>
 	</tr>
 	<!--{/foreach}-->
 	<tr>

@@ -28,7 +28,7 @@
 				<br />
 				<br />
 				<center>
-					<?= htmlspecialchars( $error_message, ENT_QUOTES, 'UTF-8') ?>
+					<?= htmlspecialchars( $error_message, ENT_QUOTES, 'UTF-8', false) ?>
 				</center>
 				<br />
 				<br />

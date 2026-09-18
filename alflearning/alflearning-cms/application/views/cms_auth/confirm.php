@@ -63,18 +63,18 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_name','名前') ?></th>
 							<td>
-								<?=  htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
+								<?=  htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 							<th><?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?></th>
 							<td>
-								<?=  htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8') ?>
+								<?=  htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_practice_authority','実行権限') ?></th>
 							<td class="auth_list">
-								<?= '<div>'.implode('</div><div>', array_map(function($v){ return htmlspecialchars($v, ENT_QUOTES, 'UTF-8'); }, $teacher['authnames'])).'</div>'; ?>
+								<?= '<div>'.implode('</div><div>', array_map(function($v){ return htmlspecialchars($v, ENT_QUOTES, 'UTF-8', false); }, $teacher['authnames'])).'</div>'; ?>
 							</td>
 						</tr>
 					</table>

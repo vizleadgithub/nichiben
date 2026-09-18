@@ -518,22 +518,22 @@ class Cms_exam_problem extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'                           , $this->lang->line_or_def('common_flg','flg')                              , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('exam_problem_id'                      , $this->lang->line_or_def('common_id','ID')                                , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('exam_problem_name'                    , $this->lang->line_or_def('common_exam_problem_name','設問名')             , 'trim|xss_clean|required');
+		$this->form_validation->set_rules('exam_problem_name'                    , $this->lang->line_or_def('common_exam_problem_name','設問名')             , 'trim|required');
 		$this->form_validation->set_rules('teacher_id'                           , $this->lang->line_or_def('common_management_teacher','管理講師')          , 'required');
 		$this->form_validation->set_rules('exam_problem_lectures[]'                , $this->lang->line_or_def('common_position_course','所属講座')             , 'callback_check_required_checkbox');
 		$this->form_validation->set_rules('problem_kind'                         , $this->lang->line_or_def('common_problem_kind','設問種類')                , 'trim|xss_clean|numeric|required');
-		$this->form_validation->set_rules('problem_contents_text'                , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim|xss_clean');  // テキスト
-		$this->form_validation->set_rules('problem_contents_video'               , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim|xss_clean');  // ビデオID
-		$this->form_validation->set_rules('problem_contents_book_library'        , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim|xss_clean');  // 図書室ID
-		$this->form_validation->set_rules('problem_note'                         , $this->lang->line_or_def('common_problem_note','設問備考')                , 'trim|xss_clean');
+		$this->form_validation->set_rules('problem_contents_text'                , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // テキスト
+		$this->form_validation->set_rules('problem_contents_video'               , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // ビデオID
+		$this->form_validation->set_rules('problem_contents_book_library'        , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // 図書室ID
+		$this->form_validation->set_rules('problem_note'                         , $this->lang->line_or_def('common_problem_note','設問備考')                , 'trim');
 		$this->form_validation->set_rules('answer_kind'                          , $this->lang->line_or_def('common_answer_kind','解答種類')                 , 'trim|xss_clean|numeric|required');
-		$this->form_validation->set_rules('answer_contents_text'                 , $this->lang->line_or_def('common_answer_contents','解答内容')             , 'trim|xss_clean');  // テキスト
+		$this->form_validation->set_rules('answer_contents_text'                 , $this->lang->line_or_def('common_answer_contents','解答内容')             , 'trim');  // テキスト
 		$this->form_validation->set_rules('answer_point'                         , $this->lang->line_or_def('common_exam_answer_points','解答配点')          , 'trim|xss_clean|is_natural');
 		$this->form_validation->set_rules('answer_explain_kind'                  , $this->lang->line_or_def('common_answer_explain_kind','解答解説種類')     , 'trim|xss_clean|numeric|required');
-		$this->form_validation->set_rules('answer_explain_contents_text'         , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim|xss_clean'); // テキスト
-		$this->form_validation->set_rules('answer_explain_contents_video'        , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim|xss_clean'); // ビデオID
-		$this->form_validation->set_rules('answer_explain_contents_book_library' , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim|xss_clean'); // 図書室ID
-		$this->form_validation->set_rules('answer_explain_note'                  , $this->lang->line_or_def('common_answer_explain_note','解答解説備考')     , 'trim|xss_clean');
+		$this->form_validation->set_rules('answer_explain_contents_text'         , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // テキスト
+		$this->form_validation->set_rules('answer_explain_contents_video'        , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // ビデオID
+		$this->form_validation->set_rules('answer_explain_contents_book_library' , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // 図書室ID
+		$this->form_validation->set_rules('answer_explain_note'                  , $this->lang->line_or_def('common_answer_explain_note','解答解説備考')     , 'trim');
 		
 		// 配列型の所属講座の値をチェック
 		$this->load->helper('string_inspection_helper');

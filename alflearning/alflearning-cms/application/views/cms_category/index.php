@@ -55,7 +55,7 @@
 						<?php if(isset($category_list)) { ?>
 							<?php foreach($category_list as $index=>$category) { ?>
 								<tr class="">
-									<td><a href="/cms_category/detail/<?= htmlspecialchars( $category['term_id'], ENT_QUOTES, 'UTF-8')  ?>/"><?= htmlspecialchars( $category['term_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><a href="/cms_category/detail/<?= htmlspecialchars( $category['term_id'], ENT_QUOTES, 'UTF-8', false)  ?>/"><?= htmlspecialchars( $category['term_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td><?= htmlspecialchars( $category['name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								</tr>
 							<?php } ?>

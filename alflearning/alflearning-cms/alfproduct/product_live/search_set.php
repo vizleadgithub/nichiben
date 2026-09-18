@@ -169,12 +169,12 @@ function serchSet(id, name, comment, hid_id_name, spa_id_name, hid_name_name, hi
 		<?php if (isset($_GET['comment'])){ ?>
 		window.opener.document.getElementById(hid_coment_name).value = utf.URLdecode(comment);
 		<?php } else { ?>
-		window.opener.document.getElementById(spa_id_name).innerHTML = utf.URLdecode(name);
+		window.opener.document.getElementById(spa_id_name).textContent = utf.URLdecode(name);
 		<?php } ?>
 		window.close();
 	}
 }
-window.onload = serchSet(<?php echo json_encode($id).", ".json_encode($name).", ".json_encode($comment).", ".json_encode($hid_id_name).", ".json_encode($spa_id_name).", ".json_encode($hid_name_name).", ".json_encode($hid_comment_name); ?>);
+window.onload = serchSet(<?php echo json_encode($id, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).", ".json_encode($name, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).", ".json_encode($comment, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).", ".json_encode($hid_id_name, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).", ".json_encode($spa_id_name, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).", ".json_encode($hid_name_name, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT).", ".json_encode($hid_comment_name, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>);
 </script>
 </body>
 </html>

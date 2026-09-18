@@ -62,7 +62,7 @@ TEXTAREA{
 				</div>
 				
 				<?=form_open("cms_class_material/class_material_upload_exec_quick", array('enctype'=>"multipart/form-data"))?>
-					<input type="hidden" name="class_id" value='<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>'>
+					<input type="hidden" name="class_id" value='<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8', false) ?>'>
 					<input type="hidden" name="list_count" value=4>
 					<table class="list">
 						<tr>
@@ -71,10 +71,10 @@ TEXTAREA{
 						</tr>
 						<?php for($loop_count=0; $loop_count <= 4; $loop_count++): ?>
 						<tr>
-							<td><input type="text" name="material_logic_name_<?= htmlspecialchars( $loop_count, ENT_QUOTES, 'UTF-8') ?>" maxlength="50" value="" style="width:90%"></td>
+							<td><input type="text" name="material_logic_name_<?= htmlspecialchars( $loop_count, ENT_QUOTES, 'UTF-8', false) ?>" maxlength="50" value="" style="width:90%"></td>
 							<td>
-								ファイル選択(必須)：<input type="file" name="local_file_<?= htmlspecialchars( $loop_count, ENT_QUOTES, 'UTF-8') ?>" value=""><br />
-								説明：<textarea name="material_caption_<?= htmlspecialchars( $loop_count, ENT_QUOTES, 'UTF-8') ?>" ></textarea>
+								ファイル選択(必須)：<input type="file" name="local_file_<?= htmlspecialchars( $loop_count, ENT_QUOTES, 'UTF-8', false) ?>" value=""><br />
+								説明：<textarea name="material_caption_<?= htmlspecialchars( $loop_count, ENT_QUOTES, 'UTF-8', false) ?>" ></textarea>
 							</td>
 						</tr>
 						<?php endfor ?>
