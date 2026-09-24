@@ -38,7 +38,7 @@
 					<!--{if $reference!=''}-->
 						<!--
 						<div style="width:100%;padding-top:10px;">
-							<!--{$reference|escape}-->
+							<!--{$reference|purify_ethic_html}-->
 						</div>
 						-->
 					<!--{/if}-->
