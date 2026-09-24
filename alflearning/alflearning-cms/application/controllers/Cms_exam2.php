@@ -1754,7 +1754,7 @@ class Cms_exam2 extends CI_Controller {
 			// 該当ありの場合
 			
 			// 設問名の取得
-			$exam2_problem_name = '[No'.$db_data['exam2_problem_id'].'] '.$db_data['exam2_problem_name'];
+			$exam2_problem_name = '[No'.$db_data['exam2_problem_id'].'] '.htmlspecialchars($db_data['exam2_problem_name'], ENT_QUOTES, 'UTF-8', false);
 			
 			// 設問内容の取得 ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 			$problem_contents_title = $this->lang->line_or_def('common_exam2_problem','設問');
@@ -1771,7 +1771,7 @@ class Cms_exam2 extends CI_Controller {
 
 				$this->load->model('model_video');
 				$video_data = $this->model_video->get_material(array('video_id' => $db_data['problem_contents']));
-				$problem_contents_value .= '<span id="popup_thumbnail_name">'.'[No'.$video_data['video_id'].'] '.$video_data['video_logic_name'].'</span>';
+				$problem_contents_value .= '<span id="popup_thumbnail_name">'.'[No'.$video_data['video_id'].'] '.htmlspecialchars($video_data['video_logic_name'], ENT_QUOTES, 'UTF-8', false).'</span>';
 			}elseif($db_data['problem_kind'] == 3){
 				// 3:図書室
 				$problem_contents_title .= '<br/>['.$this->lang->line_or_def('common_book_library', '図書室').']';
@@ -1781,12 +1781,12 @@ class Cms_exam2 extends CI_Controller {
 				
 				$this->load->model('model_book_library');
 				$book_library_data = $this->model_book_library->get_data(array('book_library_id' => $db_data['problem_contents']));
-				$problem_contents_value .= '<span id="popup_thumbnail_name">'.'[No'.$book_library_data['book_library_id'].'] '.$book_library_data['book_library_logic_name'].'</span>';
+				$problem_contents_value .= '<span id="popup_thumbnail_name">'.'[No'.$book_library_data['book_library_id'].'] '.htmlspecialchars($book_library_data['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false).'</span>';
 			}else{
 				// 1:テキスト
 				$problem_contents_title .= '<br/>['.$this->lang->line_or_def('common_text', 'テキスト').']';
 				
-				$problem_contents_value = nl2br($db_data['problem_contents']);
+				$problem_contents_value = nl2br( htmlspecialchars($db_data['problem_contents'], ENT_QUOTES, 'UTF-8', false) );
 			}
 			
 			// 解答内容の取得 ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -1817,14 +1817,14 @@ class Cms_exam2 extends CI_Controller {
 					}else{
 						$problem_answer_value .= '['.$this->lang->line_or_def('common_correct', '正').'] ';
 					}
-					$problem_answer_value .= nl2br($value_word);
+					$problem_answer_value .= nl2br( htmlspecialchars($value_word, ENT_QUOTES, 'UTF-8', false) );
 				}
 			}else{
 				// 3:フリー解答
 				$problem_answer_title .= '<br/>['.$this->lang->line_or_def('common_free_exam2_answer', 'フリー解答').']';
 				
 				$line_contents        = (array)$array_answer_contents['answer_contents'][0];
-				$problem_answer_value = nl2br($line_contents['word']);
+				$problem_answer_value = nl2br( htmlspecialchars($line_contents['word'], ENT_QUOTES, 'UTF-8', false) );
 				if( empty($problem_answer_value) ){
 					$problem_answer_value = "　";
 				}

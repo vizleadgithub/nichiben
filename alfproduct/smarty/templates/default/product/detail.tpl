@@ -2804,7 +2804,7 @@ a.test_btn_none{
 		<!--{/if}-->
 		<!--{if $product_list.contents != ''}-->
 			■備考<br />
-			<!--{$product_list.contents|nl2br}-->
+			<!--{$product_list.contents|escape|nl2br}-->
 		<!--{/if}-->
 	</div>
 	
@@ -2836,7 +2836,7 @@ a.test_btn_none{
 					<th style="color:#663333;padding: 3px 10px;text-align:left;width:30px;">受付</th><td style="padding: 3px 10px;"><!--{$bar_association_branch_info.receptionist_start_date|escape}-->～<!--{$bar_association_branch_info.receptionist_end_date|escape}--></ td>
 					</tr>
 					<tr style=" border: 2px #FFFFFF solid;">
-					<th style="color:#663333;padding: 3px 10px;text-align:left;width:60px;">備考</th><td colspan="3" style="padding: 3px 10px;"><!--{$bar_association_branch_info.contents|nl2br}--></td>
+					<th style="color:#663333;padding: 3px 10px;text-align:left;width:60px;">備考</th><td colspan="3" style="padding: 3px 10px;"><!--{$bar_association_branch_info.contents|escape|nl2br}--></td>
 					</tr>
 					</table>
 				</div>

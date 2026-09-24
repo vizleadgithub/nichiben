@@ -182,6 +182,9 @@ if (!$product_list){
 // -----
 $product_list['memo_old'] = $product_list['memo'];
 $product_list['memo'] = purify_memo(url2link($product_list['memo']));
+$product_list['free_html_area1'] = purify_memo((string)$product_list['free_html_area1']);
+$product_list['free_html_area2'] = purify_memo((string)$product_list['free_html_area2']);
+$product_list['free_html_area3'] = purify_memo((string)$product_list['free_html_area3']);
 for($i=1; $i<=MAX_CONTENTS; $i++){
 	$product_list["contents_contents".$i."_memo"] = $product_list["contents_contents".$i."_memo"];
 }

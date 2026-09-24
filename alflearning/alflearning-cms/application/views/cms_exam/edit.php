@@ -714,10 +714,11 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 								if(response){
 									// 取得したデータを行に入れる
 									for (var keyString in response) {
+										var $group_link = $('<a href="#"></a>').text(keyString).on('click', (function(idList){
+											return function(){ select_exam_problem_group(idList); return false; };
+										})(response[keyString]));
 										$("#exam_problem_group_list").append(
-											$('<div>').append(
-												$('<a href="#" onclick="select_exam_problem_group('+"'"+response[keyString]+"'"+');return false;">'+keyString+'</a>')
-											)
+											$('<div>').append($group_link)
 										);
 									}
 									$("#exam_problem_group_list").css('display','block');
@@ -806,11 +807,16 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 										}
 
 										count = count+1;
+										var $group_link = $('<a href="#"></a>')
+											.addClass(check_css)
+											.attr('id', 'sg'+count)
+											.text(keyString)
+											.on('click', (function(idList, idname){
+												return function(){ select_student_group(idList, idname); return false; };
+											})(response[keyString], 'sg'+count));
+										var $group_hidden = $('<input type="hidden">').attr('id', 'hsg'+count).val(response[keyString]);
 										$("#student_group_list").append(
-											$('<div>').append(
-											//  $('<a href="#" onclick="select_student_group('+"'"+response[keyString]+"'"+');return false;">'+keyString+'</a>')
-											$('<a href="#" class="'+check_css+'" id="sg'+count+'" onclick="select_student_group('+"'"+response[keyString]+"','"+'sg'+count+"'"+');return false;">'+keyString+'</a>'+'<input type="hidden" id="hsg'+count+'" value="'+response[keyString]+'" />')
-											)
+											$('<div>').append($group_link).append($group_hidden)
 										);
 									}
 									$("#student_group_list").css('display','block');

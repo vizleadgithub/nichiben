@@ -234,10 +234,11 @@
 								if(response){
 									// 取得したデータを行に入れる
 									for (var keyString in response) {
+										var $group_link = $('<a href="#"></a>').text(keyString).on('click', (function(idList){
+											return function(){ select_student_group(idList); return false; };
+										})(response[keyString]));
 										$("#student_group_list").append(
-											$('<div>').append(
-												$('<a href="#" onclick="select_student_group('+"'"+response[keyString]+"'"+');return false;">'+keyString+'</a>')
-											)
+											$('<div>').append($group_link)
 										);
 									}
 									$("#student_group_list").css('display','block');
