@@ -61,7 +61,7 @@
 											if($temp_bar_association_name == ''){
 												print ' ';
 											}else{
-												print '【'.$temp_bar_association_name.'】';
+												print '【'.htmlspecialchars( $temp_bar_association_name, ENT_QUOTES, 'UTF-8', false).'】';
 											}
 										}else{
 											print ' ';

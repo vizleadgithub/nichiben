@@ -168,7 +168,7 @@
 								<td class="tdc">
 									<?
 										// [商品名]
-										print $db_record['product_name'];
+										print htmlspecialchars( $db_record['product_name'], ENT_QUOTES, 'UTF-8', false);
 									?>
 								</td>
 								<td class="tdc">

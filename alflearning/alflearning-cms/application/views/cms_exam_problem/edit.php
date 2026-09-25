@@ -286,13 +286,16 @@
 					$("*[name='answer_explain_contents_book_library']").append('<option selected="selected" value="-1"><?= $this->lang->line_or_def('msg_exclusive_tag_book_library_select','図書室を選択してください') ?></option>');
 
 					if(response){
-						// 取得したデータを行に入れる
+						// 取得したデータを行に入れる（DOM操作は最後にまとめて1回で反映し、負荷を抑える）
+						var options1 = [];
+						var options2 = [];
 						for (var i=0; i< response.length; i++) {
-							$("*[name='problem_contents_book_library']").append(
-								'<option value='+response[i]['book_library_id']+'>'+'[No'+response[i]['book_library_id']+'] '+response[i]['book_library_logic_name']+'</option>');
-							$("*[name='answer_explain_contents_book_library']").append(
-								'<option value='+response[i]['book_library_id']+'>'+'[No'+response[i]['book_library_id']+'] '+response[i]['book_library_logic_name']+'</option>');
+							var $option_text = '[No'+response[i]['book_library_id']+'] '+response[i]['book_library_logic_name'];
+							options1.push($('<option>').val(response[i]['book_library_id']).text($option_text)[0]);
+							options2.push($('<option>').val(response[i]['book_library_id']).text($option_text)[0]);
 						}
+						$("*[name='problem_contents_book_library']").append(options1);
+						$("*[name='answer_explain_contents_book_library']").append(options2);
 					}
 				}
 			});
@@ -321,13 +324,16 @@
 					$("*[name='answer_explain_contents_video']").append('<option selected="selected" value="-1"><?= $this->lang->line_or_def('msg_exam_problem_video_select','ビデオを選択してください') ?></option>');
 
 					if(response){
-						// 取得したデータを行に入れる
+						// 取得したデータを行に入れる（DOM操作は最後にまとめて1回で反映し、負荷を抑える）
+						var options1 = [];
+						var options2 = [];
 						for (var i=0; i< response.length; i++) {
-							$("*[name='problem_contents_video']").append(
-								'<option value='+response[i]['video_id']+'>'+'[No'+response[i]['video_id']+'] '+response[i]['video_logic_name']+'</option>');
-							$("*[name='answer_explain_contents_video']").append(
-								'<option value='+response[i]['video_id']+'>'+'[No'+response[i]['video_id']+'] '+response[i]['video_logic_name']+'</option>');
+							var $option_text = '[No'+response[i]['video_id']+'] '+response[i]['video_logic_name'];
+							options1.push($('<option>').val(response[i]['video_id']).text($option_text)[0]);
+							options2.push($('<option>').val(response[i]['video_id']).text($option_text)[0]);
 						}
+						$("*[name='problem_contents_video']").append(options1);
+						$("*[name='answer_explain_contents_video']").append(options2);
 					}
 				}
 			});

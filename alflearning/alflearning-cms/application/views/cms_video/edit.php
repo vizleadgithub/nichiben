@@ -341,11 +341,12 @@
 					$("*[name='exclusive_book_library[]']").append('<option selected="selected" value="-1">----</option>');
 
 					if(response){
-						// 取得したデータを行に入れる
+						// 取得したデータを行に入れる（DOM操作は最後にまとめて1回で反映し、負荷を抑える）
+						var options = [];
 						for (var i=0; i< response.length; i++) {
-							$("*[name='exclusive_book_library[]']").append(
-								'<option value='+response[i]['book_library_id']+'>'+response[i]['book_library_logic_name']+'</option>');
+							options.push($('<option>').val(response[i]['book_library_id']).text(response[i]['book_library_logic_name'])[0]);
 						}
+						$("*[name='exclusive_book_library[]']").append(options);
 					}
 
 					// ページ数の初期化

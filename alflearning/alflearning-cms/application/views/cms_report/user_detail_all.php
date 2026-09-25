@@ -252,7 +252,7 @@
 								<td class="tdc">
 									<?
 										// [講座名（商品名）]
-										print $db_record['product_name'];
+										print htmlspecialchars( $db_record['product_name'], ENT_QUOTES, 'UTF-8', false);
 									?>
 									<br/>
 									<?
@@ -291,7 +291,7 @@
 											//if($db_record['bar_association_branch_name']){
 											//	print $db_record['bar_association_branch_name'];
 											if($db_record['bar_association_name']){
-												print $db_record['bar_association_name'];
+												print htmlspecialchars( $db_record['bar_association_name'], ENT_QUOTES, 'UTF-8', false);
 											}else{
 												print '－';
 											}

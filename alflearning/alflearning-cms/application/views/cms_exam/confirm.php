@@ -307,8 +307,10 @@
 									$('<li class="confirm_ul_li_line_dotted" id="'+answer_index+'">').append(
 										 '<input type="hidden" name="exam_answer_id[]" value='+response[i]['exam_answer_id']+' />'
 										 +'<div class="detail_title">'+answer_kind+'</div>'
-										 +'<div class="detail_values">'+response[i]['exam_answer_contents']+'</div>'
-										 +'<div class="detail_answer">'
+									).append(
+										 $('<div class="detail_values">').text(response[i]['exam_answer_contents'])
+									).append(
+										 '<div class="detail_answer">'
 										   +'<div class="exam_answer_mark">'
 										     +'<select name="exam_answer_mark[]" onChange="change_exam_answer_mark('+"'"+answer_index+"'"+');return false;">'
 										       +'<option '+answer_mark_non_correct+' value="0">'+"<?= $this->lang->line_or_def('common_non_correct_answer', '不正解') ?>"+'</option>'

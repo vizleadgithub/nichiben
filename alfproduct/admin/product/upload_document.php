@@ -145,7 +145,7 @@ if($err_msg != ''){
 <form name="form1" action="add.php" method="post">
 <input type="hidden" name="act" value="upload" />
 <?php foreach($arr_input as $key => $val){ ?>
-	<input type="hidden" name="<?php echo $key; ?>" value="<?php echo $val; ?>" />
+	<input type="hidden" name="<?php echo $key; ?>" value="<?php echo is_scalar($val) ? htmlspecialchars($val, ENT_QUOTES, 'UTF-8', false) : ''; ?>" />
 <?php } ?>
 <?php foreach($arr_input["arr_term_id"] as $val){ ?>
 <input type="hidden" name="arr_term_id[]" value="<?php echo $val; ?>" />

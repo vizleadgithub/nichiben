@@ -66,7 +66,7 @@
 			<div id="contents_main">
 				<h2><?= $this->lang->line_or_def('msg_outside_corporation_caption_elm','eLearning Managerの設定が可能です（要eLearning Manager契約）') ?></h2>
 				<? if($error==1){ print '<div class="error">'.$this->lang->line_or_def('error_apiurl_not_url_form','Api URLがURL形式ではありません').'</div>'; } ?>
-				<? if($error==2){ print '<div class="error">'.$error_msg.'</div>'; } ?>
+				<? if($error==2){ print '<div class="error">'.htmlspecialchars( $error_msg, ENT_QUOTES, 'UTF-8', false).'</div>'; } ?>
 				<? if($error==3){ print '<div class="error">'.$this->lang->line_or_def('error_apiurl_overlap','Api URLが他学校と同一のため登録できません').'</div>'; } ?>
 			
 				<?=form_open_multipart("/admin_top/outside_elearningmanager/")?>

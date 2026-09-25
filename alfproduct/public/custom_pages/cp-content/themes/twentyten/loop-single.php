@@ -74,7 +74,7 @@ if ($cate_flg == 1){
 						<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
 					</div>
 					<div class="entry-content" style="padding:5px 20px; width:680px;">
-						<?php the_content(); ?>
+						<?php echo nl2br(htmlspecialchars(get_the_content(), ENT_QUOTES, 'UTF-8', false)); ?>
 						<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 						<?php if ($post->product_id != 0){ ?>
 							<div style="text-align:right;padding-bottom:10px;">
@@ -91,7 +91,7 @@ if ($cate_flg == 1){
 					</div>
 
 					<div class="entry-content" style="padding:5px 20px; width:680px;">
-						<?php the_content(); ?>
+						<?php echo nl2br(htmlspecialchars(get_the_content(), ENT_QUOTES, 'UTF-8', false)); ?>
 						<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 						<?php if ($post->product_id > 0){ ?>
 							<div style="text-align:right;padding-bottom:10px;">
@@ -139,7 +139,7 @@ if ($cate_flg == 1){
 					<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
 				</div>
 				<div class="entry-content" style="padding:5px 20px; width:680px;">
-					<?php the_content(); ?>
+					<?php echo nl2br(htmlspecialchars(get_the_content(), ENT_QUOTES, 'UTF-8', false)); ?>
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 					<?php if ($post->product_id != 0){ ?>
 						<div style="text-align:right;padding-bottom:10px;">

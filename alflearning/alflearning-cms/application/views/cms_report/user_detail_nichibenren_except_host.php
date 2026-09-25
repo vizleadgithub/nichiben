@@ -162,14 +162,14 @@
 								<td class="tdc">
 									<?
 										// [商品名]
-										print $db_record['product_name'];
+										print htmlspecialchars( $db_record['product_name'], ENT_QUOTES, 'UTF-8', false);
 									?>
 								</td>
 								<td class="tdc">
 									<?
 										// [主催弁護士会]
 										if($db_record['bar_association_branch_name']){
-											print $db_record['bar_association_branch_name'];
+											print htmlspecialchars( $db_record['bar_association_branch_name'], ENT_QUOTES, 'UTF-8', false);
 										}else{
 											print '－';
 										}

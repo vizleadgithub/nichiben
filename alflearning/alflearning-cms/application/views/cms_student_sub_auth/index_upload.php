@@ -77,16 +77,14 @@
 					for (let i = 0; i < change_list.length; i++) {
 						record_count++;
 						const tr_class = (record_count % 2 === 0) ? 'line_color' : '';
-						list_tr	= "";
-						list_tr += '<tr class="'+tr_class+'">';
-						list_tr += '<td class="tdc">'+change_list[i].lawyer_number+'</td>';
-						list_tr += '<td class="tdc">'+change_list[i].student_name+'</td>';
-						list_tr += '<td class="tdc">'+change_list[i].student_email+'</td>';
-						list_tr += '<td class="tdc">'+change_list[i].presence_passport+'</td>';
-						list_tr += '<td class="tdc">'+change_list[i].sub_auth_ethic_training+'</td>';
-						list_tr += '<td class="tdc">'+change_list[i].bar_association+'</td>';
-						list_tr += '</tr>';
-						$(".list").append(list_tr);
+						const $tr = $('<tr>').addClass(tr_class);
+						$('<td class="tdc">').text(change_list[i].lawyer_number).appendTo($tr);
+						$('<td class="tdc">').text(change_list[i].student_name).appendTo($tr);
+						$('<td class="tdc">').text(change_list[i].student_email).appendTo($tr);
+						$('<td class="tdc">').text(change_list[i].presence_passport).appendTo($tr);
+						$('<td class="tdc">').text(change_list[i].sub_auth_ethic_training).appendTo($tr);
+						$('<td class="tdc">').text(change_list[i].bar_association).appendTo($tr);
+						$(".list").append($tr);
 					}
 
 					$(".order_by_link").css({ display: 'inline' });
@@ -130,16 +128,14 @@
 						var tr_class = 'line_color';
 					}
 								
-					list_tr  = "";
-					list_tr += '<tr class="'+tr_class+'">';
-					list_tr += '<td class="tdc">'+change_list[i].lawyer_number+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].student_name+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].student_email+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].presence_passport+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].sub_auth_ethic_training+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].bar_association+'</td>';
-					list_tr += '</tr>';
-					$(".list").append(list_tr);
+					const $tr = $('<tr>').addClass(tr_class);
+					$('<td class="tdc">').text(change_list[i].lawyer_number).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].student_name).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].student_email).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].presence_passport).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].sub_auth_ethic_training).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].bar_association).appendTo($tr);
+					$(".list").append($tr);
 				}
 			}else{
 				var max_c = change_list.length - 1;
@@ -153,17 +149,15 @@
 						var tr_class = 'line_color';
 					}
 								
-					list_tr  = "";
-					list_tr += '<tr class="'+tr_class+'">';
-					list_tr += '<td class="tdc">'+change_list[i].lawyer_number+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].student_name+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].student_email+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].presence_passport+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].sub_auth_ethic_training+'</td>';
-					list_tr += '<td class="tdc">'+change_list[i].bar_association+'</td>';
-					list_tr += '</tr>';
+					const $tr = $('<tr>').addClass(tr_class);
+					$('<td class="tdc">').text(change_list[i].lawyer_number).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].student_name).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].student_email).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].presence_passport).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].sub_auth_ethic_training).appendTo($tr);
+					$('<td class="tdc">').text(change_list[i].bar_association).appendTo($tr);
 
-					$(".list").append(list_tr);
+					$(".list").append($tr);
 				}
 			}
 			$(".list").append('<tr><th colspan="7" style="height: 30px;background: none repeat scroll 0 0 #72726E;color: #FEFEFE;"></th></tr>');

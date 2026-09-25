@@ -191,15 +191,17 @@
 						
 						if(response[i]['notice_judge']=='NG'){
 							$("#notification_list_area").append(
-								$('<li id="notification_id_'+response[i]['notification_id']+'" style="color:#FB8282;">').append(
-	'<div class="date_area">'+response[i]['added_at']+'</div><div class="caption_area">'+response[i]['notice_caption']+'</div><div class="link_area"><a class="read_button" onclick="ajax_update_notification('+response[i]['notification_id']+');return false;" href="#"></a></div><div style="clear:both;">'
-								)
+								$('<li id="notification_id_'+response[i]['notification_id']+'" style="color:#FB8282;">')
+									.append($('<div class="date_area">').text(response[i]['added_at']))
+									.append($('<div class="caption_area">').text(response[i]['notice_caption']))
+									.append('<div class="link_area"><a class="read_button" onclick="ajax_update_notification('+response[i]['notification_id']+');return false;" href="#"></a></div><div style="clear:both;">')
 							);
 						}else{
 							$("#notification_list_area").append(
-								$('<li id="notification_id_'+response[i]['notification_id']+'" >').append(
-	'<div class="date_area">'+response[i]['added_at']+'</div><div class="caption_area">'+response[i]['notice_caption']+'</div><div class="link_area"><a class="read_button" onclick="ajax_update_notification('+response[i]['notification_id']+');return false;" href="#"></a></div><div style="clear:both;">'
-								)
+								$('<li id="notification_id_'+response[i]['notification_id']+'" >')
+									.append($('<div class="date_area">').text(response[i]['added_at']))
+									.append($('<div class="caption_area">').text(response[i]['notice_caption']))
+									.append('<div class="link_area"><a class="read_button" onclick="ajax_update_notification('+response[i]['notification_id']+');return false;" href="#"></a></div><div style="clear:both;">')
 							);
 						}
 					}
