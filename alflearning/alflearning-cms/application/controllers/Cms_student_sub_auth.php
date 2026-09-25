@@ -469,7 +469,7 @@ class Cms_student_sub_auth extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'            , $this->lang->line_or_def('common_flg','flg')                              , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('student_id'            , $this->lang->line_or_def('common_id','ID')                                , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('student_name'          , $this->lang->line_or_def('common_name','名前')                            , 'trim|xss_clean|required|callback_name_check');
+		$this->form_validation->set_rules('student_name'          , $this->lang->line_or_def('common_name','名前')                            , 'trim|required|callback_name_check');
 		$this->form_validation->set_rules('student_email'         , $this->lang->line_or_def('common_mail_address','メールアドレス')          , 'trim|xss_clean|required|valid_email');
 //		$this->form_validation->set_rules('student_password'      , $this->lang->line_or_def('common_password','パスワード')                  , 'trim|xss_clean|required');
 //		$this->form_validation->set_rules('student_password_check', $this->lang->line_or_def('common_password_conf','パスワード（確認入力）') , 'trim|xss_clean|required|matches[student_password]');
@@ -479,7 +479,7 @@ class Cms_student_sub_auth extends CI_Controller {
 		}
 	//	$this->form_validation->set_rules('student_birthday'      , $this->lang->line_or_def('common_date_of_birth','生年月日')               , 'trim|xss_clean|required|callback_date_check');
 		$this->form_validation->set_rules('student_lectures'      , $this->lang->line_or_def('common_attendance_class','受講講座')            , 'required');
-		$this->form_validation->set_rules('student_note'          , $this->lang->line_or_def('common_note','備考')                            , 'trim|xss_clean');
+		$this->form_validation->set_rules('student_note'          , $this->lang->line_or_def('common_note','備考')                            , 'trim');
 		
 		// 法学館対応
 		// パスワード確認変更がある場合の処理（新規登録、変更でパスワード確認変更を行う場合）

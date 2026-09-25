@@ -284,8 +284,8 @@ class Cms_student_group extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'            , $this->lang->line_or_def('common_flg','flg')               , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('student_group_id'      , $this->lang->line_or_def('common_id','ID')                 , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('student_group_name'    , $this->lang->line_or_def('common_group_name','グループ名') , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('student_group_caption' , $this->lang->line_or_def('common_caption','説明')          , 'trim|xss_clean');
+		$this->form_validation->set_rules('student_group_name'    , $this->lang->line_or_def('common_group_name','グループ名') , 'trim|required');
+		$this->form_validation->set_rules('student_group_caption' , $this->lang->line_or_def('common_caption','説明')          , 'trim');
 		$this->form_validation->set_rules('position_students'     , $this->lang->line_or_def('common_student','受講者')        , 'xss_clean');
 		
 		// [Ajax]選択された受講者IDの整形（取得・ID昇順）

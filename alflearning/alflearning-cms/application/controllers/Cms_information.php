@@ -267,8 +267,8 @@ class Cms_information extends CI_Controller {
 		$this->form_validation->set_rules('information_id'      , $this->lang->line_or_def('common_id','ID')                            , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('information_date'    , $this->lang->line_or_def('common_date','日付')                        , 'trim|xss_clean|required|callback_date_check');
 		$this->form_validation->set_rules('information_type'    , $this->lang->line_or_def('common_information_type','種別')            , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('information_title'   , $this->lang->line_or_def('common_title','タイトル')                   , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('information_caption' , $this->lang->line_or_def('common_caption','説明')                     , 'trim|xss_clean');
+		$this->form_validation->set_rules('information_title'   , $this->lang->line_or_def('common_title','タイトル')                   , 'trim|required');
+		$this->form_validation->set_rules('information_caption' , $this->lang->line_or_def('common_caption','説明')                     , 'trim');
 		//$this->form_validation->set_rules('information_url'     , $this->lang->line_or_def('common_url','URL')                          , '');
 		$this->form_validation->set_rules('information_open'    , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim|xss_clean|required|callback_datetime_check');
 		$this->form_validation->set_rules('information_close'   , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim|xss_clean|required|callback_datetime_check|callback_period_check[information_open]');

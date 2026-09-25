@@ -352,9 +352,9 @@ class Cms_material extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'          , $this->lang->line_or_def('common_flg','flg')              , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('material_id'         , $this->lang->line_or_def('common_material_id','資料ID')   , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('material_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|xss_clean|required'); // 論理ファイル名
+		$this->form_validation->set_rules('material_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|required'); // 論理ファイル名
 		$this->form_validation->set_rules('material_lectures[]'   , $this->lang->line_or_def('common_position_course','所属講座')  , 'callback_check_required_checkbox');	//[2012/08/20]
-		$this->form_validation->set_rules('material_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim|xss_clean');
+		$this->form_validation->set_rules('material_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim');
 		$this->form_validation->set_rules('local_file'          , $this->lang->line_or_def('common_file','ファイル')        , 'trim|xss_clean');
 
 		//検証（isset($_FILES['local_file']) により資料更新時にファイルチェックを行わない）

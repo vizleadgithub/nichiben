@@ -603,9 +603,9 @@ class Cms_exam2 extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'    , $this->lang->line_or_def('common_flg','flg')                     , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('exam2_id'       , $this->lang->line_or_def('common_id','ID')                       , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('exam2_name'     , $this->lang->line_or_def('common_exam2_name','問題（テスト）名')  , 'trim|xss_clean|required');
+		$this->form_validation->set_rules('exam2_name'     , $this->lang->line_or_def('common_exam2_name','問題（テスト）名')  , 'trim|required');
 		$this->form_validation->set_rules('exam2_lectures' , $this->lang->line_or_def('common_position_course','所属講座')    , 'required');
-		$this->form_validation->set_rules('exam2_caption'  , $this->lang->line_or_def('common_caption','説明')                , 'trim|xss_clean');
+		$this->form_validation->set_rules('exam2_caption'  , $this->lang->line_or_def('common_caption','説明')                , 'trim');
 		$this->form_validation->set_rules('exam2_open'     , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|xss_clean|required|callback_datetime_check');
 		$this->form_validation->set_rules('exam2_close'    , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|xss_clean|required|callback_datetime_check|callback_period_check[exam2_open]');
 		$this->form_validation->set_rules('public_flag'   , $this->lang->line_or_def('common_indication_status','公開設定')  , 'trim|xss_clean|required');

@@ -322,9 +322,9 @@ class Cms_school_manage extends CI_Controller
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'     , $this->lang->line_or_def('common_flg','flg')                     , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('school_id'      , $this->lang->line_or_def('common_id','ID')                       , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('school_name'    , $this->lang->line_or_def('common_school_name','学校名')          , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('school_caption' , $this->lang->line_or_def('common_caption','説明')                , 'trim|xss_clean');
-		$this->form_validation->set_rules('school_note'    , $this->lang->line_or_def('common_note','備考')                   , 'trim|xss_clean');
+		$this->form_validation->set_rules('school_name'    , $this->lang->line_or_def('common_school_name','学校名')          , 'trim|required');
+		$this->form_validation->set_rules('school_caption' , $this->lang->line_or_def('common_caption','説明')                , 'trim');
+		$this->form_validation->set_rules('school_note'    , $this->lang->line_or_def('common_note','備考')                   , 'trim');
 		$this->form_validation->set_rules('contract'       , $this->lang->line_or_def('common_contract_form','契約形態')      , 'trim|xss_clean|required');
 	//	$this->form_validation->set_rules('contract_param' , $this->lang->line_or_def('common_contract_contents','契約内容')  , 'trim|xss_clean');
 		$this->form_validation->set_rules('live_contract'         , $this->lang->line_or_def('common_class','授業').'-'.$this->lang->line_or_def('common_contract_form','契約形態') , 'trim|xss_clean|required');
@@ -351,7 +351,7 @@ class Cms_school_manage extends CI_Controller
 		
 		// 新規登録のみチェック
 		if($this->input->post('school_id') == 0){
-			$this->form_validation->set_rules('school_admin_name'  , $this->lang->line_or_def('common_teacher_name','講師名')         , 'trim|xss_clean|required|callback_name_check');
+			$this->form_validation->set_rules('school_admin_name'  , $this->lang->line_or_def('common_teacher_name','講師名')         , 'trim|required|callback_name_check');
 			$this->form_validation->set_rules('school_admin_email' , $this->lang->line_or_def('common_mail_address','メールアドレス') , 'trim|xss_clean|required|valid_email');
 		}else{
 		// 更新登録のみチェック

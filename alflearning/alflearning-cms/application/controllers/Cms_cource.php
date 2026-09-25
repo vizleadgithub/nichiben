@@ -373,11 +373,11 @@ class Cms_cource extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('update_flg'      , $this->lang->line_or_def('common_flg','flg')                          , 'trim|numeric|xss_clean');
 		$this->form_validation->set_rules('cource_id'       , $this->lang->line_or_def('common_id','ID')                            , 'trim|numeric|xss_clean');
-		$this->form_validation->set_rules('cource_name'     , $this->lang->line_or_def('common_course_name','講座名')               , 'trim|required|xss_clean');
+		$this->form_validation->set_rules('cource_name'     , $this->lang->line_or_def('common_course_name','講座名')               , 'trim|required');
 		$this->form_validation->set_rules('cource_open'     , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim|required|callback_datetime_check|xss_clean');
 		$this->form_validation->set_rules('cource_close'    , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim|required|callback_datetime_check|callback_period_check[cource_open]|xss_clean');
-		$this->form_validation->set_rules('cource_caption'  , $this->lang->line_or_def('common_caption','説明')                     , 'trim|xss_clean');
-		$this->form_validation->set_rules('cource_note'     , $this->lang->line_or_def('common_note','備考')                        , 'trim|xss_clean');
+		$this->form_validation->set_rules('cource_caption'  , $this->lang->line_or_def('common_caption','説明')                     , 'trim');
+		$this->form_validation->set_rules('cource_note'     , $this->lang->line_or_def('common_note','備考')                        , 'trim');
 		$this->form_validation->set_rules('lecture_students'      , $this->lang->line_or_def('common_student','受講者')             , 'xss_clean');
 		$this->form_validation->set_rules('lecture_materials'     , $this->lang->line_or_def('common_material','資料')              , 'xss_clean');
 		$this->form_validation->set_rules('lecture_book_librarys' , $this->lang->line_or_def('common_book_library','図書室')        , 'xss_clean');
