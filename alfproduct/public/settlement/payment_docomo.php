@@ -93,8 +93,6 @@ if($err_flg==0 ){
 } else {
 ?>
 	決済エラー<br>
-	注文番号：<?php print_r("".$order_id.""); ?><br>
-	購入金額：<?php print_r("".$total.""); ?><br>
 <?php
 }
 ?>

@@ -99,8 +99,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 ?>
 	決済エラー<br>
 	<form name="form_payment" method="post" action="#">
-	注文番号：<?php print_r("".$order_id.""); ?><br>
-	購入金額：<?php print_r("".$total.""); ?><br>
 	<!--氏名:<input type="text" name="user_name" value="<?php print($user_name); ?>"><br>-->
 	<!--E-Mail:<input type="text" name="mail_address" value="<?php print($mail_address); ?>"><br>-->
 	<input type="submit" name="btn_submit" value="Submit">
@@ -109,8 +107,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 } else {
 ?>
 	<form name="form_payment" method="post" action="#">
-	注文番号：<?php print_r("".$order_id.""); ?><br>
-	購入金額：<?php print_r("".$total.""); ?><br>
 	<!--氏名:<input type="text" name="user_name" value=""><br>-->
 	<!--E-Mail:<input type="text" name="mail_address" value=""><br>-->
 	<input type="submit" name="btn_submit" value="Submit">

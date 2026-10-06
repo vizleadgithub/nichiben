@@ -114,8 +114,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 ?>
 	決済エラー<br>
 	<form name="form_payment" method="post" action="#">
-	注文番号：<?php print_r("".$order_id.""); ?><br>
-	購入金額：<?php print_r("".$total.""); ?><br>
 	支払先コンビニ選択：
 	<?php foreach ($arr_conveni_code as $key => $val){
 		$checked = '';
@@ -135,8 +133,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 } else {
 ?>
 	<form name="form_payment" method="post" action="#">
-	注文番号：<?php print_r("".$order_id.""); ?><br>
-	購入金額：<?php print_r("".$total.""); ?><br>
 	支払先コンビニ選択：
 	<?php foreach ($arr_conveni_code as $key => $val){ ?>
 	<label><input type="radio" name="convenience" value="<?php echo $key; ?>" /><?php echo $val; ?></label>

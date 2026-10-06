@@ -97,8 +97,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 ?>
 	決済エラー<br>
 	<form name="form_payment" method="post" action="#">
-	注文番号：<?php print_r("".$order_id.""); ?><br>
-	購入金額：<?php print_r("".$total.""); ?><br>
 	氏名：<input type="text" name="name" value="<?php echo $name; ?>" /><br>
 	フリガナ：<input type="text" name="kana" value="<?php echo $kana; ?>" /><br>
 	電話番号：<input type="text" name="tel" value="<?php echo $tel1; ?>" />&nbsp;-&nbsp;<input type="text" name="tel" value="<?php echo $tel2; ?>" />&nbsp;-&nbsp;<input type="text" name="tel" value="<?php echo $tel3; ?>" /><br>
@@ -109,8 +107,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 } else {
 ?>
 	<form name="form_payment" method="post" action="#">
-	注文番号：<?php print_r("".$order_id.""); ?><br>
-	購入金額：<?php print_r("".$total.""); ?><br>
 	氏名：<input type="text" name="name" /><br>
 	フリガナ：<input type="text" name="kana" /><br>
 	電話番号：<input type="text" name="tel1" />&nbsp;-&nbsp;<input type="text" name="tel2" />&nbsp;-&nbsp;<input type="text" name="tel3" /><br>
