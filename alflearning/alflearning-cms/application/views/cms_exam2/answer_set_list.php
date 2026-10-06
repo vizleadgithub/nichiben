@@ -189,7 +189,6 @@ function update_exam2_answer_problem(exam2_answer_id, update_count){
 	}).fail(function(XMLHttpRequest, textStatus, errorThrown) {
 		alert("解答内容の更新に失敗しました");
 	})
-	console.log(variables);
 }
 function set_answer_list(){
 	// エラーチェック

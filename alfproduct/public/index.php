@@ -2,7 +2,7 @@
 $_SERVER['HTTPS'] = 'on';
 //ini_set('display_errors', 1);
 //error_reporting(E_ALL & ~E_WARNING);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 error_reporting(E_ALL & ~E_WARNING);
 // セッション Cookie のセキュリティ強化
 ini_set("session.cookie_httponly", 1);  // JavaScript からのアクセスを防止

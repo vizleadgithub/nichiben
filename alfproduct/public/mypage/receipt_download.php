@@ -5,11 +5,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include("/srv/alfproduct/module/module.php");
 csrf_token_verify();
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 require '/srv/alfproduct/module/vendor/autoload.php'; // mPDFのautoloadを読み込む
 use Mpdf\Mpdf;
 use Mpdf\Import\PdfReader;

@@ -15,9 +15,9 @@ define('LOGGED_IN_SALT',   'R2M-Lrr@I47V$4tQW1K)Kg#36Qw9M=`j(J)0^&Z$F!hFC&uK?:|=
 define('NONCE_SALT',       'Kav9E@$G;vI`*r-OeZgb-nG)Q+<DcGRy~-m3_y#hw{%8xJLxhr-G+xd^_|Tu<5Xy');
 $table_prefix  = 'wp_';
 define('WPLANG', 'ja');
-define( 'WP_DEBUG', true );
+define( 'WP_DEBUG', false );
 define( 'WP_DEBUG_DISPLAY', false );
-define( 'WP_DEBUG_LOG', true );
+define( 'WP_DEBUG_LOG', false );
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 define('WP_CONTENT_DIR', __DIR__ . '/cp-content');
