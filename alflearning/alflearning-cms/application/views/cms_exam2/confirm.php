@@ -657,21 +657,6 @@
 								<?php endif; ?>
 							</td>
 						</tr>
-<!--
-						<tr>
-							<th><?= $this->lang->line_or_def('common_criteria','判定基準') ?></th>
-							<td >
-								<?= $exam2['criteria_value'] ?>
-								<?php if($exam2['criteria_type'] == 1){ ?>
-									点
-								<?php }elseif($exam2['criteria_type'] == 2){ ?>
-									％
-								<?php }elseif($exam2['criteria_type'] == 3){ ?>
-									数
-								<?php } ?>
-							</td>
-						</tr>
--->
 
 <?php if(false){ ?>
 						<tr>

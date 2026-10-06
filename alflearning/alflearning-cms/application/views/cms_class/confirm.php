@@ -193,9 +193,6 @@
 							</td>
 						</tr>
 					</table>
-<!--
-					<h3><a href="http://<?= $this->config->item('domain_name_master'); ?>/login/set_session/<?= $this->session->userdata('session_id'); ?>/?url=<?= urlencode('http://' . $this->config->item('domain_name_master') . '/live/in/'.$class['class_id'].'/'); ?>"><?= $this->lang->line_or_def('common_begin_class','教室に入る') ?></a></h3>
--->
 					<div class="submit">
 						<?php
 							switch($btn_kirikae_flg){

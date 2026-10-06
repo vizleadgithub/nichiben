@@ -165,7 +165,6 @@
 			
 			success: function(response) {
 				if(response){
-					console.log(response.length);
 					if( response.length>0 ){
 					} else {
 						$("#notification_bottom_area").remove();

@@ -33,11 +33,6 @@
 			</a>
 			<div class="header_top_right">
 				<?php if( $this->libauth->get_teacher_auth() ): ?>
-				<!--
-					<div class="login_teacher_name"><?= $this->libauth->get_teacher_name(); ?>用</div>
-					<div class="login_school_name">[<?= $this->libauth->get_school_name(); ?>]管理ページ</div>
-					<div class="logout"><?='<a href="javascript:void(0);" onclick="logout_confirm(\''.base_url().'\');return false;">ログアウト</a>'?></div>
-				//-->
 
 					<div class="login_teacher_name">
 						<?= htmlspecialchars($this->libauth->get_teacher_name(), ENT_QUOTES, 'UTF-8', false); ?>

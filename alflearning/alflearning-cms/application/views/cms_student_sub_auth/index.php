@@ -267,7 +267,6 @@
 						<?php foreach($student_list as $student) { ?>
 							<?php $line++;?>
 							<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-							<!--<td class="tdc"><a href="/cms_student/detail/<?= $student['student_id'] ?>"><?=$student['lawyer_number']?></td> -->
 								<td class="tdc"><a onclick='edit_item("<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>");return false;' style="text-decoration: underline;"><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8', false) ?></a></td>
 								<td class="tdc"><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								<td class="tdc"><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8', false) ?></td>
@@ -408,7 +407,6 @@ function cource_submenu_popup(status_flag){
 			check_student_id += "-" + $(this).val();
 		}
 	});
-	console.log(check_count);
 
 	// タグ選択画面非表示なら表示
 	if( $("#cource_submenu").css('display')=='none' ){
