@@ -141,9 +141,6 @@
 								</td>
 							</tr>
 							<tr style="font-size:14px;">
-								<!--[page:<!--{$page}-->]-->
-								<!--[list_end:<!--{$list_end}-->]-->
-								<!--[all_count:<!--{$all_count}-->]-->
 								<td style="text-align:center;font-size:14px;">
 									<!--{if !($page == 1 && $smarty.foreach.fav.first) && !($page_max==0 && $smarty.foreach.fav.first)}-->
 										<form name="form_up<!--{$row.product_id|escape}-->" action="favorite.php" method="post">

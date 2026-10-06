@@ -207,7 +207,6 @@
 				<!--{if $row.product_type_add == 1}-->
 					<div style="width:100%;display:inline-block;">
 						<div style="float:left;text-align:left;display:inline-block;width:162px;margin-top:8px;">
-							<!--[<!--{$row.search_point|escape}-->]-->
 							<!--{if $row.css_icon_etcmovie==1}-->
 								<img src="/img/list/list_img003.jpg" alt="その他動画" />
 							<!--{else}-->
@@ -290,7 +289,6 @@
 				<!--{elseif $row.product_type_add == 2}-->
 					<div style="width:100%;display:inline-block;">
 						<div style="float:left;text-align:left;display:inline-block;width:162px;margin-top:8px;">
-							<!--[<!--{$row.search_point|escape}-->]-->
 							<img src="/img/list/list_img001.jpg" alt="会場研修" />
 						</div>
 						<div style="float:left;text-align:left;display:inline-block;width:330px;margin-top:8px;">

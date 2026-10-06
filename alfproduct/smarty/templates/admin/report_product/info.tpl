@@ -107,7 +107,7 @@ function progressExam(pid,sid){
 	<!--{foreach from=$arr_order item="row"}-->
 	<!--{cycle values="0,1" assign="cycle_bg"}-->
 	<tr style="">
-		<td class="tdc" style=""><!--{$row.lawyer_number|escape}--><!--[<!--{$row.student_id|escape}-->]--></td>
+		<td class="tdc" style=""><!--{$row.lawyer_number|escape}--></td>
 		<td class="tdc" style=""><!--{$row.student_name|escape}--><br><!--{$row.student_email|escape}--></td>
 		<td class="tdc" style=""><!--{$row.association_name|escape}--></td>
 		<td class="tdc" style=""><!--{if $row.presence_passport=="1"}-->○<!--{else}-->-<!--{/if}--></td>
@@ -155,7 +155,6 @@ function progressExam(pid,sid){
 		</td>
 		<td class="tdc" style="">
 		<!--{if $arr_product.product_type_add=="1"}-->
-			<!--[<!--{$row.all_end_view_count|escape}-->][<!--{$video_count|escape}-->]-->
 			<!--{if $row.all_end_view_count==$video_count}-->
 				100%
 			<!--{else}-->
@@ -187,7 +186,6 @@ function progressExam(pid,sid){
 				0%
 			<!--{/if}-->
 		<!--{elseif $arr_product.product_type_add=="3"}-->
-			<!--[<!--{$row.status|escape}-->]-->
 			<!--ステータス（0:1次未受講 1:1次受講中 2:1次合格 3:1次不合格 4:2次受講中 5:2次合格 6:不合格 7:レポート 8:会場）-->
 			<!--{if $row.status=="0" || $row.status==""}-->
 				未受講<!--1次未受講-->

@@ -376,13 +376,6 @@
 									?>
 								</td>
 								<td class="tdc">
-									<?php print("<!--[product_type_add:".$db_record['product_type_add']."]-->"); ?>
-									<?php print("<!--[all_training_video_viewed_count:".$db_record['all_training_video_viewed_count']."]-->"); ?>
-									<?php print("<!--[all_training_video_count:".$db_record['all_training_video_count']."]-->"); ?>
-									<?php print("<!--[complete_video_count:".$db_record['complete_video_count']."]-->"); ?>
-									<?php print("<!--[product_video_count:".$db_record['product_video_count']."]-->"); ?>
-									<?php print("<!--[all_duration_reading:".$db_record['all_duration_reading']."]-->"); ?>
-									<?php print("<!--[all_alfstream_duration_sec:".$db_record['all_alfstream_duration_sec']."]-->"); ?>
 									<?
 										// [進捗]
 										if($db_record['product_type_add']==1){

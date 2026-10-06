@@ -218,10 +218,6 @@
 								</td>
 								<td class="tdc">
 									<?
-print "<!--[".$db_record['product_video_count']."]-->";
-print "<!--[".$db_record['complete_video_count']."]-->";
-print "<!--[".$db_record['all_duration_reading']."]-->";
-print "<!--[".$db_record['all_alfstream_duration_sec']."]-->";
 										// [進捗]
 										if( ($db_record['all_duration_reading']) && ($db_record['all_alfstream_duration_sec']) ){
 											if( $db_record['product_video_count'] == $db_record['complete_video_count'] ){

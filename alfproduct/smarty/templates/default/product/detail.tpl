@@ -3078,7 +3078,6 @@ a.test_btn_none{
 									<img src="/img/lecture/resume_btn_none.png" alt="続きから再生" style="cursor:pointer;" />
 								<!--{/if}-->
 							<!--{/if}-->
-							<!--[<!--{$contents_contents_so_key}-->:<!--{$product_list.$contents_contents_so_key}-->]-->
 							<!--{if $product_list.$contents_contents_so_key>0}-->
 								<img src="/img/lecture/play_btn_off_so.png" alt="始めから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->')" style="cursor:pointer;" />
 								<!--{if $product_list.$video_view_flg_key}-->
@@ -3405,12 +3404,10 @@ a.test_btn_none{
 				<div id="exam2_problem_<!--{$exam2_problem_row.exam2_problem_id}-->">
 					<div>
 						<!--{$exam2_problem_i+1}-->.
-						<!--[<!--{$exam2_problem_row.exam2_problem_id}-->]-->
 						<!--{$exam2_problem_row.problem_contents}-->
 					</div>
 
 					<div>
-						<!--[<!--{$exam2_problem_row.answer_kind}-->]-->
 						<!--{if $exam2_problem_row.answer_kind=="1"}-->
 							<!-- ++++++++++++++++++++++++++++++++++++++++ -->
 							<!--{foreach from=$exam2_problem_row.answer_contents_arr.answer_contents key='exam2_problem_row_answer_contents_i' item='exam2_problem_row_answer_contents_row'}-->
@@ -3441,10 +3438,8 @@ a.test_btn_none{
 			<!--{/foreach}-->
 			<!--{foreach from=$student_row.info[0] key='student_info_i' item='student_info_row'}-->
 				<!--{if $student_info_i|trim==="regist_date"}-->
-					<!--[<!--{$student_info_i}-->:<!--{$student_info_row}-->]-->
 					<!--{assign var="reist_date_year" value=$student_info_row|date_format:"%Y"}-->
 					<!--{assign var="now_date_year" value=$smarty.now|date_format:"%Y"}-->
-					<!--[<!--{$reist_date_year}-->:<!--{$now_date_year}-->]-->
 					<!--{if ($now_date_year-$reist_date_year)>=10}-->
 						(弁護士経験：１０年以上)
 					<!--{elseif ($now_date_year-$reist_date_year)>=3}-->
