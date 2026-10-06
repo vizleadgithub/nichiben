@@ -12,7 +12,12 @@ if(!$arr_session){
 	exit();
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-$gid = $_GET['gid'];
+$gid = isset($_GET['gid']) ? (string)$_GET['gid'] : '';
+// gidは親画面の項目名(英数字・_)のみ許可
+if (!preg_match('/^[A-Za-z0-9_]+$/', $gid)) {
+	header('HTTP/1.1 400 Bad Request');
+	exit();
+}
 
 $search_contents_name = "";
 $search_contents_code = "";

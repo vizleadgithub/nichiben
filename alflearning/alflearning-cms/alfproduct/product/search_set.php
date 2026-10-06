@@ -15,10 +15,16 @@ if(!$arr_session){
 $id =  urlencode(($_GET['id']));
 $name =  urlencode(($_GET['name']));
 $comment =  urlencode(($_GET['comment']));
-$hid_id_name = 'hid_'.$_GET['gid'];
-$spa_id_name = 'spa_'.$_GET['gid'];
-$hid_name_name = 'hid_'.$_GET['gid'].'_name';
-$hid_comment_name = 'hid_'.$_GET['gid'].'_memo';
+$gid = isset($_GET['gid']) ? (string)$_GET['gid'] : '';
+// gidは親画面の項目名(英数字・_)のみ許可
+if (!preg_match('/^[A-Za-z0-9_]+$/', $gid)) {
+	header('HTTP/1.1 400 Bad Request');
+	exit();
+}
+$hid_id_name = 'hid_'.$gid;
+$spa_id_name = 'spa_'.$gid;
+$hid_name_name = 'hid_'.$gid.'_name';
+$hid_comment_name = 'hid_'.$gid.'_memo';
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
