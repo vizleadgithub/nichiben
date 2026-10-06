@@ -151,7 +151,7 @@
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_student','受講者') ?></th>
-							<td ><?= htmlspecialchars( $class['lecture_students_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+							<td ><?= $class['lecture_students_name'] /* Cms_classで組み立て時に無害化済み */ ?></td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_note','備考') ?></th>

@@ -83,7 +83,7 @@
 									[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($student_group['position_students']); ?>]
 								</div>
 							</th>
-							<td ><?= htmlspecialchars( $student_group['position_students_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+							<td ><?= $student_group['position_students_name'] /* Cms_student_groupで組み立て時に無害化済み */ ?></td>
 						</tr>
 					</table>
 					<div class="submit">

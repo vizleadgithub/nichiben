@@ -247,9 +247,9 @@ class Cms_student_group extends CI_Controller {
 					if($data['student_group']['position_students_name'] != ''){
 						$data['student_group']['position_students_name'] .= '<br/>';
 					}
-					$data['student_group']['position_students_name'] .= '[No'.$data_result['student_id'].']&nbsp;';
-					$data['student_group']['position_students_name'] .= $data_result['student_name'].'&nbsp;';
-					$data['student_group']['position_students_name'] .= '&lt;'.$data_result['student_email'].'&gt;';
+					$data['student_group']['position_students_name'] .= '[No'.htmlspecialchars($data_result['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;';
+					$data['student_group']['position_students_name'] .= htmlspecialchars($data_result['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;';
+					$data['student_group']['position_students_name'] .= '&lt;'.htmlspecialchars($data_result['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
 				}
 			}
 			
@@ -378,9 +378,9 @@ class Cms_student_group extends CI_Controller {
 					if($data['student_group']['position_students_name'] != ''){
 						$data['student_group']['position_students_name'] .= '<br/>';
 					}
-					$data['student_group']['position_students_name'] .= '[No'.$lecture.']&nbsp;';
-					$data['student_group']['position_students_name'] .= $temp['student_name'].'&nbsp;';
-					$data['student_group']['position_students_name'] .= '&lt;'.$temp['student_email'].'&gt;';
+					$data['student_group']['position_students_name'] .= '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;';
+					$data['student_group']['position_students_name'] .= htmlspecialchars($temp['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;';
+					$data['student_group']['position_students_name'] .= '&lt;'.htmlspecialchars($temp['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
 				}
 			}
 			

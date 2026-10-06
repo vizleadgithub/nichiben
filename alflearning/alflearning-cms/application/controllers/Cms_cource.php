@@ -279,9 +279,9 @@ class Cms_cource extends CI_Controller {
 					$idx++;
 					$data['cource']['lecture_students'][$idx]    = $data_result['student_id'];
 					if($data['cource']['lecture_students_name'] == '---'){
-						$data['cource']['lecture_students_name'] = '[No'.$data_result['student_id'].']&nbsp;'.$data_result['student_name'].'&nbsp;&lt;'.$data_result['student_email'].'&gt;';
+						$data['cource']['lecture_students_name'] = '[No'.htmlspecialchars($data_result['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($data_result['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
 					}else{
-						$data['cource']['lecture_students_name'] .= '<br/>'.'[No'.$data_result['student_id'].']&nbsp;'.$data_result['student_name'].'&nbsp;&lt;'.$data_result['student_email'].'&gt;';
+						$data['cource']['lecture_students_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($data_result['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
 					}
 				}
 			}
@@ -468,9 +468,9 @@ class Cms_cource extends CI_Controller {
 					$temp = $this->model_student->get_name($name_param);
 
 					if($data['cource']['lecture_students_name'] == '---'){
-						$data['cource']['lecture_students_name'] = '[No'.$lecture.']&nbsp;'.$temp['student_name'].'&nbsp;&lt;'.$temp['student_email'].'&gt;';
+						$data['cource']['lecture_students_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($temp['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
 					}else{
-						$data['cource']['lecture_students_name'] .= '<br/>'.'[No'.$lecture.']&nbsp;'.$temp['student_name'].'&nbsp;&lt;'.$temp['student_email'].'&gt;';
+						$data['cource']['lecture_students_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($temp['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
 					}
 				}
 			}

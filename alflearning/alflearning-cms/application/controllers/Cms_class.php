@@ -322,9 +322,9 @@ class Cms_class extends CI_Controller {
 								);
 					$temp = $this->model_student->get_name($name_param);
 					if($data['class']['lecture_students_name'] == '---'){
-						$data['class']['lecture_students_name'] = '[No'.$lecture.']&nbsp;'. htmlspecialchars( $temp['student_name'], ENT_QUOTES, 'UTF-8', false) .'&nbsp;&lt;'. htmlspecialchars( $temp['student_email'], ENT_QUOTES, 'UTF-8', false) .'&gt;';
+						$data['class']['lecture_students_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'. htmlspecialchars( $temp['student_name'], ENT_QUOTES, 'UTF-8', false) .'&nbsp;&lt;'. htmlspecialchars( $temp['student_email'], ENT_QUOTES, 'UTF-8', false) .'&gt;';
 					}else{
-						$data['class']['lecture_students_name'] .= '<br/>'.'[No'.$lecture.']&nbsp;'. htmlspecialchars( $temp['student_name'], ENT_QUOTES, 'UTF-8', false) .'&nbsp;&lt;'. htmlspecialchars( $temp['student_email'], ENT_QUOTES, 'UTF-8', false) .'&gt;';
+						$data['class']['lecture_students_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'. htmlspecialchars( $temp['student_name'], ENT_QUOTES, 'UTF-8', false) .'&nbsp;&lt;'. htmlspecialchars( $temp['student_email'], ENT_QUOTES, 'UTF-8', false) .'&gt;';
 					}
 				}
 			}
@@ -565,9 +565,9 @@ class Cms_class extends CI_Controller {
 								);
 					$temp = $this->model_student->get_name($name_param);
 					if($data['class']['lecture_students_name'] == '---'){
-						$data['class']['lecture_students_name'] = '[No'.$lecture.']&nbsp;'. htmlspecialchars( $temp['student_name'], ENT_QUOTES, 'UTF-8', false) .'&nbsp;&lt;'. htmlspecialchars( $temp['student_email'], ENT_QUOTES, 'UTF-8', false) .'&gt;';
+						$data['class']['lecture_students_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'. htmlspecialchars( $temp['student_name'], ENT_QUOTES, 'UTF-8', false) .'&nbsp;&lt;'. htmlspecialchars( $temp['student_email'], ENT_QUOTES, 'UTF-8', false) .'&gt;';
 					}else{
-						$data['class']['lecture_students_name'] .= '<br/>'.'[No'.$lecture.']&nbsp;'. htmlspecialchars( $temp['student_name'], ENT_QUOTES, 'UTF-8', false) .'&nbsp;&lt;'. htmlspecialchars( $temp['student_email'], ENT_QUOTES, 'UTF-8', false) .'&gt;';
+						$data['class']['lecture_students_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'. htmlspecialchars( $temp['student_name'], ENT_QUOTES, 'UTF-8', false) .'&nbsp;&lt;'. htmlspecialchars( $temp['student_email'], ENT_QUOTES, 'UTF-8', false) .'&gt;';
 					}
 				}
 			}

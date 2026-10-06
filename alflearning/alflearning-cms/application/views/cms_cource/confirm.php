@@ -91,7 +91,7 @@
 							<?= $this->lang->line_or_def('common_student','受講者') ?>
 							<div style="text-align:center;">[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($cource['lecture_students']); ?>]</div>
 						</th>
-						<td ><?= htmlspecialchars( $cource['lecture_students_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+						<td ><?= $cource['lecture_students_name'] /* Cms_courceで組み立て時に無害化済み */ ?></td>
 					</tr>
 
 <? $user_auths = $this->session->userdata; ?>
