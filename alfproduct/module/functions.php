@@ -3221,4 +3221,19 @@ require_once dirname(__FILE__) . '/HtmlPolicy.php';
 function purify_memo(string $html): string {
 	return purify_html($html, 'product');
 }
+
+/**
+ * リンク先(href)用: http/https の絶対URL、または / から始まるサイト内パスのみ返す。
+ * javascript: 等のスキームや //・/\ で始まる外部参照は空文字にする。出力時は別途 htmlspecialchars すること。
+ */
+function safe_href($url): string {
+	$url = trim((string) $url);
+	if ($url === '' || preg_match('/[\x00-\x20\x7f]/', $url)) {
+		return '';
+	}
+	if (preg_match('#^https?://[^/\\\\]#i', $url) || preg_match('#^/(?![/\\\\])#', $url)) {
+		return $url;
+	}
+	return '';
+}
 ?>

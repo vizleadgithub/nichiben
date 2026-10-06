@@ -198,7 +198,7 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 								<a href="/archives/<?php print($post["ID"]); ?>" class="page-link" rel="bookmark" style="color: #796A57;font-weight: normal;">>>詳細へ</a>
 							<?php } else { ?>
 								<?php if ($post["url"] != ""){ ?>
-									<a href="<?php print(htmlspecialchars($post["url"], ENT_QUOTES, 'UTF-8')); ?>" class="page-link" rel="noopener noreferrer" style="color: #796A57;font-weight: normal;" target="_blank">>>詳細へ</a>
+									<a href="<?php print(htmlspecialchars(safe_href($post["url"]), ENT_QUOTES, 'UTF-8')); ?>" class="page-link" rel="noopener noreferrer" style="color: #796A57;font-weight: normal;" target="_blank">>>詳細へ</a>
 								<?php } else { ?>
 									<a href="/archives/<?php print($post["ID"]); ?>" class="page-link" rel="bookmark" style="color: #796A57;font-weight: normal;">>>詳細へ</a>
 								<?php } ?>
