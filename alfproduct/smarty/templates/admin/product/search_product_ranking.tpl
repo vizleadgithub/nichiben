@@ -98,7 +98,7 @@
 			var arr_par_id = [];
 			<!--{foreach from=$arr_cat_list item=val}-->
 				arr_cat_id[arr_cat_id.length] = "<!--{$val.term_id|escape}-->";
-				arr_cat_name[arr_cat_name.length] = "<!--{$val.name|escape}-->";
+				arr_cat_name[arr_cat_name.length] = "<!--{$val.name|escape:'javascript'}-->";
 				arr_par_id[arr_par_id.length] = "<!--{$val.parent|escape}-->";
 			<!--{/foreach}-->
 			function check_cat(cat_id){
