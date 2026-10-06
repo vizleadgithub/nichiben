@@ -19,7 +19,6 @@
  */
 ?>
 <?php /* Display navigation to next/previous pages when applicable */ ?>
-<!--[Test1]-->
 <?php if ( $wp_query->max_num_pages > 1 ) : ?>
 	<div id="nav-above" class="navigation">
 		<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'twentyten' ) ); ?></div>
@@ -27,7 +26,6 @@
 	</div><!-- #nav-above -->
 <?php endif; ?>
 
-<!--[Test2]-->
 <?php if ( ! have_posts() ) : ?>
 	<div id="post-0" class="post error404 not-found">
 		<h1 class="entry-title"><?php _e( 'Not Found', 'twentyten' ); ?></h1>
@@ -54,22 +52,17 @@
  * Without further ado, the loop:
  */ ?>
 
-<!--[Test3]-->
 <?php while ( have_posts() ) : the_post(); ?>
 
-	<!--[Test4]-->
 	<?php /* How to display posts of the Gallery format. The gallery category is the old way. */ ?>
 	<?php if ( ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) || in_category( _x( 'gallery', 'gallery category slug', 'twentyten' ) ) ) : ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 
 			<div class="entry-content">
-				<!--[Test5]-->
 				<?php if ( post_password_required() ) : ?>
-					<!--[Test6]-->
 					<?php the_content(); ?>
 				<?php else : ?>
-					<!--[Test7]-->
 					<?php
 					$images = get_children( array( 'post_parent' => $post->ID, 'post_type' => 'attachment', 'post_mime_type' => 'image', 'orderby' => 'menu_order', 'order' => 'ASC', 'numberposts' => 999 ) );
 					if ( $images ) :
@@ -103,15 +96,12 @@
 
 		<?php /* How to display posts of the Aside format. The asides category is the old way. */ ?>
 	<?php elseif ( ( function_exists( 'get_post_format' ) && 'aside' == get_post_format( $post->ID ) ) || in_category( _x( 'asides', 'asides category slug', 'twentyten' ) )  ) : ?>
-		<!--[Test8]-->
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 			<?php if ( is_archive() || is_search() ) : // Display excerpts for archives and search. ?>
-				<!--[Test9]-->
 				<div class="entry-summary">
 					<?php the_excerpt(); ?>
 				</div><!-- .entry-summary -->
 			<?php else : ?>
-				<!--[Test10]-->
 				<div class="entry-content">
 					<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentyten' ) ); ?>
 				</div><!-- .entry-content -->
@@ -119,7 +109,6 @@
 		</div><!-- #post-## -->
 		<?php /* How to display all other posts. */ ?>
 	<?php else : ?>
-		<!--[Test11]-->
 		<?php
 		// 受講対象の弁護士会に所属していないユーザーの場合は対象でない旨を表示
 		$disp_flg = true;
@@ -127,22 +116,18 @@
 			$disp_flg = false;
 		}
 		?>
-		<!--[Test12]-->
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?> style="background-color:#fcfcfc;border:solid 1px #cccccc;width:698px;">
 			<div id="single_title" style="border:none;padding:10px 20px;width: 658px;">
 				<h3 class="entry-title" style="padding:0;margin:0;width: 658px;">
 					<?php if (!$disp_flg){ ?>
-						<!--[Test13]-->
 						<span style="color:#579748;font-size:17px;font-weight:bold;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></span>
 					<?php } else { ?>
-						<!--[Test14]-->
 						<a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></a>
 					<?php } ?>
 				</h3>
 			</div>
 
 			<?php if ( is_archive() || is_search() ) : // Only display excerpts for archives and search. ?>
-				<!--[Test15]-->
 				<div class="entry-summary" style="padding:5px 20px 10px 20px;">
 					<?php the_excerpt(); ?>
 					<div style="text-align:right;">
@@ -154,7 +139,6 @@
 					</div>
 				</div><!-- .entry-summary -->
 			<?php else : ?>
-				<!--[Test16]-->
 				<div class="entry-content">
 					<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentyten' ) ); ?>
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
@@ -162,7 +146,6 @@
 			<?php endif; ?>
 		</div><!-- #post-## -->
 
-		<!--[Test17]-->
 		<?php comments_template( '', true ); ?>
 
 	<?php endif; // This was the if statement that broke the loop into three parts based on categories. ?>

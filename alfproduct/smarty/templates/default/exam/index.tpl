@@ -119,7 +119,6 @@ function examFormSubmit(eid,pid,ccno){
 					<div class="problem_contents">
 						<!--{* 単一形式 *}-->
 						<!--{if $row_q.answer_kind==1}-->
-							<!--[単一形式]-->
 							<!--{foreach name=loop1_q from=$row_q.answer_contents_select.answer_contents item="row1_q" key="key1_q"}-->
 							<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 								<div class="problem_content">
@@ -131,7 +130,6 @@ function examFormSubmit(eid,pid,ccno){
 							
 						<!--{* 複数形式 *}-->
 						<!--{elseif $row_q.answer_kind==2}-->
-							<!--[複数形式]-->
 							<!--{foreach name=loop1_q from=$row_q.answer_contents_select.answer_contents item="row1_q" key="key1_q"}-->
 							<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 								<div class="problem_content">
@@ -143,7 +141,6 @@ function examFormSubmit(eid,pid,ccno){
 							
 						<!--{* フリー解答 *}-->
 						<!--{elseif $row_q.answer_kind==3}-->
-							<!--[フリー解答]-->
 							<div class="problem_content"><textarea name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" cols="115" rows="10" maxlength="1000" style="width: 100%;"><!--{$answered_list_q.$row_no_q.answer3|escape}--></textarea></div>
 							
 						<!--{else}-->

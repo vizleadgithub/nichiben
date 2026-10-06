@@ -582,7 +582,6 @@ a.test_btn_none{
 									
 									<center style="float:left;display: inline-block;width: 400px;">
 										<div class="detail_btn" style="text-align: left;">
-											<!--[ TYPE1 ]-->
 											<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 											<!-- PC -->
 											<!--{if !$is_sp}-->
@@ -906,7 +905,6 @@ a.test_btn_none{
 												<!--{if $product_list.$exam_id_test_key_prev>0 || $product_list.$exam_id_question_key_prev>0}-->
 													<!--{* 前のテストが設定されている場合は、テスト受講済の場合に表示する *}-->
 													<!--{if ($product_list.$exam_test_all_answered_key_prev && $product_list.$exam_test_passing_flg_key_prev=='1') || ($product_list.$exam_question_all_answered_key_prev && $product_list.$exam_question_passing_flg_key_prev=='1')}-->
-														<!--[ TYPE2 ]-->
 														<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 														<!-- PC -->
 														<!--{if !$is_sp}-->
@@ -1073,7 +1071,6 @@ a.test_btn_none{
 
 													<!--{* 前のテストが設定されていない場合は、前ビデオ視聴済みなら次を表示 *}-->
 													<!--{elseif $product_list.$video_complete_flg_key_prev && $product_list.$exam_id_test_key_prev<=0 && $product_list.$exam_id_question_key_prev<=0}-->
-														<!--[ TYPE3 ]-->
 														<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 														<!-- PC -->
 														<!--{if !$is_sp}-->
@@ -1241,7 +1238,6 @@ a.test_btn_none{
 													<!--{else}-->
 
 
-														<!--[ TYPE4 ]-->
 														<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 														<!-- PC -->
 														<!--{if !$is_sp}-->
@@ -1405,7 +1401,6 @@ a.test_btn_none{
 													<!--{if $product_list.all_passing_flg}-->
 
 
-														<!--[ TYPE5 ]-->
 														<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 														<!-- PC -->
 														<!--{if !$is_sp}-->
@@ -1570,7 +1565,6 @@ a.test_btn_none{
 														<!--{if $product_list.now_passing_contents_no>0 && (($product_list.now_passing_contents_no+1)>=$ccno)}-->
 
 
-															<!--[ TYPE6 ]-->
 															<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 															<!-- PC -->
 															<!--{if !$is_sp}-->
@@ -1738,7 +1732,6 @@ a.test_btn_none{
 														<!--{elseif $product_list.$video_complete_flg_key_prev && $product_list.$exam_id_test_key_prev<=0 && $product_list.$exam_id_question_key_prev<=0}-->
 
 
-															<!--[ TYPE7 ]-->
 															<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 															<!-- PC -->
 															<!--{if !$is_sp}-->
@@ -1905,7 +1898,6 @@ a.test_btn_none{
 														<!--{else}-->
 
 
-															<!--[ TYPE8 ]-->
 															<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 															<!-- PC -->
 															<!--{if !$is_sp}-->
@@ -2316,7 +2308,6 @@ a.test_btn_none{
 																<!--{if !$product_list.$exam_question_all_answered_key || ($product_list.$exam_question_all_answered_key && $product_list.$resubmit_flag_question_key=='1')}-->
 
 
-																	<!--[ TYPE9 ]-->
 																	<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 																	<!-- PC -->
 																	<!--{if !$is_sp}-->
@@ -2524,7 +2515,6 @@ a.test_btn_none{
 									<div class="detail_btn" style="text-align: left;">
 
 
-										<!--[ TYPE10 ]-->
 										<!-- LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL -->
 										<!-- PC -->
 										<!--{if !$is_sp}-->
@@ -3203,15 +3193,11 @@ a.test_btn_none{
 	<div style="clear:both;background-color: #ffffff;" id="exam2_btn_area">
 		<!--{if $product_list.exam2_id>0}-->
 			<!--{if count($exam2_answer)>0}-->
-				<!--[回答済]-->
 				<!--{if $exam2.resubmit_flag==1}-->
-					<!--[再回答可]-->
 					<a href="javascript:void(0);" ontouchmove="touchMoveFlag=true;" onclick="pop_get_html('/exam2/result.php?pid=<!--{$pid}-->&e2id=<!--{$product_list.exam2_id}-->')" id="exam2_btn">アンケートに答える</a>
 				<!--{else}-->
-					<!--[再回答不可]-->
 				<!--{/if}-->
 			<!--{else}-->
-				<!--[未回答]-->
 				<a href="javascript:void(0);" ontouchmove="touchMoveFlag=true;" onclick="pop_get_html('/exam2/index.php?pid=<!--{$pid}-->&e2id=<!--{$product_list.exam2_id}-->')" id="exam2_btn">アンケートに答える</a>
 			<!--{/if}-->
 		<!--{/if}-->

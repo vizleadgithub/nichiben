@@ -1,4 +1,3 @@
-<!--[]-->
 <!--{if $next_contents_flg}-->
 <form name="playerForm" action="/player/index.php?term=sp" method="post">
 	<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->" />

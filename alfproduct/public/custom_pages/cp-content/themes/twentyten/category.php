@@ -124,7 +124,6 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 <div style="width:220px;float:left;margin-left:13px;">
 	<?php get_sidebar(1); ?>
 </div>
-<!--[NewsList]-->
 <div id="container" style="width:698px;float:left;padding-right:17px;">
 	<div id="content" role="main" style="width:698px;">
 		<div id="nav-below" class="navigation">
@@ -152,7 +151,6 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 		if (!empty($ret)){
 			foreach($ret as $post){
 		?>
-			<!--[Test11]-->
 			<?php
 			// 受講対象の弁護士会に所属していないユーザーの場合は対象でない旨を表示
 			$disp_flg = true;
@@ -166,15 +164,12 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 				$disp_flg = false;
 			}
 			?>
-			<!--[Test12]-->
 			<div id="post-<?php print($post["ID"]); ?>" <?php post_class(); ?> style="background-color:#fcfcfc;border:solid 1px #cccccc;width:698px;">
 				<div id="single_title" style="border:none;padding:10px 20px;width: 658px;">
 					<h3 class="entry-title" style="padding:0;margin:0;width: 658px;">
 						<?php if (!$disp_flg){ ?>
-							<!--[Test13]-->
 							<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
 						<?php } else { ?>
-							<!--[Test14]-->
 							<?php if ($post["url"] != ""){ ?>
 								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
 							<?php } else { ?>
@@ -183,7 +178,6 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 						<?php } ?>
 					</h3>
 				</div>
-				<!--[Test15]-->
 				<?php if (!$disp_flg){ ?>
 					<div class="entry-summary" style="padding:5px 20px 10px 20px;">
 						<div style="text-align:right;">
