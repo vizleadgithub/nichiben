@@ -102,7 +102,7 @@
 							<?= $this->lang->line_or_def('common_material','資料') ?>
 							<div style="text-align:center;">[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($cource['lecture_materials']); ?>]</div>
 						</th>
-						<td ><?= htmlspecialchars( $cource['lecture_materials_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+						<td ><?= $cource['lecture_materials_name'] /* Cms_courceで組み立て時に無害化済み */ ?></td>
 					</tr>
 <? endif; ?>
 
@@ -112,7 +112,7 @@
 							<?= $this->lang->line_or_def('common_book_library','図書室') ?>
 							<div style="text-align:center;">[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($cource['lecture_book_librarys']); ?>]</div>
 						</th>
-						<td ><?= htmlspecialchars( $cource['lecture_book_librarys_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+						<td ><?= $cource['lecture_book_librarys_name'] /* Cms_courceで組み立て時に無害化済み */ ?></td>
 					</tr>
 <? endif; ?>
 
@@ -122,7 +122,7 @@
 							<?= $this->lang->line_or_def('common_video','ビデオ') ?>
 							<div style="text-align:center;">[<?= $this->lang->line_or_def('common_choice_count','選択数') ?>&nbsp;:&nbsp;<?= count($cource['lecture_videos']); ?>]</div>
 						</th>
-						<td ><?= htmlspecialchars( $cource['lecture_videos_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+						<td ><?= $cource['lecture_videos_name'] /* Cms_courceで組み立て時に無害化済み */ ?></td>
 					</tr>
 <? endif; ?>
 

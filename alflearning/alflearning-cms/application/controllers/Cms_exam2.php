@@ -789,9 +789,9 @@ class Cms_exam2 extends CI_Controller {
 					
 					foreach($student_list as $idx => $student_data){
 						if($data['exam2']['exam2_students_name'] == '---'){
-							$data['exam2']['exam2_students_name'] = '[No'.$student_data['student_id'].']&nbsp;'.$student_data['student_name'].'&nbsp;&lt;'.$student_data['student_email'].'&gt;';
+							$data['exam2']['exam2_students_name'] = '[No'.htmlspecialchars($student_data['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($student_data['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($student_data['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
 						}else{
-							$data['exam2']['exam2_students_name'] .= '<br/>'.'[No'.$student_data['student_id'].']&nbsp;'.$student_data['student_name'].'&nbsp;&lt;'.$student_data['student_email'].'&gt;';
+							$data['exam2']['exam2_students_name'] .= '<br/>'.'[No'.htmlspecialchars($student_data['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($student_data['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($student_data['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
 						}
 					}
 					//foreach($data['exam2']['exam2_students'] as $idx => $lecture){

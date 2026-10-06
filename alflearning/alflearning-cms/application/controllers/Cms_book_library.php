@@ -866,7 +866,7 @@ class Cms_book_library extends CI_Controller {
 		if($db_data['book_library_name'] == ''){
 			//戻り先設定
 			$data['returnurl']     = site_url('cms_book_library');
-			$data['error_message'] = $this->lang->line_or_def('error_download_auth','ダウンロード権限がありません<br />ログインし直してください').$db_data['remarks'];
+			$data['error_message'] = $this->lang->line_or_def('error_download_auth','ダウンロード権限がありません<br />ログインし直してください').htmlspecialchars($db_data['remarks'], ENT_QUOTES, 'UTF-8', false);
 			
 			//ビュー設定引数設定
 			$disp_param = array(
@@ -900,8 +900,8 @@ class Cms_book_library extends CI_Controller {
 				//戻り先設定
 				$data['returnurl']     = site_url('cms_book_library');
 				$data['error_message'] = $this->lang->line_or_def('error_not_file','ファイルが見つかりません<br />管理者に問い合わせてください')
-										.'<br /><br />'.$this->lang->line_or_def('common_file_name','ファイル名').'&nbsp;:&nbsp;'.$db_data['book_library_logic_name']
-										.'<br />File Name&nbsp;:&nbsp;'.$db_data['book_library_name'];
+										.'<br /><br />'.$this->lang->line_or_def('common_file_name','ファイル名').'&nbsp;:&nbsp;'.htmlspecialchars($db_data['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false)
+										.'<br />File Name&nbsp;:&nbsp;'.htmlspecialchars($db_data['book_library_name'], ENT_QUOTES, 'UTF-8', false);
 				//ビュー設定引数設定
 				$disp_param = array(
 								'view_name'   => 'book_library_error',

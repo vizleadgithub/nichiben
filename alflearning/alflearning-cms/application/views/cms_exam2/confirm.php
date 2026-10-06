@@ -536,7 +536,7 @@
 <?php if(false){ ?>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_student','受講者') ?></th>
-							<td ><?= htmlspecialchars( $exam2['exam2_students_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+							<td ><?= $exam2['exam2_students_name'] /* Cms_exam2/Cms_exam2_reviewで組み立て時に無害化済み */ ?></td>
 						</tr>
 <?php } ?>
 						<tr>

@@ -28,7 +28,7 @@
 				<br />
 				<br />
 				<center>
-					<?= htmlspecialchars( $error_message, ENT_QUOTES, 'UTF-8', false) ?>
+					<?= $error_message /* controllerで組み立て時に無害化済み */ ?>
 				</center>
 				<br />
 				<br />
