@@ -1,5 +1,4 @@
 <?php
-$debag = true;
 header('Etag: ' . date("YmdHis"));
 header('Expires: Sun, 26 Nov 2000 00:00:00 GMT');
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
@@ -16,13 +15,11 @@ $objDbConnect = new DbConnect();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if (!isset($_GET['pid'])){
 	$objDbConnect->close();
-	if( $debag ){ print("\n<hr>\nnon pid\n<hr>\n"); }
 	exit();
 }
 $pid = $_GET['pid'];
 if(cmCheckInput($pid, 'CK_NUM')){
 	$objDbConnect->close();
-	if( $debag ){ print("\n<hr>\npid err\n<hr>\n"); }
 	exit();
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -83,7 +80,6 @@ $sql.= "      ON tbl_product.product_id = RPBA.product_id";
 $product_list = $objDbConnect->query_fetch($sql.$where);
 if (!$product_list){
 	$objDbConnect->close();
-	if( $debag ){ print("\n<hr>\nnon product_list\n<hr>\n"); }
 	exit();
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -192,9 +188,7 @@ $sql.= " exam2_id ";
 $sql.= "FROM ";
 $sql.= " tbl_product ";
 $sql.= "WHERE product_id='".$pid."'";
-if( $debag ){ var_dump($sql); print("\n<hr>\n"); }
 $ret = $objDbConnect->query_fetch_arr($sql);
-if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
 if($ret){
 	foreach($ret as $val){
 		//商品のコンテンツループ
@@ -226,9 +220,7 @@ if($ret){
 				$sql.= "'".date("Y-m-d H:i:s")."', ";
 				$sql.= "'".date("Y-m-d H:i:s")."' ";
 				$sql.= ")";
-				if( $debag ){ var_dump($sql); print("\n<hr>\n"); }
 				$objDbConnect->execute($sql);
-				if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
 
 				$sql = "UPDATE ";
 				$sql.= " report_user_video_viewed ";
@@ -241,9 +233,7 @@ if($ret){
 				$sql.= "     student_id='".mysqli_real_escape_string($objDbConnect->connect,$user_id)."' ";
 				$sql.= " AND video_id='".mysqli_real_escape_string($objDbConnect->connect,$val["contents_contents".$i2])."' ";
 
-				if( $debag ){ var_dump($sql); print("\n<hr>\n"); }
 				$objDbConnect->execute($sql);
-				if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
 			}
 
 
@@ -257,9 +247,7 @@ if($ret){
 	$sql.= "FROM ";
 	$sql.= " rel_product_contents ";
 	$sql.= "WHERE product_id='".$pid."'";
-	if( $debag ){ var_dump($sql); print("\n<hr>\n"); }
 	$ret2 = $objDbConnect->query_fetch_arr($sql);
-	if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
 	if($ret2){
 		foreach($ret2 as $val2){
 		}
@@ -274,10 +262,7 @@ if($ret){
 //テスト回答履歴作成
 //商品に紐づくテストの取得
 $sql = "SELECT contents_no, exam_id_test FROM rel_product_contents WHERE product_id='".$pid."' AND exam_id_test>0 ORDER BY contents_no ASC";
-if( $debag ){ var_dump($sql); print("\n<hr>\n"); }
 $ret = $objDbConnect->query_fetch_arr($sql);
-if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
-if( $debag ){ print("\n<br>\n"); var_dump($ret); print("\n<hr>\n"); }
 if($ret){
 	//商品のテストループ
 	foreach($ret as $val){
@@ -308,9 +293,7 @@ if($ret){
 			WHERE 
 				rel_exam_problem.exam_id='".mysqli_real_escape_string($objDbConnect->connect,$exam_id_test)."' 
 			ORDER BY rel_exam_problem.exam_no ASC ";
-		if( $debag ){ var_dump($sql); print("\n<hr>\n"); }
 		$arr_exam_problem = $objDbConnect->query_fetch_arr($sql);
-		if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
 		if($arr_exam_problem){
 			//テストの問題ループ
 			foreach($arr_exam_problem as $val2 ){
@@ -343,9 +326,7 @@ if($ret){
 				);
 				//同一のexam_answer_idとexam_answer_noの存在チェック
 				$sql = "SELECT exam_answer_id, max(exam_answer_no) as exam_answer_no, exam_answer_contents FROM exam_answer WHERE product_id='".$pid."' AND exam_id='".$exam_id_test."' AND exam_problem_id='".$val2["exam_problem_id"]."' LIMIT 1";
-				if( $debag ){ var_dump($sql); print("\n<br>\n"); }
 				$arr_old_exam_answer = $objDbConnect->query_fetch_arr($sql);
-				if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
 				if($arr_old_exam_answer){
 					//テストの問題ループ
 					foreach($arr_old_exam_answer as $val3 ){
@@ -398,9 +379,7 @@ if($ret){
 					$sql.= "'".mysqli_real_escape_string($objDbConnect->connect,$temp_answer["criteria_type"])."', ";
 					$sql.= "'".mysqli_real_escape_string($objDbConnect->connect,$temp_answer["criteria_value"])."' ";
 					$sql.= " )";
-					if( $debag ){ var_dump($sql); print("\n<hr>\n"); }
 					$objDbConnect->execute($sql);
-					if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
 				} else {
 					//更新
 					$sql = "UPDATE ";
@@ -427,9 +406,7 @@ if($ret){
 					$sql.= "criteria_value='".mysqli_real_escape_string($objDbConnect->connect,$temp_answer["criteria_value"])."' ";
 					$sql.= "WHERE ";
 					$sql.= "exam_answer_id='".mysqli_real_escape_string($objDbConnect->connect,$temp_answer["exam_answer_id"])."' ";
-					if( $debag ){ var_dump($sql); print("\n<hr>\n"); }
 					$objDbConnect->execute($sql);
-					if( $debag ){ print("\n<br>\nsql ok\n<hr>\n"); }
 				}
 			}
 		}
