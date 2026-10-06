@@ -533,6 +533,17 @@ bash alflearning/mountcheck.sh
   - `STG2_BASIC_USER` / `STG2_BASIC_PASS` … Basic 認証
   - `STG2_CMS_USER` / `STG2_CMS_PASS` … CMS 管理者
   - `STG2_STUDENT_USER` / `STG2_STUDENT_PASS` … 受講者SSO
+  - `STG2_CMS_BAR_USER` / `STG2_CMS_BAR_PASS` … CMS 管理者（単位会）
+  - `STG2_CMS_LIMITED_USER` / `STG2_CMS_LIMITED_PASS` … CMS 管理者（権限を限定した管理者）
+  - `STG2_STUDENT_ETHIC_USER` / `STG2_STUDENT_ETHIC_PASS` … 受講者（代替倫理研修の権限あり）SSO
+  - 値が未記入のアカウントを使うテストはスキップする。
+- **メール送信を伴う操作は自動テストしない（手動で実施）**。stg2 には本番からコピーしたデータ（実在の受講者のメールアドレス）がある。対象: 商品管理の注文詳細（amount_order/info.php）・入金アップロード（bank_upload）・メルマガ送信（cron/mailmagazine_submit.php）・問い合わせ（受講者 inquiry/send.php、商品管理 inquiry/regist.php）・決済（settlement/payment_bank・card・free・passport_user、araigae_upload）、CMS のバッチ（Bat_mail・Bat_exam_error_check・Bat_update_student_from_csv_check）。
+- **書き込みを伴うテストの前に stg2 の DB をダンプする**。CMS・API・商品管理・受講者サイト・WordPress はすべて同じ DB `alflearning` を使う。画面からの元の値の保存では、ログ（`applog`）・メールのキュー（`queue`）・履歴・関連テーブル（`rel_*`）を戻せないため、DB ごとのダンプから復元する。ダンプの取得・復元は人が行う（自動テストからは実行しない）。
+  ```
+  mysqldump --single-transaction --routines alflearning > alflearning_before_test_<日付>.sql
+  ```
+  ダンプファイルには実在の受講者の個人情報が含まれるため、リポジトリ配下に置かない・コミットしない。
+- **CMS でテストデータを登録するときの注意**: 授業は開始の1週間前・前日・1時間前に、cron（Bat_mail）が受講者へ通知メールを送る。テスト・アンケートのリマインド設定はメールのキューに登録される。テストデータは、開始日を遠い過去（または遠い未来）にし、リマインドは設定せず、受講者はテスト用アカウントだけを割り当てる。
 - **ツール**: Node.js + Playwright（ヘッドレス Chromium）。スクリプトは `tools/stg2-e2e/`。結果は `tools/stg2-e2e/test-results/`、保存したセッションは `tools/stg2-e2e/.auth/`（どちらもコミットしない）。
   ```
   cd tools/stg2-e2e
