@@ -1061,7 +1061,7 @@ if( $disp_flg ){
 					foreach ($arr_sponsor as $sponsor){
 						$disp_sponsor.= htmlspecialchars($mtb_bar_association[$sponsor], ENT_QUOTES, 'UTF-8').'<br />';
 					}
-					$disp_sponsor = rtrim($disp_sponsor, '<br />');
+					$disp_sponsor = preg_replace('#<br />$#', '', $disp_sponsor);
 				}
 			}
 			$arr_list[$key]['disp_sponsor'] = $disp_sponsor;

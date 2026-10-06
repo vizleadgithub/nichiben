@@ -310,7 +310,7 @@ if ($ret){
 			foreach ($arr_pt as $val1){
 				$disp_passport_target.= $arr_passport_target[$val1] . '<br />';
 			}
-			$disp_passport_target = rtrim($disp_passport_target, '<br />');
+			$disp_passport_target = preg_replace('#<br />$#', '', $disp_passport_target);
 		}
 		$arr_list[$key]['disp_passport_target'] = $disp_passport_target;
 	}

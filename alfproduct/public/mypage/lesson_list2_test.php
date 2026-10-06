@@ -171,7 +171,7 @@ if ($ret){
 				foreach ($arr_sponsor as $sponsor){
 					$disp_sponsor.= htmlspecialchars($mtb_bar_association[$sponsor], ENT_QUOTES, 'UTF-8') . '<br />';
 				}
-				$disp_sponsor = rtrim($disp_sponsor, '<br />');
+				$disp_sponsor = preg_replace('#<br />$#', '', $disp_sponsor);
 			}
 			
 			// 【】日弁連を含む複数主催の場合、日弁連のみ表示とする ----------------------

@@ -301,7 +301,7 @@ if ($product_list['product_type_add'] == 1 ){
 			foreach ($arr_sponsor as $sponsor){
 				$disp_sponsor.= htmlspecialchars($mtb_bar_association[$sponsor], ENT_QUOTES, 'UTF-8').'<br />';
 			}
-			$disp_sponsor = rtrim($disp_sponsor, '<br />');
+			$disp_sponsor = preg_replace('#<br />$#', '', $disp_sponsor);
 		}
 	}
 	$product_list['disp_sponsor'] = $disp_sponsor;

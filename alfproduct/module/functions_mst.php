@@ -466,13 +466,13 @@ function get_product_category_name_html($term_id){
 		foreach ($productcategory_list as $val){
 			// 大カテゴリ
 			if ($val['big']['term_id'] == $term_id){
-				$term_name = '▼'.$val['big']['name'];
+				$term_name = '▼'.htmlspecialchars($val['big']['name'], ENT_QUOTES, 'UTF-8', false);
 				break;
 			}
 			// 小カテゴリ
 			foreach ($val['small'] as $sval){
 				if ($sval['term_id'] == $term_id){
-					$term_name = '▼'.$val['big']['name'].'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→'.$sval['name'];
+					$term_name = '▼'.htmlspecialchars($val['big']['name'], ENT_QUOTES, 'UTF-8', false).'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→'.htmlspecialchars($sval['name'], ENT_QUOTES, 'UTF-8', false);
 					break 2;
 				}
 			}
