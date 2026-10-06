@@ -519,6 +519,32 @@ bash alflearning/mountcheck.sh
 
 自動テストスイートは存在しません。動作確認はブラウザまたはステージング環境（`nichibenren-stg`/`nichibenren-stg2.alfcloud.com`）へのデプロイで行います。
 
+### stg2 環境へのブラウザ自動テスト（XSS 対応の確認用）
+
+`secure_report/【画面共有で使用した版】XSS対応_全量確認と対応方針_2026-09-29.xlsx`（「7_今後の進め方」のテストの観点）と `secure_report/XSS対応_承認用資料_2026-10-01.xlsx`（許可タグ）の内容を、stg2 に実際にアクセスして確認してよい。
+
+- **対象は stg2 のみ**（`nichibenren-stg2.alfcloud.com` / `cms.nichibenren-stg2.alfcloud.com` / `api.nichibenren-stg2.alfcloud.com`）。本番・stg（旧）には実行しない。
+- **受講者 SSO**（OpenAM: `www.nichibenren-member-sso.jp`）は本番と共用の外部環境。`.env.stg2` の検証用アカウント（`STG2_STUDENT_USER`）でログインした場合のみ stg2 へ遷移する仕組みのため、このアカウントでのログインは可。SSO 側では何も変更せず、XSS 用の値も送らない。ログインは最小限にし、取得したセッションを使い回す。
+- **stg2 へのテストデータ書き込みは許可済み**。stg2 は独立した環境で本番への影響はない。XSS 用の値を含む登録も可。ただしテスト用と分かる名前（例: `[XSSTEST]` を先頭に付ける）にし、テスト後は削除する。
+- **stg2 のコードはリポジトリと同期している前提**で確認してよい（差異が疑われる場合は全量一覧 No.42 を参照）。
+- **IP 制限**: 開発用の実行環境からは CMS を含めアクセス可能。
+- **認証情報**（Basic 認証・CMS 管理者・受講者テストアカウント）はリポジトリに書かない。リポジトリ直下の `.env.stg2`（`.gitignore` 済み）か環境変数で渡す。キー名:
+  - `STG2_STUDENT_URL` / `STG2_CMS_URL` … 確認用URL
+  - `STG2_BASIC_USER` / `STG2_BASIC_PASS` … Basic 認証
+  - `STG2_CMS_USER` / `STG2_CMS_PASS` … CMS 管理者
+  - `STG2_STUDENT_USER` / `STG2_STUDENT_PASS` … 受講者SSO
+- **ツール**: Node.js + Playwright（ヘッドレス Chromium）。スクリプトは `tools/stg2-e2e/`。結果は `tools/stg2-e2e/test-results/`、保存したセッションは `tools/stg2-e2e/.auth/`（どちらもコミットしない）。
+  ```
+  cd tools/stg2-e2e
+  npm install && npx playwright install chromium   # 初回のみ
+  node login.js                                     # CMS・受講者SSOでログインしセッション保存（cms|student で片方のみ）
+  node check-debug-output.js cms 400 --seeds        # 観点3: 確認用出力・PHPエラーの検出（student も同様）
+  node summarize.js test-results/debug-output-cms-<日時>.json
+  ```
+  - `check-debug-output.js` はリンクを GET で辿るだけでフォーム送信はしない。更新系・ログアウト・決済・試験・プレイヤー等の URL はスキップする。CMS は 5 分ごとにセッション ID が更新されるため、切れた場合は自動で再ログインする（受講者 SSO は自動再ログインしない）。CMS の巡回は 10 分以上かかる。
+  - 受講者サイトの商品詳細は、無料 e ラーニング商品を開くとテストアカウントに 0 円注文が自動作成される（アプリの仕様）。
+- **進め方**: データを書き込まない確認（観点 3: 各画面の HTML ソースに SQL・`var_dump`・`<!--[` 等の確認用出力が無いこと）から始め、書き込みを伴う観点（1・2・4〜7）はその後に行う。
+
 ## アーキテクチャ
 
 ### ディレクトリ構成

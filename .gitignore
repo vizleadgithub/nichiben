@@ -11,4 +11,11 @@
 /alfproduct/smarty/templates_c
 /alfproduct/module/vendor
 
+# stg2 ブラウザ自動テスト: 認証情報と実行結果はコミットしない
+.env.stg2
+node_modules/
+test-results/
+playwright-report/
+tools/stg2-e2e/.auth/
+
 .vscode/
