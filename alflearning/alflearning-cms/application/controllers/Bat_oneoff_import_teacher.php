@@ -152,10 +152,6 @@ class Bat_oneoff_import_teacher extends CI_Controller {
 					$_convert['update_at'] = date('Y/m/d H:i:s');	// 更新日時
 
 /*
-print var_dump($arrayRecord);
-print "\n";
-print var_dump($_convert);
-print "\n";
 
 $counter = $counter + 1;
 if($counter == 3){

@@ -119,8 +119,6 @@ class Openam_sso extends CI_Controller {
 					'getLine'		=> __line__,
 				));
 			}else{
-				// [確認用]OpenAM API 取得結果を格納
-error_log(print_r($get_attributes, 1));
 				
 				// 空白文字を区切り文字として配列格納
 				$temp_get_attributes = preg_split("/\s{1}/", $get_attributes);
@@ -474,7 +472,7 @@ return array(
 				$this->db->trans_begin();
 				
 				// INSERT student
-error_log("INSERT student[".$param['employeenumber'].":".$param['mail']."].");
+error_log("INSERT student[".$param['employeenumber']."].");
 				$this->db->query($sql, array(
 									$param['student_name'],
 									$param['mail'],
@@ -536,7 +534,7 @@ error_log("INSERT student[".$param['employeenumber'].":".$param['mail']."].");
 						  AND lawyer_number   = ? 
 						  AND lawyer_division = ? ";
 						// 対象外 status, regist_at, presence_passport, exp_date_passport, sub_auth_ethic_training
-error_log("UPDATE student[".$param['employeenumber'].":".$param['mail']."].");
+error_log("UPDATE student[".$param['employeenumber']."].");
 				$this->db->query($sql, array(
 									$param['student_name'],
 									$param['mail'],

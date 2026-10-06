@@ -148,7 +148,6 @@ class Stream_request extends CI_Controller {
 			$return_flag = -1;
 		}
 
-error_log(print_r($_GET, true));
 
 		//アプリログ出力
 		$result_kickback = 'NG';

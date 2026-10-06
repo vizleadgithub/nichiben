@@ -795,8 +795,6 @@ class Model_data_import_test extends CI_Model
 				}
 			}
 
-			print_r($param);
-			echo "\n";
 
 			// 一括コンテンツダウンロード設定
 			$param2 = array(
@@ -1169,9 +1167,6 @@ class Model_data_import_test extends CI_Model
 					$param["update_date"] = $param["regist_date"];
 				}
 
-				echo "【 子 】\n";
-				print_r($param);
-				echo "\n";
 
 				// 一括コンテンツダウンロード設定
 				$param2 = array(
@@ -2164,8 +2159,6 @@ class Model_data_import_test extends CI_Model
 				$param["video_logic_name"] = "no value";
 			}
 
-			print_r($param);
-			echo "\n";
 
 			// すでにvideo_importマスタに存在するかどうかのチェック
 			// （DB取込用ID変換履歴テーブルから）
@@ -2257,9 +2250,6 @@ class Model_data_import_test extends CI_Model
 					"contents_contents_name" => $video_logic_name,
 				);
 
-				echo "product:\n";
-				print_r($param3);
-				echo "\n";
 
 				// すでにtbl_product_importマスタに存在するかどうかのチェック
 				// （DB取込用ID変換履歴テーブルから）
@@ -2526,9 +2516,6 @@ class Model_data_import_test extends CI_Model
 						"publish_flg" => "1",
 					);
 
-					echo "【 商品登録 】\n";
-					print_r($param2);
-					echo "\n";
 
 					$query = $this->db->query(
 						' SELECT * FROM tbl_product_import'.
@@ -2669,8 +2656,6 @@ echo "product update\n";
 					"rank" => $rank,
 				);
 
-				print_r($param2);
-				echo "\n";
 
 				// すでにtbl_ethic_questionマスタに存在するかどうかのチェック
 				$query = $this->db->query(
@@ -2858,8 +2843,6 @@ echo "product update\n";
 				$param["video_logic_name"] = "no value";
 			}
 
-			print_r($param);
-			echo "\n";
 
 			// すでにvideo_importマスタに存在するかどうかのチェック
 			// （DB取込用ID変換履歴テーブルから）
@@ -3110,8 +3093,6 @@ echo "product update\n";
 				$param["view_flg".$i] = "0";
 			}
 
-			print_r($param);
-			echo "\n";
 
 			// すでにtbl_ethic_question_history_importマスタに存在するかどうかのチェック
 			$query = $this->db->query(
@@ -3217,8 +3198,6 @@ echo "product update\n";
 				)
 			);
 
-			print_r($param);
-			echo "\n";
 
 			// 不要な変数の削除
 			unset($param["video_name"]);
@@ -3342,8 +3321,6 @@ echo "product update\n";
 				continue;
 			}
 
-			print_r($param);
-			echo "\n";
 
 			// tbl_product_importマスタに存在するかどうかのチェック
 			$product_id = 0;

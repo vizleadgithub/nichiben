@@ -23,7 +23,6 @@ session_set_save_handler(
 		$result = $objDbConnect->query_fetch($query);
 		$session_temp = $result['data'];
 		if ($result) {
-			error_log("Session Read: " . print_r($result['data'], true)); // デバッグログ
 			return $result['data'];
 		}
 			return $result ? $result['data'] : '';

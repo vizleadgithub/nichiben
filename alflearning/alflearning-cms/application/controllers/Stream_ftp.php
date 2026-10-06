@@ -70,8 +70,6 @@ class Stream_ftp extends CI_Controller {
 			while (false !== ($filename = readdir($dh))) {
 				$loacl_dir_list[] = $filename;
 			}
-print_r($loacl_dir_list);
-print "\n--------------\n";
 */			
 			$error_message = '';
 			try {

@@ -86,7 +86,6 @@ class Bat_update_student_from_csv_test extends CI_Controller {
 	public function update_student_from_csv_test(){
 		exec('ps auxw | grep update_student_from_csv_test | grep -v " grep " | grep -v "/bin/sh" ', $outputs);
 		if(count($outputs) > 1){
-			echo var_dump($outputs);
 			echo "前回バッチが起動中でした\n";
 			return;
 		}

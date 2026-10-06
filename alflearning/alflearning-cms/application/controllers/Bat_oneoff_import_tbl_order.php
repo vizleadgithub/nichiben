@@ -193,10 +193,6 @@ class Bat_oneoff_import_tbl_order extends CI_Controller {
 
 
 /*	
-	print var_dump($arrayRecord);
-	print "\n";
-	print var_dump($_convert);
-	print "\n";
 
 	$counter = $counter + 1;
 	if($counter == 1){
@@ -381,10 +377,6 @@ class Bat_oneoff_import_tbl_order extends CI_Controller {
 						$this->_output_log("  [".str_pad($counter, 6, '0', STR_PAD_LEFT)."] INSERT DATA [RECEIPT.SERIAL_ID : ".$arrayRecord[0]." / order_id - order_detail_id : ".$temp_order_id." - ".$temp_order_detail_id."]");
 
 /*
-	print var_dump($arrayRecord);
-	print "\n";
-	print var_dump($_convert);
-	print "\n";
 	break;
 */
 

@@ -187,10 +187,6 @@ class Bat_oneoff_import_student extends CI_Controller {
 					if($arrayRecord[13]=='1') $_convert['sub_auth_ethic_training'] = 1;
 
 /*
-print var_dump($arrayRecord);
-print "\n";
-print var_dump($_convert);
-print "\n";
 
 $counter = $counter + 1;
 if($counter == 20){

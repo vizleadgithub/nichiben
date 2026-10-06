@@ -231,10 +231,6 @@ class Bat_oneoff_import_tbl_bookmark extends CI_Controller {
 
 /*
 	
-	print var_dump($arrayRecord);
-	print "\n";
-	print var_dump($_convert);
-	print "\n";
 	$counter = $counter + 1;
 	if($counter == 1){
 		continue 2;

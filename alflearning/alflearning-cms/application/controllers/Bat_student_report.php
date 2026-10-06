@@ -105,7 +105,6 @@ class Bat_student_report extends CI_Controller {
 					}
 				}
 				$sql = "UPDATE tbl_student_report SET exam_id_test='".implode(',', $arr_exam_id_test)."' WHERE product_id='".$row["product_id"]."'";
-				print("[".$sql."]\n");
 				$this->db->query( $sql );
 			}
 		}
@@ -686,7 +685,6 @@ class Bat_student_report extends CI_Controller {
 			//if( $one_day_flg == 1 ){
 			//	$sql.= " AND update_date>='".date("Y-m-d H:i:s",strtotime(" -2 day "))."' ";
 			//}
-			print "[".date('Y-m-d H:i:s')."]".$sql."\n";
 			$query_student = $this->db->query($sql);
 			print "[".date('Y-m-d H:i:s')."]"."query_student row ".$query_student->num_rows()."\n";
 			if ($query_student->num_rows() > 0) {
@@ -950,7 +948,6 @@ class Bat_student_report extends CI_Controller {
 			//if( $one_day_flg == 1 ){
 			//	$sql.= " AND update_date>='".date("Y-m-d H:i:s",strtotime(" -2 day "))."' ";
 			//}
-			print "[".date('Y-m-d H:i:s')."]".$sql."\n";
 			$query_student = $this->db->query($sql);
 			print "[".date('Y-m-d H:i:s')."]"."query_student row ".$query_student->num_rows()."\n";
 			if ($query_student->num_rows() > 0) {
@@ -969,7 +966,6 @@ class Bat_student_report extends CI_Controller {
 					$sql.= "WHERE 1=1 ";
 					$sql.= " AND student_id=? ";
 					$sql.= " AND find_in_set(?, video_ids) ";
-					print "[".date('Y-m-d H:i:s')."]".$sql."\n";
 					$query_product = $this->db->query( $sql, 
 						array(
 							$student_id,
@@ -1003,7 +999,6 @@ class Bat_student_report extends CI_Controller {
 								//	$sql.= " OR reading_date>'".date("Y-m-d H:i:s",strtotime(" -91 day "))."' ";
 								//	$sql.= " ) ";
 								//}
-								print "[".date('Y-m-d H:i:s')."]".$sql."\n";
 								$query1 = $this->db->query($sql, array($student_row["student_id"]));
 								//視聴完了したビデオが含まれる商品毎の履歴
 								if ($query1->num_rows() > 0) {
@@ -1028,7 +1023,6 @@ class Bat_student_report extends CI_Controller {
 										$sql.= "WHERE 1=1 ";
 										$sql.= " AND student_id=? ";
 										$sql.= " AND product_id=? ";
-										print "[".date('Y-m-d H:i:s')."]".$sql."\n";
 										$res = $this->db->query( $sql, 
 											array(
 												$last_viewd_date,

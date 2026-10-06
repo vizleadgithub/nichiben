@@ -66,7 +66,6 @@ class Model_auth extends CI_Model
 				$SQL .= $sql_where;
 			//	$SQL .= (getenv('URL_SERVICE') == 'conference' ? ' AND school.lang = "conference"' : ' AND school.lang <> "conference"');	//カンファレンス考慮
 			}
-			log_message('debug', $SQL);
 			return $this->db->query($SQL,array($login_id)); 
 		}catch(Exception $e){ 
 			throw new Exception(); 
@@ -83,7 +82,6 @@ class Model_auth extends CI_Model
 			$SQL .= "FROM school ";
 			$SQL .= "WHERE school.school_id = ? AND school.status = 0";
 
-			log_message('debug', $SQL);
 			return $this->db->query($SQL, array($school_id)); 
 		}catch(Exception $e){ 
 			throw new Exception(); 
@@ -99,7 +97,6 @@ class Model_auth extends CI_Model
 			$SQL .= "FROM school ";
 			$SQL .= "WHERE school.school_id = ? AND school.status = 0";
 
-			log_message('debug', $SQL);
 			return $this->db->query($SQL, array($school_id)); 
 		}catch(Exception $e){ 
 			throw new Exception(); 
@@ -158,7 +155,6 @@ class Model_auth extends CI_Model
 				$SQL .= $sql_where;
 			//	$SQL .= (getenv('URL_SERVICE') == 'conference' ? ' AND school.lang = "conference"' : ' AND school.lang <> "conference"');	//カンファレンス考慮
 			}
-			log_message('debug', $SQL);
 			return $this->db->query($SQL,array($teacher_id)); 
 		}catch(Exception $e){ 
 			throw new Exception(); 
