@@ -167,8 +167,6 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 			}
 			?>
 			<!--[Test12]-->
-			<!--[bar_association_id:<?php print($_SESSION['user']['bar_association_id']); ?>]-->
-			<!--[target:<?php print($target); ?>]-->
 			<div id="post-<?php print($post["ID"]); ?>" <?php post_class(); ?> style="background-color:#fcfcfc;border:solid 1px #cccccc;width:698px;">
 				<div id="single_title" style="border:none;padding:10px 20px;width: 658px;">
 					<h3 class="entry-title" style="padding:0;margin:0;width: 658px;">
@@ -178,9 +176,9 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 						<?php } else { ?>
 							<!--[Test14]-->
 							<?php if ($post["url"] != ""){ ?>
-								<!--<a href="<?php echo $post["url"]; ?>" title="" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;">--><span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span><!--</a>-->
+								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
 							<?php } else { ?>
-								<!--<a href="/archives/<?php print($post["ID"]); ?>" title="" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;">--><span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span><!--</a>-->
+								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
 							<?php } ?>
 						<?php } ?>
 					</h3>

@@ -313,7 +313,6 @@ if ($_SESSION['user']['sub_auth_ethic_training'] == 1){
 		</h2>
 		<div class="news_bd">
 		<ul style="list-style:block;margin-top:0px;overflow: auto;padding-bottom: 10px;background-color: #ffffff;">
-			<!--[ethic_product_id:<?php print($ethic_product_id); ?>]-->
 			<?php if( !empty($ethic_product_id) ){ ?>
 				<li style="min-height: 18px;max-height: 50px;">
 					<div style="display: inline-block;width: 100%;">
