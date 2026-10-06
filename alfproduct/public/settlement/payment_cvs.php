@@ -121,12 +121,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 			$checked = 'checked';
 		}
 	?>
-	<label><input type="radio" name="convenience" value="<?php echo $key; ?>" <?php echo $checked; ?> /><?php echo $val; ?></label>
+	<label><input type="radio" name="convenience" value="<?php echo htmlspecialchars((string)$key, ENT_QUOTES, 'UTF-8', false); ?>" <?php echo $checked; ?> /><?php echo htmlspecialchars((string)$val, ENT_QUOTES, 'UTF-8', false); ?></label>
 	<?php } ?><br>
-	氏名：<input type="text" name="name" value="<?php echo $name; ?>" /><br>
-	フリガナ：<input type="text" name="kana" value="<?php echo $kana; ?>" /><br>
-	電話番号：<input type="text" name="tel" value="<?php echo $tel1; ?>" />&nbsp;-&nbsp;<input type="text" name="tel" value="<?php echo $tel2; ?>" />&nbsp;-&nbsp;<input type="text" name="tel" value="<?php echo $tel3; ?>" /><br>
-	E-Mail:<input type="text" name="mail_address" value="<?php echo $mail_address; ?>"><br>
+	氏名：<input type="text" name="name" value="<?php echo htmlspecialchars((string)$name, ENT_QUOTES, 'UTF-8', false); ?>" /><br>
+	フリガナ：<input type="text" name="kana" value="<?php echo htmlspecialchars((string)$kana, ENT_QUOTES, 'UTF-8', false); ?>" /><br>
+	電話番号：<input type="text" name="tel" value="<?php echo htmlspecialchars((string)$tel1, ENT_QUOTES, 'UTF-8', false); ?>" />&nbsp;-&nbsp;<input type="text" name="tel" value="<?php echo htmlspecialchars((string)$tel2, ENT_QUOTES, 'UTF-8', false); ?>" />&nbsp;-&nbsp;<input type="text" name="tel" value="<?php echo htmlspecialchars((string)$tel3, ENT_QUOTES, 'UTF-8', false); ?>" /><br>
+	E-Mail:<input type="text" name="mail_address" value="<?php echo htmlspecialchars((string)$mail_address, ENT_QUOTES, 'UTF-8', false); ?>"><br>
 	<input type="submit" name="btn_submit" value="Submit">
 	</form>
 <?php
@@ -135,7 +135,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 	<form name="form_payment" method="post" action="#">
 	支払先コンビニ選択：
 	<?php foreach ($arr_conveni_code as $key => $val){ ?>
-	<label><input type="radio" name="convenience" value="<?php echo $key; ?>" /><?php echo $val; ?></label>
+	<label><input type="radio" name="convenience" value="<?php echo htmlspecialchars((string)$key, ENT_QUOTES, 'UTF-8', false); ?>" /><?php echo htmlspecialchars((string)$val, ENT_QUOTES, 'UTF-8', false); ?></label>
 	<?php } ?><br>
 	氏名：<input type="text" name="name" /><br>
 	フリガナ：<input type="text" name="kana" /><br>
