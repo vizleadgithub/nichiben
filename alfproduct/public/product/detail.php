@@ -181,14 +181,14 @@ if (!$product_list){
 // 共通
 // -----
 $product_list['memo_old'] = $product_list['memo'];
-$product_list['memo'] = purify_memo(url2link($product_list['memo']));
-$product_list['free_html_area1'] = purify_memo((string)$product_list['free_html_area1']);
-$product_list['free_html_area2'] = purify_memo((string)$product_list['free_html_area2']);
-$product_list['free_html_area3'] = purify_memo((string)$product_list['free_html_area3']);
+$product_list['memo'] = render_product_text($product_list['memo']);
+$product_list['free_html_area1'] = purify_html($product_list['free_html_area1'], 'general');
+$product_list['free_html_area2'] = purify_html($product_list['free_html_area2'], 'general');
+$product_list['free_html_area3'] = purify_html($product_list['free_html_area3'], 'general');
 for($i=1; $i<=MAX_CONTENTS; $i++){
 	$product_list["contents_contents".$i."_memo"] = $product_list["contents_contents".$i."_memo"];
 }
-$product_list['contents'] = url2link($product_list['contents']);
+$product_list['contents'] = render_product_text($product_list['contents']);
 
 // 掲載期間
 $product_list['disp_start_date'] = date('Y年m月d日', strtotime($product_list['start_date']));
@@ -3054,26 +3054,4 @@ function _get_bar_association_branch_info($objDbConnect, $product_id, $bar_assoc
 		$bar_association_branch_info = $objDbConnect->query_fetch($sql);
 	}
 	return $bar_association_branch_info;
-}
-function url2link($body, $link_title = null)
-{
-    // 正規表現: URL を検出（href="" の場合は無視）
-    $pattern = '/(href=")?https?:\/\/[^"\s]+/';
-
-    // コールバック関数
-    $body = preg_replace_callback($pattern, function ($matches) use ($link_title) {
-        // 既に href="" がついている場合はリンクとして処理しない
-        if (isset($matches[1])) return $matches[0];
-
-        // URL を取得 & エスケープ
-        $url = htmlspecialchars($matches[0], ENT_QUOTES, 'UTF-8');
-
-        // リンクテキストを設定
-        $display_text = $link_title ?: $url;
-
-        // 安全な a タグを返す
-        return "<a href=\"$url\" target=\"_blank\" rel=\"noopener noreferrer\">$display_text</a>";
-    }, $body);
-
-    return $body;
 }?>

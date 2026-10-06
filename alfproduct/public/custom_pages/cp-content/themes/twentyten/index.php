@@ -34,7 +34,7 @@ $tempret = $objDbConnect->execute($sql);
 	if($posts): foreach($posts as $post): setup_postdata($post);
 	?>
 	<div style="width:720px;background:#ffffff;color:#000000;margin:0px;padding:0px;font-size:12px;">
-	<?php echo $post->post_content ?>
+	<?php echo purify_html($post->post_content, 'general') ?>
 	</div>
 	<?php 
 	endforeach; endif;
@@ -696,7 +696,7 @@ if (!empty($ret)){
 	if($posts): foreach($posts as $post): setup_postdata($post);
 	?>
 	<div style="width:500px;background:#ffffff;color:#000000;margin:0px;padding:0px;font-size:12px;margin-bottom:15px;">
-	<?php echo $post->post_content ?>
+	<?php echo purify_html($post->post_content, 'general') ?>
 	</div>
 	<?php 
 	endforeach; endif;
@@ -712,7 +712,7 @@ if (!empty($ret)){
 	if($posts): foreach($posts as $post): setup_postdata($post);
 	?>
 	<div style="width:500px;background:#ffffff;color:#000000;margin:0px;padding:0px;font-size:12px;">
-	<?php echo $post->post_content ?>
+	<?php echo purify_html($post->post_content, 'general') ?>
 	</div>
 	<?php 
 	endforeach; endif;

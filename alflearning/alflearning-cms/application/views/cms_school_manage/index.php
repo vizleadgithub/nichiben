@@ -73,8 +73,6 @@
 									<td class="tdc"><a href="/cms_school_manage/detail/<?= htmlspecialchars( $school['school_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $school['school_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td class="tdc"><?= htmlspecialchars( $school['school_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td class="tdc">
-									<!--<?= $school['contract'] ?>-->
-
 										<?php if($school['contract'] === 'fixation'){ ?>
 											<?= $this->lang->line_or_def('common_contract_fixation','本契約') ?>
 										<?php }elseif($school['contract'] === 'demo'){ ?>

@@ -23,7 +23,7 @@
 	 */
 	global $page, $paged;
 
-	wp_title( '|', true, 'right' );
+	echo esc_html( wp_title( '|', false, 'right' ) );
 
 	// Add the blog name.
 	bloginfo( 'name' );

@@ -162,34 +162,6 @@
 								</div>
 							</td>
 
-<!--						<td>
-								<div class="cource_list">
-									<?php 
-										if( isset($lecture_cources) ) { 
-											foreach( $lecture_cources as $cource ){ ?>
-												<div class="cources">
-												<input type="checkbox" name="material_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
-													<?php 
-													if( isset($material['material_lectures']) ) {
-														foreach( $material['material_lectures'] as $lecture) { 
-															if($lecture == $cource['cource_id']) {
-														?>
-																checked
-																<?php
-																break;
-															}
-														}
-													}
-													?>
-													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
-												</div>
-										<?php 
-										}
-									}
-									?>
-								</div>
-							</td>	-->
 						</tr>
 
 						<tr>

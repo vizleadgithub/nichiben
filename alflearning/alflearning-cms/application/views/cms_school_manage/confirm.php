@@ -90,8 +90,6 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_contract_form','契約形態') ?></th>
 							<td >
-								<!--<?=$school['contract']?>-->
-
 								<?php if($school['contract'] === 'fixation'){ ?>
 									<?= $this->lang->line_or_def('common_contract_fixation','本契約') ?>
 								<?php }elseif($school['contract'] === 'demo'){ ?>
@@ -106,7 +104,7 @@
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_contract_contents','契約内容') ?></th>
-							<td><!--<?=$school['contract_param']?><br>-->
+							<td>
 								<table>
 								<tr><th colspan=4><?= $this->lang->line_or_def('common_class','授業') ?></th><tr>
 								<tr>

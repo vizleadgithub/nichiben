@@ -80,10 +80,10 @@ float:right;
 						●設問<!--{$row_no}-->　<!--{$row.exam2_problem_name|escape}-->
 					</div>
 					<div class="problem_contents">
-						<!--{$row.problem_contents|escape|nl2br}-->
+						<!--{$row.problem_contents|purify_ethic_html|nl2br}-->
 					</div>
 					<div class="problem_contents">
-						<!--{$row.problem_note|escape|nl2br}-->
+						<!--{$row.problem_note|purify_ethic_html|nl2br}-->
 					</div>
 					<div class="problem_title">
 						●解答
@@ -95,7 +95,7 @@ float:right;
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
 									<div class="content1"><input type="radio" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no}-->" <!--{if $row1.no==$exam2_answer[$row.exam2_problem_id].exam2_answer_contents[0]}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
-									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
+									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
 							<!--{/foreach}-->
@@ -106,7 +106,7 @@ float:right;
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
 									<div class="content1"><input type="checkbox" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no}-->" <!--{if array_search($row1.no, $exam2_answer[$row.exam2_problem_id].exam2_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
-									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
+									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
 							<!--{/foreach}-->

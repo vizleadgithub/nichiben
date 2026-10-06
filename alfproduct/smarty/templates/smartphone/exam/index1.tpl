@@ -76,10 +76,10 @@ function examFormSubmit(flg){
 			<!--{if $row_no==$eno}-->
 				<div class="problem">
 					<div class="problem_contents">
-						<!--{$row.problem_contents|escape|nl2br}-->
+						<!--{$row.problem_contents|purify_ethic_html|nl2br}-->
 					</div>
 					<div class="problem_contents">
-						<!--{$row.problem_note|escape|nl2br}-->
+						<!--{$row.problem_note|purify_ethic_html|nl2br}-->
 					</div>
 					<div class="problem_contents">
 						<!--{* 単一形式 *}-->
@@ -88,7 +88,7 @@ function examFormSubmit(flg){
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
 									<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" <!--{if isset($answered_info) && isset($answered_info.exam_answer_contents) && $row1.no==$answered_info.exam_answer_contents|escape}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
-									<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
+									<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
 							<!--{/foreach}-->
@@ -99,7 +99,7 @@ function examFormSubmit(flg){
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
 									<div class="content1"><input type="checkbox" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" <!--{if isset($answered_info) && isset($answered_info.arr_exam_answer_contents) && array_search($row1.no, $answered_info.arr_exam_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
-									<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
+									<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
 							<!--{/foreach}-->
@@ -124,10 +124,10 @@ function examFormSubmit(flg){
 				<!--{if $row_no_q==($eno-$eno_max_test)}-->
 					<div class="problem">
 						<div class="problem_contents">
-							<!--{$row_q.problem_contents|escape|nl2br}-->
+							<!--{$row_q.problem_contents|purify_ethic_html|nl2br}-->
 						</div>
 						<div class="problem_contents">
-							<!--{$row_q.problem_note|escape|nl2br}-->
+							<!--{$row_q.problem_note|purify_ethic_html|nl2br}-->
 						</div>
 						<div class="problem_contents">
 							<!--{* 単一形式 *}-->
@@ -136,7 +136,7 @@ function examFormSubmit(flg){
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<div class="problem_content">
 										<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" <!--{if isset($answered_info) && isset($answered_info.arr_exam_answer_contents) && $row1_q.no==$answered_info.exam_answer_contents|escape}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
-										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|escape|nl2br}--></label></div>
+										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
 								<!--{/foreach}-->
@@ -147,7 +147,7 @@ function examFormSubmit(flg){
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<div class="problem_content">
 										<div class="content1"><input type="checkbox" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" <!--{if isset($answered_info) && isset($answered_info.arr_exam_answer_contents) && array_search($row1_q.no, $answered_info.arr_exam_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
-										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|escape|nl2br}--></label></div>
+										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
 								<!--{/foreach}-->

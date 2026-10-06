@@ -123,10 +123,10 @@ function confirmDisp(epid){
 					</div>
 					<div id="problem_contents_<!--{$row.exam_problem_id}-->" class="problem_contents_parent">
 						<div class="problem_contents">
-							<!--{$row.problem_contents|escape|nl2br}-->
+							<!--{$row.problem_contents|purify_ethic_html|nl2br}-->
 						</div>
 						<div class="problem_contents">
-							<!--{$row.problem_note|escape|nl2br}-->
+							<!--{$row.problem_note|purify_ethic_html|nl2br}-->
 						</div>
 						<div class="problem_contents">
 							<!--{* 単一形式 *}-->
@@ -135,7 +135,7 @@ function confirmDisp(epid){
 								<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 									<div class="problem_content">
 										<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled <!--{if isset($answered_info) && isset($answered_info[$row.exam_problem_id]) && isset($answered_info[$row.exam_problem_id].exam_answer_contents) && $row1.no==$answered_info[$row.exam_problem_id].exam_answer_contents[0]}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
-										<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
+										<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
 								<!--{/foreach}-->
@@ -146,7 +146,7 @@ function confirmDisp(epid){
 								<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 									<div class="problem_content">
 										<div class="content1"><input type="checkbox" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled <!--{if isset($answered_info) && isset($answered_info[$row.exam_problem_id]) && isset($answered_info[$row.exam_problem_id].exam_answer_contents) && array_search($row1.no, $answered_info[$row.exam_problem_id].exam_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
-										<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
+										<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
 								<!--{/foreach}-->
@@ -173,8 +173,8 @@ function confirmDisp(epid){
 							<!--{if $answered_info[$row.exam_problem_id].exam_answer_mark==1 || !$hantei_ari}-->
 								<div class="problem_contents problem_comment">
 									<div>解説</div>
-									<div style="text-align:left;"><!--{$row.answer_explain_contents|escape|nl2br}--></div>
-									<div style="text-align:left;"><!--{$row.answer_explain_note|escape|nl2br}--></div>
+									<div style="text-align:left;"><!--{$row.answer_explain_contents|purify_ethic_html|nl2br}--></div>
+									<div style="text-align:left;"><!--{$row.answer_explain_note|purify_ethic_html|nl2br}--></div>
 								</div>
 							<!--{/if}-->
 						<!--{/if}-->
@@ -196,10 +196,10 @@ function confirmDisp(epid){
 					</div>
 					<div id="problem_contents_<!--{$row_q.exam_problem_id}-->" class="problem_contents_parent">
 						<div class="problem_contents">
-							<!--{$row_q.problem_contents|escape|nl2br}-->
+							<!--{$row_q.problem_contents|purify_ethic_html|nl2br}-->
 						</div>
 						<div class="problem_contents">
-							<!--{$row_q.problem_note|escape|nl2br}-->
+							<!--{$row_q.problem_note|purify_ethic_html|nl2br}-->
 						</div>
 						<div class="problem_contents">
 							<!--{* 単一形式 *}-->
@@ -208,7 +208,7 @@ function confirmDisp(epid){
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<div class="problem_content">
 										<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled <!--{if isset($answered_info_q) && isset($answered_info_q[$row_q.exam_problem_id]) && isset($answered_info_q[$row_q.exam_problem_id].exam_answer_contents) && $row1_q.no==$answered_info_q[$row_q.exam_problem_id].exam_answer_contents[0]}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
-										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|escape|nl2br}--></label></div>
+										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
 								<!--{/foreach}-->
@@ -219,7 +219,7 @@ function confirmDisp(epid){
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<div class="problem_content">
 										<div class="content1"><input type="checkbox" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled <!--{if isset($answered_info_q) && isset($answered_info_q[$row_q.exam_problem_id]) && isset($answered_info_q[$row_q.exam_problem_id].exam_answer_contents) && array_search($row1_q.no, $answered_info_q[$row_q.exam_problem_id].exam_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
-										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|escape|nl2br}--></label></div>
+										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
 								<!--{/foreach}-->

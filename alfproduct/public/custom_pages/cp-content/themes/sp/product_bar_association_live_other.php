@@ -27,7 +27,7 @@ $sql.= $where;
 $sql.= " ORDER BY rand()";
 $sql.= " LIMIT 8";
 $arr_list = $objDbConnect->query_fetch_arr($sql);
-print("<!--[".$sql."]-->");
+//print("<!--[".$sql."]-->");
 ?>
 <div class="news" style="/*height:340px;*/">
 	<h2 id="page_area4">

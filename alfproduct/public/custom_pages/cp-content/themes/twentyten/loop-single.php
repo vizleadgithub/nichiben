@@ -74,7 +74,7 @@ if ($cate_flg == 1){
 						<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
 					</div>
 					<div class="entry-content" style="padding:5px 20px; width:680px;">
-						<?php echo nl2br(htmlspecialchars(get_the_content(), ENT_QUOTES, 'UTF-8', false)); ?>
+						<?php the_content(); ?>
 						<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 						<?php if ($post->product_id != 0){ ?>
 							<div style="text-align:right;padding-bottom:10px;">
@@ -91,14 +91,14 @@ if ($cate_flg == 1){
 					</div>
 
 					<div class="entry-content" style="padding:5px 20px; width:680px;">
-						<?php echo nl2br(htmlspecialchars(get_the_content(), ENT_QUOTES, 'UTF-8', false)); ?>
+						<?php the_content(); ?>
 						<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 						<?php if ($post->product_id > 0){ ?>
 							<div style="text-align:right;padding-bottom:10px;">
 								<a href="/product/detail.php?pid=<?php echo (int)$post->product_id; ?>" style="color:#796A57;">>>詳細情報を見る</a>
 							</div>
 						<?php } else { ?>
-							<?php if ($post->url != ""){ ?>
+							<?php if ($post->url != "" && preg_match('#^(https?://|/(?!/))#i', $post->url)){ ?>
 								<div style="text-align:right;padding-bottom:10px;">
 									<a href="<?php echo htmlspecialchars($post->url, ENT_QUOTES, 'UTF-8'); ?>" style="color: #796A57;" target="_blank" rel="noopener noreferrer">>>詳細情報を見る</a>
 								</div>
@@ -139,7 +139,7 @@ if ($cate_flg == 1){
 					<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
 				</div>
 				<div class="entry-content" style="padding:5px 20px; width:680px;">
-					<?php echo nl2br(htmlspecialchars(get_the_content(), ENT_QUOTES, 'UTF-8', false)); ?>
+					<?php the_content(); ?>
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 					<?php if ($post->product_id != 0){ ?>
 						<div style="text-align:right;padding-bottom:10px;">

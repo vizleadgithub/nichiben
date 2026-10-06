@@ -319,33 +319,8 @@
 						<?php foreach($student_list as $student) { ?>
 							<?php $line++;?>
 							<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-							<!--<td class="tdc"><a href="/cms_student/detail/<?= $student['student_id'] ?>"><?=$student['student_id']?></td>
-								<td class="tdc"><?=$student['student_id']?></td>
-								<td class="tdc"><?=$student['student_name']?></td>
-								<td class="tdc"><?=$student['student_email']?></td>
-								<td class="tdc"><?=$student['lawyer_number']?></td>
-								<td class="tdc"><?=$student['presence_passport']?></td>
-								<td class="tdc">
-									<?php if(isset($student['bar_association_id'])): ?>
-										<?php if( isset($mtb_bar_association[$student['bar_association_id']]) ): ?>
-											<?= $mtb_bar_association[$student['bar_association_id']]; ?>
-										<?php else: ?>
-											<?= ''; ?>
-										<?php endif; ?>
-									<?php endif; ?>
-								</td>
-								<td class="tdc">
-									<input type="checkbox" class="sub_auth_ethic_training" name="sub_auth_ethic_training[]" value="1" <? ( $student['sub_auth_ethic_training'] == "1" ) ? 'checked' : ''; ?>
-									<!--<?=$student['sub_auth_ethic_training']?>
-								</td>
-							</tr>
 						<?php } ?>
 					<?php } ?>
-
-					<tr>
-						<th class="pager" colspan="6"><?=$pagination?></th>
-					</tr>
-				-->
 				</table>
 
 				<? if($total_rows > 0): ?>

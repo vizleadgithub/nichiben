@@ -155,7 +155,7 @@ function progressExam(pid,sid){
 		</td>
 		<td class="tdc" style="">
 		<!--{if $arr_product.product_type_add=="1"}-->
-			<!--[<!--{$row.all_end_view_count}-->][<!--{$video_count}-->]-->
+			<!--[<!--{$row.all_end_view_count|escape}-->][<!--{$video_count|escape}-->]-->
 			<!--{if $row.all_end_view_count==$video_count}-->
 				100%
 			<!--{else}-->

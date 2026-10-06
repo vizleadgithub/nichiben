@@ -24,7 +24,7 @@ if (!st_login_check()){
 $sql.= " ORDER BY rand()";
 $sql.= " LIMIT 8";
 $arr_list = $objDbConnect->query_fetch_arr($sql);
-print("<!--[".$sql."]-->");
+//print("<!--[".$sql."]-->");
 $mtb_product_flg = get_mtb_product_flg();
 ?>
 <div class="news" style="/*height:340px;*/">

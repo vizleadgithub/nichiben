@@ -111,7 +111,7 @@ $ret = $objDbConnect->query_fetch_arr($sql." LIMIT 10 OFFSET ".( ($paged-1)*10 )
 if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 	$slug = "news";
 }
-print("<!--[slug:".$slug."]-->\n");
+//print("<!--[slug:".$slug."]-->\n");
 // ニュースのみ表示させる
 //if ($slug == 'news'){
 //	$category_description = category_description();
@@ -196,7 +196,7 @@ print("<!--[slug:".$slug."]-->\n");
 					</div><!-- .entry-summary -->
 				<?php } else { ?>
 					<div class="entry-summary" style="word-wrap: break-word;width: 100%;box-sizing: border-box;padding:5px 20px 10px 20px;">
-						<p><?php print( strip_tags($post["post_content"])); ?></p>
+						<p><?php print( htmlspecialchars(strip_tags(purify_html($post["post_content"], 'general')), ENT_QUOTES, 'UTF-8', false)); ?></p>
 						<div style="text-align:right;">
 							<?php if ($post["product_id"] > 0){ ?>
 								<a href="/archives/<?php print($post["ID"]); ?>" class="page-link" rel="bookmark" style="color: #796A57;font-weight: normal;">>>詳細へ</a>

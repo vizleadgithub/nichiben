@@ -25,7 +25,7 @@ $posts = get_posts('numberposts=1&category_name=free_html_top5');
 if($posts): foreach($posts as $post): setup_postdata($post);
 ?>
 <div style="width:230px;background:#ffffff;color:#000000;margin:0px;padding:0px;font-size:12px;">
-<?php echo $post->post_content ?>
+<?php echo purify_html($post->post_content, 'general') ?>
 </div>
 <?php 
 endforeach; endif;

@@ -144,7 +144,7 @@
 			<?php if ( is_archive() || is_search() ) : // Only display excerpts for archives and search. ?>
 				<!--[Test15]-->
 				<div class="entry-summary" style="padding:5px 20px 10px 20px;">
-					<?php echo nl2br(htmlspecialchars(get_the_excerpt(), ENT_QUOTES, 'UTF-8', false)); ?>
+					<?php the_excerpt(); ?>
 					<div style="text-align:right;">
 						<?php if (!$disp_flg){ ?>
 							受講対象でない会場研修です。
@@ -156,7 +156,7 @@
 			<?php else : ?>
 				<!--[Test16]-->
 				<div class="entry-content">
-					<?php echo nl2br(htmlspecialchars(get_the_content(), ENT_QUOTES, 'UTF-8', false)); ?>
+					<?php the_content( __( 'Continue reading <span class="meta-nav">&rarr;</span>', 'twentyten' ) ); ?>
 					<?php wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); ?>
 				</div><!-- .entry-content -->
 			<?php endif; ?>

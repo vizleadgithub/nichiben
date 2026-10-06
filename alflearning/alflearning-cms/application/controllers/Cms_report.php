@@ -481,9 +481,6 @@ class Cms_report extends CI_Controller {
 					$view_name = 'cms_report/user_detail_ethic_training';
 					
 					$detail_data = $this->model_report->get_user_ethic_training($data_param);
-					print("\n<!--[\n");
-					var_dump($detail_data);
-					print("\n]-->\n");
 					break;
 				case 4:
 					// [日弁連]レポート-ユーザ、全て

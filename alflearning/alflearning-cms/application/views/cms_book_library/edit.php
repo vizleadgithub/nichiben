@@ -205,34 +205,6 @@
 								</div>
 							</td>
 
-<!--						<td>
-								<div class="cource_list">
-									<?php 
-										if( isset($lecture_cources) ) { 
-											foreach( $lecture_cources as $cource ){ ?>
-												<div class="cources">
-												<input type="checkbox" name="book_library_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
-													<?php 
-													if( isset($book_library['book_library_lectures']) ) {
-														foreach( $book_library['book_library_lectures'] as $lecture) { 
-															if($lecture == $cource['cource_id']) {
-														?>
-																checked
-																<?php
-																break;
-															}
-														}
-													}
-													?>
-													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
-												</div>
-										<?php 
-										}
-									}
-									?>
-								</div>
-							</td>	-->
 						</tr>
 						
 						<tr>
@@ -257,7 +229,7 @@
 										<div style=" margin-top: 5px;line-height:20px;"><?= $this->lang->line_or_def('common_registered_tag','登録済みタグ') ?>&nbsp;:&nbsp;
 											<?php foreach($tags_dropdown as $tagKey => $cnt) { ?>
 												<? if(($tagKey !== 'タグなし') && ($tagKey !== '') ): ?>
-													<a href="#" onclick="set_tag('<?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?>');return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
+													<a href="#" onclick="set_tag(<?= htmlspecialchars( json_encode((string)$tagKey, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>);return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
 												<? endif; ?>
 											<?php } ?>
 										</div>

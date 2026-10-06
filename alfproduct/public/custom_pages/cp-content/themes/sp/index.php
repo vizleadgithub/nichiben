@@ -19,7 +19,7 @@ get_header(); ?>
 	if($posts): foreach($posts as $post): setup_postdata($post);
 	?>
 	<div style="width:720px;background:#ffffff;color:#000000;margin:0px;padding:0px;font-size:12px;">
-	<?php echo $post->post_content ?>
+	<?php echo purify_html($post->post_content, 'general') ?>
 	</div>
 	<?php 
 	endforeach; endif;
@@ -304,7 +304,7 @@ $ethic_product_id = '';
 if ($_SESSION['user']['sub_auth_ethic_training'] == 1){
 	$ethic_product_id = get_ethic_product_id();
 }
-print("<!--[ethic_product_id:".$ethic_product_id."]-->");
+//print("<!--[ethic_product_id:".$ethic_product_id."]-->");
 ?>
 	<div class="news" style="height:340px;overflow-y: scroll;">
 		<h2 style="vertical-align: top;">
@@ -395,7 +395,7 @@ ORDER BY
   wp_posts.topfit DESC, wp_posts.post_date DESC, wp_posts.ID DESC
 limit 8
 ";
-print("<!--[".date("Y-m-d H:i:s")."]-->");
+//print("<!--[".date("Y-m-d H:i:s")."]-->");
 $ret = $objDbConnect->query_fetch_arr($sql);
 //var_dump($ret);
 if (!empty($ret)){
@@ -406,9 +406,9 @@ if (!empty($ret)){
 				<div style="display: inline-block;width: 100%;">
 					<div style="display: block;width: 75px;float: left;">
 						<?php
-						print("<!--[ID:".$val["ID"]."]-->");
-						print("<!--[topfit:".$val["topfit"]."]-->");
-						print("<!--[post_date:".$val["post_date"]."]-->");
+						//print("<!--[ID:".$val["ID"]."]-->");
+						//print("<!--[topfit:".$val["topfit"]."]-->");
+						//print("<!--[post_date:".$val["post_date"]."]-->");
 						if ($val["status"] == 1){
 							echo '<img src="/img/news_icon02.png" alt="更新情報" />';
 						} else {
@@ -441,9 +441,9 @@ if (!empty($ret)){
 				<div style="display: inline-block;width: 100%;">
 					<div style="display: block;width: 75px;float: left;">
 						<?php
-						print("<!--[ID:".$val["ID"]."]-->");
-						print("<!--[topfit:".$val["topfit"]."]-->");
-						print("<!--[post_date:".$val["post_date"]."]-->");
+						//print("<!--[ID:".$val["ID"]."]-->");
+						//print("<!--[topfit:".$val["topfit"]."]-->");
+						//print("<!--[post_date:".$val["post_date"]."]-->");
 						if ($val["status"] == 1){
 							echo '<img src="/img/news_icon02.png" alt="更新情報" />';
 						} else {
@@ -679,7 +679,7 @@ if (!empty($ret)){
 	if($posts): foreach($posts as $post): setup_postdata($post);
 	?>
 	<div style="width:500px;background:#ffffff;color:#000000;margin:0px;padding:0px;font-size:12px;margin-bottom:15px;">
-	<?php echo $post->post_content ?>
+	<?php echo purify_html($post->post_content, 'general') ?>
 	</div>
 	<?php 
 	endforeach; endif;
@@ -695,7 +695,7 @@ if (!empty($ret)){
 	if($posts): foreach($posts as $post): setup_postdata($post);
 	?>
 	<div style="width:500px;background:#ffffff;color:#000000;margin:0px;padding:0px;font-size:12px;">
-	<?php echo $post->post_content ?>
+	<?php echo purify_html($post->post_content, 'general') ?>
 	</div>
 	<?php 
 	endforeach; endif;

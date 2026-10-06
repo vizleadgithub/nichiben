@@ -269,7 +269,7 @@ class Cms_information extends CI_Controller {
 		$this->form_validation->set_rules('information_type'    , $this->lang->line_or_def('common_information_type','種別')            , 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('information_title'   , $this->lang->line_or_def('common_title','タイトル')                   , 'trim|required');
 		$this->form_validation->set_rules('information_caption' , $this->lang->line_or_def('common_caption','説明')                     , 'trim');
-		//$this->form_validation->set_rules('information_url'     , $this->lang->line_or_def('common_url','URL')                          , '');
+		$this->form_validation->set_rules('information_url'     , $this->lang->line_or_def('common_url','URL')                          , 'trim|callback_url_check');
 		$this->form_validation->set_rules('information_open'    , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim|xss_clean|required|callback_datetime_check');
 		$this->form_validation->set_rules('information_close'   , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim|xss_clean|required|callback_datetime_check|callback_period_check[information_open]');
 		$this->form_validation->set_rules('information_topfit'  , $this->lang->line_or_def('common_information_topfit','先頭枠への固定表示')   , 'trim|xss_clean|numeric');
@@ -528,6 +528,28 @@ class Cms_information extends CI_Controller {
 		return $data['tags'];
 	}
 	
+	//----------------------------------------------
+	//URL形式チェック（http/https または サイト内パス(/から開始)のみ許可。javascript:等のスキームを拒否）
+	//----------------------------------------------
+	function url_check($url){
+		// load language
+		$this->lang->load('error');
+
+		//エラーメッセージ設定
+		$this->form_validation->set_message('url_check', $this->lang->line_or_def('error_url','%sはhttp://、https://から始まるURL、または/から始まるサイト内パスを入力してください。') );
+
+		//未入力は許可
+		if($url === '' || $url === NULL){
+			return TRUE;
+		}
+		//制御文字・空白を含むものは拒否
+		if(preg_match('/[\x00-\x20\x7f]/', $url)){
+			return FALSE;
+		}
+		//http/https の絶対URL、またはサイト内パス(//で始まるものは除く)のみ許可
+		return (preg_match('#^https?://[^/]#i', $url) === 1) || (preg_match('#^/(?!/)#', $url) === 1);
+	}
+
 	//----------------------------------------------
 	//日付形式チェック
 	//----------------------------------------------

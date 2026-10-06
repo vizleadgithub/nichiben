@@ -106,32 +106,6 @@
 							</td>
 						</tr>
 
-<!--
-						<tr>
-							<th><?= $this->lang->line_or_def('common_position_course','所属講座') ?></th>
-							<td >
-								<?php
-									$flg = FALSE;
-									if( isset($video['video_lectures_name']) ) {
-										foreach( $video['video_lectures_name'] as $name) { 
-											if($flg){	?>
-												,
-											<?php } ?>
-											<?=$name?>
-										<?php
-											$flg = TRUE;
-										}
-									}
-								?>
-							</td>
-						</tr>
-
-						<tr>
-							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td ><?=$video['video_caption']?>
-							</td>
-						</tr>
- -->
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_tag','タグ') ?></th>
@@ -193,23 +167,6 @@
 							</tr>
 						<?php endif; ?>
 
-<!--
-						<tr>
-							<th><?= $this->lang->line_or_def('common_local_reading_of_ipad','iPadのローカル閲覧') ?></th>
-							<td >
-								<?php if($video['local_reading_flag']=='0'): ?>
-									<?= $this->lang->line_or_def('common_forbid','禁止') ?>
-								<?php else: ?>
-									<?= $this->lang->line_or_def('common_admit','許可') ?>&nbsp;(<?=$video['local_reading_open']?>&nbsp;<?= $this->lang->line_or_def('common_range','～') ?>&nbsp;
-									<?php if($video['local_reading_close']==''): ?>
-										<?= $this->lang->line_or_def('common_no_limit','期限なし') ?>)
-									<?php else: ?>
-										<?=$video['local_reading_close']?>)
-									<?php endif; ?>
-								<?php endif; ?>
-							</td>
-						</tr>
- -->						
 						
 						<?php if($btn_kirikae_flg === 2): ?>
 						<tr>
@@ -243,35 +200,6 @@
 						</tr>
 						<?php endif; ?>
 						
-<!--
-						<?php if($btn_kirikae_flg === 2): ?>
-						<tr>
-							<th><?= $this->lang->line_or_def('common_chapter','チャプター') ?></th>
-							<td>
-							<?php if(count($chapter_data)>0): ?>
-								<table>
-									<tr>
-										<th width="120px"><?= $this->lang->line_or_def('common_chapter_time','チャプター時間') ?></th>
-										<th width="450px"><?= $this->lang->line_or_def('common_chapter_name','チャプター名称') ?></th>
-									</tr>
-								</table>
-								<div style="overflow-y: scroll;width: 640px;height: 200px;">
-									<table>
-									<?php foreach($chapter_data as $chapter) { ?>
-										<tr style="border: 1px #808080 solid; border-style: none none solid none ;	">
-											<td width="120px"><?= $chapter['chapter_time']; ?></td>
-											<td width="450px"><?= $chapter['chapter_name']; ?></td>
-										</tr>
-									<?php } ?>
-									</table>
-								</div>
-							<?php else: ?>
-								<?= $this->lang->line_or_def('common_no_chapter','チャプターなし') ?>
-							<?php endif; ?>
-							</td>
-						</tr>
-						<?php endif; ?>
- -->
 						
 					</table>
 					<?php if($video['parent_video_id']>0):?>

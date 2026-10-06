@@ -120,22 +120,25 @@ class AdminPager {
 			}
 		}
 
+		// href属性へ出力するため、URL部分(GET値を含み得る)をHTMLエスケープする
+		$url1 = htmlspecialchars((string)$this->pager_url, ENT_QUOTES, 'UTF-8');
+		$url2 = htmlspecialchars((string)$this->pager_url2, ENT_QUOTES, 'UTF-8');
 		$return = '';
 		$return.= '&nbsp;'."\n";
-		$return.= '<a href="'.$this->pager_url.'1'.$this->pager_url2.'">&lt;&lt;</a>&nbsp;'."\n";
-		$return.= '<a href="'.$this->pager_url.$arr["ppage"].$this->pager_url2.'">&lt;</a>&nbsp;'."\n";
+		$return.= '<a href="'.$url1.'1'.$url2.'">&lt;&lt;</a>&nbsp;'."\n";
+		$return.= '<a href="'.$url1.$arr["ppage"].$url2.'">&lt;</a>&nbsp;'."\n";
 		$temp_i = 0;
 		while( ($arr["start"]+$temp_i) <= $arr["end"] ){
 			if( ($arr["start"]+$temp_i) == $this->now_page ){
 				$return.= '<strong>'.$this->now_page.'</strong>&nbsp;';
 			} else {
-				$return.= '<a href="'.$this->pager_url.($arr["start"]+$temp_i).$this->pager_url2.'">'.($arr["start"]+$temp_i).'</a>&nbsp;';
+				$return.= '<a href="'.$url1.($arr["start"]+$temp_i).$url2.'">'.($arr["start"]+$temp_i).'</a>&nbsp;';
 			}
 			$temp_i += 1;
 		}
 		$return.= "\n";
-		$return.= '<a href="'.$this->pager_url.$arr["npage"].$this->pager_url2.'">&gt;</a>&nbsp;'."\n";
-		$return.= '<a href="'.$this->pager_url.$arr["max"].$this->pager_url2.'">&gt;&gt;</a>&nbsp;'."\n";
+		$return.= '<a href="'.$url1.$arr["npage"].$url2.'">&gt;</a>&nbsp;'."\n";
+		$return.= '<a href="'.$url1.$arr["max"].$url2.'">&gt;&gt;</a>&nbsp;'."\n";
 		$return.= '&nbsp;'."\n";
 		return $return;
 	}

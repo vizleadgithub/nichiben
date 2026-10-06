@@ -594,3 +594,10 @@ add_filter('xmlrpc_methods', function($methods) {
     unset($methods['pingback.ping']);
     return $methods;
 });
+
+// XSS対応(No.28): 投稿本文・抜粋は許可タグ方式(HTMLPurifier)で無害化して出力する
+function alf_purify_post_html($html) {
+	return purify_html($html, 'general');
+}
+add_filter('the_content', 'alf_purify_post_html', 99);
+add_filter('the_excerpt', 'alf_purify_post_html', 99);

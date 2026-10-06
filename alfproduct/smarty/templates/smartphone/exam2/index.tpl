@@ -46,10 +46,10 @@ margin-left:310px;
 						●設問<!--{$row_no}-->　<!--{$row.exam2_problem_name|escape}-->
 					</div>
 					<div class="problem_contents">
-						<!--{$row.problem_contents|escape|nl2br}-->
+						<!--{$row.problem_contents|purify_ethic_html|nl2br}-->
 					</div>
 					<div class="problem_contents">
-						<!--{$row.problem_note|escape|nl2br}-->
+						<!--{$row.problem_note|purify_ethic_html|nl2br}-->
 					</div>
 					<div class="problem_title">
 						●解答
@@ -61,7 +61,7 @@ margin-left:310px;
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
 									<div class="content1"><input type="radio" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no}-->" <!--{if $answered_list.$row_no.answer1==$row1.no}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
-									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
+									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
 							<!--{/foreach}-->
@@ -72,7 +72,7 @@ margin-left:310px;
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
 									<div class="content1"><input type="checkbox" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no}-->" <!--{if array_search($row1.no, $answered_list.$row_no.answer2)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
-									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|escape|nl2br}--></label></div>
+									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
 							<!--{/foreach}-->

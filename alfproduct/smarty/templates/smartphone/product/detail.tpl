@@ -2846,7 +2846,7 @@ a.test_btn_none{
 		<!--{/if}-->
 		<!--{if $product_list.contents != ''}-->
 			■備考<br />
-			<!--{$product_list.contents|escape|nl2br}-->
+			<!--{$product_list.contents|nl2br}-->
 		<!--{/if}-->
 	</div>
 

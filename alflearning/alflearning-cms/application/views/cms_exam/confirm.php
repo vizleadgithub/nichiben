@@ -709,7 +709,7 @@
 											<li class="confirm_ul_li_line" <?= ($exam['exam_answer_latest_flag'][$id]==0) ? 'name="not_latest"' : 'name="latest"' ; ?>>
 												<input type="hidden" name="answer_no[]" value='<?= $exam['answer_no'][$id]; ?>' />
 												<div class="confirm_ul_li_div_detail" style="width:150px;"><?= $exam['answer_date'][$id]; ?></div>
-												<div class="confirm_ul_li_div_detail" style="width:230px;"><?= $exam['answer_student_name'][$id]; ?></div>
+												<div class="confirm_ul_li_div_detail" style="width:230px;"><?= htmlspecialchars($exam['answer_student_name'][$id], ENT_QUOTES, 'UTF-8', false); ?></div>
 												<div class="confirm_ul_li_div_detail" style="width: 70px;"><?= $exam['answer_point_total'][$id]; ?>/<?= $exam['max_answer_point']; ?></div>
 												<div class="confirm_ul_li_div_detail" style="width: 70px;">
 													<? if($btn_kirikae_flg==2): ?>
