@@ -152,13 +152,7 @@ class Sso_update_profile extends CI_Controller {
 					$get_attribute['nongaijiopennamefamily'] = $profile_userInfo['openName_family']; // 公開氏(外字なし)
 					$get_attribute['nongaijiopennamefirst'] = $profile_userInfo['openName_first']; // 公開名(外字なし)
 					$get_attribute['membersection'] = $profile_userInfo['membershipType']; // 会員区分
-					error_log("--------------\n", 3, "/alflearning-data/test_log/sso.log");
-					error_log("[".date("Y-m-d H:i:s")."] uid=".$profile_userInfo['uid']."\n", 3, "/alflearning-data/test_log/sso.log");
-					error_log("[".date("Y-m-d H:i:s")."] memberNo=".$profile_userInfo['memberNo']."\n", 3, "/alflearning-data/test_log/sso.log");
-					error_log("[".date("Y-m-d H:i:s")."] affiliation=".$profile_userInfo['affiliation']."\n", 3, "/alflearning-data/test_log/sso.log");
-					error_log("[".date("Y-m-d H:i:s")."] affiliationCd=".$profile_userInfo['affiliationCd']."\n", 3, "/alflearning-data/test_log/sso.log");
-					error_log("[".date("Y-m-d H:i:s")."] membershipType=".$profile_userInfo['membershipType']."\n", 3, "/alflearning-data/test_log/sso.log");
-					error_log("[".date("Y-m-d H:i:s")."] registrationDate=".$profile_userInfo['registrationDate']."\n", 3, "/alflearning-data/test_log/sso.log");
+					error_log("[".date("Y-m-d H:i:s")."] update profile uid=".$profile_userInfo['uid']." memberNo=".$profile_userInfo['memberNo']."\n", 3, "/alflearning-data/test_log/sso.log");
 
 					if($profile_userInfo['registrationDate'] != ''){
 						$get_attribute['bengoshientrydate'] = str_replace('/', '', $profile_userInfo['registrationDate']); // 登録年月日（yyyymmdd 型）

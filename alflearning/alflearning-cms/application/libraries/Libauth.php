@@ -452,7 +452,6 @@ class Libauth
 				}
 				$row->teacher_auth = array_merge($this->defaultTeacherAuth, $teacher_auth);
 
-				log_message('debug', print_r($row, true));
 				
 				// Is password matched with hash in database ?
 
@@ -544,7 +543,6 @@ class Libauth
 				// Get Teacher Data
 				$row = $query->row();
 
-				log_message('debug', print_r($row, true));
 				
 				// Get School Name
 				$result = $row->school_name;
@@ -570,7 +568,6 @@ class Libauth
 			{
 				// Get Teacher Data
 				$row = $query->row_array();
-				log_message('debug', print_r($row, true));
 				
 				// Get School Name
 				$result = $row;
