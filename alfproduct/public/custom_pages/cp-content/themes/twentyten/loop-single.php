@@ -70,7 +70,7 @@ if ($cate_flg == 1){
 			<div style="background-color:#fcfcfc;border:solid 1px #ff0000;width:730px;">
 				<!-- <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>> -->
 					<div id="single_title" style="border:none;padding:10px 20px; width:680px;background: url(/img/lecture/h2_back_red.png) no-repeat 50% 95%;">
-						<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
+						<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></h3>
 					</div>
 					<div class="entry-content" style="padding:5px 20px; width:680px;">
 						<?php the_content(); ?>
@@ -86,7 +86,7 @@ if ($cate_flg == 1){
 			<div style="background-color:#fcfcfc;border:solid 1px #cccccc;width:730px;">
 				<!-- <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>> -->
 					<div id="single_title" style="border:none;padding:10px 20px; width:680px;">
-						<h3 class="entry-title" style="color:#579748;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
+						<h3 class="entry-title" style="color:#579748;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></h3>
 					</div>
 
 					<div class="entry-content" style="padding:5px 20px; width:680px;">
@@ -113,11 +113,11 @@ if ($cate_flg == 1){
 					<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'twentyten_author_bio_avatar_size', 60 ) ); ?>
 				</div><!-- #author-avatar -->
 				<div id="author-description">
-					<h2><?php printf( esc_attr__( 'About %s', 'twentyten' ), get_the_author() ); ?></h2>
+					<h2><?php printf( esc_html__( 'About %s', 'twentyten' ), esc_html( get_the_author() ) ); ?></h2>
 					<?php the_author_meta( 'description' ); ?>
 					<div id="author-link">
 						<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>">
-							<?php printf( __( 'View all posts by %s <span class="meta-nav">&rarr;</span>', 'twentyten' ), get_the_author() ); ?>
+							<?php printf( __( 'View all posts by %s <span class="meta-nav">&rarr;</span>', 'twentyten' ), esc_html( get_the_author() ) ); ?>
 						</a>
 					</div><!-- #author-link	-->
 				</div><!-- #author-description -->
@@ -135,7 +135,7 @@ if ($cate_flg == 1){
 			<div style="background-color:#fcfcfc;border:solid 1px #ff0000;width:730px;">
 				<!-- <div id="post-<?php the_ID(); ?>" <?php post_class(); ?>> -->
 				<div id="single_title" style="border:none;padding:10px 20px; width:680px;background: url(/img/lecture/h2_back_red.png) no-repeat 50% 95%;">
-					<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></h3>
+					<h3 class="entry-title" style="color:#ff0000;font-size:17px;font-weight:bold;margin:0;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></h3>
 				</div>
 				<div class="entry-content" style="padding:5px 20px; width:680px;">
 					<?php the_content(); ?>

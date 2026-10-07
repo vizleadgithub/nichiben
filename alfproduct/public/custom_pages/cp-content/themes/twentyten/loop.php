@@ -57,7 +57,7 @@
 	<?php /* How to display posts of the Gallery format. The gallery category is the old way. */ ?>
 	<?php if ( ( function_exists( 'get_post_format' ) && 'gallery' == get_post_format( $post->ID ) ) || in_category( _x( 'gallery', 'gallery category slug', 'twentyten' ) ) ) : ?>
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></a></h2>
 
 			<div class="entry-content">
 				<?php if ( post_password_required() ) : ?>
@@ -120,9 +120,9 @@
 			<div id="single_title" style="border:none;padding:10px 20px;width: 658px;">
 				<h3 class="entry-title" style="padding:0;margin:0;width: 658px;">
 					<?php if (!$disp_flg){ ?>
-						<span style="color:#579748;font-size:17px;font-weight:bold;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></span>
+						<span style="color:#579748;font-size:17px;font-weight:bold;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></span>
 					<?php } else { ?>
-						<a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8'); ?></a>
+						<a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'twentyten' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark" style="color:#579748;font-size:17px;font-weight:bold;"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></a>
 					<?php } ?>
 				</h3>
 			</div>

@@ -21,12 +21,12 @@ UPDATE
 SET  
   post_status = 'publish'
 WHERE  
-  AND post_name LIKE '%news%' 
+      post_name LIKE '%news%' 
   AND post_status = 'future'
   AND post_type='post' 
   AND post_date<='".date("Y-m-d H:i:s")."'
 ";
-$tempret = $objDbConnect->query_fetch($sql);
+$tempret = $objDbConnect->execute($sql);
 
 $ret = array();
 $where = "";
@@ -39,7 +39,7 @@ if (!$st_login_check){
 	$where.= " AND tbl_product.product_type = '2'";
 }
 $where.= " AND ( (tbl_product.start_date<='".date("Y-m-d")."' and tbl_product.end_date>='".date("Y-m-d")."')  OR  (tbl_product.start_date<='".date("Y-m-d")."' and tbl_product.end_date IS NULL)  OR  (tbl_product.start_date IS NULL and tbl_product.end_date>='".date("Y-m-d")."')  OR  (tbl_product.start_date IS NULL and tbl_product.end_date IS NULL)  ) ";
-}//+++++++++++++++++++++++
+//+++++++++++++++++++++++
 $sql = "
 SELECT 
   wp_posts.ID,
@@ -170,12 +170,12 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 				<div id="single_title" style="border:none;padding:10px 20px;width: 658px;">
 					<h3 class="entry-title" style="padding:0;margin:0;width: 658px;">
 						<?php if (!$disp_flg){ ?>
-							<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
+							<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8', false)); ?></span>
 						<?php } else { ?>
 							<?php if (safe_href($post["url"]) != ""){ ?>
-								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
+								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8', false)); ?></span><!--</a>-->
 							<?php } else { ?>
-								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
+								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8', false)); ?></span><!--</a>-->
 							<?php } ?>
 						<?php } ?>
 					</h3>

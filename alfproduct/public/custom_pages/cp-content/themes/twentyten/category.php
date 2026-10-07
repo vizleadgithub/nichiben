@@ -168,12 +168,12 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 				<div id="single_title" style="border:none;padding:10px 20px;width: 658px;">
 					<h3 class="entry-title" style="padding:0;margin:0;width: 658px;">
 						<?php if (!$disp_flg){ ?>
-							<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
+							<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8', false)); ?></span>
 						<?php } else { ?>
 							<?php if (safe_href($post["url"]) != ""){ ?>
-								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
+								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8', false)); ?></span><!--</a>-->
 							<?php } else { ?>
-								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
+								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8', false)); ?></span><!--</a>-->
 							<?php } ?>
 						<?php } ?>
 					</h3>

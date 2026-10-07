@@ -62,7 +62,7 @@ $mtb_product_flg = get_mtb_product_flg_icon();
 					$img_url = "/resize_image.php?image=noimage.jpg";
 				}
 				?>
-				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="<?php echo $img_url; ?>&width=140&height=117" alt="" /></a>
+				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="<?php echo htmlspecialchars($img_url, ENT_QUOTES, 'UTF-8'); ?>&width=140&height=117" alt="" /></a>
 			</div>
 			<div class="name" style="width:140px;height:170px;text-align:left;padding:5px;overflow:auto;">
 				<?php
@@ -76,7 +76,7 @@ $mtb_product_flg = get_mtb_product_flg_icon();
 						$sql = "SELECT T1.name FROM wp_terms AS T1 LEFT JOIN wp_term_taxonomy AS T2 ON T1.term_id = T2.term_id WHERE T1.term_id = '$term_id' AND T2.parent = 21";
 						$arr_wp_terms = $objDbConnect->query_fetch_arr($sql);
 						if ($arr_wp_terms){
-							echo '<div class="category_title_css">' . $arr_wp_terms[0]['name'] . '</div>';
+							echo '<div class="category_title_css">' . htmlspecialchars($arr_wp_terms[0]['name'], ENT_QUOTES, 'UTF-8') . '</div>';
 						}
 					}
 				}
@@ -104,7 +104,7 @@ $mtb_product_flg = get_mtb_product_flg_icon();
 				}
 				?>
 				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>" style="text-decoration:none;color:#3b2707;font-weight:bold;">
-				<?php if(mb_strlen($val['product_name'], 'UTF-8')>24){ echo mb_substr($val['product_name'],0,24,"UTF-8")."..."; } else { echo $val['product_name']; } ?><br />
+				<?php if(mb_strlen($val['product_name'], 'UTF-8')>24){ echo htmlspecialchars(mb_substr($val['product_name'],0,24,"UTF-8"), ENT_QUOTES, 'UTF-8')."..."; } else { echo htmlspecialchars($val['product_name'], ENT_QUOTES, 'UTF-8'); } ?><br />
 				単品価格：<?php if($val['price'] == 0){echo '無料';}else{echo number_format($val['price'] + tax_cal_yen($val['price'])).'円';} ?><br />
 				掲載期間：
 				<?php

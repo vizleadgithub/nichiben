@@ -18,9 +18,9 @@
 
 				<!-- <div id="post-<?php the_ID(); ?>" <?php post_class(); ?> style="width:100%;"> -->
 					<?php if ( is_front_page() ) { ?>
-						<h2 class="entry-title"><?php the_title(); ?></h2>
+						<h2 class="entry-title"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></h2>
 					<?php } else { ?>
-						<!--<h1 class="entry-title"><?php the_title(); ?></h1>-->
+						<!--<h1 class="entry-title"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></h1>-->
 					<?php } ?>
 
 					<div class="entry-content">

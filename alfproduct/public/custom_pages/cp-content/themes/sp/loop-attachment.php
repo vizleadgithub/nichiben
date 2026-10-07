@@ -18,14 +18,14 @@
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 
 				<?php if ( ! empty( $post->post_parent ) ) : ?>
-					<p class="page-title"><a href="<?php echo get_permalink( $post->post_parent ); ?>" title="<?php esc_attr( printf( __( 'Return to %s', 'twentyten' ), get_the_title( $post->post_parent ) ) ); ?>" rel="gallery"><?php
+					<p class="page-title"><a href="<?php echo get_permalink( $post->post_parent ); ?>" title="<?php echo esc_attr( sprintf( __( 'Return to %s', 'twentyten' ), get_the_title( $post->post_parent ) ) ); ?>" rel="gallery"><?php
 						/* translators: %s - title of parent post */
-						printf( __( '<span class="meta-nav">&larr;</span> %s', 'twentyten' ), get_the_title( $post->post_parent ) );
+						printf( __( '<span class="meta-nav">&larr;</span> %s', 'twentyten' ), htmlspecialchars( get_the_title( $post->post_parent ), ENT_QUOTES, 'UTF-8', false ) );
 					?></a></p>
 				<?php endif; ?>
 
 				<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					<h2 class="entry-title"><?php the_title(); ?></h2>
+					<h2 class="entry-title"><?php echo htmlspecialchars(get_the_title(), ENT_QUOTES, 'UTF-8', false); ?></h2>
 
 					<div class="entry-meta">
 						<?php

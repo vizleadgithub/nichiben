@@ -25,8 +25,8 @@ $ret = $objDbConnect->query_fetch_arr($sql);
 <?php } else { ?>
 	<?php foreach($ret as $val){ ?>
 		<div style="width:125px;height:160px;float:left;margin:0;text-align:center;">
-			<div class="imagebd"><a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="/resize_image.php?image=<?php echo $val['thumbnail']; ?>&width=100&height=100" width="100%" alt="" /></a></div>
-			<div class="name" style="width:100px;text-align:left;padding:5px;"><a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><?php if(mb_strlen($val['product_name'], 'UTF-8')>14){ echo mb_substr($val['product_name'],0,14,"UTF-8")."..."; } else { echo $val['product_name']; } ?></a></div>
+			<div class="imagebd"><a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="/resize_image.php?image=<?php echo htmlspecialchars($val['thumbnail'], ENT_QUOTES, 'UTF-8'); ?>&width=100&height=100" width="100%" alt="" /></a></div>
+			<div class="name" style="width:100px;text-align:left;padding:5px;"><a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><?php if(mb_strlen($val['product_name'], 'UTF-8')>14){ echo htmlspecialchars(mb_substr($val['product_name'],0,14,"UTF-8"), ENT_QUOTES, 'UTF-8')."..."; } else { echo htmlspecialchars($val['product_name'], ENT_QUOTES, 'UTF-8'); } ?></a></div>
 		</div>
 	<?php } ?>
 <?php } ?>
