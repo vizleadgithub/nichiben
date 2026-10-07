@@ -177,7 +177,7 @@
 												<?php if( $class_material['kinds'] === $this->lang->line_or_def('common_material','資料') ): ?>
 													<?= htmlspecialchars( $class_material['kinds'], ENT_QUOTES, 'UTF-8', false)  ?>
 												<?php else: ?>
-													<a href="" onclick = "window.open('/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_material['class_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/', 'imgwindow', 'width=846,height=624, menubar=no, toolbar=no, scrollbars=yes, location=no, status=no'); return false;">
+													<a href="" onclick = "window.open('/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_material['class_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8', false) ?>/', 'imgwindow', 'width=846,height=624, menubar=no, toolbar=no, scrollbars=yes, location=no, status=no'); return false;">
 													<?= htmlspecialchars( $class_material['kinds'], ENT_QUOTES, 'UTF-8', false) ?></a>
 												<?php endif; ?>
 											</td>

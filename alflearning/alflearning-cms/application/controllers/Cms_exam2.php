@@ -67,7 +67,7 @@ class Cms_exam2 extends CI_Controller {
 		$per_page = $this->config->item('pagination_per_page');
 
 		$this->form_validation->set_rules('s_cource'    , $this->lang->line_or_def('common_course_name','講座名')    , 'trim');
-		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim');
 		$this->form_validation->run();
 
 		//資料モデル読み込み
@@ -1219,7 +1219,7 @@ class Cms_exam2 extends CI_Controller {
 										// 選択した番号と一致した内容を出力
 										if( in_array( $line_contents['no'], $array_exam2_answer_contents) ){
 											
-											$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), $line_contents['word']);
+											$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8', false));
 											//$line_contents['word'] = $line_contents['word'];
 										
 											if($temp != '') $temp .= "<br/>";
@@ -1231,7 +1231,7 @@ class Cms_exam2 extends CI_Controller {
 										//$answer_contents_correct[$i] = $line_contents['correct'];
 									}
 								}elseif($exam2_answer['answer_kind']==3){
-									$temp = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), $exam2_answer['exam2_answer_contents']);
+									$temp = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam2_answer['exam2_answer_contents'], ENT_QUOTES, 'UTF-8', false));
 									//$temp = $exam2_answer['exam2_answer_contents'];
 								}
 								$data['exam2_answer'][$idx]['exam2_answer_contents'][$idx_detail] = $temp;
@@ -2594,6 +2594,7 @@ class Cms_exam2 extends CI_Controller {
 					//echo json_encode('update_count_error');
 					$res["msg"] = 'update_count_error';
 					$res["count"] = $update_count;
+					header('Content-Type: application/json; charset=utf-8');
 					echo json_encode($res);
 					exit;
 				}
@@ -2616,6 +2617,7 @@ class Cms_exam2 extends CI_Controller {
 				)); 
 			$res["msg"] = 'OK';
 			$res["count"] = $arr_exam2_answer['update_count']+1;
+			header('Content-Type: application/json; charset=utf-8');
 			echo json_encode($res);
 			exit;
 		}catch(Exception $e){ 

@@ -60,7 +60,7 @@ margin-left:310px;
 							<!--{foreach name=loop1 from=$row.answer_contents_select.answer_contents item="row1" key="key1"}-->
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
-									<div class="content1"><input type="radio" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no}-->" <!--{if $answered_list.$row_no.answer1==$row1.no}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
+									<div class="content1"><input type="radio" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no|escape}-->" <!--{if $answered_list.$row_no.answer1==$row1.no}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
 									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
@@ -71,7 +71,7 @@ margin-left:310px;
 							<!--{foreach name=loop1 from=$row.answer_contents_select.answer_contents item="row1" key="key1"}-->
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
-									<div class="content1"><input type="checkbox" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no}-->" <!--{if array_search($row1.no, $answered_list.$row_no.answer2)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
+									<div class="content1"><input type="checkbox" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no|escape}-->" <!--{if array_search($row1.no, $answered_list.$row_no.answer2)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
 									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
@@ -93,7 +93,7 @@ margin-left:310px;
 			
 			<div style="text-align:center;width:100%;display:block;height:auto;">
 				<div style="text-align:center;margin:0 auto;width:520px;display:block;height:auto;">
-					<a style="float:left; margin-left:0;    margin-right:10px;" class="btn" href="javascript:void(0)" onclick="pop_get_html_sub('/exam2/answer_check.php?e2id=<!--{$arr_list.exam2_id|escape:'javascript'}-->&pid=<!--{$pid|escape:'javascript'}-->','exam2Form')">次へ</a>
+					<a style="float:left; margin-left:0;    margin-right:10px;" class="btn" href="javascript:void(0)" onclick="pop_get_html_sub('/exam2/answer_check.php?e2id=<!--{$arr_list.exam2_id|escape:'javascript'|escape}-->&pid=<!--{$pid|escape:'javascript'|escape}-->','exam2Form')">次へ</a>
 					<a style="float:right;margin-left:10px; margin-right:0;" class="btn" href="javascript:void(0)" onclick="pop_close()">閉じる</a>
 				</div>
 			</div>

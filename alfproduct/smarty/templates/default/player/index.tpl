@@ -70,7 +70,7 @@ filter: alpha(opacity=70);		/* ie lt 8 */
 
 		<!--{* // 初期化 *}-->
 		//+++++++++++++++++++++++++++
-		var video_codec_type ="<!--{$codec}-->";
+		var video_codec_type ="<!--{$codec|escape:'javascript'}-->";
 		//+++++++++++++++++++++++++++
 		var pop_up_time = 1200;
 		var pop_stop_time = 1260;
@@ -824,8 +824,8 @@ filter: alpha(opacity=70);		/* ie lt 8 */
 		}
 	</script>
 	
-	<!-- <!--{$get_alf_player_msg1}--> -->
-	<!-- <!--{$get_alf_player_msg2}--> -->
+	<!-- <!--{$get_alf_player_msg1|escape}--> -->
+	<!-- <!--{$get_alf_player_msg2|escape}--> -->
 	
 	<!--{$player_msg}-->
 	

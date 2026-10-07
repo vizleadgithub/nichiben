@@ -1069,7 +1069,7 @@ class Cms_exam_problem_import extends CI_Controller {
 			unset($value);
 
 			mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $data);
-			fputcsv($fp, $data);
+			fputcsv($fp, array_map('csv_formula_safe', $data));
 		}
 		
 		fclose($fp);

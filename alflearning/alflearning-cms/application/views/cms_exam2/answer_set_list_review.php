@@ -72,7 +72,7 @@
 										<?php if( isset($student["info"]) ) { ?>
 											<?php if( isset($student["info"][0]) ) { ?>
 												<textarea id="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?php if(isset($export_data_review[$student['info'][0]['student_id']])){ ?><?= htmlspecialchars( $export_data_review[$student['info'][0]['student_id']], ENT_QUOTES, 'UTF-8', false) ?><?php } ?></textarea>
-												<input type="button" id="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" onclick="update_exam2_answer_review_contents('<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>')" value="更新">
+												<input type="button" id="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" onclick="update_exam2_answer_review_contents('<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>')" value="更新">
 											<?php } ?>
 										<?php } ?>
 									</td>
@@ -148,8 +148,8 @@
 function update_exam2_answer_review_contents(student_id){
 	var hostUrl= '/cms_exam2/update_exam2_answer_review_contents';
 	var param1 = student_id;
-	var param2 = <?= htmlspecialchars( $exam2_id, ENT_QUOTES, 'UTF-8') ?>;
-	var param3 = <?= htmlspecialchars( $product_id, ENT_QUOTES, 'UTF-8') ?>;
+	var param2 = <?= htmlspecialchars( $exam2_id, ENT_QUOTES, 'UTF-8', false) ?>;
+	var param3 = <?= htmlspecialchars( $product_id, ENT_QUOTES, 'UTF-8', false) ?>;
 	var param4 = $("#exam2_answer_review_contents_"+student_id).val();
 	$.ajax({
 		url: hostUrl,
@@ -192,8 +192,8 @@ function set_answer_list(){
 	// エラーチェック
 	<?php if( isset($export_data[0]["student"]) ) { ?>
 		<?php foreach( $export_data[0]["student"] as $student ) { ?>
-			if($("#student_id_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>").prop("checked")){
-				if($("#exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>").val()==""){
+			if($("#student_id_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>").prop("checked")){
+				if($("#exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>").val()==""){
 					$("#error_message td").html("公開するレビュー内容が空欄です。");
 					$("#error_message").show();
 					location.href = "#error_message";

@@ -14,7 +14,7 @@ if( !$arrTemp ) {
 	exit();
 } else {
 	$access_id = $arrTemp["access_id"];
-	$arr = unserialize($arrTemp["exec_return"]);
+	$arr = unserialize($arrTemp["exec_return"], ['allowed_classes' => false]);
 }
 ?>
 <html>
@@ -24,16 +24,16 @@ if( !$arrTemp ) {
 <!--<body OnLoad='OnLoadEvent();'>-->
 <body>
 end<br>
-注文番号：<?php print($order_id); ?><br>
-支払い期限日時：<?php print(substr( $arr["PaymentTerm"], 0, 4 )); ?>/<?php print(substr( $arr["PaymentTerm"], 4, 2 )); ?>/<?php print(substr( $arr["PaymentTerm"], 6, 2 )); ?> <?php print(substr( $arr["PaymentTerm"], 8, 2 )); ?>:<?php print(substr( $arr["PaymentTerm"], 10, 2 )); ?><br>
+注文番号：<?php print(htmlspecialchars((string)($order_id), ENT_QUOTES, 'UTF-8')); ?><br>
+支払い期限日時：<?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 0, 4 )), ENT_QUOTES, 'UTF-8')); ?>/<?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 4, 2 )), ENT_QUOTES, 'UTF-8')); ?>/<?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 6, 2 )), ENT_QUOTES, 'UTF-8')); ?> <?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 8, 2 )), ENT_QUOTES, 'UTF-8')); ?>:<?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 10, 2 )), ENT_QUOTES, 'UTF-8')); ?><br>
 <!--
-<form name="SelectPageCall" action="<?php print( $id_payment_url ); ?>" method="POST">
-<input type="hidden" name="AccessID" value="<?php print( $access_id ); ?>">
+<form name="SelectPageCall" action="<?php print(htmlspecialchars((string)($id_payment_url), ENT_QUOTES, 'UTF-8')); ?>" method="POST">
+<input type="hidden" name="AccessID" value="<?php print(htmlspecialchars((string)($access_id), ENT_QUOTES, 'UTF-8')); ?>">
 iD決済開始画面に遷移します。<br>
 <input type="submit" value="続行">
 </form>
 -->
-<a href="<?php print($id_payment_url."?aid=".$access_id); ?>"><?php print($id_payment_url."?aid=".$access_id); ?></a><br>
+<a href="<?php print(htmlspecialchars((string)($id_payment_url."?aid=".$access_id), ENT_QUOTES, 'UTF-8')); ?>"><?php print(htmlspecialchars((string)($id_payment_url."?aid=".$access_id), ENT_QUOTES, 'UTF-8')); ?></a><br>
 <img src="/alfproducts/qr/qr_img.php?d=<?php print(urlencode($id_payment_url."?aid=".$access_id)); ?>&e=M&s=5&v=6&t=PNG"><br>
 iDアプリが利用可能な端末から、QRコードを読み取り、支払いを行ってください。
 </body>

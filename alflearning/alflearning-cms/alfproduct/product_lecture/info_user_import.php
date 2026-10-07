@@ -123,6 +123,7 @@ $aid = '';
 //$atype = '';
 if(isset($_POST["aid"])){
 	$aid = $_POST["aid"];
+	if (!preg_match('/^[0-9]*$/', (string)$aid)) { $aid = ''; }  // 数値以外は無視(SQLへの混入防止)
 }
 //if(isset($_POST["atype"])){
 //	$atype = $_POST["atype"];

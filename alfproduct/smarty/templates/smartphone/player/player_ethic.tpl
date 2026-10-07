@@ -810,8 +810,8 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 		}
 	</script>
 	
-	<!-- <!--{$get_alf_player_msg1}--> -->
-	<!-- <!--{$get_alf_player_msg2}--> -->
+	<!-- <!--{$get_alf_player_msg1|escape}--> -->
+	<!-- <!--{$get_alf_player_msg2|escape}--> -->
 	
 	<!--{$player_msg}-->
 	

@@ -57,7 +57,8 @@ if (isset($_GET['pid']) && isset($_GET['vid']) && isset($_GET['cftname'])){
 	$bookmark_time_sec = 0;
 	
 	if(!cmCheckInput($pid, 'CK_NUM') && !cmCheckInput($vid, 'CK_NUM')){
-		if (strpos($cftname, 'contents_free_time') !== false){
+		// カラム名としてSQLに使うため、contents_free_time + 数字 のみ許可する(SQLへの混入を防ぐ)
+		if (preg_match('/^contents_free_time[0-9]*$/', (string)$cftname)){
 			// プレイヤーの取得
 			$sql = "SELECT idkey FROM video WHERE video_id='$vid'";
 			$arr_ckey_list = $objDbConnect->query_fetch($sql);
@@ -663,7 +664,7 @@ function iPhoneBuy(){
 	</script>
 </head>
 <body onunload="" style="margin:0;padding:0;">
-	<form name="buyForm" action="https://<?php echo $_SERVER['SERVER_NAME']; ?>/settlement/index.php" method="post">
+	<form name="buyForm" action="https://<?php echo htmlspecialchars($_SERVER['SERVER_NAME'], ENT_QUOTES, 'UTF-8'); ?>/settlement/index.php" method="post">
 		<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
 	</form>
 	

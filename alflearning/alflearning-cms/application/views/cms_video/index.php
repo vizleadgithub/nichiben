@@ -89,9 +89,9 @@
 							<tr <?php if($link_kind==1): ?> class="video_re_upload" <?php endif; ?> >
 								<td class="tdc">
 									<?php if($link_kind==1):  ?>
-										<a href="/cms_video/newdata/<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8', false) ?></a>
+										<a href="/cms_video/newdata/<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8', false) ?>/"><?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8', false) ?></a>
 									<? else: ?>
-										<a href="/cms_video/detail/<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8', false) ?></a>
+										<a href="/cms_video/detail/<?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8', false) ?>/"><?= htmlspecialchars( $video['video_id'], ENT_QUOTES, 'UTF-8', false) ?></a>
 									<? endif; ?>
 								</td>
 								

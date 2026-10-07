@@ -290,6 +290,7 @@ if( $search_monthly=="" ){
 	header("Content-Type: text/octet-stream");
 	header("Content-Disposition: attachment; filename=amount_product_".date("YmdHis").".csv");
 
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("商品ID,商品名,商品コード,販売単価,販売数,合計,\r\n", "SJIS", "UTF-8");
 	for($i=0;$i<count($ret);$i++){
 		echo mb_convert_encoding('"'. $ret[$i]["product_id"]    . '",',  "SJIS",  "UTF-8");
@@ -315,6 +316,7 @@ if( $search_monthly=="" ){
 	header("Content-Type: text/octet-stream");
 	header("Content-Disposition: attachment; filename=amount_product_monthly_".date("YmdHis").".csv");
 
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("月,販売数,合計,\r\n", "SJIS", "UTF-8");
 	for($i=0;$i<count($ret);$i++){
 		echo mb_convert_encoding('"' . $ret[$i]["buy_y"]."/".$ret[$i]["buy_m"] . '",',  "SJIS", "UTF-8");

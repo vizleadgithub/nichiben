@@ -23,7 +23,8 @@ class AlfSession extends Smarty {
 //var_dump($ci_session);
 		if(isset($_COOKIE["ci_session"])){
 			//$sql = "SELECT * FROM ci_sessions WHERE session_id LIKE '".$arr_cookie["session_id"]."'";
-			$sql = "SELECT * FROM ci_sessions WHERE id LIKE '".$ci_session."'";
+			// クッキー値はそのまま使わず、エスケープして完全一致で検索する(LIKEのワイルドカード・SQL文字列の混入を防ぐ)
+			$sql = "SELECT * FROM ci_sessions WHERE id = '".mysqli_real_escape_string($objDbConnect->connect, (string)$ci_session)."'";
 			$ret = $objDbConnect->query_fetch_arr($sql);
 			if(0<count($ret)){
 				$temp = array();

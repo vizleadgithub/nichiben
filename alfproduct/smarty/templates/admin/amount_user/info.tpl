@@ -19,7 +19,7 @@
 		<tr>
 			<th style="">登録年月日</th>
 			<td style="">
-				<!--{$arr_student.regist_date}-->
+				<!--{$arr_student.regist_date|escape}-->
 			</td>
 		</tr>
 		<tr>

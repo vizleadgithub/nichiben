@@ -398,13 +398,13 @@
 			/* アンケートに所属する受講者情報の取得 */
 			<?php if( isset($exam2['exam2_students']) ) {
 				foreach( $exam2['exam2_students'] as $lecture) { ?>
-					students_checked[<?= htmlspecialchars( $lecture, ENT_QUOTES, 'UTF-8') ?>] = true;
+					students_checked[<?= (int)$lecture ?>] = true;
 			<?php } } ?>
 			
 			/* 講座に所属する受講者・設問の表示（初期表示） */
 			<?php $cource_id_list = implode('-', $exam2['exam2_lectures']); ?>
-			//ajax_search_cource_students("<?= htmlspecialchars( $cource_id_list, ENT_QUOTES, 'UTF-8') ?>");
-			ajax_search_cource_exam2_problems("<?= htmlspecialchars( $cource_id_list, ENT_QUOTES, 'UTF-8') ?>");
+			//ajax_search_cource_students(...);
+			ajax_search_cource_exam2_problems(<?= json_encode((string)$cource_id_list, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) ?>);
 			
 			/* チェックボックスと全選択ボタン連動（受講者） */
 			$('#student_list').click(function (){

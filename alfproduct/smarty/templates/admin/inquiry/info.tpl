@@ -105,19 +105,19 @@
 			
 			function delete_item(msg){
 				if(window.confirm( msg )){
-					location.href = "delete.php?iid=<!--{$iid|escape}-->";
+					location.href = "delete.php?iid=<!--{$iid|escape:'javascript'}-->";
 				}
 			}
 			function edit_item(){
-				location.href ="edit.php?iid=<!--{$iid|escape}-->";
+				location.href ="edit.php?iid=<!--{$iid|escape:'javascript'}-->";
 			}
 			function status_item(){
-				location.href ="status.php?iid=<!--{$iid|escape}-->";
+				location.href ="status.php?iid=<!--{$iid|escape:'javascript'}-->";
 			}
 		</script>
 		<form>
 		<div style="width:45%;float:left;text-align:right;">
-			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
+			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape:'javascript'|escape}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
 		</div>
 		<div style="width:10%;float:left;text-align:center;">&nbsp;
 			<!--{*<a href="javascript:void(0);" onclick="edit_item();return false;" /><img src="/alfproduct/images/btn_revise2.png"></a>*}-->
@@ -136,19 +136,19 @@
 			
 			function delete_item(msg){
 				if(window.confirm( msg )){
-					location.href = "delete.php?iid=<!--{$mid|escape}-->";
+					location.href = "delete.php?iid=<!--{$mid|escape:'javascript'}-->";
 				}
 			}
 			
 			function edit_item(){
-				location.href ="edit.php?iid=<!--{$iid|escape}-->";
+				location.href ="edit.php?iid=<!--{$iid|escape:'javascript'}-->";
 			}
 			function status_item(){
-				location.href ="status.php?iid=<!--{$iid|escape}-->";
+				location.href ="status.php?iid=<!--{$iid|escape:'javascript'}-->";
 			}
 		</script>
 		<form>
-			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
+			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape:'javascript'|escape}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
 		</form>
 		<!--{/if}-->
 	</div>

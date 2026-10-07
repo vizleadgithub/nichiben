@@ -86,6 +86,7 @@ exit();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if( isset($_GET["aid"]) && !empty($_GET["aid"]) ){
 	$aid = $_GET["aid"];
+	if (!preg_match('/^[0-9]*$/', (string)$aid)) { $aid = ''; }  // 数値以外は無視(SQLへの混入防止)
 } else {
 	$aid = '';
 }
@@ -1518,7 +1519,7 @@ if( $pid=="" ){
 		"受付期間(終了)",
 	];
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 
@@ -1555,7 +1556,7 @@ if( $pid=="" ){
 		$row[] = trim($ret[$i]["end_date"] );
 
 		mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-		fputcsv($fp, $row);
+		fputcsv($fp, array_map('csv_formula_safe', $row));
 		fflush($fp); // 出力をフラッシュ
 
 	}
@@ -1582,7 +1583,7 @@ if( $pid=="" ){
 	$row[] = '商品名';
 	$row[] = $arr_product["product_name"];
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 
@@ -1590,7 +1591,7 @@ if( $pid=="" ){
 	$row[] = '商品コード';
 	$row[] = $arr_product["product_code"];
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 	$row = [];
@@ -1617,21 +1618,21 @@ if( $pid=="" ){
 		$row[] = 'パスポート';
 	}
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 	$row = [];
 	$row[] = '弁護士会';
 	$row[] = $arr_product["bar_association_branch_name"];
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 	$row = [];
 	$row[] = '実施日';
 	$row[] = $arr_product["dates"];
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 	$row = [];
@@ -1654,7 +1655,7 @@ if( $pid=="" ){
 	} elseif ($arr_product["product_type_add"]=="4"){
 	}
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 	$row = [];
@@ -1662,12 +1663,12 @@ if( $pid=="" ){
 	$row[] = $arr_product["start_date"];
 	$row[] = $arr_product["end_date"];
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 	$row = [];
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 	$row = [];
@@ -1707,7 +1708,7 @@ if( $pid=="" ){
 		}
 	}
 	mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-	fputcsv($fp, $row);
+	fputcsv($fp, array_map('csv_formula_safe', $row));
 	fflush($fp); // 出力をフラッシュ
 
 	for($i=0;$i<count($arr_order);$i++){
@@ -1846,7 +1847,7 @@ if( $pid=="" ){
 		//+++++++++++++++++++++++++++++++++++++++++++++
 		//+++++++++++++++++++++++++++++++++++++++++++++
 		mb_convert_variables('SJIS-WIN', 'UTF-8', $row);
-		fputcsv($fp, $row);
+		fputcsv($fp, array_map('csv_formula_safe', $row));
 		fflush($fp); // 出力をフラッシュ
 		//+++++++++++++++++++++++++++++++++++++++++++++
 	}

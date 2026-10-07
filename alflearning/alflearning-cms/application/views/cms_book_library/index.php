@@ -71,7 +71,7 @@
 							<?php foreach($book_library_list as $book_library) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_book_library/detail/<?= htmlspecialchars( $book_library['book_library_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $book_library['book_library_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><a href="/cms_book_library/detail/<?= htmlspecialchars( $book_library['book_library_id'], ENT_QUOTES, 'UTF-8', false) ?>/"><?= htmlspecialchars( $book_library['book_library_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td><?= htmlspecialchars( $book_library['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td><?= htmlspecialchars( $book_library['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<?php if($book_library['status'] == 1){ ?>

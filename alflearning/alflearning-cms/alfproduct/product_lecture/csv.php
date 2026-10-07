@@ -61,6 +61,7 @@ $aid = '';
 //$atype = '';
 if(isset($_GET["aid"])){
 	$aid = $_GET["aid"];
+	if (!preg_match('/^[0-9]*$/', (string)$aid)) { $aid = ''; }  // 数値以外は無視(SQLへの混入防止)
 }
 //if(isset($_REQUEST["atype"])){
 //	$atype = $_REQUEST["atype"];
@@ -132,6 +133,7 @@ if ($type == 'info') {
 	
 	$ret = _get_product_lecture_info($objDbConnect, $pid, $login_bar_association_id, $nichibenren_flg);
 	
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("弁護士会支部ID,申込期限,WEB受付,弁護士会名/支部名,定員,申込数,受講数,受講率\r\n", "SJIS", "UTF-8");
 	foreach ($ret as $val){
 		// 各項目の整形
@@ -183,6 +185,7 @@ else if ($type == 'info_user') {
 	}
 	
 	//echo mb_convert_encoding("受付日,ステイタス,受講,WEB,登録番号,氏名,FP,価格\r\n", "SJIS", "UTF-8");
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("受付日,ステイタス,受講,登録番号,氏名,所属弁護士会,申込FP,$fp_title,価格\r\n", "SJIS", "UTF-8");
 	foreach ($ret as $val){
 		// 各項目の整形
@@ -257,6 +260,7 @@ else if ($type == 'info_user_list') {
 		$fp_title = '現在FP';
 	}
 	
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("チェック,登録番号,氏名,申込FP,$fp_title,ステイタス\r\n", "SJIS", "UTF-8");
 	foreach ($ret as $val){
 		// 各項目の整形
@@ -294,6 +298,7 @@ else {
 }
 
 /*
+$ret = csv_safe_rows($ret, true);
 echo mb_convert_encoding("商品CD,商品名,商品カテゴリ,販売単価,販売数,合計\r\n", "SJIS", "UTF-8");
 for($i=0;$i<count($ret);$i++){
 	echo mb_convert_encoding('"' . $ret[$i]["product_code"] . '","' . $ret[$i]["product_name"] . '",', "SJIS", "UTF-8");

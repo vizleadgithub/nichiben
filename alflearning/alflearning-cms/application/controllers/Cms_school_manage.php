@@ -57,8 +57,8 @@ class Cms_school_manage extends CI_Controller
 		
 		//検証ルールの設定
 		$this->form_validation->set_rules('s_school_id'   , $this->lang->line_or_def('common_id','ID')                 , 'trim');
-		$this->form_validation->set_rules('s_school_name' , $this->lang->line_or_def('common_school_name','学校名')    , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_free_word'   , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_school_name' , $this->lang->line_or_def('common_school_name','学校名')    , 'trim');
+		$this->form_validation->set_rules('s_free_word'   , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim');
 		$this->form_validation->run();	//バリデーション実行（その実xss対策）
 		
 		//モデル読み込み
@@ -808,7 +808,7 @@ class Cms_school_manage extends CI_Controller
 					(isset($school['book_library_stream'])	? round($school['book_library_stream'] / (1024 * 1024), 2).'M'	: 0),
 				);
 				mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $data);
-				fputcsv($fp, $data);
+				fputcsv($fp, array_map('csv_formula_safe', $data));
 			}
 			fclose($fp);
 		}

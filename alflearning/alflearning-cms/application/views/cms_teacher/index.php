@@ -80,7 +80,7 @@
 							<?php foreach($teacher_list as $teacher) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td class="tdc"><a href="/cms_teacher/detail/<?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td class="tdc"><a href="/cms_teacher/detail/<?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td class="tdc"><?= htmlspecialchars( $teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td class="tdc">
 										<?= htmlspecialchars( $teacher['teacher_email'], ENT_QUOTES, 'UTF-8', false) ?>

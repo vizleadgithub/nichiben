@@ -90,7 +90,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 }
 
 if( isset( $_GET["post_data"]) && $_GET["post_data"] != "" ){
-	$temp = unserialize( $_GET["post_data"] );
+	$temp = unserialize( $_GET["post_data"], ['allowed_classes' => false] );
 	$temp_y = trim( $_GET["buy_y"] );
 	$temp_m = trim( $_GET["buy_m"] );
 	$temp_d = date("t", mktime(0, 0, 0, $temp_m, 1, $temp_y));

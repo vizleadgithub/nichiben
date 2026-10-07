@@ -131,7 +131,7 @@
 						<tr>
 							<th style="vertical-align:middle;"><?= '';//$this->lang->line_or_def('common_photo','写真') ?></th>
 							<td >
-								<img src="<?='';//site_url('master_photo/thumbnail/'. htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8') )?>" height="80" width="80" border="1">
+								<img src="<?='';//site_url('master_photo/thumbnail/'. htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8', false) )?>" height="80" width="80" border="1">
 							</td>
 						</tr>
 					 -->
@@ -140,16 +140,16 @@
 						<?php
 							switch($btn_kirikae_flg){
 								case 1://修正画面
-									print "<input type='image' src='/static/image/btn_back.png' onClick='edit_item(". htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8').");return false;' />";
+									print "<input type='image' src='/static/image/btn_back.png' onClick='edit_item(". htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8', false).");return false;' />";
 									print "<input type='image' src='/static/image/btn_ok.png'>";
 									break;
 									
 								case 2://詳細画面
-									print '<a href="#" onClick='."'".'location.href = "'. htmlspecialchars( $teacher['history_back_url'], ENT_QUOTES, 'UTF-8').'";return false;'."'".' style="display:inline-block;margin: 0 15px;text-decoration: none;font-weight: bold;color:white; text-align:center;vertical-align: middle; width:80px; height:28px;background: url(/static/image/btn_gray.png) no-repeat;font-size:13px;line-height: 30px;">'.$this->lang->line_or_def('common_','一覧に戻る').'</a>';
+									print '<a href="#" onClick='."'".'location.href = "'. htmlspecialchars( $teacher['history_back_url'], ENT_QUOTES, 'UTF-8', false).'";return false;'."'".' style="display:inline-block;margin: 0 15px;text-decoration: none;font-weight: bold;color:white; text-align:center;vertical-align: middle; width:80px; height:28px;background: url(/static/image/btn_gray.png) no-repeat;font-size:13px;line-height: 30px;">'.$this->lang->line_or_def('common_','一覧に戻る').'</a>';
 								//	print "<input type='image' src='/static/image/btn_back.png' onClick='location.href = \"".site_url('cms_teacher')."\";return false;' />";
-									print "<input type='image' src='/static/image/btn_delete.png' onClick='delete_item(". htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8').',"'.$this->lang->line_or_def('msg_delete','本当に削除してもよろしいですか？').'"'.");return false' />";
+									print "<input type='image' src='/static/image/btn_delete.png' onClick='delete_item(". htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8', false).',"'.$this->lang->line_or_def('msg_delete','本当に削除してもよろしいですか？').'"'.");return false' />";
 									print "<input type='image' src='/static/image/btn_revise.png' onClick='edit_item();return false;' />";
-								//	print "<input type='image' src='/static/image/btn_photo.png' onClick='location.href = \"".site_url('cms_teacher/photo_upload/'. htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8') )."\";return false;' />";
+								//	print "<input type='image' src='/static/image/btn_photo.png' onClick='location.href = \"".site_url('cms_teacher/photo_upload/'. htmlspecialchars( $teacher['teacher_id'], ENT_QUOTES, 'UTF-8', false) )."\";return false;' />";
 									break;
 							}
 						?>

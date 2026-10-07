@@ -136,7 +136,7 @@
 														<?= htmlspecialchars( $issue_temp_logic_name, ENT_QUOTES, 'UTF-8', false) ?>
 													</td>
 													<td style="vertical-align: middle;text-align: center;">
-						<img src="/file_container/get_issue_template_thubmnail/<?= $this->libauth->get_school_id(); ?>/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $issue['issue_temp_id'][$id], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $issue['issue_temp_name'][$id], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 64px; padding:1px;background-color:white;border-color:#aaaaaa;border-width:1px;border-style:solid;"/ alt="image">
+						<img src="/file_container/get_issue_template_thubmnail/<?= $this->libauth->get_school_id(); ?>/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $issue['issue_temp_id'][$id], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $issue['issue_temp_name'][$id], ENT_QUOTES, 'UTF-8', false) ?>/" alt="" style="height: 64px; padding:1px;background-color:white;border-color:#aaaaaa;border-width:1px;border-style:solid;"/ alt="image">
 													</td>
 												</tr>
 											<?php endif; ?>
@@ -163,7 +163,7 @@
 													<div style="float: left; width: 85px;"><?= htmlspecialchars( $issue_submit_date, ENT_QUOTES, 'UTF-8', false) ?></div>
 													<div style="float: left; width: 120px;"><?= htmlspecialchars( $issue['issue_submit_student_name'][$id], ENT_QUOTES, 'UTF-8', false) ?></div>
 													<div style="float: left; width: 150px;">
-														<a href="<?= $this->config->item('stream_get_url'); ?>/school_<?= $this->session->userdata['cms_master.login.school_id']; ?>/issue_<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/student_<?= htmlspecialchars( $issue['issue_submit_student_id'][$id], ENT_QUOTES, 'UTF-8') ?>/issue_submit_<?= htmlspecialchars( $issue['issue_submit_id'][$id], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $issue['issue_submit_name'][$id], ENT_QUOTES, 'UTF-8') ?>?token=<?= $this->session->userdata('session_id'); ?>" target="_blank" rel="noopener noreferrer"><?= $issue['issue_submit_logic_name'][$id] /* Cms_issueで組み立て時に無害化済み */ ?></a>
+														<a href="<?= $this->config->item('stream_get_url'); ?>/school_<?= $this->session->userdata['cms_master.login.school_id']; ?>/issue_<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8', false) ?>/student_<?= htmlspecialchars( $issue['issue_submit_student_id'][$id], ENT_QUOTES, 'UTF-8', false) ?>/issue_submit_<?= htmlspecialchars( $issue['issue_submit_id'][$id], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $issue['issue_submit_name'][$id], ENT_QUOTES, 'UTF-8', false) ?>?token=<?= $this->session->userdata('session_id'); ?>" target="_blank" rel="noopener noreferrer"><?= $issue['issue_submit_logic_name'][$id] /* Cms_issueで組み立て時に無害化済み */ ?></a>
 													</div>
 													<div style="float: left; width: 220px;"><?= nl2br( htmlspecialchars( $issue['issue_submit_caption'][$id], ENT_QUOTES, 'UTF-8', false) ) ?></div>
 													<div style="clear:both;">

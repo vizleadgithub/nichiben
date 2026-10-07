@@ -173,7 +173,7 @@
 								case 2://詳細画面
 									print "<input type='image' src='/static/image/btn_back.png' onClick='location.href = \"".site_url('cms_book_library')."\";return false;' />";
 //print "<input type='image' src='/static/image/btn_download.png' onClick='location.href = \"".site_url('cms_book_library/download_file/'.$book_library['book_library_id'])."\";return false;' />";
-									print "<input type='image' src='/static/image/btn_download.png' onClick='location.href = \"".$this->config->item('stream_get_url')."/school_".$this->session->userdata['cms_master.login.school_id']."/book_library_".$book_library['book_library_id']."/".$book_library['book_library_name']."?token=".$this->session->userdata('session_id')."\";return false;' />";
+									print "<input type='image' src='/static/image/btn_download.png' onClick='location.href = ".htmlspecialchars( json_encode($this->config->item('stream_get_url')."/school_".$this->session->userdata['cms_master.login.school_id']."/book_library_".$book_library['book_library_id']."/".rawurlencode((string)$book_library['book_library_name'])."?token=".$this->session->userdata('session_id'), JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8').";return false;' />";
 
 									print "<input type='image' src='/static/image/btn_revise.png' onClick='edit_item();return false;' />";
 									print "<input type='image' src='/static/image/btn_delete.png' onClick='delete_item(".$book_library['book_library_id'].',"'.$this->lang->line_or_def('msg_delete','本当に削除してもよろしいですか？').'"'.");return false;' />";

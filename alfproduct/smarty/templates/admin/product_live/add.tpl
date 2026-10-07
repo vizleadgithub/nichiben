@@ -57,9 +57,9 @@ function datesChange(){
 			<!--{assign var=branch_id value=$branch.id scope="global"}-->
 			<!--{assign var=dates value='dates'|cat:$branch_id}-->
 			<!--{assign var=web_flg value='web_flg'|cat:$branch_id}-->
-			dates_name = "<!--{$dates|escape}-->";
+			dates_name = "<!--{$dates|escape:'javascript'}-->";
 			document.getElementById(dates_name).value = parent_dates_val;
-			web_flg_name = "<!--{$web_flg|escape}-->";
+			web_flg_name = "<!--{$web_flg|escape:'javascript'}-->";
 			document.getElementById(web_flg_name + "_2").checked = true;
 		<!--{/foreach}-->
 	<!--{/foreach}-->

@@ -446,7 +446,7 @@ class Cms_exam2_download extends CI_Controller {
 			unset($value);
 			mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $row);
 			$data[] = $row;
-			fputcsv($fp, $row);
+			fputcsv($fp, array_map('csv_formula_safe', $row));
 			
 			for($i2=0;$i2<count($export_data[$i1]["exam2"][0]["student"]);$i2++){
 				$row = array();
@@ -491,7 +491,7 @@ class Cms_exam2_download extends CI_Controller {
 				unset($value);
 				mb_convert_variables('SJIS-WIN', mb_internal_encoding(), $row);
 				$data[] = $row;
-				fputcsv($fp, $row);
+				fputcsv($fp, array_map('csv_formula_safe', $row));
 			}
 		}
 		fclose($fp);

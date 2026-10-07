@@ -642,7 +642,7 @@
 													<div class="confirm_ul_li_div_detail" style="width: 70px;"><?= htmlspecialchars( $exam2['exam2_problems_answer_point'][$id], ENT_QUOTES, 'UTF-8', false) ?></div>
 													<div class="confirm_ul_li_div_detail" style="width: 70px;">
 														<? if($btn_kirikae_flg==2): ?>
-															<input type="button" value="<?= $this->lang->line_or_def('common_exam2_problem_detail','設問詳細') ?>" onClick="show_exam2_problem_detail('exam2_problem_detail_<?= htmlspecialchars( $id, ENT_QUOTES, 'UTF-8') ?>',<?= htmlspecialchars( $exam2['exam2_problems'][$id], ENT_QUOTES, 'UTF-8') ?>);return false;" />
+															<input type="button" value="<?= $this->lang->line_or_def('common_exam2_problem_detail','設問詳細') ?>" onClick="show_exam2_problem_detail('exam2_problem_detail_<?= htmlspecialchars( $id, ENT_QUOTES, 'UTF-8', false) ?>',<?= (int)$exam2['exam2_problems'][$id] ?>);return false;" />
 														<? endif; ?>
 													</div>
 													<div style="clear:both;"></div>
@@ -668,11 +668,11 @@
 										<?= $this->lang->line_or_def('msg_only_latest_exam2_answer','最新の解答のみ表示') ?>
 									</div>
 									<div class="div_download">
-										<a href='#' onClick='csv_download_summary(<?= htmlspecialchars( $exam2['exam2_id'], ENT_QUOTES, 'UTF-8') ?>);return false;' id="csv_link_summary"><?= $this->lang->line_or_def('common_summary','概要') ?> Excel-csv DL</a>
+										<a href='#' onClick='csv_download_summary(<?= htmlspecialchars( $exam2['exam2_id'], ENT_QUOTES, 'UTF-8', false) ?>);return false;' id="csv_link_summary"><?= $this->lang->line_or_def('common_summary','概要') ?> Excel-csv DL</a>
 										<div id="csv_link_summary_none"></div>
 									</div>
 									<div class="div_download">
-										<a href='#' onClick='csv_download_detail(<?= htmlspecialchars( $exam2['exam2_id'], ENT_QUOTES, 'UTF-8') ?>);return false;' id="csv_link_detail"><?= $this->lang->line_or_def('common_detail','詳細') ?> Excel-csv DL</a>
+										<a href='#' onClick='csv_download_detail(<?= htmlspecialchars( $exam2['exam2_id'], ENT_QUOTES, 'UTF-8', false) ?>);return false;' id="csv_link_detail"><?= $this->lang->line_or_def('common_detail','詳細') ?> Excel-csv DL</a>
 										<div id="csv_link_detail_none"></div>
 									</div>
 									<div class="div_download"><?= $this->lang->line_or_def('msg_exam2_answer_download_1','※ダウンロード対象は保存済み解答が対象となります') ?></div>
@@ -704,7 +704,7 @@
 												<div class="confirm_ul_li_div_detail" style="width: 70px;"><?= htmlspecialchars( $exam2['answer_point_total'][$id], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $exam2['max_answer_point'], ENT_QUOTES, 'UTF-8', false) ?></div>
 												<div class="confirm_ul_li_div_detail" style="width: 70px;">
 													<? if($btn_kirikae_flg==2): ?>
-													<input type="button" value="<?= $this->lang->line_or_def('common_exam2_answer_detail','解答詳細') ?>" onClick="show_exam2_answer_detail('exam2_answer_detail_<?= htmlspecialchars( $id, ENT_QUOTES, 'UTF-8') ?>',<?= htmlspecialchars( $exam2['exam2_id'], ENT_QUOTES, 'UTF-8') ?>,<?= htmlspecialchars( $exam2['answer_student_id'][$id], ENT_QUOTES, 'UTF-8') ?>,<?= htmlspecialchars( $exam2['answer_no'][$id], ENT_QUOTES, 'UTF-8') ?>);return false;" />
+													<input type="button" value="<?= $this->lang->line_or_def('common_exam2_answer_detail','解答詳細') ?>" onClick="show_exam2_answer_detail('exam2_answer_detail_<?= htmlspecialchars( $id, ENT_QUOTES, 'UTF-8', false) ?>',<?= htmlspecialchars( $exam2['exam2_id'], ENT_QUOTES, 'UTF-8', false) ?>,<?= htmlspecialchars( $exam2['answer_student_id'][$id], ENT_QUOTES, 'UTF-8', false) ?>,<?= htmlspecialchars( $exam2['answer_no'][$id], ENT_QUOTES, 'UTF-8', false) ?>);return false;" />
 													<? endif; ?>
 												</div>
 												<div style="clear:both;"></div>
