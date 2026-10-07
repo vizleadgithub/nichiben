@@ -35,13 +35,13 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 							<td>
-								<?=form_dropdown('s_cource',$cources_dropdown, set_value('s_cource',$s_cource)); ?>
+								<?=form_dropdown('s_cource',dropdown_escape($cources_dropdown), set_value('s_cource',$s_cource)); ?>
 							</td>
 						</tr>
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_tag','タグ') ?></th>
 							<td>
-								<?=form_dropdown('s_tag',$tags_dropdown, set_value('s_tag',$s_tag)); ?>
+								<?=form_dropdown('s_tag',dropdown_escape($tags_dropdown), set_value('s_tag',$s_tag)); ?>
 							</td>
 						</tr>
 						<tr>

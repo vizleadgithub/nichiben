@@ -263,16 +263,16 @@ class Cms_information extends CI_Controller {
 		$this->lang->load('common');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'          , $this->lang->line_or_def('common_flg','flg')                          , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('information_id'      , $this->lang->line_or_def('common_id','ID')                            , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('information_date'    , $this->lang->line_or_def('common_date','日付')                        , 'trim|xss_clean|required|callback_date_check');
-		$this->form_validation->set_rules('information_type'    , $this->lang->line_or_def('common_information_type','種別')            , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('update_flg'          , $this->lang->line_or_def('common_flg','flg')                          , 'trim|numeric');
+		$this->form_validation->set_rules('information_id'      , $this->lang->line_or_def('common_id','ID')                            , 'trim|numeric');
+		$this->form_validation->set_rules('information_date'    , $this->lang->line_or_def('common_date','日付')                        , 'trim|required|callback_date_check');
+		$this->form_validation->set_rules('information_type'    , $this->lang->line_or_def('common_information_type','種別')            , 'trim|numeric');
 		$this->form_validation->set_rules('information_title'   , $this->lang->line_or_def('common_title','タイトル')                   , 'trim|required');
 		$this->form_validation->set_rules('information_caption' , $this->lang->line_or_def('common_caption','説明')                     , 'trim');
 		$this->form_validation->set_rules('information_url'     , $this->lang->line_or_def('common_url','URL')                          , 'trim|callback_url_check');
-		$this->form_validation->set_rules('information_open'    , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim|xss_clean|required|callback_datetime_check');
-		$this->form_validation->set_rules('information_close'   , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim|xss_clean|required|callback_datetime_check|callback_period_check[information_open]');
-		$this->form_validation->set_rules('information_topfit'  , $this->lang->line_or_def('common_information_topfit','先頭枠への固定表示')   , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('information_open'    , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim|required|callback_datetime_check');
+		$this->form_validation->set_rules('information_close'   , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim|required|callback_datetime_check|callback_period_check[information_open]');
+		$this->form_validation->set_rules('information_topfit'  , $this->lang->line_or_def('common_information_topfit','先頭枠への固定表示')   , 'trim|numeric');
 		//検証
 //var_dump( $_POST["information_url"] );
 //var_dump( "test2" );
@@ -536,7 +536,7 @@ class Cms_information extends CI_Controller {
 		$this->lang->load('error');
 
 		//エラーメッセージ設定
-		$this->form_validation->set_message('url_check', $this->lang->line_or_def('error_url','%sはhttp://、https://から始まるURL、または/から始まるサイト内パスを入力してください。') );
+		$this->form_validation->set_message('url_check', $this->lang->line_or_def('error_url','%sはhttp://、https://から始まるURL、または相対パス(javascript:などのスキームは不可)を入力してください。') );
 
 		//未入力は許可
 		if($url === '' || $url === NULL){
@@ -546,8 +546,8 @@ class Cms_information extends CI_Controller {
 		if(preg_match('/[\x00-\x20\x7f]/', $url)){
 			return FALSE;
 		}
-		//http/https の絶対URL、またはサイト内パス(//で始まるものは除く)のみ許可
-		return (preg_match('#^https?://[^/]#i', $url) === 1) || (preg_match('#^/(?!/)#', $url) === 1);
+		//http/https の絶対URL、またはスキームを持たない相対パス・サイト内パスのみ許可(javascript:等のスキーム、//で始まるものは拒否)
+		return (preg_match('#^(?:https?://[^/\s\x5c]|(?![a-z][a-z0-9+.-]*:|//|\x5c)[^\s\x5c]+$)#i', $url) === 1);
 	}
 
 	//----------------------------------------------

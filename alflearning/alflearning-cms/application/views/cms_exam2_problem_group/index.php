@@ -42,7 +42,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_exam2_problem_name','設問名') ?></th>
 							<td>
-								<?=form_dropdown('s_exam2_problem_id',$exam2_problem_dropdown,set_value('s_exam2_problem_id',$s_exam2_problem_id));?>
+								<?=form_dropdown('s_exam2_problem_id',dropdown_escape($exam2_problem_dropdown),set_value('s_exam2_problem_id',$s_exam2_problem_id));?>
 							</td>
 						</tr>
 						<? if( $this->config->item('language') != 'alfsales' ): ?>

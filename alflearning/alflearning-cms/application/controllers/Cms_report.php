@@ -264,13 +264,13 @@ class Cms_report extends CI_Controller {
 		
 		//検証ルールの設定
 		$this->form_validation->set_rules('s_name'            , $this->lang->line_or_def('common_name','名前')                                  , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_lawyer_number'   , $this->lang->line_or_def('common_','登録番号')                                  , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_lawyer_number'   , $this->lang->line_or_def('common_','登録番号')                                  , 'trim');
 		$this->form_validation->set_rules('s_email'           , $this->lang->line_or_def('common_mail_address','メールアドレス')                , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_bar_association' , $this->lang->line_or_def('common_','所属弁護士会')                              , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_free_word'       , $this->lang->line_or_def('common_freeword','フリーワード')                      , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_sub_auth_ethic_training_on'       , $this->lang->line_or_def('common_','代替権限あり')             , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_sub_auth_ethic_training_off'      , $this->lang->line_or_def('common_','代替権限なし')             , 'trim|xss_clean');
-		$this->form_validation->set_rules('order_by'          , $this->lang->line_or_def('common_order_by','並び順')                            , 'trim|xss_clean');
+		$this->form_validation->set_rules('order_by'          , $this->lang->line_or_def('common_order_by','並び順')                            , 'trim');
 	  //$this->form_validation->set_rules('s_id'              , $this->lang->line_or_def('common_id','ID')                                      , 'trim|xss_clean');
 	  //$this->form_validation->set_rules('s_cource'          , $this->lang->line_or_def('common_course_name','講座名')                         , 'trim|xss_clean');
 	  //$this->form_validation->set_rules('s_birthday_start'  , $this->lang->line_or_def('common_date_of_birth_range_start','生年月日範囲開始') , 'trim|xss_clean');
@@ -319,7 +319,7 @@ class Cms_report extends CI_Controller {
 
 		// 登録番号昇順降順の設定（getになければゼロ固定）
 		if($this->input->get('order_by')){
-			$data['order_by']  = strip_tags($this->input->get('order_by', TRUE) ?? 0);
+			$data['order_by']  = ($this->input->get('order_by') == 1) ? 1 : 0;	// 並び順は0(昇順)/1(降順)のみ許可
 		}else{
 			$data['order_by']  = 0;
 		}

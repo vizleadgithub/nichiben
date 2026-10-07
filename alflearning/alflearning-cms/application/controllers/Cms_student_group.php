@@ -55,8 +55,8 @@ class Cms_student_group extends CI_Controller {
 		
 		//検証ルールの設定
 		$this->form_validation->set_rules('s_student_group_name'  , $this->lang->line_or_def('common_group_name','グループ名')  , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_student_id'          , $this->lang->line_or_def('common_student_name','受講者名')  , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_id'                  , $this->lang->line_or_def('common_id','ID')                  , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_student_id'          , $this->lang->line_or_def('common_student_name','受講者名')  , 'trim');
+		$this->form_validation->set_rules('s_id'                  , $this->lang->line_or_def('common_id','ID')                  , 'trim');
 		$this->form_validation->set_rules('s_free_word'           , $this->lang->line_or_def('common_freeword','フリーワード')  , 'trim|xss_clean');
 		
 		$this->form_validation->run();		//バリデーション実行（その実xss対策）
@@ -282,11 +282,11 @@ class Cms_student_group extends CI_Controller {
 		$this->lang->load('error');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'            , $this->lang->line_or_def('common_flg','flg')               , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('student_group_id'      , $this->lang->line_or_def('common_id','ID')                 , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('update_flg'            , $this->lang->line_or_def('common_flg','flg')               , 'trim|numeric');
+		$this->form_validation->set_rules('student_group_id'      , $this->lang->line_or_def('common_id','ID')                 , 'trim|numeric');
 		$this->form_validation->set_rules('student_group_name'    , $this->lang->line_or_def('common_group_name','グループ名') , 'trim|required');
 		$this->form_validation->set_rules('student_group_caption' , $this->lang->line_or_def('common_caption','説明')          , 'trim');
-		$this->form_validation->set_rules('position_students'     , $this->lang->line_or_def('common_student','受講者')        , 'xss_clean');
+		$this->form_validation->set_rules('position_students'     , $this->lang->line_or_def('common_student','受講者')        , 'trim');
 		
 		// [Ajax]選択された受講者IDの整形（取得・ID昇順）
 		$position_students = $this->input->post('position_students_array')?$this->input->post('position_students_array'):array();

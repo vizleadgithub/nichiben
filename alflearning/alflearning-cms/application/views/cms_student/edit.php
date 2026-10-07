@@ -340,14 +340,14 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_sex','性別') ?></th>
 							<td>
-								<?=form_dropdown('sex',$mtb_gender, set_value('sex', $student['sex']));?>
+								<?=form_dropdown('sex',dropdown_escape($mtb_gender), set_value('sex', $student['sex']));?>
 							</td>
 						</tr>
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_country_type','国種別') ?></th>
 							<td>
-								<?=form_dropdown('country_type',$mtb_country_type, set_value('country_type', $student['country_type']));?>
+								<?=form_dropdown('country_type',dropdown_escape($mtb_country_type), set_value('country_type', $student['country_type']));?>
 							</td>
 						</tr>
 
@@ -358,7 +358,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_prefecture','都道府県') ?></th>
 							<td>
-								<?=form_dropdown('pref',$mtb_pref, set_value('pref', $student['pref']));?>
+								<?=form_dropdown('pref',dropdown_escape($mtb_pref), set_value('pref', $student['pref']));?>
 							</td>
 						</tr>
 						<tr>
@@ -402,7 +402,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_member_attribute','会員属性') ?></th>
 							<td>
-								<?=form_dropdown('member_type',$mtb_member_type, set_value('member_type', $student['member_type']));?>
+								<?=form_dropdown('member_type',dropdown_escape($mtb_member_type), set_value('member_type', $student['member_type']));?>
 							</td>
 						</tr>
 
@@ -454,13 +454,13 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_occupation','職業') ?></th>
 							<td>
-								<?=form_dropdown('job',$mtb_job, set_value('job', $student['job']));?>
+								<?=form_dropdown('job',dropdown_escape($mtb_job), set_value('job', $student['job']));?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_business','業種') ?></th>
 							<td>
-								<?=form_dropdown('job_type',$mtb_job_type, set_value('job_type', $student['job_type']));?>
+								<?=form_dropdown('job_type',dropdown_escape($mtb_job_type), set_value('job_type', $student['job_type']));?>
 							</td>
 						</tr>
 
@@ -473,7 +473,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_grade','学年') ?></th>
 							<td>
-								<?=form_dropdown('school_grade',$mtb_school_grade, set_value('school_grade', $student['school_grade']));?>
+								<?=form_dropdown('school_grade',dropdown_escape($mtb_school_grade), set_value('school_grade', $student['school_grade']));?>
 							</td>
 						</tr>
 
@@ -493,7 +493,7 @@
 									}
 								?>
 								
-								<?=form_dropdown('password_question',$mtb_password_question, set_value('password_question', $student['password_question']), $set_style );?>
+								<?=form_dropdown('password_question',dropdown_escape($mtb_password_question), set_value('password_question', $student['password_question']), $set_style );?>
 								<?php if($set_style != ''): ?>
 								
 								<?php endif; ?>
@@ -510,7 +510,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_mail_magazine','メールマガジン') ?></th>
 							<td>
-								<?=form_dropdown('mailmagazine_flg',$mtb_mailmagazine_flg, set_value('mailmagazine_flg', $student['mailmagazine_flg']));?>
+								<?=form_dropdown('mailmagazine_flg',dropdown_escape($mtb_mailmagazine_flg), set_value('mailmagazine_flg', $student['mailmagazine_flg']));?>
 							</td>
 						</tr>
 						
@@ -568,7 +568,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_age_late','年代') ?></th>
 							<td>
-								<?=form_dropdown('age',$mtb_age, set_value('age', $student['age']));?>
+								<?=form_dropdown('age',dropdown_escape($mtb_age), set_value('age', $student['age']));?>
 							</td>
 						</tr>
 

@@ -305,7 +305,7 @@
 <!--
 					<tr>
 						<? //$this->lang->line_or_def('common_date_of_birth','生年月日') ?>
-						<th style="width:56px;"><?= $this->lang->line_or_def('common_id','ID') ?> <a href="<?= $order_by_asc; ?>" class="order_by_link">▲</a> <a href="<?= $order_by_desc; ?>" class="order_by_link">▼</a></th><? //76px ?>
+						<th style="width:56px;"><?= $this->lang->line_or_def('common_id','ID') ?> <a href="<?= htmlspecialchars( $order_by_asc, ENT_QUOTES, 'UTF-8') ?>" class="order_by_link">▲</a> <a href="<?= htmlspecialchars( $order_by_desc, ENT_QUOTES, 'UTF-8') ?>" class="order_by_link">▼</a></th><? //76px ?>
 						<th style=""><?= $this->lang->line_or_def('common_name','名前') ?></th>
 						<th style=""><?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?></th>
 						<th style=""><?= $this->lang->line_or_def('common_','弁護士番号') ?></th>

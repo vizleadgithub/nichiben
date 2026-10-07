@@ -55,7 +55,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 							<td>
-								<?=form_dropdown('s_cource',$cources_dropdown,set_value('s_cource',$s_cource));?>
+								<?=form_dropdown('s_cource',dropdown_escape($cources_dropdown),set_value('s_cource',$s_cource));?>
 							</td>
 						</tr>
 						<tr>
@@ -69,7 +69,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
 							<td >
-								<?=form_dropdown('s_teacher',$teachers_dropdown,set_value('s_teacher',$s_teacher));?>
+								<?=form_dropdown('s_teacher',dropdown_escape($teachers_dropdown),set_value('s_teacher',$s_teacher));?>
 							</td>
 						</tr>
 						<tr>

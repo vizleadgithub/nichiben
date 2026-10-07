@@ -111,7 +111,7 @@
 							<td >
 							<!--<input type="text" name="contract" size="48" value="<?=set_value('contract',$school['contract'])?>">-->
 							
-								<?=form_dropdown('contract', $school_contract, set_value('contract', $school['contract']));?>
+								<?=form_dropdown('contract', dropdown_escape($school_contract), set_value('contract', $school['contract']));?>
 
 							</td>
 						</tr>
@@ -128,12 +128,12 @@
 										<?php if( $check_env == 'alfsales' ): ?>
 											<?php $js = 'id="live_contract" onChange="live_contract_function();" disabled="disabled"'; ?>
 											<?=form_dropdown('live_contract_2', 
-												$contract_dropdown, set_value('live_contract_2', 'undefined'), $js);?>
+												dropdown_escape($contract_dropdown), set_value('live_contract_2', 'undefined'), $js);?>
 											<input type="hidden" name="live_contract" value='undefined'>
 										<?php else: ?>
 											<?php $js = 'id="live_contract" onChange="live_contract_function();"'; ?>
 											<?=form_dropdown('live_contract', 
-												$contract_dropdown, set_value('live_contract', 
+												dropdown_escape($contract_dropdown), set_value('live_contract', 
 													$school['contract_param_live']['contract']), $js);?>
 										<?php endif; ?>
 									</td>
@@ -194,7 +194,7 @@
 									<td colspan=3>
 										<?php $js = 'id="video_contract" onChange="video_contract_function();"'; ?>
 										<?=form_dropdown('video_contract', 
-											$contract_dropdown, set_value('video_contract', 
+											dropdown_escape($contract_dropdown), set_value('video_contract', 
 												$school['contract_param_video']['contract']), $js);?>
 									</td>
 								</tr>
@@ -254,7 +254,7 @@
 									<td colspan=3>
 										<?php $js = 'id="book_library_contract" onChange="book_library_contract_function();"'; ?>
 										<?=form_dropdown('book_library_contract', 
-											$contract_dropdown, set_value('book_library_contract', 
+											dropdown_escape($contract_dropdown), set_value('book_library_contract', 
 												$school['contract_param_book_library']['contract']), $js);?>
 									</td>
 								</tr>
@@ -314,7 +314,7 @@
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_contract_form','契約形態') ?></th>
 									<td colspan=3>
 										<?=form_dropdown('issue_contract', 
-											$contract_dropdown, set_value('issue_contract', 
+											dropdown_escape($contract_dropdown), set_value('issue_contract', 
 												$school['contract_param_issue']['contract']), $js);?>
 									</td>
 								</tr>
@@ -356,7 +356,7 @@
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_contract_form','契約形態') ?></th>
 									<td colspan=3>
 										<?=form_dropdown('outside_elearningmanager_contract', 
-											$outside_contract, set_value('outside_elearningmanager_contract', 
+											dropdown_escape($outside_contract), set_value('outside_elearningmanager_contract', 
 												$school['contract_param_outside_elearningmanager']['contract']), $js);?>
 									</td>
 								</tr>

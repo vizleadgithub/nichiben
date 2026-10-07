@@ -95,7 +95,7 @@
 				<select name="pref">
 					<option value="">----</option>
 				<!--{foreach from=$arr_pref item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$pref}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->"<!--{if $row.id==$pref}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -106,7 +106,7 @@
 				<select name="age">
 					<option value="">----</option>
 				<!--{foreach from=$arr_age item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$age}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->"<!--{if $row.id==$age}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -117,7 +117,7 @@
 				<select name="job">
 					<option value="">----</option>
 				<!--{foreach from=$arr_job item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$job}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->"<!--{if $row.id==$job}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -128,7 +128,7 @@
 				<select name="job_type">
 					<option value="">----</option>
 				<!--{foreach from=$arr_job_type item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$job_type}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->"<!--{if $row.id==$job_type}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -139,7 +139,7 @@
 				<select name="school_grade">
 					<option value="">----</option>
 				<!--{foreach from=$arr_school_grade item="row"}-->
-					<option value="<!--{$row.id}-->"<!--{if $row.id==$school_grade}--> selected="selected"<!--{/if}-->><!--{$row.name}--></option>
+					<option value="<!--{$row.id}-->"<!--{if $row.id==$school_grade}--> selected="selected"<!--{/if}-->><!--{$row.name|escape}--></option>
 				<!--{/foreach}-->
 				</select>
 			</td>
@@ -148,7 +148,7 @@
 			<th>カテゴリ</th>
 			<td colspan = "3">
 				<!--{foreach from=$arr_mailmagazine_category item="row"}-->
-				<input type="checkbox" name="mailmagazine_category[]" value="<!--{$row.id}-->" id="mailmagazine_category_<!--{$row.id}-->"<!--{if in_array($row.id,$mailmagazine_category)}--> checked="checked"<!--{/if}-->><label for="mailmagazine_category_<!--{$row.id}-->"><!--{$row.name}--></label>&nbsp;
+				<input type="checkbox" name="mailmagazine_category[]" value="<!--{$row.id}-->" id="mailmagazine_category_<!--{$row.id}-->"<!--{if in_array($row.id,$mailmagazine_category)}--> checked="checked"<!--{/if}-->><label for="mailmagazine_category_<!--{$row.id}-->"><!--{$row.name|escape}--></label>&nbsp;
 				<!--{/foreach}-->
 			</td>
 		</tr>

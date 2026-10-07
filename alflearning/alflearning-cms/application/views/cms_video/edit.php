@@ -586,7 +586,7 @@
 												</td>
 												
 												<td style="vertical-align: middle;text-align: center;">
-													<?=form_dropdown('exclusive_book_library[]',$book_library_exclusive, set_value('exclusive_book_library[]', $video['exclusive_book_library'][$ino]), 'name="exclusive_book_library[]" style="width: 190px;"'); ?>
+													<?=form_dropdown('exclusive_book_library[]',dropdown_escape($book_library_exclusive), set_value('exclusive_book_library[]', $video['exclusive_book_library'][$ino]), 'name="exclusive_book_library[]" style="width: 190px;"'); ?>
 												</td>
 
 												<td style="vertical-align: middle;text-align: center;width: 100px;">

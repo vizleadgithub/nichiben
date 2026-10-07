@@ -63,9 +63,9 @@ class Cms_exam_problem extends CI_Controller {
 		$this->load->library('pagination');
 		$per_page = $this->config->item('pagination_per_page');
 
-		$this->form_validation->set_rules('s_cource'             , $this->lang->line_or_def('common_course_name','講座名')              , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_cource'             , $this->lang->line_or_def('common_course_name','講座名')              , 'trim');
 		$this->form_validation->set_rules('s_free_word'          , $this->lang->line_or_def('common_freeword','フリーワード')           , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_exam_problem_group' , $this->lang->line_or_def('common_exam_problem_group','設問グループ') , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_exam_problem_group' , $this->lang->line_or_def('common_exam_problem_group','設問グループ') , 'trim');
 		$this->form_validation->run();
 
 		//資料モデル読み込み
@@ -516,20 +516,20 @@ class Cms_exam_problem extends CI_Controller {
 		$this->lang->load('error');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'                           , $this->lang->line_or_def('common_flg','flg')                              , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('exam_problem_id'                      , $this->lang->line_or_def('common_id','ID')                                , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('update_flg'                           , $this->lang->line_or_def('common_flg','flg')                              , 'trim|numeric');
+		$this->form_validation->set_rules('exam_problem_id'                      , $this->lang->line_or_def('common_id','ID')                                , 'trim|numeric');
 		$this->form_validation->set_rules('exam_problem_name'                    , $this->lang->line_or_def('common_exam_problem_name','設問名')             , 'trim|required');
 		$this->form_validation->set_rules('teacher_id'                           , $this->lang->line_or_def('common_management_teacher','管理講師')          , 'required');
 		$this->form_validation->set_rules('exam_problem_lectures[]'                , $this->lang->line_or_def('common_position_course','所属講座')             , 'callback_check_required_checkbox');
-		$this->form_validation->set_rules('problem_kind'                         , $this->lang->line_or_def('common_problem_kind','設問種類')                , 'trim|xss_clean|numeric|required');
+		$this->form_validation->set_rules('problem_kind'                         , $this->lang->line_or_def('common_problem_kind','設問種類')                , 'trim|numeric|required');
 		$this->form_validation->set_rules('problem_contents_text'                , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // テキスト
 		$this->form_validation->set_rules('problem_contents_video'               , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // ビデオID
 		$this->form_validation->set_rules('problem_contents_book_library'        , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // 図書室ID
 		$this->form_validation->set_rules('problem_note'                         , $this->lang->line_or_def('common_problem_note','設問備考')                , 'trim');
-		$this->form_validation->set_rules('answer_kind'                          , $this->lang->line_or_def('common_answer_kind','解答種類')                 , 'trim|xss_clean|numeric|required');
+		$this->form_validation->set_rules('answer_kind'                          , $this->lang->line_or_def('common_answer_kind','解答種類')                 , 'trim|numeric|required');
 		$this->form_validation->set_rules('answer_contents_text'                 , $this->lang->line_or_def('common_answer_contents','解答内容')             , 'trim');  // テキスト
-		$this->form_validation->set_rules('answer_point'                         , $this->lang->line_or_def('common_exam_answer_points','解答配点')          , 'trim|xss_clean|is_natural');
-		$this->form_validation->set_rules('answer_explain_kind'                  , $this->lang->line_or_def('common_answer_explain_kind','解答解説種類')     , 'trim|xss_clean|numeric|required');
+		$this->form_validation->set_rules('answer_point'                         , $this->lang->line_or_def('common_exam_answer_points','解答配点')          , 'trim|is_natural');
+		$this->form_validation->set_rules('answer_explain_kind'                  , $this->lang->line_or_def('common_answer_explain_kind','解答解説種類')     , 'trim|numeric|required');
 		$this->form_validation->set_rules('answer_explain_contents_text'         , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // テキスト
 		$this->form_validation->set_rules('answer_explain_contents_video'        , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // ビデオID
 		$this->form_validation->set_rules('answer_explain_contents_book_library' , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // 図書室ID
@@ -1723,14 +1723,14 @@ class Cms_exam_problem extends CI_Controller {
 						$line_contents = (array)$array_answer_contents['answer_contents'][$i];
 						// 選択した番号と一致した内容を出力
 						if( in_array( $line_contents['no'], $array_exam_answer_contents) ){
-							$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), $line_contents['word']);
+							$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8', false));
 							
 							if($temp_answer_contents != '') $temp_answer_contents .= "<br/>";
 							$temp_answer_contents .= $line_contents['word'];
 						}
 					}
 				}elseif($exam_answer['answer_kind']==3){
-					$temp_answer_contents = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), $exam_answer['exam_answer_contents']);
+					$temp_answer_contents = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam_answer['exam_answer_contents'], ENT_QUOTES, 'UTF-8', false));
 				}
 				$temp_result_data['exam_answer_contents'] = $temp_answer_contents;
 				

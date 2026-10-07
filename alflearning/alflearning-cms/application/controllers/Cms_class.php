@@ -60,11 +60,11 @@ class Cms_class extends CI_Controller {
 		$per_page = $this->config->item('pagination_per_page');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('s_cource'    , $this->lang->line_or_def('common_course_name','講座名')            , 'trim|xss_clean'); // '講座'
-		$this->form_validation->set_rules('s_open'      , $this->lang->line_or_def('common_class_start_time','授業開始時間') , 'trim|xss_clean'); // '公開期間開始'
-		$this->form_validation->set_rules('s_close'     , $this->lang->line_or_def('common_class_end_time','授業終了時間')   , 'trim|xss_clean'); // '公開期間終了'
-		$this->form_validation->set_rules('s_teacher'   , $this->lang->line_or_def('common_management_teacher','管理講師')   , 'trim|xss_clean'); // [ver2.0]
-		$this->form_validation->set_rules('s_id'        , $this->lang->line_or_def('common_id','ID')                         , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_cource'    , $this->lang->line_or_def('common_course_name','講座名')            , 'trim'); // '講座'
+		$this->form_validation->set_rules('s_open'      , $this->lang->line_or_def('common_class_start_time','授業開始時間') , 'trim'); // '公開期間開始'
+		$this->form_validation->set_rules('s_close'     , $this->lang->line_or_def('common_class_end_time','授業終了時間')   , 'trim'); // '公開期間終了'
+		$this->form_validation->set_rules('s_teacher'   , $this->lang->line_or_def('common_management_teacher','管理講師')   , 'trim'); // [ver2.0]
+		$this->form_validation->set_rules('s_id'        , $this->lang->line_or_def('common_id','ID')                         , 'trim');
 		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード')         , 'trim|xss_clean');
 		$this->form_validation->run();	//バリデーション実行（その実xss対策）
 		

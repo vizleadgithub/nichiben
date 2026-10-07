@@ -81,7 +81,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_','会員区分') ?></th>
 							<td >
-								<?=form_dropdown('s_lawyer_division',$mtb_lawyer_division, set_value('s_lawyer_division',$s_lawyer_division));?>
+								<?=form_dropdown('s_lawyer_division',dropdown_escape($mtb_lawyer_division), set_value('s_lawyer_division',$s_lawyer_division));?>
 							</td>
 						</tr>
 						<tr>

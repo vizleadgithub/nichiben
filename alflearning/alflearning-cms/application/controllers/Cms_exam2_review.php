@@ -66,7 +66,7 @@ class Cms_exam2 extends CI_Controller {
 		$this->load->library('pagination');
 		$per_page = $this->config->item('pagination_per_page');
 
-		$this->form_validation->set_rules('s_cource'    , $this->lang->line_or_def('common_course_name','講座名')    , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_cource'    , $this->lang->line_or_def('common_course_name','講座名')    , 'trim');
 		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim|xss_clean');
 		$this->form_validation->run();
 
@@ -601,28 +601,28 @@ class Cms_exam2 extends CI_Controller {
 		$this->lang->load('error');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'    , $this->lang->line_or_def('common_flg','flg')                     , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('exam2_id'       , $this->lang->line_or_def('common_id','ID')                       , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('update_flg'    , $this->lang->line_or_def('common_flg','flg')                     , 'trim|numeric');
+		$this->form_validation->set_rules('exam2_id'       , $this->lang->line_or_def('common_id','ID')                       , 'trim|numeric');
 		$this->form_validation->set_rules('exam2_name'     , $this->lang->line_or_def('common_exam2_name','問題（テスト）名')  , 'trim|required');
 		$this->form_validation->set_rules('exam2_lectures' , $this->lang->line_or_def('common_position_course','所属講座')    , 'required');
 		$this->form_validation->set_rules('exam2_caption'  , $this->lang->line_or_def('common_caption','説明')                , 'trim');
-		$this->form_validation->set_rules('exam2_open'     , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|xss_clean|required|callback_datetime_check');
-		$this->form_validation->set_rules('exam2_close'    , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|xss_clean|required|callback_datetime_check|callback_period_check[exam2_open]');
-		$this->form_validation->set_rules('public_flag'   , $this->lang->line_or_def('common_indication_status','公開設定')  , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('resubmit_flag' , $this->lang->line_or_def('common_resubmit','再提出')             , 'trim|xss_clean|required');
+		$this->form_validation->set_rules('exam2_open'     , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|required|callback_datetime_check');
+		$this->form_validation->set_rules('exam2_close'    , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|required|callback_datetime_check|callback_period_check[exam2_open]');
+		$this->form_validation->set_rules('public_flag'   , $this->lang->line_or_def('common_indication_status','公開設定')  , 'trim|required');
+		$this->form_validation->set_rules('resubmit_flag' , $this->lang->line_or_def('common_resubmit','再提出')             , 'trim|required');
 		
-		$this->form_validation->set_rules('marking_public_flag' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('marking_public_kind' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim|xss_clean');
-		$this->form_validation->set_rules('marking_public_open' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim|xss_clean');
+		$this->form_validation->set_rules('marking_public_flag' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim|required');
+		$this->form_validation->set_rules('marking_public_kind' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim');
+		$this->form_validation->set_rules('marking_public_open' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim');
 		
 		$this->form_validation->set_rules('teacher_id'    , $this->lang->line_or_def('common_management_teacher','管理講師') , 'required');
 //		$this->form_validation->set_rules('exam2_students' , $this->lang->line_or_def('common_student','受講者')              , 'required');
 		$this->form_validation->set_rules('exam2_problems' , $this->lang->line_or_def('common_exam2_problem','設問')           , 'required');
 
-		$this->form_validation->set_rules('display_format'   , $this->lang->line_or_def('common_display_format'  ,'表示形式')  , 'trim|xss_clean|required');
+		$this->form_validation->set_rules('display_format'   , $this->lang->line_or_def('common_display_format'  ,'表示形式')  , 'trim|required');
 
-		$this->form_validation->set_rules('criteria_type'  , $this->lang->line_or_def('common_criteria','判定基準') , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('criteria_value' , $this->lang->line_or_def('common_criteria','判定基準') , 'trim|xss_clean|required');
+		$this->form_validation->set_rules('criteria_type'  , $this->lang->line_or_def('common_criteria','判定基準') , 'trim|required');
+		$this->form_validation->set_rules('criteria_value' , $this->lang->line_or_def('common_criteria','判定基準') , 'trim|required');
 
 		// 配列型の所属講座・受講者・設問の値をチェック
 		$this->load->helper('string_inspection_helper');
@@ -2447,8 +2447,8 @@ class Cms_exam2 extends CI_Controller {
 
 
 	function exam2_set_list(){
-		$this->form_validation->set_rules('product_id' , $this->lang->line_or_def('common_product_id','product_id') , 'trim|xss_clean');
-		$this->form_validation->set_rules('exam2_id' , $this->lang->line_or_def('common_exam2_id','exam2_id') , 'trim|xss_clean');
+		$this->form_validation->set_rules('product_id' , $this->lang->line_or_def('common_product_id','product_id') , 'trim');
+		$this->form_validation->set_rules('exam2_id' , $this->lang->line_or_def('common_exam2_id','exam2_id') , 'trim');
 		$this->form_validation->run();
 
 		if ( !$this->input->post() ){
@@ -2458,7 +2458,7 @@ class Cms_exam2 extends CI_Controller {
 			);
 		} else {
 			//データ取得
-			$data['s_cource']    = ($this->input->post('s_cource', TRUE) ?? '');
+			$data['s_cource']    = ($this->input->post('s_cource') ?? '');
 			$data['s_free_word'] = ($this->input->post('s_free_word', TRUE) ?? '');
 			$this->session->set_userdata('exam2_review_search_cond', $data);
 		}

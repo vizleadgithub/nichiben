@@ -68,22 +68,22 @@ class Cms_student_sub_auth extends CI_Controller {
 		
 		//検証ルールの設定
 		$this->form_validation->set_rules('s_name'            , $this->lang->line_or_def('common_name','名前')                                  , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_lawyer_number'   , $this->lang->line_or_def('common_','登録番号')                                  , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_lawyer_number'   , $this->lang->line_or_def('common_','登録番号')                                  , 'trim');
 		$this->form_validation->set_rules('s_email'           , $this->lang->line_or_def('common_mail_address','メールアドレス')                , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_bar_association' , $this->lang->line_or_def('common_','所属弁護士会')                              , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_free_word'       , $this->lang->line_or_def('common_freeword','フリーワード')                      , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_sub_auth_ethic_training_on'       , $this->lang->line_or_def('common_','代替権限あり')             , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_sub_auth_ethic_training_off'      , $this->lang->line_or_def('common_','代替権限なし')             , 'trim|xss_clean');
-		$this->form_validation->set_rules('order_by'          , $this->lang->line_or_def('common_order_by','並び順')                            , 'trim|xss_clean');
+		$this->form_validation->set_rules('order_by'          , $this->lang->line_or_def('common_order_by','並び順')                            , 'trim');
 		/*
-		$this->form_validation->set_rules('s_id'             , $this->lang->line_or_def('common_id','ID')                                      , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_cource'         , $this->lang->line_or_def('common_course_name','講座名')                         , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_birthday_start' , $this->lang->line_or_def('common_date_of_birth_range_start','生年月日範囲開始') , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_birthday_end'   , $this->lang->line_or_def('common_date_of_birth_range_end','生年月日範囲終了')   , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_student_group'  , $this->lang->line_or_def('common_group','グループ')                             , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_id'             , $this->lang->line_or_def('common_id','ID')                                      , 'trim');
+		$this->form_validation->set_rules('s_cource'         , $this->lang->line_or_def('common_course_name','講座名')                         , 'trim');
+		$this->form_validation->set_rules('s_birthday_start' , $this->lang->line_or_def('common_date_of_birth_range_start','生年月日範囲開始') , 'trim');
+		$this->form_validation->set_rules('s_birthday_end'   , $this->lang->line_or_def('common_date_of_birth_range_end','生年月日範囲終了')   , 'trim');
+		$this->form_validation->set_rules('s_student_group'  , $this->lang->line_or_def('common_group','グループ')                             , 'trim');
 		
 		$this->form_validation->set_rules('s_bar_association'  , $this->lang->line_or_def('common_','所属弁護士会')                             , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_lawyer_number'    , $this->lang->line_or_def('common_','弁護士番号')                             , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_lawyer_number'    , $this->lang->line_or_def('common_','弁護士番号')                             , 'trim');
 		*/
 		$this->form_validation->run();		//バリデーション実行（その実xss対策）
 		
@@ -128,7 +128,7 @@ class Cms_student_sub_auth extends CI_Controller {
 
 		// ID昇順降順の設定（getになければゼロ固定）
 		if($this->input->get('order_by')){
-			$data['order_by']  = strip_tags($this->input->get('order_by', true) ?? '');
+			$data['order_by']  = ($this->input->get('order_by') == 1) ? 1 : 0;	// 並び順は0(昇順)/1(降順)のみ許可
 		}else{
 			$data['order_by']  = 0;
 		}
@@ -467,15 +467,15 @@ class Cms_student_sub_auth extends CI_Controller {
 		$this->lang->load('error');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'            , $this->lang->line_or_def('common_flg','flg')                              , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('student_id'            , $this->lang->line_or_def('common_id','ID')                                , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('update_flg'            , $this->lang->line_or_def('common_flg','flg')                              , 'trim|numeric');
+		$this->form_validation->set_rules('student_id'            , $this->lang->line_or_def('common_id','ID')                                , 'trim|numeric');
 		$this->form_validation->set_rules('student_name'          , $this->lang->line_or_def('common_name','名前')                            , 'trim|required|callback_name_check');
-		$this->form_validation->set_rules('student_email'         , $this->lang->line_or_def('common_mail_address','メールアドレス')          , 'trim|xss_clean|required|valid_email');
+		$this->form_validation->set_rules('student_email'         , $this->lang->line_or_def('common_mail_address','メールアドレス')          , 'trim|required|valid_email');
 //		$this->form_validation->set_rules('student_password'      , $this->lang->line_or_def('common_password','パスワード')                  , 'trim|xss_clean|required');
 //		$this->form_validation->set_rules('student_password_check', $this->lang->line_or_def('common_password_conf','パスワード（確認入力）') , 'trim|xss_clean|required|matches[student_password]');
 		if( ($this->input->post('update_flg') == 0) || (($this->input->post('update_flg') != 0) && ($this->input->post('student_password_change') == 1)) ){
-			$this->form_validation->set_rules('student_password'        , $this->lang->line_or_def('common_password','パスワード')                     , 'trim|xss_clean|required');
-			$this->form_validation->set_rules('student_password_check'  , $this->lang->line_or_def('common_password_conf','パスワード（確認入力）')    , 'trim|xss_clean|required|matches[student_password]');
+			$this->form_validation->set_rules('student_password'        , $this->lang->line_or_def('common_password','パスワード')                     , 'trim|required');
+			$this->form_validation->set_rules('student_password_check'  , $this->lang->line_or_def('common_password_conf','パスワード（確認入力）')    , 'trim|required|matches[student_password]');
 		}
 	//	$this->form_validation->set_rules('student_birthday'      , $this->lang->line_or_def('common_date_of_birth','生年月日')               , 'trim|xss_clean|required|callback_date_check');
 		$this->form_validation->set_rules('student_lectures'      , $this->lang->line_or_def('common_attendance_class','受講講座')            , 'required');
@@ -484,9 +484,9 @@ class Cms_student_sub_auth extends CI_Controller {
 		// 法学館対応
 		// パスワード確認変更がある場合の処理（新規登録、変更でパスワード確認変更を行う場合）
 		if( ($this->input->post('update_flg') == 0) || (($this->input->post('update_flg') != 0) && ($this->input->post('password_answer_change') == 1)) ){
-			$this->form_validation->set_rules('password_answer'  , $this->lang->line_or_def('password_answer','パスワード確認回答')    , 'trim|xss_clean|required');
+			$this->form_validation->set_rules('password_answer'  , $this->lang->line_or_def('password_answer','パスワード確認回答')    , 'trim|required');
 		}
-		$this->form_validation->set_rules('student_email_mobile'  , $this->lang->line_or_def('common_hogaku','携帯メールアドレス')          , 'trim|xss_clean|valid_email');
+		$this->form_validation->set_rules('student_email_mobile'  , $this->lang->line_or_def('common_hogaku','携帯メールアドレス')          , 'trim|valid_email');
 		
 		
 		

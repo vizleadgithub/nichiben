@@ -308,7 +308,7 @@
 										 '<input type="hidden" name="exam_answer_id[]" value='+response[i]['exam_answer_id']+' />'
 										 +'<div class="detail_title">'+answer_kind+'</div>'
 									).append(
-										 $('<div class="detail_values">').text(response[i]['exam_answer_contents'])
+										 $('<div class="detail_values">').html(response[i]['exam_answer_contents'])
 									).append(
 										 '<div class="detail_answer">'
 										   +'<div class="exam_answer_mark">'

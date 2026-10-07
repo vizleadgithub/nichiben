@@ -181,7 +181,7 @@
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
 							<td>
-								<?=form_dropdown('teacher_id',$teachers_dropdown,set_value('teacher_id',$issue['teacher_id']), 'id="teacher_id"'); ?>
+								<?=form_dropdown('teacher_id',dropdown_escape($teachers_dropdown),set_value('teacher_id',$issue['teacher_id']), 'id="teacher_id"'); ?>
 								&nbsp;<lavel id="teacher_change_message" style="color:#00A4E2;"><?= $this->lang->line_or_def('msg_different_teacher','別の講師が選択されています') ?></label>
 							</td>
 						</tr>
@@ -246,7 +246,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_indication_status','表示状態') ?></th>
 							<td >
-								<?=form_dropdown('public_flag', $public_flag_list, set_value('public_flag', $issue['public_flag']));?>
+								<?=form_dropdown('public_flag', dropdown_escape($public_flag_list), set_value('public_flag', $issue['public_flag']));?>
 							</td>
 						</tr>
 

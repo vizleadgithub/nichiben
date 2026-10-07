@@ -130,7 +130,7 @@ class Cms_student extends CI_Controller {
 
 		// 登録番号昇順降順の設定（getになければゼロ固定）
 		if($this->input->get('order_by')){
-			$data['order_by']  = intval(strip_tags($this->input->get('order_by', TRUE) ?? 0));
+			$data['order_by']  = intval(strip_tags($this->input->get('order_by') ?? 0));
 		}else{
 			$data['order_by']  = 0;
 		}

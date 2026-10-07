@@ -42,13 +42,13 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 							<td>
-								<?=form_dropdown('s_cource',$cources_dropdown, set_value('s_cource',$s_cource)); ?>
+								<?=form_dropdown('s_cource',dropdown_escape($cources_dropdown), set_value('s_cource',$s_cource)); ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_exam_problem_group','設問グループ') ?></th>
 							<td>
-								<?=form_dropdown('s_exam_problem_group',$exam_problem_groups_dropdown, set_value('s_exam_problem_group',$s_exam_problem_group), '');?>
+								<?=form_dropdown('s_exam_problem_group',dropdown_escape($exam_problem_groups_dropdown), set_value('s_exam_problem_group',$s_exam_problem_group), '');?>
 							</td>
 						</tr>
 						<tr>

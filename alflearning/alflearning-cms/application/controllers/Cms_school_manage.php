@@ -56,7 +56,7 @@ class Cms_school_manage extends CI_Controller
 		$per_page = $this->config->item('pagination_per_page');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('s_school_id'   , $this->lang->line_or_def('common_id','ID')                 , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_school_id'   , $this->lang->line_or_def('common_id','ID')                 , 'trim');
 		$this->form_validation->set_rules('s_school_name' , $this->lang->line_or_def('common_school_name','学校名')    , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_free_word'   , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim|xss_clean');
 		$this->form_validation->run();	//バリデーション実行（その実xss対策）
@@ -320,43 +320,43 @@ class Cms_school_manage extends CI_Controller
 		$this->lang->load('error');
 
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'     , $this->lang->line_or_def('common_flg','flg')                     , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('school_id'      , $this->lang->line_or_def('common_id','ID')                       , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('update_flg'     , $this->lang->line_or_def('common_flg','flg')                     , 'trim|numeric');
+		$this->form_validation->set_rules('school_id'      , $this->lang->line_or_def('common_id','ID')                       , 'trim|numeric');
 		$this->form_validation->set_rules('school_name'    , $this->lang->line_or_def('common_school_name','学校名')          , 'trim|required');
 		$this->form_validation->set_rules('school_caption' , $this->lang->line_or_def('common_caption','説明')                , 'trim');
 		$this->form_validation->set_rules('school_note'    , $this->lang->line_or_def('common_note','備考')                   , 'trim');
-		$this->form_validation->set_rules('contract'       , $this->lang->line_or_def('common_contract_form','契約形態')      , 'trim|xss_clean|required');
+		$this->form_validation->set_rules('contract'       , $this->lang->line_or_def('common_contract_form','契約形態')      , 'trim|required');
 	//	$this->form_validation->set_rules('contract_param' , $this->lang->line_or_def('common_contract_contents','契約内容')  , 'trim|xss_clean');
-		$this->form_validation->set_rules('live_contract'         , $this->lang->line_or_def('common_class','授業').'-'.$this->lang->line_or_def('common_contract_form','契約形態') , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('video_contract'        , $this->lang->line_or_def('common_video','ビデオ').'-'.$this->lang->line_or_def('common_contract_form','契約形態')             , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('book_library_contract' , $this->lang->line_or_def('common_book_library','図書室').'-'.$this->lang->line_or_def('common_contract_form','契約形態')                 , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('issue_contract'        , $this->lang->line_or_def('common_issue','課題').'-'.$this->lang->line_or_def('common_contract_form','契約形態')                 , 'trim|xss_clean|required');		
+		$this->form_validation->set_rules('live_contract'         , $this->lang->line_or_def('common_class','授業').'-'.$this->lang->line_or_def('common_contract_form','契約形態') , 'trim|required');
+		$this->form_validation->set_rules('video_contract'        , $this->lang->line_or_def('common_video','ビデオ').'-'.$this->lang->line_or_def('common_contract_form','契約形態')             , 'trim|required');
+		$this->form_validation->set_rules('book_library_contract' , $this->lang->line_or_def('common_book_library','図書室').'-'.$this->lang->line_or_def('common_contract_form','契約形態')                 , 'trim|required');
+		$this->form_validation->set_rules('issue_contract'        , $this->lang->line_or_def('common_issue','課題').'-'.$this->lang->line_or_def('common_contract_form','契約形態')                 , 'trim|required');		
 		// 授業-契約形態が「未定義」以外のみチェック
 		if($this->input->post('live_contract') != 'undefined'){
-			$this->form_validation->set_rules('live_time'             , $this->lang->line_or_def('common_class','授業').'-'.$this->lang->line_or_def('common_contract_class_time','契約授業時間') , 'trim|xss_clean|is_natural_no_zero|required');
-			$this->form_validation->set_rules('live_strage'           , $this->lang->line_or_def('common_class','授業').'-'.$this->lang->line_or_def('common_contract_storage','契約ストレージ使用量')     , 'trim|xss_clean|is_natural_no_zero|required');
+			$this->form_validation->set_rules('live_time'             , $this->lang->line_or_def('common_class','授業').'-'.$this->lang->line_or_def('common_contract_class_time','契約授業時間') , 'trim|is_natural_no_zero|required');
+			$this->form_validation->set_rules('live_strage'           , $this->lang->line_or_def('common_class','授業').'-'.$this->lang->line_or_def('common_contract_storage','契約ストレージ使用量')     , 'trim|is_natural_no_zero|required');
 		}
 		
 		// ビデオ-契約形態が「未定義」以外のみチェック
 		if($this->input->post('video_contract') != 'undefined'){
-			$this->form_validation->set_rules('video_stream'          , $this->lang->line_or_def('common_video','ビデオ').'-'.$this->lang->line_or_def('common_contract_transfer','契約転送量')           , 'trim|xss_clean|is_natural_no_zero|required');
-			$this->form_validation->set_rules('video_strage'          , $this->lang->line_or_def('common_video','ビデオ').'-'.$this->lang->line_or_def('common_contract_storage','契約ストレージ使用量') , 'trim|xss_clean|is_natural_no_zero|required');
+			$this->form_validation->set_rules('video_stream'          , $this->lang->line_or_def('common_video','ビデオ').'-'.$this->lang->line_or_def('common_contract_transfer','契約転送量')           , 'trim|is_natural_no_zero|required');
+			$this->form_validation->set_rules('video_strage'          , $this->lang->line_or_def('common_video','ビデオ').'-'.$this->lang->line_or_def('common_contract_storage','契約ストレージ使用量') , 'trim|is_natural_no_zero|required');
 		}
 		
 		// 図書室-契約形態が「未定義」以外のみチェック
 		if($this->input->post('book_library_contract') != 'undefined'){
-			$this->form_validation->set_rules('book_library_stream'   , $this->lang->line_or_def('common_book_library','図書室').'-'.$this->lang->line_or_def('common_contract_transfer','契約転送量')               , 'trim|xss_clean|is_natural_no_zero|required');
-			$this->form_validation->set_rules('book_library_strage'   , $this->lang->line_or_def('common_book_library','図書室').'-'.$this->lang->line_or_def('common_contract_storage','契約ストレージ使用量')     , 'trim|xss_clean|is_natural_no_zero|required');
+			$this->form_validation->set_rules('book_library_stream'   , $this->lang->line_or_def('common_book_library','図書室').'-'.$this->lang->line_or_def('common_contract_transfer','契約転送量')               , 'trim|is_natural_no_zero|required');
+			$this->form_validation->set_rules('book_library_strage'   , $this->lang->line_or_def('common_book_library','図書室').'-'.$this->lang->line_or_def('common_contract_storage','契約ストレージ使用量')     , 'trim|is_natural_no_zero|required');
 		}
 		
 		// 新規登録のみチェック
 		if($this->input->post('school_id') == 0){
 			$this->form_validation->set_rules('school_admin_name'  , $this->lang->line_or_def('common_teacher_name','講師名')         , 'trim|required|callback_name_check');
-			$this->form_validation->set_rules('school_admin_email' , $this->lang->line_or_def('common_mail_address','メールアドレス') , 'trim|xss_clean|required|valid_email');
+			$this->form_validation->set_rules('school_admin_email' , $this->lang->line_or_def('common_mail_address','メールアドレス') , 'trim|required|valid_email');
 		}else{
 		// 更新登録のみチェック
-			$this->form_validation->set_rules('alfstream_auth_key'  , 'AlfStream-auth key'              , 'trim|xss_clean|required');
-			$this->form_validation->set_rules('alfstream_auth_code' , 'AlfStream-code'                  , 'trim|xss_clean|required');
+			$this->form_validation->set_rules('alfstream_auth_key'  , 'AlfStream-auth key'              , 'trim|required');
+			$this->form_validation->set_rules('alfstream_auth_code' , 'AlfStream-code'                  , 'trim|required');
 		}
 		//検証
 		if($this->form_validation->run() == FALSE){
@@ -685,7 +685,7 @@ class Cms_school_manage extends CI_Controller
 		// load language
 		$this->lang->load('common');
 		
-		$this->form_validation->set_rules('date' , $this->lang->line_or_def('common_date','date') , 'trim|xss_clean');
+		$this->form_validation->set_rules('date' , $this->lang->line_or_def('common_date','date') , 'trim');
 		$this->form_validation->run();
 		if(!$this->input->get('date')){
 			$this->load->view('cms_school_manage/report', array());
@@ -701,7 +701,12 @@ class Cms_school_manage extends CI_Controller
 				$where_sql = ' WHERE (lang != "alfsales" AND lang != "conference") ';
 			}
 
-			$_reqDate = strip_tags($this->input->get('date', TRUE) ?? '');
+			$_reqDate = strip_tags($this->input->get('date') ?? '');
+			// 取得する年月はYYYY-MM形式のみ許可(LIKE条件・CSVファイル名に使うため)
+			if(!preg_match('/^[0-9]{4}-[0-9]{2}$/', $_reqDate)){
+				$this->load->view('cms_school_manage/report', array());
+				return;
+			}
 
 			//学校一覧
 			$schools = array();

@@ -43,7 +43,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_student_name','受講者名') ?></th>
 							<td>
-								<?=form_dropdown('s_student_id',$students_dropdown,set_value('s_student_id',$s_student_id));?>
+								<?=form_dropdown('s_student_id',dropdown_escape($students_dropdown),set_value('s_student_id',$s_student_id));?>
 							</td>
 						</tr>
 						<? if( $this->config->item('language') != 'alfsales' ): ?>

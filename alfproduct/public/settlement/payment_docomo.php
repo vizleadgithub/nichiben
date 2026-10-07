@@ -13,7 +13,7 @@ $sql = "select * from tbl_order where order_id='".$order_id."'";
 $ret = $objDbConnect->query($sql);
 $arrTemp = $objDbConnect->fetch($ret);
 if( !$arrTemp ) {
-	print("order err.1");
+	//print("order err.1");
 	exit();
 } else {
 	if ( is_numeric($arrTemp["price"]) && is_numeric($arrTemp["tax"]) ) {
@@ -29,13 +29,13 @@ if( !$arrTemp ) {
 		//++++++++++++++++++++++++
 	} else {
 		$err_flg = 1;
-		print("order err.2");
+		//print("order err.2");
 		//exit();
 	}
 	if( $total>0 ){
 	} else {
 		$err_flg = 1;
-		print("order err.3");
+		//print("order err.3");
 		//exit();
 	}
 }
@@ -50,7 +50,7 @@ if($err_flg==0 ){
 		if( isset($ret["ErrCode"]) ){
 			if( $ret["ErrCode"]!="" ){
 				$err_flg = 1;
-				print("order err.4");
+				//print("order err.4");
 				//exit();
 			}
 		}
@@ -63,12 +63,12 @@ if($err_flg==0 ){
 					$objDbConnect->execute($sql);
 				} else {
 					$err_flg = 1;
-					print("order err.5");
+					//print("order err.5");
 					//exit();
 				}
 			} else {
 				$err_flg = 1;
-				print("order err.6");
+				//print("order err.6");
 				//exit();
 			}
 		}
@@ -79,7 +79,7 @@ if($err_flg==0 ){
 			if( isset($ret["ErrCode"]) ){
 				if( $ret["ErrCode"]!="" ){
 					$err_flg = 1;
-					print("order err.7");
+					//print("order err.7");
 					//exit();
 				}
 			} else {

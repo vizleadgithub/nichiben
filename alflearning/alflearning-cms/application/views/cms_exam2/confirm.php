@@ -308,7 +308,7 @@
 										 '<input type="hidden" name="exam2_answer_id[]" value='+response[i]['exam2_answer_id']+' />'
 										 +'<div class="detail_title">'+answer_kind+'</div>'
 									).append(
-										 $('<div class="detail_values">').text(response[i]['exam2_answer_contents'])
+										 $('<div class="detail_values">').html(response[i]['exam2_answer_contents'])
 									).append(
 										 '<div class="detail_answer">'
 										   +'<div class="exam2_answer_mark">'
@@ -584,7 +584,7 @@
 									<?php if($exam2['marking_public_kind'] == 1): // 1:即時公開 ?>
 										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_spot_public','即時公開') ?>
 									<?php else: // 2:時限式公開 ?>
-										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_timed_public','時限式公開') ?>&nbsp;&nbsp;[<?= $exam2['marking_public_open'] ?>]
+										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_timed_public','時限式公開') ?>&nbsp;&nbsp;[<?= htmlspecialchars( $exam2['marking_public_open'], ENT_QUOTES, 'UTF-8', false) ?>]
 									<?php endif; ?>
 <?php } ?>
 								<?php else: // 9:非公開 ?>
