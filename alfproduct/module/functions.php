@@ -631,18 +631,13 @@ function get_product_pankuzu($objDbConnect, $pcid='', $pid=''){
 		    }
 		}
 
-		if ($_SERVER['HTTPS'] != ''){
-			$protocol = 'https://';
-		} else {
-			$protocol = 'http://';
-		}
 		$pankuzu.= '<div class="pankuzu" style="color:#4b3921;font-size:14px;"><ul>';
-		$pankuzu.= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'">TOP</a></li>';
+		$pankuzu.= '<li><a href="/">TOP</a></li>';
 		if (!empty($arr_pan_cat) && is_array($arr_pan_cat)) {
 		    for ($i = 0; $i < count($arr_pan_cat); $i++) {
 		        if (isset($arr_pan_cat[$i]['id']) && isset($arr_pan_cat[$i]['name'])) {
 		            $pankuzu .= '<li>&nbsp;<img src="/img/c_ar_2.png" alt="＞" style="height:10px;" />&nbsp;</li>';
-		            $pankuzu .= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'/product/list.php?pcid='.$arr_pan_cat[$i]['id'].'">'.htmlspecialchars( $arr_pan_cat[$i]['name'], ENT_QUOTES, 'UTF-8').'</a></li>';
+		            $pankuzu .= '<li><a href="/product/list.php?pcid='.(int)$arr_pan_cat[$i]['id'].'">'.htmlspecialchars( $arr_pan_cat[$i]['name'], ENT_QUOTES, 'UTF-8').'</a></li>';
 		        }
 		    }
 		}
@@ -800,18 +795,13 @@ function get_product_pankuzu($objDbConnect, $pcid='', $pid=''){
 			}
 		}
 
-		if ($_SERVER['HTTPS'] != ''){
-			$protocol = 'https://';
-		} else {
-			$protocol = 'http://';
-		}
 		$pankuzu.= '<div class="pankuzu" style="clear:both;text-align:left;color:#4b3921;font-size:14px;"><ul>';
-		$pankuzu.= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'">TOP</a></li>';
+		$pankuzu.= '<li><a href="/">TOP</a></li>';
 		if (!empty($arr_pan_cat) && is_array($arr_pan_cat)) {
 		    for ($i = 0; $i < count($arr_pan_cat); $i++) {
 		        if (isset($arr_pan_cat[$i]['id']) && isset($arr_pan_cat[$i]['name'])) {
 		            $pankuzu .= '<li>&nbsp;<img src="/img/c_ar_2.png" alt="＞" style="height:10px;" />&nbsp;</li>';
-		            $pankuzu .= '<li><a href="'.$protocol.$_SERVER['HTTP_HOST'].'/product/list.php?pcid='.$arr_pan_cat[$i]['id'].'">'.htmlspecialchars( $arr_pan_cat[$i]['name'], ENT_QUOTES, 'UTF-8').'</a></li>';
+		            $pankuzu .= '<li><a href="/product/list.php?pcid='.(int)$arr_pan_cat[$i]['id'].'">'.htmlspecialchars( $arr_pan_cat[$i]['name'], ENT_QUOTES, 'UTF-8').'</a></li>';
 		        }
 		    }
 		}
