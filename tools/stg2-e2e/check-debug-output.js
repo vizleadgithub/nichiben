@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { chromium, assertStg2, SITES, RESULT_DIR, newContext } = require('./lib');
 const { loginCms } = require('./login');
+const { CHECKS, snippet } = require('./detect');
 
 const MAX_PER_PATTERN = 3;   // 同じ形のURL(IDだけ違う等)は3件まで
 const WAIT_MS = 300;         // サーバー負荷を避けるための間隔
@@ -16,18 +17,6 @@ const SKIP_PATH_BY_SITE = {
   cms: null,
   student: /^\/(player|exam|exam2|ethic_treaning|settlement|member|login|logout|engine1|engine1_sp|data1|data1_sp|question)(\/|$)|^\/mypage\/(favorite|edit|refusal|receipt_download|ticket_download|input_zip|viewing)\.php|^\/product\/complete\.php|download\.php/i,
 };
-
-const CHECKS = [
-  { name: 'SQL文', re: /\b(SELECT\s[^<>]{0,300}?\sFROM\s+[`\w]+|INSERT\s+INTO\s+[`\w]+|UPDATE\s+[`\w]+\s+SET\s|DELETE\s+FROM\s+[`\w]+)/i },
-  { name: 'var_dump', re: /\barray\(\d+\)\s*\{|\bobject\([\w\\]+\)#\d+\s*\(\d+\)\s*\{|\bstring\(\d+\)\s*"/ },
-  { name: 'print_r', re: /\bArray\s*\(\s*\[[^\]]+\]\s*=>/ },
-  // <!--[key:値]--> や <!--[123]--> のように値が入っているもの（情報漏えいの可能性あり）
-  { name: '確認用コメント(値入り)', re: /<!--\[(?!if\s)(?:[^\]\n]{0,80}:[^\]\n]*|\s*[\d.,\s]*)\]-->/ },
-  // <!--[page.php]--> <!--[Test11]--> 等の固定文字列だけの目印（データは出ないが残骸）
-  { name: '確認用コメント(固定文字列)', re: /<!--\[(?!if\s)(?=[^\]\n]*[^\d.,\s\]])[^\]:\n]{1,80}\]-->/ },
-  { name: 'PHPエラー', re: /<b>(Warning|Notice|Deprecated|Fatal error|Parse error)<\/b>:|A PHP Error was encountered|Unable to load the requested file|(Warning|Notice|Deprecated|Fatal error): .{0,200} on line \d+/ },
-  { name: 'サーバーパス', re: /\/srv\/alf\w+|\/var\/www\/html\// },
-];
 
 const pattern = (u) => u.pathname.replace(/\/[^/]*\d[^/]*(?=\/|$)/g, '/{n}') + '?' +
   [...u.searchParams.keys()].sort().join('&');
@@ -53,10 +42,6 @@ function seedUrls(site, origin) {
     paths.push(...listFiles(path.join(REPO, 'alflearning/alflearning-cms/alfproduct'), /^index\.php$/).map((p) => '/alfproduct' + p.replace(/index\.php$/, '')));
   }
   return paths.filter((p) => !test.test(p)).map((p) => origin + p);
-}
-
-function snippet(text, idx, len = 160) {
-  return text.slice(Math.max(0, idx - 40), idx + len).replace(/\s+/g, ' ');
 }
 
 (async () => {

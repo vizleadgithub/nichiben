@@ -17,5 +17,6 @@ node_modules/
 test-results/
 playwright-report/
 tools/stg2-e2e/.auth/
+tools/stg2-e2e/test-plan/plan.json
 
 .vscode/
