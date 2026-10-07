@@ -421,13 +421,13 @@ if ( ! function_exists('form_dropdown'))
 					continue;
 				}
 
-				$form .= '<optgroup label="'.html_escape($key, FALSE)."\">\n";
+				$form .= '<optgroup label="'.$key."\">\n";
 
 				foreach ($val as $optgroup_key => $optgroup_val)
 				{
 					$sel = in_array($optgroup_key, $selected) ? ' selected="selected"' : '';
 					$form .= '<option value="'.html_escape($optgroup_key).'"'.$sel.'>'
-						.html_escape((string) $optgroup_val, FALSE)."</option>\n";
+						.(string) $optgroup_val."</option>\n";
 				}
 
 				$form .= "</optgroup>\n";
@@ -436,7 +436,7 @@ if ( ! function_exists('form_dropdown'))
 			{
 				$form .= '<option value="'.html_escape($key).'"'
 					.(in_array($key, $selected) ? ' selected="selected"' : '').'>'
-					.html_escape((string) $val, FALSE)."</option>\n";
+					.(string) $val."</option>\n";
 			}
 		}
 
@@ -719,7 +719,7 @@ if ( ! function_exists('set_value'))
 			: $CI->input->post($field, FALSE);
 
 		isset($value) OR $value = $default;
-		return ($html_escape) ? html_escape($value, FALSE) : $value;
+		return ($html_escape) ? html_escape($value) : $value;
 	}
 }
 

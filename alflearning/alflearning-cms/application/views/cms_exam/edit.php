@@ -1162,7 +1162,7 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
 							<td>
-								<?=form_dropdown('teacher_id',$teachers_dropdown,set_value('teacher_id',$exam['teacher_id']), 'id="teacher_id"'); ?>
+								<?=form_dropdown('teacher_id',dropdown_escape($teachers_dropdown),set_value('teacher_id',$exam['teacher_id']), 'id="teacher_id"'); ?>
 								&nbsp;<lavel id="teacher_change_message" style=""><?= $this->lang->line_or_def('msg_different_teacher','別の講師が選択されています') ?></label>
 							</td>
 						</tr>
@@ -1248,19 +1248,19 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 						<tr>
 							<th><?= $this->lang->line_or_def('common_indication_status','公開設定') ?></th>
 							<td >
-								<?=form_dropdown('public_flag', $public_flag_list, set_value('public_flag', $exam['public_flag']));?>
+								<?=form_dropdown('public_flag', dropdown_escape($public_flag_list), set_value('public_flag', $exam['public_flag']));?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_resubmit','再提出') ?></th>
 							<td >
-								<?=form_dropdown('resubmit_flag', $resubmit_flag_list, set_value('resubmit_flag', $exam['resubmit_flag']));?>
+								<?=form_dropdown('resubmit_flag', dropdown_escape($resubmit_flag_list), set_value('resubmit_flag', $exam['resubmit_flag']));?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_marking_public_status','採点公開設定') ?></th>
 							<td >
-								<?=form_dropdown('marking_public_flag', $public_flag_list, set_value('marking_public_flag', $exam['marking_public_flag']), 'id="marking_public_flag"' );?>
+								<?=form_dropdown('marking_public_flag', dropdown_escape($public_flag_list), set_value('marking_public_flag', $exam['marking_public_flag']), 'id="marking_public_flag"' );?>
 <?php if(false){ ?>
 								<div id="marking_public_kind_area" style="<?=(set_value('marking_public_flag',$exam['marking_public_flag'])==9) ? 'display:none;' : ''?> ">
 									<div>
@@ -1359,7 +1359,7 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 						<tr>
 							<th><?= $this->lang->line_or_def('common_criteria','判定基準') ?></th>
 							<td>
-								<?=form_dropdown('criteria_type', $criteria_type_list, set_value('criteria_type', $exam['criteria_type']));?>
+								<?=form_dropdown('criteria_type', dropdown_escape($criteria_type_list), set_value('criteria_type', $exam['criteria_type']));?>
 								<input type=text name="criteria_value" maxlength="256" size="10" value='<?=set_value('criteria_value',$exam['criteria_value'])?>'>
 								点/％/数
 							</td>

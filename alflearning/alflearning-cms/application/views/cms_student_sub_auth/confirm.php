@@ -384,7 +384,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_mobile_mail_address','携帯メールアドレス') ?></th>
 							<td>
-								<?= $student['student_email_mobile']; ?>
+								<?= htmlspecialchars( $student['student_email_mobile'], ENT_QUOTES, 'UTF-8', false) ?>
 							</td>
 						</tr>
 						<tr>
@@ -466,7 +466,7 @@
 							<td>
 								<? if( ($btn_kirikae_flg==1) && ($student['password_answer_change']==1) ): ?>
 									<?php // 入力確認画面かつ変更あり ?>
-									<?= $student['password_answer']; ?>
+									<?= htmlspecialchars( $student['password_answer'], ENT_QUOTES, 'UTF-8', false) ?>
 								<? else: ?>
 									**********
 								<? endif; ?>

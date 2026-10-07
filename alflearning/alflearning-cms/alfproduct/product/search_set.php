@@ -170,19 +170,15 @@ function serchSet(id, name, comment, hid_id_name, spa_id_name, hid_name_name, hi
 	if(!window.opener || window.opener.closed){
 		window.close();
 	} else{
-		console.log(hid_id_name);
 		if(window.opener.document.getElementById(hid_id_name)!= null){
 			window.opener.document.getElementById(hid_id_name).value = utf.URLdecode(id);
 		}
-		console.log(hid_name_name);
 		if(window.opener.document.getElementById(hid_name_name)!= null){
 			window.opener.document.getElementById(hid_name_name).value = utf.URLdecode(name);
 		}
-		console.log(hid_coment_name);
 		if(window.opener.document.getElementById(hid_coment_name)!= null){
 			window.opener.document.getElementById(hid_coment_name).value = utf.URLdecode(comment);
 		}
-		console.log(spa_id_name);
 		if(window.opener.document.getElementById(spa_id_name)!= null){
 			window.opener.document.getElementById(spa_id_name).textContent = utf.URLdecode(name);
 		}

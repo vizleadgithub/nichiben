@@ -83,7 +83,7 @@ if ($cate_flg == 1){
 								<a href="/product/detail.php?pid=<?php echo (int)$post->product_id; ?>" style="color:#796A57;">>>詳細情報を見る</a>
 							</div>
 						<?php } else { ?>
-							<?php if ($post->url != "" && preg_match('#^(https?://|/(?!/))#i', $post->url)){ ?>
+							<?php if (safe_href($post->url) != ""){ ?>
 								<div style="text-align:right;padding-bottom:10px;">
 									<a href="<?php echo htmlspecialchars(safe_href($post->url), ENT_QUOTES, 'UTF-8'); ?>" style="color: #796A57;" target="_blank" rel="noopener noreferrer">>>詳細情報を見る</a>
 								</div>

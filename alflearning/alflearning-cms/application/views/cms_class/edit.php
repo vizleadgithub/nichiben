@@ -388,7 +388,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 							<td>
-								<?=form_dropdown('cource_id',$cources_dropdown,set_value('cource_id', $class['cource_id']));?>
+								<?=form_dropdown('cource_id',dropdown_escape($cources_dropdown),set_value('cource_id', $class['cource_id']));?>
 							</td>
 						</tr>
 						<tr>
@@ -424,11 +424,11 @@
 								
 								<? //担当授業 or SuperUser のパターン ?>
 								<? if($class['update_flg']==0): ?>
-									<?= form_dropdown('teacher_id',$teachers_dropdown,set_value('teacher_id',$class['teacher_id']), 'id="teacher_id"'); ?>
+									<?= form_dropdown('teacher_id',dropdown_escape($teachers_dropdown),set_value('teacher_id',$class['teacher_id']), 'id="teacher_id"'); ?>
 									&nbsp;<lavel id="teacher_change_message" style="color:#00A4E2;"><?= $this->lang->line_or_def('msg_different_teacher','別の講師が選択されています') ?></label>
 								<? else: ?>
 									<? if( ($class['teacher_id'] == $this->libauth->get_teacher_id()) || ($this->libauth->get_teacher_id() < 0) ): ?>
-										<?= form_dropdown('teacher_id',$teachers_dropdown,set_value('teacher_id',$class['teacher_id']), 'id="teacher_id"'); ?>
+										<?= form_dropdown('teacher_id',dropdown_escape($teachers_dropdown),set_value('teacher_id',$class['teacher_id']), 'id="teacher_id"'); ?>
 										&nbsp;<lavel id="teacher_change_message" style="color:#00A4E2;"><?= $this->lang->line_or_def('msg_different_teacher','別の講師が選択されています') ?></label>
 									<? else: ?>
 										<input type="hidden" name="teacher_id" value='<?=set_value('teacher_id',$class['teacher_id'])?>'>
@@ -444,12 +444,12 @@
 								<?php $count = 0; ?>
 								<?php if(isset($class['sub_teacher_id'])) { ?>
 									<?php foreach($class['sub_teacher_id'] as $class_teacher) { ?>
-										<div class="sub_teacher_id"><?=form_dropdown('sub_teacher_id[]',$teachers_dropdown,set_value('sub_teacher_id[]',$class_teacher)); ?></div>
+										<div class="sub_teacher_id"><?=form_dropdown('sub_teacher_id[]',dropdown_escape($teachers_dropdown),set_value('sub_teacher_id[]',$class_teacher)); ?></div>
 										<?php $count = $count + 1; ?>
 									<?php } ?>
 								<?php } ?>
 								<?php for($i=$count; $i<5; $i++) { ?>
-									<div class="sub_teacher_id"><?=form_dropdown('sub_teacher_id[]',$teachers_dropdown,set_value('sub_teacher_id[]','')); ?></div>
+									<div class="sub_teacher_id"><?=form_dropdown('sub_teacher_id[]',dropdown_escape($teachers_dropdown),set_value('sub_teacher_id[]','')); ?></div>
 								<?php } ?>
 							</td>
 						</tr>

@@ -243,7 +243,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
 							<td>
-								<?=form_dropdown('teacher_id',$teachers_dropdown,set_value('teacher_id',$exam_problem['teacher_id']), 'id="teacher_id"'); ?>
+								<?=form_dropdown('teacher_id',dropdown_escape($teachers_dropdown),set_value('teacher_id',$exam_problem['teacher_id']), 'id="teacher_id"'); ?>
 								&nbsp;<lavel id="teacher_change_message" style=""><?= $this->lang->line_or_def('msg_different_teacher','別の講師が選択されています') ?></label>
 							</td>
 						</tr>

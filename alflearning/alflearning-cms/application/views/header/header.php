@@ -165,7 +165,6 @@
 			
 			success: function(response) {
 				if(response){
-					console.log(response.length);
 					if( response.length>0 ){
 					} else {
 						$("#notification_bottom_area").remove();
@@ -193,14 +192,14 @@
 							$("#notification_list_area").append(
 								$('<li id="notification_id_'+response[i]['notification_id']+'" style="color:#FB8282;">')
 									.append($('<div class="date_area">').text(response[i]['added_at']))
-									.append($('<div class="caption_area">').text(response[i]['notice_caption']))
+									.append((function(t){var $d=$('<div class="caption_area">');$.each(String(t==null?'':t).split(/<br\s*\/?>/i),function(k,s){if(k){$d.append(document.createElement('br'));}$d.append(document.createTextNode(s));});return $d;})(response[i]['notice_caption']))
 									.append('<div class="link_area"><a class="read_button" onclick="ajax_update_notification('+response[i]['notification_id']+');return false;" href="#"></a></div><div style="clear:both;">')
 							);
 						}else{
 							$("#notification_list_area").append(
 								$('<li id="notification_id_'+response[i]['notification_id']+'" >')
 									.append($('<div class="date_area">').text(response[i]['added_at']))
-									.append($('<div class="caption_area">').text(response[i]['notice_caption']))
+									.append((function(t){var $d=$('<div class="caption_area">');$.each(String(t==null?'':t).split(/<br\s*\/?>/i),function(k,s){if(k){$d.append(document.createElement('br'));}$d.append(document.createTextNode(s));});return $d;})(response[i]['notice_caption']))
 									.append('<div class="link_area"><a class="read_button" onclick="ajax_update_notification('+response[i]['notification_id']+');return false;" href="#"></a></div><div style="clear:both;">')
 							);
 						}

@@ -518,7 +518,7 @@
 						<tr>
 							<th ><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
 							<td>
-								<?=form_dropdown('teacher_id',$teachers_dropdown,set_value('teacher_id',$exam2_problem['teacher_id']), 'id="teacher_id"'); ?>
+								<?=form_dropdown('teacher_id',dropdown_escape($teachers_dropdown),set_value('teacher_id',$exam2_problem['teacher_id']), 'id="teacher_id"'); ?>
 								&nbsp;<lavel id="teacher_change_message" style=""><?= $this->lang->line_or_def('msg_different_teacher','別の講師が選択されています') ?></label>
 							</td>
 						</tr>
@@ -570,7 +570,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_problem_kind','設問種類') ?></th>
 							<td >
-								<?=form_dropdown('problem_kind', $problem_kind_list, set_value('problem_kind', $exam2_problem['problem_kind']));?>
+								<?=form_dropdown('problem_kind', dropdown_escape($problem_kind_list), set_value('problem_kind', $exam2_problem['problem_kind']));?>
 							</td>
 						</tr>
 						<tr>
@@ -578,8 +578,8 @@
 							<td>
 								<? // 設問種類に応じて表示切替 ?>
 								<textarea name="problem_contents_text" id="problem_contents_text" ><?= htmlspecialchars(set_value('problem_contents_text', $exam2_problem['problem_contents_text'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
-								<?= form_dropdown('problem_contents_book_library',$problem_contents_book_library, set_value('problem_contents_book_library', $exam2_problem['problem_contents_book_library']), 'name="problem_contents_book_library" class="problem_contents_book_library" '); ?>
-								<?= form_dropdown('problem_contents_video',$problem_contents_video, set_value('problem_contents_video', $exam2_problem['problem_contents_video']), 'name="problem_contents_video" class="problem_contents_video" '); ?>
+								<?= form_dropdown('problem_contents_book_library',dropdown_escape($problem_contents_book_library), set_value('problem_contents_book_library', $exam2_problem['problem_contents_book_library']), 'name="problem_contents_book_library" class="problem_contents_book_library" '); ?>
+								<?= form_dropdown('problem_contents_video',dropdown_escape($problem_contents_video), set_value('problem_contents_video', $exam2_problem['problem_contents_video']), 'name="problem_contents_video" class="problem_contents_video" '); ?>
 								 <img name="problem_contents_thum" id="problem_contents_thum" style="" src="">
 							</td>
 						</tr>
@@ -594,7 +594,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_answer_kind','解答種類') ?></th>
 							<td >
-								<?=form_dropdown('answer_kind', $answer_kind_list, set_value('answer_kind', $exam2_problem['answer_kind']));?>
+								<?=form_dropdown('answer_kind', dropdown_escape($answer_kind_list), set_value('answer_kind', $exam2_problem['answer_kind']));?>
 							</td>
 						</tr>
 						
@@ -645,7 +645,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_answer_explain_kind','解答解説種類') ?></th>
 							<td >
-								<?=form_dropdown('answer_explain_kind', $answer_explain_kind_list, set_value('answer_explain_kind', $exam2_problem['answer_explain_kind']));?>
+								<?=form_dropdown('answer_explain_kind', dropdown_escape($answer_explain_kind_list), set_value('answer_explain_kind', $exam2_problem['answer_explain_kind']));?>
 							</td>
 						</tr>
 						-->
@@ -656,8 +656,8 @@
 							<td>
 								<? // 設問種類に応じて表示切替 ?>
 								<textarea name="answer_explain_contents_text" id="answer_explain_contents_text" ><?= htmlspecialchars(set_value('answer_explain_contents_text', $exam2_problem['answer_explain_contents_text'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
-								<?= form_dropdown('answer_explain_contents_book_library',$problem_contents_book_library, set_value('answer_explain_contents_book_library', $exam2_problem['answer_explain_contents_book_library']), 'name="answer_explain_contents_book_library" class="answer_explain_contents_book_library" '); ?>
-								<?= form_dropdown('answer_explain_contents_video',$problem_contents_video, set_value('answer_explain_contents_video', $exam2_problem['answer_explain_contents_video']), 'name="answer_explain_contents_video" class="answer_explain_contents_video" '); ?>
+								<?= form_dropdown('answer_explain_contents_book_library',dropdown_escape($problem_contents_book_library), set_value('answer_explain_contents_book_library', $exam2_problem['answer_explain_contents_book_library']), 'name="answer_explain_contents_book_library" class="answer_explain_contents_book_library" '); ?>
+								<?= form_dropdown('answer_explain_contents_video',dropdown_escape($problem_contents_video), set_value('answer_explain_contents_video', $exam2_problem['answer_explain_contents_video']), 'name="answer_explain_contents_video" class="answer_explain_contents_video" '); ?>
 								 <img name="answer_explain_contents_thum" id="answer_explain_contents_thum" style="" src="">
 							</td>
 						</tr>

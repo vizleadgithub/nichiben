@@ -58,7 +58,7 @@ class Cms_issue extends CI_Controller {
 		$this->load->library('pagination');
 		$per_page = $this->config->item('pagination_per_page');
 
-		$this->form_validation->set_rules('s_cource'    , $this->lang->line_or_def('common_course_name','講座名')    , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_cource'    , $this->lang->line_or_def('common_course_name','講座名')    , 'trim');
 		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim|xss_clean');
 		$this->form_validation->run();
 
@@ -343,15 +343,15 @@ class Cms_issue extends CI_Controller {
 		$this->lang->load('error');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'    , $this->lang->line_or_def('common_flg','flg')                     , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('issue_id'      , $this->lang->line_or_def('common_id','ID')                       , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('update_flg'    , $this->lang->line_or_def('common_flg','flg')                     , 'trim|numeric');
+		$this->form_validation->set_rules('issue_id'      , $this->lang->line_or_def('common_id','ID')                       , 'trim|numeric');
 		$this->form_validation->set_rules('issue_name'    , $this->lang->line_or_def('common_issue_name','課題名')           , 'trim|required');
 		$this->form_validation->set_rules('issue_lectures[]', $this->lang->line_or_def('common_position_course','所属講座')    , 'callback_check_required_checkbox');
 		$this->form_validation->set_rules('issue_caption' , $this->lang->line_or_def('common_caption','説明')                , 'trim');
-		$this->form_validation->set_rules('issue_open'    , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|xss_clean|required|callback_datetime_check');
-		$this->form_validation->set_rules('issue_close'   , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|xss_clean|required|callback_datetime_check');
-		$this->form_validation->set_rules('public_flag'   , $this->lang->line_or_def('common_indication_status','表示状態')  , 'trim|xss_clean|required');
-		$this->form_validation->set_rules('teacher_id'    , $this->lang->line_or_def('common_management_teacher','管理講師') , 'trim|xss_clean|required');
+		$this->form_validation->set_rules('issue_open'    , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|required|callback_datetime_check');
+		$this->form_validation->set_rules('issue_close'   , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|required|callback_datetime_check');
+		$this->form_validation->set_rules('public_flag'   , $this->lang->line_or_def('common_indication_status','表示状態')  , 'trim|required');
+		$this->form_validation->set_rules('teacher_id'    , $this->lang->line_or_def('common_management_teacher','管理講師') , 'trim|required');
 		
 		//検証
 		if($this->form_validation->run() == FALSE){

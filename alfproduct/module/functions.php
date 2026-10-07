@@ -3223,7 +3223,7 @@ function purify_memo(string $html): string {
 }
 
 /**
- * リンク先(href)用: http/https の絶対URL、または / から始まるサイト内パスのみ返す。
+ * リンク先(href)用: http/https の絶対URL、またはスキームを持たない相対パス・サイト内パスのみ返す。
  * javascript: 等のスキームや //・/\ で始まる外部参照は空文字にする。出力時は別途 htmlspecialchars すること。
  */
 function safe_href($url): string {
@@ -3231,7 +3231,8 @@ function safe_href($url): string {
 	if ($url === '' || preg_match('/[\x00-\x20\x7f]/', $url)) {
 		return '';
 	}
-	if (preg_match('#^https?://[^/\\\\]#i', $url) || preg_match('#^/(?![/\\\\])#', $url)) {
+	// http/https の絶対URL、またはスキームを持たない相対パス・サイト内パス(//・\ で始まるものは除く)
+	if (preg_match('#^https?://[^/\\\\]#i', $url) || preg_match('#^(?![a-z][a-z0-9+.-]*:|//|\\\\)[^\\\\]+$#i', $url)) {
 		return $url;
 	}
 	return '';

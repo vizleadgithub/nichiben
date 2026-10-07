@@ -65,8 +65,8 @@ class Cms_exam_problem_group extends CI_Controller {
 		$per_page = $this->config->item('pagination_per_page');
 
 		$this->form_validation->set_rules('s_exam_problem_group_name' , $this->lang->line_or_def('common_exam_problem_group_name','設問グループ名'), 'trim|xss_clean');
-		$this->form_validation->set_rules('s_exam_problem_id'         , $this->lang->line_or_def('common_exam_problem_name','設問名')              , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_id'                      , $this->lang->line_or_def('common_id','ID')                                 , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_exam_problem_id'         , $this->lang->line_or_def('common_exam_problem_name','設問名')              , 'trim');
+		$this->form_validation->set_rules('s_id'                      , $this->lang->line_or_def('common_id','ID')                                 , 'trim');
 		$this->form_validation->set_rules('s_free_word'               , $this->lang->line_or_def('common_freeword','フリーワード')                 , 'trim|xss_clean');
 		$this->form_validation->run();
 
@@ -300,8 +300,8 @@ class Cms_exam_problem_group extends CI_Controller {
 		$this->lang->load('error');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'                 , $this->lang->line_or_def('common_flg','flg')                                     , 'trim|xss_clean|numeric');
-		$this->form_validation->set_rules('exam_problem_group_id'      , $this->lang->line_or_def('common_id','ID')                                       , 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('update_flg'                 , $this->lang->line_or_def('common_flg','flg')                                     , 'trim|numeric');
+		$this->form_validation->set_rules('exam_problem_group_id'      , $this->lang->line_or_def('common_id','ID')                                       , 'trim|numeric');
 		$this->form_validation->set_rules('exam_problem_group_name'    , $this->lang->line_or_def('common_exam_problem_group_name_name','設問グループ名') , 'trim|required');
 		$this->form_validation->set_rules('exam_problem_group_caption' , $this->lang->line_or_def('common_caption','説明')                                , 'trim');
 		//$this->form_validation->set_rules('position_exam_problems'     , $this->lang->line_or_def('common_exam_problem','設問')                           , 'xss_clean');

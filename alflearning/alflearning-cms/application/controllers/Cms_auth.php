@@ -55,7 +55,7 @@ class Cms_auth extends CI_Controller {
 		//検証ルールの設定
 		$this->form_validation->set_rules('s_name'      , $this->lang->line_or_def('common_name','名前')                   , 'trim|xss_clean');
 		$this->form_validation->set_rules('s_email'     , $this->lang->line_or_def('common_mail_address','メールアドレス') , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_id'        , $this->lang->line_or_def('common_id','ID')                       , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_id'        , $this->lang->line_or_def('common_id','ID')                       , 'trim');
 		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード')       , 'trim|xss_clean');
 		$this->form_validation->run();	//バリデーション実行（その実xss対策）
 		

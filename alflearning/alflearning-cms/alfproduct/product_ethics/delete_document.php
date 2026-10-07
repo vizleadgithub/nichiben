@@ -197,9 +197,6 @@ if( trim($_GET["del"])!=""){
 		<input type="hidden" name="<?php echo htmlspecialchars((string)$key, ENT_QUOTES, 'UTF-8', false); ?>" value="<?php echo htmlspecialchars((string)$val, ENT_QUOTES, 'UTF-8', false); ?>" />
 	<?php } ?>
 <?php } ?>
-<?php foreach($arr_input["arr_term_id"] as $val){ ?>
-<!--<input type="hidden" name="arr_term_id[]" value="<?php echo $val; ?>" />-->
-<?php } ?>
 <?php /* foreach($arr_input["product_flg"] as $val){ ?>
 <input type="hidden" name="product_flg[]" value="<?php echo htmlspecialchars($val); ?>" />
 <?php } */ ?>

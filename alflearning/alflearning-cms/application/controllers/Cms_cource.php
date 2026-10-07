@@ -62,9 +62,9 @@ class Cms_cource extends CI_Controller {
 		
 		//検証ルールの設定
 		$this->form_validation->set_rules('s_name'      , $this->lang->line_or_def('common_course_name','講座名')               , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_open'      , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_close'     , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_id'        , $this->lang->line_or_def('common_id','ID')                            , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_open'      , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim');
+		$this->form_validation->set_rules('s_close'     , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim');
+		$this->form_validation->set_rules('s_id'        , $this->lang->line_or_def('common_id','ID')                            , 'trim');
 		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード')            , 'trim|xss_clean');
 		$this->form_validation->run();	//バリデーション実行（その実xss対策）
 
@@ -371,17 +371,17 @@ class Cms_cource extends CI_Controller {
 		$this->lang->load('common');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'      , $this->lang->line_or_def('common_flg','flg')                          , 'trim|numeric|xss_clean');
-		$this->form_validation->set_rules('cource_id'       , $this->lang->line_or_def('common_id','ID')                            , 'trim|numeric|xss_clean');
+		$this->form_validation->set_rules('update_flg'      , $this->lang->line_or_def('common_flg','flg')                          , 'trim|numeric');
+		$this->form_validation->set_rules('cource_id'       , $this->lang->line_or_def('common_id','ID')                            , 'trim|numeric');
 		$this->form_validation->set_rules('cource_name'     , $this->lang->line_or_def('common_course_name','講座名')               , 'trim|required');
-		$this->form_validation->set_rules('cource_open'     , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim|required|callback_datetime_check|xss_clean');
-		$this->form_validation->set_rules('cource_close'    , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim|required|callback_datetime_check|callback_period_check[cource_open]|xss_clean');
+		$this->form_validation->set_rules('cource_open'     , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim|required|callback_datetime_check');
+		$this->form_validation->set_rules('cource_close'    , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim|required|callback_datetime_check|callback_period_check[cource_open]');
 		$this->form_validation->set_rules('cource_caption'  , $this->lang->line_or_def('common_caption','説明')                     , 'trim');
 		$this->form_validation->set_rules('cource_note'     , $this->lang->line_or_def('common_note','備考')                        , 'trim');
-		$this->form_validation->set_rules('lecture_students'      , $this->lang->line_or_def('common_student','受講者')             , 'xss_clean');
-		$this->form_validation->set_rules('lecture_materials'     , $this->lang->line_or_def('common_material','資料')              , 'xss_clean');
-		$this->form_validation->set_rules('lecture_book_librarys' , $this->lang->line_or_def('common_book_library','図書室')        , 'xss_clean');
-		$this->form_validation->set_rules('lecture_videos'        , $this->lang->line_or_def('common_common_video','ビデオ')        , 'xss_clean');
+		$this->form_validation->set_rules('lecture_students'      , $this->lang->line_or_def('common_student','受講者')             , 'trim');
+		$this->form_validation->set_rules('lecture_materials'     , $this->lang->line_or_def('common_material','資料')              , 'trim');
+		$this->form_validation->set_rules('lecture_book_librarys' , $this->lang->line_or_def('common_book_library','図書室')        , 'trim');
+		$this->form_validation->set_rules('lecture_videos'        , $this->lang->line_or_def('common_common_video','ビデオ')        , 'trim');
 
 		// [2012/11/30] [Ajax]選択された受講者IDの整形（取得・ID昇順）
 		$lecture_students = $this->input->post('lecture_students_array')?$this->input->post('lecture_students_array'):array();

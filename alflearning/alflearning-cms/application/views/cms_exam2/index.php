@@ -36,7 +36,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 							<td>
-								<?=form_dropdown('s_cource',$cources_dropdown, set_value('s_cource',$s_cource)); ?>
+								<?=form_dropdown('s_cource',dropdown_escape($cources_dropdown), set_value('s_cource',$s_cource)); ?>
 							</td>
 						</tr>
 						<tr>

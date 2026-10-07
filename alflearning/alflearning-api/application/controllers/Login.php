@@ -279,9 +279,7 @@ class Login extends CI_Controller {
 		$log_message  = $_SERVER["SERVER_NAME"].$_SERVER["PHP_SELF"]."/getStudentData"."\n";
 		$log_message .= "REQUEST:[remote_addr]=>".$clientIP."\n";
 		$log_message .= "REQUEST:[user_agent]=>".$_SERVER["HTTP_USER_AGENT"]."\n";
-		$log_message .= "REQUEST POST:[session_id]=>".$this->input->post('session_id')."\n";
-		$log_message .= "REQUEST POST:[debug]=>".$this->input->post('debug') ."\n";
-		$log_message .= "RESPONSE:[output]=>".json_encode($output);
+		$log_message .= "RESPONSE:[status]=>".$output['result']['status']." ".$output['result']['message'];
 		log_message('error', $log_message );
 		
 		// output

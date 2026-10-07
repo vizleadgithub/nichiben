@@ -528,47 +528,6 @@
 
 						<? // 所属講座 は固定 ?>
 						<input type="hidden" name="video_lectures[]" value='<?= $this->config->item('nichibenren_cource_id') ?>'>
-<!--					<tr>
-							<th >
-								<?= $this->lang->line_or_def('common_position_course','所属講座') ?>
-								<a href="#" onclick="select_all();return false;" id="select_all" name="select_all"></a>
-							</th>
-							<td>
-								<div class="cource_list">
-									<ul class="list" id="cource_ul">
-									<?php 
-										if( isset($lecture_cources) ) { 
-											foreach( $lecture_cources as $cource ){ ?>
-												<li>
-												<input type="checkbox" name="video_lectures[]" id="lectures_<?=$cource['cource_id']?>" value=<?=$cource['cource_id']?>
-													<?php 
-													if( isset($video['video_lectures']) ) {
-														foreach( $video['video_lectures'] as $lecture) { 
-															if($lecture == $cource['cource_id']) {
-														?>
-																checked
-																<?php
-																break;
-															}
-														}
-													}
-													?>
-													>
-												<label for="lectures_<?=$cource['cource_id']?>"><?=$cource['cource_name']?></label>
-												</li>
-										<?php 
-										}
-									}else{ ?>
-										<li>---</li>
-									<?php
-									}
-									?>
-										
-									</ul>
-								</div>
-							</td>
-						</tr>
- -->
 
 						<? // 説明 は使用しない ?>
 						<input type="hidden" name="video_caption" value='<?=set_value('video_caption', $video['video_caption'])?>'>
@@ -627,7 +586,7 @@
 												</td>
 												
 												<td style="vertical-align: middle;text-align: center;">
-													<?=form_dropdown('exclusive_book_library[]',$book_library_exclusive, set_value('exclusive_book_library[]', $video['exclusive_book_library'][$ino]), 'name="exclusive_book_library[]" style="width: 190px;"'); ?>
+													<?=form_dropdown('exclusive_book_library[]',dropdown_escape($book_library_exclusive), set_value('exclusive_book_library[]', $video['exclusive_book_library'][$ino]), 'name="exclusive_book_library[]" style="width: 190px;"'); ?>
 												</td>
 
 												<td style="vertical-align: middle;text-align: center;width: 100px;">

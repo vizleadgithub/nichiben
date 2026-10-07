@@ -64,7 +64,7 @@ class Cms_ranking extends CI_Controller {
 
 		$this->form_validation->set_rules('result' , $this->lang->line_or_def('result','result') , 'trim');
 		$this->form_validation->run();
-		$data['get_result'] = strip_tags($this->input->get('result', TRUE) ?? '');
+		$data['get_result'] = strip_tags($this->input->get('result') ?? '');
 
 		$this->load->model('model_ranking');
 		//データ取得

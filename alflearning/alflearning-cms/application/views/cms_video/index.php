@@ -48,7 +48,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_tag','タグ') ?></th>
 							<td>
-								<?=form_dropdown('s_tag',$tags_dropdown, set_value('s_tag',$s_tag),['style' => 'width:580px;']); ?>
+								<?=form_dropdown('s_tag',dropdown_escape($tags_dropdown), set_value('s_tag',$s_tag),['style' => 'width:580px;']); ?>
 							</td>
 						</tr>
 

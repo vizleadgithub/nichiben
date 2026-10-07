@@ -170,7 +170,7 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 						<?php if (!$disp_flg){ ?>
 							<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
 						<?php } else { ?>
-							<?php if ($post["url"] != ""){ ?>
+							<?php if (safe_href($post["url"]) != ""){ ?>
 								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
 							<?php } else { ?>
 								<span style="color:#579748;font-size:17px;font-weight:bold;"><?php print(htmlspecialchars($post["post_title"], ENT_QUOTES, 'UTF-8')); ?></span>
@@ -191,7 +191,7 @@ if(strpos($_SERVER["REQUEST_URI"],'/news')>0){
 							<?php if ($post["product_id"] > 0){ ?>
 								<a href="/archives/<?php print($post["ID"]); ?>" class="page-link" rel="bookmark" style="color: #796A57;font-weight: normal;">>>詳細へ</a>
 							<?php } else { ?>
-								<?php if ($post["url"] != ""){ ?>
+								<?php if (safe_href($post["url"]) != ""){ ?>
 									<a href="<?php print(htmlspecialchars(safe_href($post["url"]), ENT_QUOTES, 'UTF-8')); ?>" class="page-link" rel="noopener noreferrer" style="color: #796A57;font-weight: normal;" target="_blank">>>詳細へ</a>
 								<?php } else { ?>
 									<a href="/archives/<?php print($post["ID"]); ?>" class="page-link" rel="bookmark" style="color: #796A57;font-weight: normal;">>>詳細へ</a>

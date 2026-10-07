@@ -16,7 +16,7 @@ if(!$arr_session){
 	header("Location: /?backurl=".$_SERVER['PHP_SELF']);
 	exit();
 }
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 $err_msg = '';

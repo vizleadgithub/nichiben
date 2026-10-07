@@ -98,10 +98,6 @@
 												});
 											$(this).css("background-color", "white");
 
-//											$(this).attr({ 
-//												src: "<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_"+select_id+"/Page1/master-Page1.jpg?token=<?= $this->session->userdata('session_id') ?>",
-//												alt: "",
-//											});
 
 											$(this).attr({
 												src: "<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_"+select_id+"/Page1/master-Page1.jpg?token=12345678901234567890abcdefghijkl",
@@ -409,16 +405,13 @@
 												</td>
 												
 												<td style="vertical-align: middle;text-align: center;">
-													<?=form_dropdown('exclusive_book_library[]',$book_library_exclusive, set_value('exclusive_book_library[]', $video['exclusive_book_library'][$ino]), 'name="exclusive_book_library[]" style="width: 190px;"'); ?>
+													<?=form_dropdown('exclusive_book_library[]',dropdown_escape($book_library_exclusive), set_value('exclusive_book_library[]', $video['exclusive_book_library'][$ino]), 'name="exclusive_book_library[]" style="width: 190px;"'); ?>
 												</td>
 
 												<td style="vertical-align: middle;text-align: center;width: 100px;">
 													<?php if($video['exclusive_book_library'][$ino] < 1): ?>
 														<img src="" alt="[No Image]" style="height: 64px;width: 100px;padding:1px;background-color:white;"/ name="book_thumbnail[]">
 													<?php else: ?>
-							<!--
-													<img src="<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_<?= $video['exclusive_book_library'][$ino]; ?>/Page1/master-Page1.jpg?token=<?= $this->session->userdata('session_id') ?>" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
-							-->
 													<img src="<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_<?= $video['exclusive_book_library'][$ino]; ?>/Page1/master-Page1.jpg?token=12345678901234567890abcdefghijkl" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
 													<?php endif; ?>
 												</td>
