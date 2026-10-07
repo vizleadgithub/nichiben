@@ -560,12 +560,19 @@ bash alflearning/mountcheck.sh
 
 計画の各行（ID: A-/B-/C-/D-/E-/F-/G-）を自動実行する。結果は計画の ID ごとの「NG候補」で出る。最終判定（OK/NG）は人が再現確認して xlsx に記入する。
 
+- **`test-plan/plan-fixes.json`**: `secure_report/テストプランレビュー.pdf`（2026-10-07）で指摘された、計画(xlsx)の抜けのうち
+  xlsxの改訂を待たずに反映できるものを記録したパッチ（Git管理する。`export-plan.py` が xlsx 読み込み後に自動適用し、
+  plan.json にだけ反映する。xlsx 本体は直接編集しない）。内容: 新規行の追加(`add`)・既存行への追記(`modify`)。
+  xlsx が正式に改訂されたら、重複する内容は削除してよい。
+  また同じ `export-plan.py` が、備考に★が付いた行(エスケープ関数が見当たらない表示の候補。191行)に、
+  項目名からのヒューリスティックで期待結果の仮分類(`reviewHint`)を自動付与する（レビュー 4.3。要レビュー前提の仮置き）。
+
 ```
 cd tools/stg2-e2e
 python test-plan/export-plan.py                      # xlsx(最終更新日時が最新のもの) → test-plan/plan.json（openpyxl 必要。コミットしない）
 node run-xss-search.js cms                           # 段階A: S8 検索条件（CMS・商品管理）。student も同様。--full 全バリエーション / --each 1項目ずつ / --only A-0010,...
 node run-xss-form.js --site cms --plan-only          # 段階A: 登録系(S1〜S7・S9・S10・S11、入力→確認画面まで)。まず --plan-only で対象・対象外を確認してから実行
-node run-xss-http.js                                 # 段階A: 入口以外・HTTP(F-01〜F-09)と重点項目 E-08・E-19・E-47（--only F-03 等で絞り込み。--probe-php は下記）
+node run-xss-http.js                                 # 段階A: 入口以外・HTTP(F-01〜F-09)と重点項目 E-08・E-19・E-47・E-56（--only F-03 等で絞り込み。--probe-php は下記）
 node run-xss-student-exam.js --accept-writes         # 段階B: 受講者サイトの試験・アンケート（下記）
 node report-xss.js                                   # 最新の結果を計画のID単位に集計し、test-results/xss-report-*.csv を出力
 ```
@@ -614,6 +621,7 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
   - S9（ファイルのアップロード）・S10（パスワード）は `run-xss-form.js` に追加済み（上記参照）。
   - ethic_treaning（代替倫理研修。S11のURLパラメータ改ざん）・試験/アンケートの `result*.php`・`resubmit_index*.php`・`confirm1.php` は `run-xss-student-exam.js` に追加済み（上記参照）。
   - E-21・E-23・E-27（教材の表示名/説明・動画のタグ・コンテンツ検索ポップアップの保存済みデータ）は `s12-entries.json` に教材(`cms_material`)・動画タグ(`video_tags`)を追加して対応。E-32（商品詳細の「主催」）は、自由入力ではなく弁護士会マスタからの選択（候補から選ぶ方式）の可能性が高く、要確認のため見送り。
+  - **テストプランレビュー(2026-10-07)起因の追加**（`test-plan/plan-fixes.json` に新規行 E-48〜E-60 を追加。詳細は同ファイル参照）: E-56(AppScan格納型XSS CMS-H-07〜16のセッション再現)は `run-xss-http.js` に実装済み。E-08(旧ファイル・開発用ファイル)は `backup/` ディレクトリ・`*_review.php` をパターンに追加。S6・S7・S8・S11 の攻撃文字列セットに P02・P03・P05・P06・P12 相当を追加（`xss-payloads.js`）。E-48・E-49(全量一覧No.48/49の退行確認)・E-50(`product_live/approval_exe.php`。EDU_RB_DEV-46)・E-51〜E-55・E-57〜E-60 は現状プラン行のみ(未実装)。`alfproduct/admin/` は vhost 設定上の URL 割り当てが不明なため自動確認の対象に未追加（要確認）。
   - **F-01 の調査中に、CMS ログインの戻り先（backurl）にオープンリダイレクトの脆弱性を発見**（`Login_page.php::_is_valid_backurl()` が `//evil.example/` のようなプロトコル相対URLを誤って許可する）。詳細は `secure_report/stg2自動テストで発見した不具合_2026-10-07.md` の [B-7] を参照。
 
 ## アーキテクチャ

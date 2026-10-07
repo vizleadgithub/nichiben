@@ -1,0 +1,114 @@
+{
+  "_comment": [
+    "2026-10-07 の secure_report/テストプランレビュー.pdf で指摘された抜けのうち、xlsx本体を編集せずに",
+    "テストコード側で先に反映できるものを、export-plan.py が plan.json 生成の後段で適用するパッチ。",
+    "xlsxが正式に改訂されたら、このファイルの該当分は削除して良い（重複を避けるため）。",
+    "'add' は新規行（既存IDと重複不可）。'modify' は既存IDへの追記（{id, set:{フィールド: 値}}）。"
+  ],
+  "modify": [
+    {
+      "id": "B-0200", "set": { "note": "項目名(name): search_product_name / 種別: text\n他システムでの表示先: 受講者サイト\nレビュー(2026-10-07) 3.1: AppScan CMS-H-01/CMS-H-07(反射型/格納型)の実証パラメータの1つ。E-56で格納型(セッション再現)も確認" }
+    },
+    { "id": "B-0201", "set": { "note": "項目名(name): search_product_code / 種別: text\n他システムでの表示先: 受講者サイト\nレビュー(2026-10-07) 3.1: AppScan CMS-H-02/CMS-H-08 の実証パラメータの1つ。E-56参照" } },
+    { "id": "B-0203", "set": { "note": "項目名(name): search_start_date / 種別: text\nレビュー(2026-10-07) 3.1: AppScan CMS-H-03/CMS-H-09 の実証パラメータの1つ(日付欄への文字列も確認)。E-56参照" } },
+    { "id": "B-0204", "set": { "note": "項目名(name): search_end_date / 種別: text\nレビュー(2026-10-07) 3.1: AppScan CMS-H-04/CMS-H-10 の実証パラメータの1つ。E-56参照" } },
+    { "id": "B-0205", "set": { "note": "項目名(name): search_open / 種別: radio\nレビュー(2026-10-07) 3.1: AppScan CMS-H-11 の実証パラメータの1つ(格納型のみ。選択肢外の値の直接送信)。E-56参照" } },
+    { "id": "B-0206", "set": { "note": "項目名(name): search_teacher / 種別: text\n他システムでの表示先: 管理画面(検索プルダウン)\nレビュー(2026-10-07) 3.1: AppScan CMS-H-05/CMS-H-12 の実証パラメータの1つ。E-56参照" } },
+    { "id": "B-0207", "set": { "note": "項目名(name): search_free / 種別: radio\nレビュー(2026-10-07) 3.1: AppScan CMS-H-13 の実証パラメータの1つ(格納型のみ)。E-56参照" } },
+    { "id": "B-0208", "set": { "note": "項目名(name): search_word / 種別: text\n他システムでの表示先: 受講者サイト(商品一覧・詳細)\nレビュー(2026-10-07) 3.1: AppScan CMS-H-06/CMS-H-14 の実証パラメータの1つ。E-56参照" } }
+  ],
+  "add": [
+    {
+      "id": "E-48", "sheet": "重点項目(全量一覧No別)", "area": "管理", "func": "全量一覧 No.48 / 退行確認",
+      "page": "テスト関連の3画面", "item": "対応済み項目の退行確認", "site": "CMS", "url": "(対象画面の特定が必要)",
+      "type": "確認", "value": "全量一覧(2026-09-29版)No.48「管理画面 テスト関連の3画面」は「プログラム内で組み立てた画面をそのまま出力していた」として対応済みとされているが、重点項目(E-01〜E-47)に対応する行がない。",
+      "expected": "対応済みとされた3画面を特定し、修正後も同様の出力(組み立てた画面の生出力)が復活していないことを確認する。",
+      "note": "レビュー(2026-10-07) 3.2 で指摘。対象の3画面が全量一覧側に明記されておらず特定できないため、現状は要確認のまま。担当者に対象画面を確認してから自動化を検討する。"
+    },
+    {
+      "id": "E-49", "sheet": "重点項目(全量一覧No別)", "area": "フロント", "func": "全量一覧 No.49 / 退行確認",
+      "page": "商品検索(スマホ版)", "item": "対応済み項目の退行確認", "site": "受講者サイト", "url": "/search/index.php",
+      "type": "確認", "value": "全量一覧(2026-09-29版)No.49「受講者サイト 商品検索(スマホ版)」は「カテゴリ名を画面内プログラムにそのまま入れていた」として対応済みとされている。",
+      "expected": "スマホ版UAで検索画面を開き、カテゴリ名が画面内のJavaScript(インラインスクリプト)に無エスケープで入っていないことを確認する。",
+      "note": "レビュー(2026-10-07) 3.2 で指摘。E-09(スマホ版UA)と同じ仕組みで確認可能。カテゴリ名はS12の登録値(S12-cat)を使って再現できる。"
+    },
+    {
+      "id": "E-50", "sheet": "重点項目(全量一覧No別)", "area": "商品管理", "func": "ライブ研修商品の承認処理", "page": "承認実行(approval_exe.php)",
+      "item": "SQLインジェクション(EDU_RB_DEV-46)の退行確認", "site": "商品管理", "url": "/alfproduct/product_live/approval_exe.php",
+      "type": "入口", "value": "mid パラメータに ' OR '1'='1 等を送信し、SQLエラー・想定外の承認処理が起きないことを確認する(P14相当)。",
+      "expected": "入力値が適切にエスケープされ、SQLエラー・意図しない行の更新が発生しない。",
+      "note": "レビュー(2026-10-07) 2.1・3.4(EDU_RB_DEV-46)で指摘。計画のどのシートにも対応する行がなかった。mysqli_real_escape_stringは使われているが、配列送信(mid[]=...)等の別経路も確認すること。更新処理のため実行は慎重に(DBダンプ後)。"
+    },
+    {
+      "id": "E-51", "sheet": "重点項目(全量一覧No別)", "area": "CMS", "func": "バッチ・内部コントローラの到達性", "page": "Bat_*・Once_bat_*・File_container・Api_stream_request",
+      "item": "ブラウザから到達できないことの確認", "site": "CMS", "url": "/bat_mail ・ /once_bat_* ・ /file_container/* ・ /api_stream_request/*",
+      "type": "入口", "value": "各コントローラの公開メソッドにログイン状態・未ログイン状態でアクセスし、HTTPステータス・画面内容を確認する。",
+      "expected": "cronからのみ実行される前提のコントローラがブラウザから直接実行できない(403・ログイン要求等)。Bat_mailは画面へのエラー表示が有効なため特に優先して確認する。",
+      "note": "レビュー(2026-10-07) 2.1「CMSコントローラ」で指摘。run-xss-http.js に自動チェックを追加予定(reachability確認のみ。実行してよいかは個別に要確認のため既定では一覧表示に留める)。"
+    },
+    {
+      "id": "E-52", "sheet": "重点項目(全量一覧No別)", "area": "商品管理・CMS", "func": "CSV・PDF出力", "page": "各機能のcsv.php・report_product/csv_file*.php・mailmagazine/csv_*.php・amount_order/pdf.php",
+      "item": "保存済みの攻撃文字列がCSV・PDFにそのまま出力されるか", "site": "商品管理・CMS", "url": "(各機能のCSV/PDF出力)",
+      "type": "表示", "set": "S12", "value": "【S12 表示専用の値(他の入口で登録された値)】S12で登録済みの値(=1+1 等のCSVインジェクション文字列を含む)を、各CSV・PDF出力で確認する。",
+      "expected": "CSVは表計算ソフトで数式として実行されない(先頭に='+'/'-'/'@'等が来る場合はエスケープ・無害化されている)。PDFはHTML同様エスケープされる。",
+      "note": "レビュー(2026-10-07) 2.1・4.4 で指摘。出力ファイル側の行が計画に存在しなかった。CSVインジェクション(P16相当)は現在どのセットにも入っていないため、対策状況を先に確認すること。"
+    },
+    {
+      "id": "E-53", "sheet": "重点項目(全量一覧No別)", "area": "フロント", "func": "決済完了画面", "page": "settlement/end_*.php・member_card*.php・order_regist.php・araigae_*.php",
+      "item": "確認用出力・個人情報の露出", "site": "受講者サイト", "url": "/settlement/end_*.php 等(14本)",
+      "type": "表示", "value": "(決済を実際に完了させる必要があるため自動化は対象外。手動で確認用出力の有無のみ確認する)",
+      "expected": "確認用出力(SQL・var_dump等)が無いこと。",
+      "note": "レビュー(2026-10-07) 2.1「決済」で指摘。E-05は payment_*.php(決済手段選択)のみが対象で、完了後の end_*.php 等は計画に無かった。CLAUDE.mdの方針により決済を伴う画面は自動化しない(手動)。"
+    },
+    {
+      "id": "E-54", "sheet": "重点項目(全量一覧No別)", "area": "フロント", "func": "SSOの入口", "page": "login_sso.php・login_sso_new.php・sso_auth_callback.php",
+      "item": "URLパラメータへの注入・戻り先の確認", "site": "受講者サイト", "url": "/login/login_sso.php ・ login_sso_new.php ・ sso_auth_callback.php",
+      "type": "入口", "value": "G-10は連携データの確認のみだったため、戻り先URL・エラーパラメータ等への攻撃文字列注入を確認する行を追加。",
+      "expected": "SSOから戻るパラメータ(戻り先URL等)に攻撃文字列を含めても、画面・リダイレクト先に無エスケープで出現しない。",
+      "note": "レビュー(2026-10-07) 2.1「SSOの入口」で指摘。受講者側のSSOログイン自体はCLAUDE.mdの方針により自動化しない。未ログイン状態での戻り先パラメータの反映のみ、F-01と同様の方法(SSOへは送信しない)で確認可能か要検討。"
+    },
+    {
+      "id": "E-55", "sheet": "重点項目(全量一覧No別)", "area": "商品管理", "func": "別ディレクトリ(admin)", "page": "alfproduct/admin/ (testlogin を含む)",
+      "item": "公開領域からの到達性", "site": "商品管理", "url": "/admin/ ・ /admin/testlogin",
+      "type": "入口", "value": "公開領域(ドキュメントルート配下)からアクセスできるか、アクセス制限(Basic認証・IP制限以外に無効化されているか等)を確認する。",
+      "expected": "testlogin のような開発用の認証バイパスが本番相当の検証環境から到達できない。",
+      "note": "レビュー(2026-10-07) 2.1「別ディレクトリ」で指摘。E-08の「旧ファイル・開発用ファイル」と同種の確認。run-xss-http.js の E-08 チェックの対象ディレクトリに追加予定。"
+    },
+    {
+      "id": "E-56", "sheet": "重点項目(全量一覧No別)", "area": "商品管理", "func": "商品一覧の検索条件(格納型)", "page": "/alfproduct/product/index.php",
+      "item": "AppScan格納型XSS(CMS-H-07〜16)のセッション再現", "site": "CMS", "url": "/alfproduct/product/index.php",
+      "type": "表示", "set": "S8", "field": "search_word・search_product_name・search_product_code・search_start_date・search_end_date・search_open・search_teacher・search_free",
+      "value": "B-0200〜B-0208 の検索条件に攻撃文字列を送信して確認画面相当(一覧の再表示)を見るだけでなく、送信後に別画面へ移動→検索条件無しで再度一覧を開く→(必要なら)再ログインし直した後も、セッションに保存された攻撃文字列がエスケープされずに出力されないかを確認する。",
+      "expected": "一度送信した値がセッションに残っていても、後続のどの表示でもエスケープされて出力される。",
+      "note": "レビュー(2026-10-07) 3.1 で指摘。AppScan CMS-H-07〜16(格納型・CVSS 7.1)の原因はセッション経由の再反射(index.php 行138-146→356)。B-0200〜B-0208の通常のS8確認(即時反映のみ)では再現できないため、別途のセッション再現チェックが必要。"
+    },
+    {
+      "id": "E-57", "sheet": "重点項目(全量一覧No別)", "area": "CMS", "func": "CMSエラー画面", "page": "issue_error.php・book_library_error.php・course_class_error.php・material_error.php・teacher_error.php",
+      "item": "エラー文言のエスケープ・戻り先URLの出力", "site": "CMS", "url": "/cms_issue/issue_error ・ 他4画面",
+      "type": "表示", "value": "存在しないID・改ざんしたパラメータでこれらのエラー画面を開き、エラー文言・戻り先URL(onClickの中)に入力値が入る経路がないか確認する。",
+      "expected": "エラー文言は固定文言のみで入力値を含まない。戻り先URLはエスケープされて出力される。",
+      "note": "レビュー(2026-10-07) 2.1「CMSエラー画面」で指摘。F-06(エラー画面)の対象にこの5画面が含まれていなかった。"
+    },
+    {
+      "id": "E-58", "sheet": "重点項目(全量一覧No別)", "area": "全体", "func": "alflearning-api", "page": "Csv_download・Login・Top・Sso_update_profile",
+      "item": "到達性・応答への反射確認", "site": "API", "url": "api.nichibenren-stg2.alfcloud.com の各コントローラ",
+      "type": "入口", "value": "各コントローラに、改ざんしたパラメータ・攻撃文字列を送って応答を確認する。",
+      "expected": "G-10(SSO・Stream_request)以外のAPIコントローラも、確認用出力・無エスケープな反射がない。",
+      "note": "レビュー(2026-10-07) 2.1「API」で指摘。G-10はSSO・Stream_requestのみが対象だった。Elm_api_test はリポジトリ内に実体が見当たらず要確認(レビュー側の記載ミスの可能性)。"
+    },
+    {
+      "id": "E-59", "sheet": "重点項目(全量一覧No別)", "area": "フロント", "func": "Ajaxエンドポイント", "page": "player/bookmark.php・insert_report_user_video_viewed.php・inquiry/send.php",
+      "item": "応答への入力値の反射確認", "site": "受講者サイト", "url": "/player/bookmark.php ・ insert_report_user_video_viewed.php ・ /inquiry/send.php 等",
+      "type": "入口", "value": "各Ajaxエンドポイントに攻撃文字列を送り、応答(JSON等)に無エスケープで含まれないか・Content-Typeが適切か確認する。",
+      "expected": "E-45と同様、JSON等の形式で返り、HTMLとして解釈されない。",
+      "note": "レビュー(2026-10-07) 2.1「Ajax・その他」で指摘。bookmark・視聴履歴は書き込みを伴うため、実行する場合はテスト専用データに限定する。inquiry/send.phpはメール送信を伴うため対象外(CLAUDE.mdの方針)。"
+    },
+    {
+      "id": "E-60", "sheet": "重点項目(全量一覧No別)", "area": "フロント", "func": "ファイル出力(領収書・受講証)", "page": "mypage/receipt_download.php・ticket_download.php",
+      "item": "受講者氏名の反映(PDF)", "site": "受講者サイト", "url": "/mypage/receipt_download.php ・ ticket_download.php",
+      "type": "表示", "set": "S12", "value": "S12で登録した受講者氏名(S12-student-name)が、領収書・受講証PDFにエスケープされて出力されるか確認する。",
+      "expected": "PDF内の氏名がHTMLエスケープの問題を持ち込まない(PDF生成ライブラリの文字列処理を確認)。",
+      "note": "レビュー(2026-10-07) 2.1「ファイル出力」で指摘。G-01の表示先一覧に「領収書」とあるが対応する行が無かった。実際の注文・受講データが必要なため、現状は手動確認が前提。"
+    }
+  ]
+}
