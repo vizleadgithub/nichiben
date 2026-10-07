@@ -12,12 +12,12 @@ if( !$arrTemp ) {
 	print("order err.1");
 	exit();
 } else {
-	$arr = unserialize($arrTemp["exec_return"]);
+	$arr = unserialize($arrTemp["exec_return"], ['allowed_classes' => false]);
 }
 ?>
 end<br>
-注文番号：<?php print($arr["OrderID"]); ?><br>
-Suica注文番号：<?php print($arr["SuicaOrderNo"]); ?><br>
-Suica受付番号：<?php print($arr["ReceiptNo"]); ?><br>
-支払い期限日時：<?php print(substr( $arr["PaymentTerm"], 0, 4 )); ?>/<?php print(substr( $arr["PaymentTerm"], 4, 2 )); ?>/<?php print(substr( $arr["PaymentTerm"], 6, 2 )); ?> <?php print(substr( $arr["PaymentTerm"], 8, 2 )); ?>:<?php print(substr( $arr["PaymentTerm"], 10, 2 )); ?><br>
-受付日時：<?php print(substr( $arr["TranDate"], 0, 4 )); ?>/<?php print(substr( $arr["TranDate"], 4, 2 )); ?>/<?php print(substr( $arr["TranDate"], 6, 2 )); ?> <?php print(substr( $arr["TranDate"], 8, 2 )); ?>:<?php print(substr( $arr["TranDate"], 10, 2 )); ?><br>
+注文番号：<?php print(htmlspecialchars((string)($arr["OrderID"]), ENT_QUOTES, 'UTF-8')); ?><br>
+Suica注文番号：<?php print(htmlspecialchars((string)($arr["SuicaOrderNo"]), ENT_QUOTES, 'UTF-8')); ?><br>
+Suica受付番号：<?php print(htmlspecialchars((string)($arr["ReceiptNo"]), ENT_QUOTES, 'UTF-8')); ?><br>
+支払い期限日時：<?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 0, 4 )), ENT_QUOTES, 'UTF-8')); ?>/<?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 4, 2 )), ENT_QUOTES, 'UTF-8')); ?>/<?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 6, 2 )), ENT_QUOTES, 'UTF-8')); ?> <?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 8, 2 )), ENT_QUOTES, 'UTF-8')); ?>:<?php print(htmlspecialchars((string)(substr( $arr["PaymentTerm"], 10, 2 )), ENT_QUOTES, 'UTF-8')); ?><br>
+受付日時：<?php print(htmlspecialchars((string)(substr( $arr["TranDate"], 0, 4 )), ENT_QUOTES, 'UTF-8')); ?>/<?php print(htmlspecialchars((string)(substr( $arr["TranDate"], 4, 2 )), ENT_QUOTES, 'UTF-8')); ?>/<?php print(htmlspecialchars((string)(substr( $arr["TranDate"], 6, 2 )), ENT_QUOTES, 'UTF-8')); ?> <?php print(htmlspecialchars((string)(substr( $arr["TranDate"], 8, 2 )), ENT_QUOTES, 'UTF-8')); ?>:<?php print(htmlspecialchars((string)(substr( $arr["TranDate"], 10, 2 )), ENT_QUOTES, 'UTF-8')); ?><br>

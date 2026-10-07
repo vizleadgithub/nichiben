@@ -55,6 +55,7 @@ $aid = '';
 //$atype = '';
 if(isset($_REQUEST["aid"])){
 	$aid = $_REQUEST["aid"];
+	if (!preg_match('/^[0-9]*$/', (string)$aid)) { $aid = ''; }  // 数値以外は無視(SQLへの混入防止)
 }
 //if(isset($_POST["atype"])){
 //	$atype = $_POST["atype"];

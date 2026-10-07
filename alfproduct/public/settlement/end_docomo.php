@@ -14,7 +14,7 @@ if( !$arrTemp ) {
 	exit();
 } else {
 	$access_id = $arrTemp["access_id"];
-	$arr = unserialize($arrTemp["exec_return"]);
+	$arr = unserialize($arrTemp["exec_return"], ['allowed_classes' => false]);
 }
 ?>
 <html>
@@ -24,11 +24,11 @@ if( !$arrTemp ) {
 <!--<body OnLoad='OnLoadEvent();'>-->
 <body>
 end<br>
-注文番号：<?php print($order_id); ?><br>
-支払い期限日時：<?php print(substr( $arr["StartLimitDate"], 0, 4 )); ?>/<?php print(substr( $arr["StartLimitDate"], 4, 2 )); ?>/<?php print(substr( $arr["StartLimitDate"], 6, 2 )); ?> <?php print(substr( $arr["StartLimitDate"], 8, 2 )); ?>:<?php print(substr( $arr["StartLimitDate"], 10, 2 )); ?><br>
-<form name="DocomoStartCall" action="<?php print( $arr["StartURL"] ); ?>" method="POST">
-<input type="hidden" name="AccessID" value="<?php print( $arr["AccessID"] ); ?>">
-<input type="hidden" name="Token" value="<?php print( str_replace(' ','+',$arr["Token"]) ); ?>">
+注文番号：<?php print(htmlspecialchars((string)($order_id), ENT_QUOTES, 'UTF-8')); ?><br>
+支払い期限日時：<?php print(htmlspecialchars((string)(substr( $arr["StartLimitDate"], 0, 4 )), ENT_QUOTES, 'UTF-8')); ?>/<?php print(htmlspecialchars((string)(substr( $arr["StartLimitDate"], 4, 2 )), ENT_QUOTES, 'UTF-8')); ?>/<?php print(htmlspecialchars((string)(substr( $arr["StartLimitDate"], 6, 2 )), ENT_QUOTES, 'UTF-8')); ?> <?php print(htmlspecialchars((string)(substr( $arr["StartLimitDate"], 8, 2 )), ENT_QUOTES, 'UTF-8')); ?>:<?php print(htmlspecialchars((string)(substr( $arr["StartLimitDate"], 10, 2 )), ENT_QUOTES, 'UTF-8')); ?><br>
+<form name="DocomoStartCall" action="<?php print(htmlspecialchars((string)($arr["StartURL"]), ENT_QUOTES, 'UTF-8')); ?>" method="POST">
+<input type="hidden" name="AccessID" value="<?php print(htmlspecialchars((string)($arr["AccessID"]), ENT_QUOTES, 'UTF-8')); ?>">
+<input type="hidden" name="Token" value="<?php print(htmlspecialchars((string)(str_replace(' ','+',$arr["Token"])), ENT_QUOTES, 'UTF-8')); ?>">
 ドコモケータイ払いの決済画面へ遷移します。<br>
 <input type="submit" value="続行">
 <!--

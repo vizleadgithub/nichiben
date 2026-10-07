@@ -300,6 +300,7 @@ header("Pragma: public");
 header("Content-Type: text/octet-stream");
 header("Content-Disposition: attachment; filename=product_live_".date("YmdHis").".csv");
 
+$ret = csv_safe_rows($ret, true);
 echo mb_convert_encoding("研修種別,倫理研修,開催日,主催,受講対象者,受講対象,商品名（研修名）,研修の内容,講義タイトル・講師名,日時詳細,会場について,定員,商品価格（税込）,問い合わせ先,受講資格・他会員の受講等,備考,商品カテゴリ\r\n", "SJIS", "UTF-8");
 for($i=0;$i<count($ret);$i++){
 	//++++++++++++++++++++

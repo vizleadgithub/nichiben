@@ -271,11 +271,11 @@
 													<input type="file" name="issue_temp_file_<?= htmlspecialchars( $id, ENT_QUOTES, 'UTF-8', false) ?>" size="30" value=''>
 												<? else: ?>
 													<? $thumbnailName = $issue['issue_temp_name'][$id] ?>
-													<img src="/file_container/get_issue_template_thubmnail/<?= $this->libauth->get_school_id(); ?>/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/<?= $issue['issue_temp_id'][$id]; ?>/<?= htmlspecialchars( $issue['issue_temp_name'][$id], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 64px; padding:1px;background-color:white;"/ name="">
+													<img src="/file_container/get_issue_template_thubmnail/<?= $this->libauth->get_school_id(); ?>/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( (string)$issue['issue_temp_id'][$id], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $issue['issue_temp_name'][$id], ENT_QUOTES, 'UTF-8', false) ?>/" alt="" style="height: 64px; padding:1px;background-color:white;"/ name="">
 												<? endif; ?>
 											</td>
 											<td style="vertical-align: middle;text-align: center;">
-												<input type="checkbox" value="<?= $issue['issue_temp_id'][$id]; ?>" name="issue_temp_delete[]" <?= ($issue['issue_temp_id'][$id] < 0) ? 'disabled="disabled"' : '';  ?> >
+												<input type="checkbox" value="<?= htmlspecialchars( (string)$issue['issue_temp_id'][$id], ENT_QUOTES, 'UTF-8', false) ?>" name="issue_temp_delete[]" <?= ($issue['issue_temp_id'][$id] < 0) ? 'disabled="disabled"' : '';  ?> >
 											</td>
 										</tr>
 									<?php endforeach; ?>

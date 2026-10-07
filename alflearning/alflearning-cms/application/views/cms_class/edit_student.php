@@ -291,7 +291,7 @@
 									<?php if( isset($student_group) ): ?>
 										<?php foreach( $student_group as $key => $value): ?>
 											<div>
-												<a onclick="select_student_group('<?= htmlspecialchars( $value, ENT_QUOTES, 'UTF-8') ?>');return false;" href="#"><?= htmlspecialchars( $key, ENT_QUOTES, 'UTF-8', false) ?></a>
+												<a onclick="select_student_group(<?= htmlspecialchars( json_encode((string)$value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8', false) ?>);return false;" href="#"><?= htmlspecialchars( $key, ENT_QUOTES, 'UTF-8', false) ?></a>
 											</div>
 										<?php endforeach; ?>
 									<?php endif; ?>

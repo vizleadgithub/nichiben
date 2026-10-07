@@ -152,40 +152,40 @@ $objAdminPager->setNowPage( $page );
 $sql = "select count(*) as c from tbl_mailmagazine where del_flg=0 ";
 $where = "";
 if( $search_start_date != "" ){
-	$where.= " and submit_datetime>='".$search_start_date."' ";
+	$where.= " and submit_datetime>='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_start_date)."' ";
 }
 if( $search_end_date != "" ){
-	$where.= " and submit_datetime<='".substr($search_end_date,0,14)."59:59' ";
+	$where.= " and submit_datetime<='".mysqli_real_escape_string($objDbConnect->connect, (string)substr($search_end_date,0,14))."59:59' ";
 }
 
 if( $search_start_regist_date != "" && $search_end_regist_date != "" ){
 	$where.= " and ( ";
 	$where.= "  ( ";
-	$where.= "   target_parameter_end_regist_date>='".substr($search_start_regist_date,0,10)."' ";
-	$where.= "   AND target_parameter_end_regist_date<='".substr($search_end_regist_date,0,10)."' ";
+	$where.= "   target_parameter_end_regist_date>='".mysqli_real_escape_string($objDbConnect->connect, (string)substr($search_start_regist_date,0,10))."' ";
+	$where.= "   AND target_parameter_end_regist_date<='".mysqli_real_escape_string($objDbConnect->connect, (string)substr($search_end_regist_date,0,10))."' ";
 	$where.= "  ) ";
 	$where.= "  OR ( ";
-	$where.= "   target_parameter_start_regist_date>='".substr($search_start_regist_date,0,10)."' ";
-	$where.= "   AND target_parameter_start_regist_date<='".substr($search_end_regist_date,0,10)."' ";
+	$where.= "   target_parameter_start_regist_date>='".mysqli_real_escape_string($objDbConnect->connect, (string)substr($search_start_regist_date,0,10))."' ";
+	$where.= "   AND target_parameter_start_regist_date<='".mysqli_real_escape_string($objDbConnect->connect, (string)substr($search_end_regist_date,0,10))."' ";
 	$where.= "  ) ";
 	$where.= " ) ";
 } else {
 	if( $search_start_regist_date != "" ){
 		$where.= " and ( ";
-		$where.= "  target_parameter_start_regist_date>='".substr($search_start_regist_date,0,10)."' ";
+		$where.= "  target_parameter_start_regist_date>='".mysqli_real_escape_string($objDbConnect->connect, (string)substr($search_start_regist_date,0,10))."' ";
 		$where.= "  OR target_parameter_start_regist_date IS NULL ";
 		$where.= " ) ";
 	}
 	if( $search_end_regist_date != "" ){
 		$where.= " and ( ";
-		$where.= "  target_parameter_end_regist_date<='".substr($search_end_regist_date,0,10)."' ";
+		$where.= "  target_parameter_end_regist_date<='".mysqli_real_escape_string($objDbConnect->connect, (string)substr($search_end_regist_date,0,10))."' ";
 		$where.= "  OR target_parameter_end_regist_date IS NULL ";
 		$where.= " ) ";
 	}
 }
 
 if( $search_keyword != "" ){
-	$where.= " and ( mail_title like '%".$search_keyword."%' or mail_body like '%".$search_keyword."%' ) ";
+	$where.= " and ( mail_title like '%".mysqli_real_escape_string($objDbConnect->connect, (string)$search_keyword)."%' or mail_body like '%".mysqli_real_escape_string($objDbConnect->connect, (string)$search_keyword)."%' ) ";
 }
 
 if( $search_target_parameter_member_type == "1" ){
@@ -201,20 +201,20 @@ if( $search_target_parameter_sex == "1" ){
 	$where.= " and target_parameter_sex='3' ";
 }
 if( $search_target_parameter_pref != "" ){
-	$where.= " and target_parameter_pref='".$search_target_parameter_pref."' ";
+	$where.= " and target_parameter_pref='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_target_parameter_pref)."' ";
 }
 
 if( $search_target_parameter_age != "" ){
-	$where.= " and target_parameter_age='".$search_target_parameter_age."' ";
+	$where.= " and target_parameter_age='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_target_parameter_age)."' ";
 }
 if( $search_target_parameter_job != "" ){
-	$where.= " and target_parameter_job='".$search_target_parameter_job."' ";
+	$where.= " and target_parameter_job='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_target_parameter_job)."' ";
 }
 if( $search_target_parameter_job_type != "" ){
-	$where.= " and target_parameter_job_type='".$search_target_parameter_job_type."' ";
+	$where.= " and target_parameter_job_type='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_target_parameter_job_type)."' ";
 }
 if( $search_target_parameter_school_grade != "" ){
-	$where.= " and target_parameter_school_grade='".$search_target_parameter_school_grade."' ";
+	$where.= " and target_parameter_school_grade='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_target_parameter_school_grade)."' ";
 }
 
 if( 0<count($search_mailmagazine_category) ){
@@ -222,7 +222,7 @@ if( 0<count($search_mailmagazine_category) ){
 	for($i=0;$i<count($search_mailmagazine_category);$i++){
 		if($i>0){ $where.= " or "; }
 		$where.= " ( ";
-			$where.= " concat(',',target_parameter_mailmagazine_category,',') LIKE '%,".$search_mailmagazine_category[$i].",%' ";
+			$where.= " concat(',',target_parameter_mailmagazine_category,',') LIKE '%,".mysqli_real_escape_string($objDbConnect->connect, (string)$search_mailmagazine_category[$i]).",%' ";
 		$where.= " ) ";
 	}
 	$where.= " ) ";

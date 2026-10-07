@@ -47,7 +47,7 @@
 											<?= $this->lang->line_or_def('common_deletion','削除') ?>
 										</td>
 										<td style="vertical-align: middle;width: 147px;">
-											<img src="/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
+											<img src="/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8', false) ?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
 										</td>
 										<td style="vertical-align: middle;width: 97px;">
 											<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8', false) ?>
@@ -80,7 +80,7 @@
 											<?= $this->lang->line_or_def('common_registration','登録') ?>
 										</td>
 										<td style="vertical-align: middle;width: 133px;">
-											<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
+											<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>/" alt="" style="height: 50px; padding: 1px;background-color:black;"/>
 										</td>
 										<td style="vertical-align: middle;width: 82px;">
 											<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>
@@ -98,7 +98,7 @@
 					<?php } ?>
 
 					<div class="submit">
-						<input type='image' src='/static/image/btn_back.png' onClick='location.href = "/cms_class_material/material_select/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>";return false;' />
+						<input type='image' src='/static/image/btn_back.png' onClick='location.href = "/cms_class_material/material_select/<?= (int)$class_id ?>";return false;' />
 						<input type="image" src="/static/image/btn_ok.png" />
 					</div>
 				</form>

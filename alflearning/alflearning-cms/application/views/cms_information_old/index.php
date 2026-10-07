@@ -63,7 +63,7 @@
 					<?php if(isset($information_list)) { ?>
 						<?php foreach($information_list as $information) { ?>
 							<tr style=<?= ($information['school_id']==0) ? "background-color:#D3F5EA;" : ""; ?> >
-								<td class="tdc"><a href="/cms_information/detail/<?= htmlspecialchars( $information['information_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $information['information_id'], ENT_QUOTES, 'UTF-8', false) ?>
+								<td class="tdc"><a href="/cms_information/detail/<?= htmlspecialchars( $information['information_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $information['information_id'], ENT_QUOTES, 'UTF-8', false) ?>
 								</td>
 								<td class="tdc"><?= htmlspecialchars( $information['information_date'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								<td class="tdc"><?= htmlspecialchars( $information['information_title'], ENT_QUOTES, 'UTF-8', false) ?></td>

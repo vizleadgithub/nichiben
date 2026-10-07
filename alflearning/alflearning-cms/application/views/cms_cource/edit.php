@@ -108,25 +108,25 @@
 			// [2012/11/30]講座所属の受講生情報の取得
 			<?php if( isset($cource['lecture_students']) ) {
 				foreach( $cource['lecture_students'] as $lecture) { ?>
-					students_checked[<?=$lecture; ?>] = true;
+					students_checked[<?= (int)$lecture; ?>] = true;
 			<?php } } ?>
 
 			// [2012/11/30]講座所属の資料情報の取得
 			<?php if( isset($cource['lecture_materials']) ) {
 				foreach( $cource['lecture_materials'] as $lecture) { ?>
-					materials_checked[<?=$lecture; ?>] = true;
+					materials_checked[<?= (int)$lecture; ?>] = true;
 			<?php } } ?>
 
 			// [2012/11/30]講座所属の図書室情報の取得
 			<?php if( isset($cource['lecture_book_librarys']) ) {
 				foreach( $cource['lecture_book_librarys'] as $lecture) { ?>
-					book_librarys_checked[<?=$lecture; ?>] = true;
+					book_librarys_checked[<?= (int)$lecture; ?>] = true;
 			<?php } } ?>
 
 			// [2012/11/30]講座所属のビデオ情報の取得
 			<?php if( isset($cource['lecture_videos']) ) {
 				foreach( $cource['lecture_videos'] as $lecture) { ?>
-					videos_checked[<?=$lecture; ?>] = true;
+					videos_checked[<?= (int)$lecture; ?>] = true;
 			<?php } } ?>
 
 			// [2012/11/30]チェックボックスと全選択ボタン連動（受講者）
@@ -293,11 +293,11 @@
 							});
 							
 							$("#student_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8') ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
 							$(".select_all_affiliation.select_student").css('display','block');
 						}else{
 							$("#student_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8') ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
 							$(".select_all_affiliation.select_student").css('display','none');
 						}
 					}
@@ -351,11 +351,11 @@
 								);
 							}
 							$("#material_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8') ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
 							$(".select_all_affiliation.select_material").css('display','block');
 						}else{
 							$("#material_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8') ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
 							$(".select_all_affiliation.select_material").css('display','none');
 						}
 					}
@@ -409,11 +409,11 @@
 								);
 							}
 							$("#book_library_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8') ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
 							$(".select_all_affiliation.select_book_library").css('display','block');
 						}else{
 							$("#book_library_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8') ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
 							$(".select_all_affiliation.select_book_library").css('display','none');
 						}
 					}
@@ -467,11 +467,11 @@
 								);
 							}
 							$("#video_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8') ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
 							$(".select_all_affiliation.select_video").css('display','block');
 						}else{
 							$("#video_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8') ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
 							$(".select_all_affiliation.select_video").css('display','none');
 						}
 					}

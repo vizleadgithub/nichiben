@@ -127,7 +127,7 @@
 											</tr>
 											<?php foreach($video['exclusive_tag'] as $ino => $exclusive_tag): ?>
 												<?php if(!empty($exclusive_tag )): ?>
-													<tr id="exclusive_<?= $ino; ?>">
+													<tr id="exclusive_<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8', false) ?>">
 														<td style="vertical-align: middle;width: 150px;"><?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8', false) ?></td>
 														<td style="vertical-align: middle;width: 230px;">
 															<?php foreach($book_library_exclusive as $ino2 => $temp2): ?>
@@ -148,9 +148,9 @@
 																	$temp3 .= '/Page1/master-Page1.jpg?token='.$this->session->userdata('session_id');
 																}
 															?>
-															<img src="<?= $temp3; ?>" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
+															<img src="<?= htmlspecialchars( $temp3, ENT_QUOTES, 'UTF-8', false) ?>" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
 														</td>
-														<td style="vertical-align: middle;text-align: center;"><?= $video['exclusive_page_number'][$ino]; ?></td>
+														<td style="vertical-align: middle;text-align: center;"><?= htmlspecialchars( (string)$video['exclusive_page_number'][$ino], ENT_QUOTES, 'UTF-8', false) ?></td>
 														<td style="vertical-align: middle;text-align: center;">
 															<?php if($video['exclusive_status'][$ino] == 0): ?>
 																<?= $this->lang->line_or_def('common_effectively','有効') ?>
@@ -211,14 +211,14 @@
 						<?php
 							switch($btn_kirikae_flg){
 								case 1://修正画面
-									print "<input type='image' src='/static/image/btn_back.png' onClick='edit_item(".$video['video_id'].");retufn false;' />";
+									print "<input type='image' src='/static/image/btn_back.png' onClick='edit_item(".(int)$video['video_id'].");retufn false;' />";
 									print "<input type='image' src='/static/image/btn_ok.png' />";
 									break;
 									
 								case 2://詳細画面
 								  //print "<input type='image' src='/static/image/btn_back.png' onClick='location.href = \"".site_url('cms_video/')."\";return false;' />";
 								  //print "<input type='image' src='/static/image/btn_revise.png' onClick='edit_item();return false;' />";
-								  //print "<input type='image' src='/static/image/btn_delete.png' onClick='delete_item(".$video['video_id'].',"'.$this->lang->line_or_def('msg_delete','本当に削除してもよろしいですか？').'"'.");return false;' />";
+								  //print "<input type='image' src='/static/image/btn_delete.png' onClick='delete_item(".(int)$video['video_id'].',"'.$this->lang->line_or_def('msg_delete','本当に削除してもよろしいですか？').'"'.");return false;' />";
 
 									print '<a href="#" onClick='."'".'location.href = "'.$video['history_back_url'].'";return false;'."'".' style="display:inline-block;margin: 0 15px;text-decoration: none;font-weight: bold;color:white; text-align:center;vertical-align: middle; width:80px; height:28px;background: url(/static/image/btn_gray.png) no-repeat;font-size:13px;line-height: 30px;">'.$this->lang->line_or_def('common_','一覧に戻る').'</a>';
 
@@ -231,7 +231,7 @@
 							  //		print '<a href="#" onClick="edit_moviecut();return false;" style="display:inline-block;margin: 0 15px;text-decoration: none;font-weight: bold;color:white; text-align:center;vertical-align: middle; width:80px; height:28px;background: url(/static/image/btn_blue.png) no-repeat;font-size:13px;line-height: 30px;">'.$this->lang->line_or_def('common_beginning_to_cut','切り出し').'</a> ';
 							  //	}
 
-									print "<input type='image' src='/static/image/btn_delete.png' onClick='delete_item(".$video['video_id'].',"'.$this->lang->line_or_def('msg_delete','本当に削除してもよろしいですか？').'"'.");return false;' style='display:inline-block;' />";
+									print "<input type='image' src='/static/image/btn_delete.png' onClick='delete_item(".(int)$video['video_id'].',"'.$this->lang->line_or_def('msg_delete','本当に削除してもよろしいですか？').'"'.");return false;' style='display:inline-block;' />";
 									break;
 							}
 						?>

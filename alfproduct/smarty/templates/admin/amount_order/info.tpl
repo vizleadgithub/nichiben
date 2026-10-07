@@ -5,7 +5,7 @@
 		<tr>
 			<th>注文ID</th>
 			<td>
-				<!--{$arr_order[0].order_no}-->
+				<!--{$arr_order[0].order_no|escape}-->
 			</td>
 		</tr>
 		<!--{if $arr_order[0].payment_type=="1"}-->
@@ -31,7 +31,7 @@
 		<tr>
 			<th style="">登録年月日</th>
 			<td style="">
-				<!--{$arr_order[0].regist_date}-->
+				<!--{$arr_order[0].regist_date|escape}-->
 			</td>
 		</tr>
 		<tr>
@@ -43,7 +43,7 @@
 		<tr>
 			<th style="">購入日</th>
 			<td style="">
-				<!--{$arr_order[0].create_date}-->
+				<!--{$arr_order[0].create_date|escape}-->
 			</td>
 		</tr>
 		<tr>

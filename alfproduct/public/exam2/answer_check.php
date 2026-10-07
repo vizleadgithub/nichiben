@@ -114,7 +114,7 @@ if( empty(@$_POST["exam2_problem_id"]) ){
 									if( $exam2_list['problem'][$k]["answer_kind"]=="1" || $exam2_list['problem'][$k]["answer_kind"]=="2" ){
 										for( $l=0;$l<count($exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"]);$l++ ){
 											if( trim($_POST["exam2_problem_".$_POST["exam2_problem_id"][$i]][$j]) == $exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"] ){
-												$html_message.= '・'.$exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"].'. '.nl2br(htmlspecialchars( (string)$exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["word"], ENT_QUOTES, 'UTF-8', false ))."<br>";
+												$html_message.= '・'.htmlspecialchars((string)$exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"], ENT_QUOTES, 'UTF-8', false).'. '.nl2br(htmlspecialchars( (string)$exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["word"], ENT_QUOTES, 'UTF-8', false ))."<br>";
 											}
 										}
 									} else {

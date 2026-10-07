@@ -465,7 +465,7 @@ function exam2Button(formAct){
 					未設定
 				<!--{else}-->
 					<!--{$arr_input.$contents_download_before_key|escape}-->
-					<input type="button" value="ダウンロード" onclick="var w=window.open();w.location.href='<!--{$document_path}--><!--{$arr_input.$contents_download_key|escape}-->'" />
+					<input type="button" value="ダウンロード" onclick="var w=window.open();w.location.href='<!--{$document_path}--><!--{$arr_input.$contents_download_key|escape:'javascript'|escape}-->'" />
 				<!--{/if}-->
 			</td>
 		</tr>

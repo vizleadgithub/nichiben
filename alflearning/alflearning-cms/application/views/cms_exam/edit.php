@@ -400,13 +400,13 @@
 			/* 問題に所属する受講者情報の取得 */
 			<?php if( isset($exam['exam_students']) ) {
 				foreach( $exam['exam_students'] as $lecture) { ?>
-					students_checked[<?= htmlspecialchars( $lecture, ENT_QUOTES, 'UTF-8') ?>] = true;
+					students_checked[<?= (int)$lecture ?>] = true;
 			<?php } } ?>
 			
 			/* 講座に所属する受講者・設問の表示（初期表示） */
 			<?php $cource_id_list = implode('-', $exam['exam_lectures']); ?>
-			//ajax_search_cource_students("<?= htmlspecialchars( $cource_id_list, ENT_QUOTES, 'UTF-8') ?>");
-			ajax_search_cource_exam_problems("<?= htmlspecialchars( $cource_id_list, ENT_QUOTES, 'UTF-8') ?>");
+			//ajax_search_cource_students(...);
+			ajax_search_cource_exam_problems(<?= json_encode((string)$cource_id_list, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) ?>);
 			
 			/* チェックボックスと全選択ボタン連動（受講者） */
 			$('#student_list').click(function (){
@@ -1329,10 +1329,10 @@ console.log("[exam_problem_id:"+exam_problem_id+"]");
 																
 																</div>
 																<div class="problem_preview_link">
-																	<input class="preview_button" type="button" value="<?= $this->lang->line_or_def('common_preview','プレビュー') ?>" onclick="" data-epid="<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?>" />
+																	<input class="preview_button" type="button" value="<?= $this->lang->line_or_def('common_preview','プレビュー') ?>" onclick="" data-epid="<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8', false) ?>" />
 																</div>
 																<div class="problem_del_link">
-																	<input class="delete_button" type="button" value="<?= $this->lang->line_or_def('common_deletion','削除') ?>" onclick="" data-epid="<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?>" />
+																	<input class="delete_button" type="button" value="<?= $this->lang->line_or_def('common_deletion','削除') ?>" onclick="" data-epid="<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8', false) ?>" />
 																</div>
 																<div style="clear:both;"></div>
 															</li>

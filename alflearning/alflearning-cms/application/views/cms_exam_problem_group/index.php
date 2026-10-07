@@ -78,7 +78,7 @@
 							<?php foreach($exam_problem_group_list as $exam_problem_group) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam_problem_group/detail/<?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><a href="/cms_exam_problem_group/detail/<?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?>/"><?= htmlspecialchars( $exam_problem_group['exam_problem_group_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td><?= htmlspecialchars( $exam_problem_group['exam_problem_group_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td><?=$exam_problem_group['exam_problem_count']?></td>
 								</tr>

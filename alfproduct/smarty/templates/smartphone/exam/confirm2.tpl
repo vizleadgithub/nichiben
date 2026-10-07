@@ -145,13 +145,13 @@ function examFormSubmit(eid,pid,ccno){
 								<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 									<!--{if $row1.no==$answered_info[$row.exam_problem_id].arr_exam_answer_contents[0]|escape}-->
 										<div class="problem_content">
-											<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled checked><!--{$row_no1}-->.</div>
+											<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no|escape}-->" disabled checked><!--{$row_no1}-->.</div>
 											<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 										</div>
 										<br style="clear:both;">
 									<!--{else}-->
 										<div class="problem_content">
-											<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled><!--{$row_no1}-->.</div>
+											<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no|escape}-->" disabled><!--{$row_no1}-->.</div>
 											<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 										</div>
 										<br style="clear:both;">
@@ -164,13 +164,13 @@ function examFormSubmit(eid,pid,ccno){
 								<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 									<!--{if isset($answered_info) && isset($answered_info[$row.exam_problem_id].arr_exam_answer_contents) && array_search($row1.no, $answered_info[$row.exam_problem_id].arr_exam_answer_contents)!==false}-->
 										<div class="problem_content">
-											<div class="content1"><input type="checkbox" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled checked><!--{$row_no1}-->.</div>
+											<div class="content1"><input type="checkbox" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no|escape}-->" disabled checked><!--{$row_no1}-->.</div>
 											<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 										</div>
 										<br style="clear:both;">
 									<!--{else}-->
 										<div class="problem_content">
-											<div class="content1"><input type="checkbox" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled><!--{$row_no1}-->.</div>
+											<div class="content1"><input type="checkbox" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no|escape}-->" disabled><!--{$row_no1}-->.</div>
 											<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 										</div>
 										<br style="clear:both;">
@@ -216,13 +216,13 @@ function examFormSubmit(eid,pid,ccno){
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<!--{if $row1_q.no==$answered_info[$row_q.exam_problem_id].arr_exam_answer_contents[0]|escape}-->
 										<div class="problem_content">
-											<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled checked><!--{$row_no1_q}-->.</div>
+											<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no|escape}-->" disabled checked><!--{$row_no1_q}-->.</div>
 											<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 										</div>
 										<br style="clear:both;">
 									<!--{else}-->
 										<div class="problem_content">
-											<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled><!--{$row_no1_q}-->.</div>
+											<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no|escape}-->" disabled><!--{$row_no1_q}-->.</div>
 											<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 										</div>
 										<br style="clear:both;">
@@ -235,13 +235,13 @@ function examFormSubmit(eid,pid,ccno){
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<!--{if isset($answered_info) && isset($answered_info[$row_q.exam_problem_id].arr_exam_answer_contents) && array_search($row1_q.no, $answered_info[$row_q.exam_problem_id].arr_exam_answer_contents)!==false}-->
 										<div class="problem_content">
-											<div class="content1"><input type="checkbox" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled checked><!--{$row_no1_q}-->.</div>
+											<div class="content1"><input type="checkbox" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no|escape}-->" disabled checked><!--{$row_no1_q}-->.</div>
 											<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 										</div>
 										<br style="clear:both;">
 									<!--{else}-->
 										<div class="problem_content">
-											<div class="content1"><input type="checkbox" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled><!--{$row_no1_q}-->.</div>
+											<div class="content1"><input type="checkbox" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no|escape}-->" disabled><!--{$row_no1_q}-->.</div>
 											<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 										</div>
 										<br style="clear:both;">

@@ -110,7 +110,7 @@
 						<tr>
 							<th style="vertical-align: middle;"><?= $this->lang->line_or_def('common_thumbnail','サムネイル') ?></th>
 							<td>
-								<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 200px; padding: 1px;background-color:black;"/>
+								<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>/" alt="" style="height: 200px; padding: 1px;background-color:black;"/>
 							</td>
 						</tr>
 					</table>

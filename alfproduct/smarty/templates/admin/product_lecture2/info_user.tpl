@@ -147,9 +147,9 @@ function formSubmitStatus(formName, mode, pid, aid, odid, flg){
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->">
 		<!--{if $nichibenren_flg}-->
 			<!--{if $row.participation_flg == '1'}-->
-				<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id|escape}-->, <!--{$row.participation_flg|escape}-->);return false;" >済</a>
+				<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid|escape}-->, <!--{$aid|intval}-->, <!--{$row.order_detail_id|escape}-->, <!--{$row.participation_flg|escape}-->);return false;" >済</a>
 			<!--{else}-->
-				<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id|escape}-->, <!--{$row.participation_flg|escape}-->);return false;" >未</a>
+				<a href="javascript:void(0);" onclick="formSubmitParticipation('list_form', 'participation', <!--{$pid|escape}-->, <!--{$aid|intval}-->, <!--{$row.order_detail_id|escape}-->, <!--{$row.participation_flg|escape}-->);return false;" >未</a>
 			<!--{/if}-->
 		<!--{else}-->
 			<!--{if $row.participation_flg == '1'}-->
@@ -162,7 +162,7 @@ function formSubmitStatus(formName, mode, pid, aid, odid, flg){
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.lawyer_number|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$row.student_name|escape}--></td>
 		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><!--{$mtb_bar_association[$row.bar_association_id]|escape}--></td>
-		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="javascript:void(0);" onclick="formSubmit('list_form', 'delete', <!--{$pid|escape}-->, <!--{$aid|escape}-->, <!--{$row.order_detail_id|escape}-->);return false;" >削除</a></td>
+		<td class="tdc" style="<!--{if $cycle_bg=="1"}-->background: none repeat scroll 0% 0% rgb(246, 246, 243);<!--{/if}-->"><a href="javascript:void(0);" onclick="formSubmit('list_form', 'delete', <!--{$pid|escape}-->, <!--{$aid|intval}-->, <!--{$row.order_detail_id|escape}-->);return false;" >削除</a></td>
 	</tr>
 	<!--{/foreach}-->
 	<!--{/if}-->

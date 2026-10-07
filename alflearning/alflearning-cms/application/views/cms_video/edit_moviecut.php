@@ -283,7 +283,7 @@
 
 				<?=form_open_multipart("cms_video/commit_moviecut")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.$upload_error.'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
 					<?=(isset($overlap_error)?'<div class="error">'.$overlap_error.'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $video['update_flg'])?>'>
 					<input type=hidden name=video_id value='<?=set_value('video_id', $video['video_id'])?>'>
@@ -374,7 +374,7 @@
 										<div style=" margin-top: 5px;line-height:20px;"><?= $this->lang->line_or_def('common_registered_tag','登録済みタグ') ?>&nbsp;:&nbsp;
 											<?php foreach($tags_dropdown as $tagKey => $cnt) { ?>
 												<? if(($tagKey !== 'タグなし') && ($tagKey !== '') ): ?>
-													<a href="#" onclick="set_tag(<?= htmlspecialchars( json_encode((string)$tagKey, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>);return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
+													<a href="#" onclick="set_tag(<?= htmlspecialchars( json_encode((string)$tagKey, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8', false) ?>);return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
 												<? endif; ?>
 											<?php } ?>
 										</div>
@@ -412,7 +412,7 @@
 													<?php if($video['exclusive_book_library'][$ino] < 1): ?>
 														<img src="" alt="[No Image]" style="height: 64px;width: 100px;padding:1px;background-color:white;"/ name="book_thumbnail[]">
 													<?php else: ?>
-													<img src="<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_<?= $video['exclusive_book_library'][$ino]; ?>/Page1/master-Page1.jpg?token=12345678901234567890abcdefghijkl" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
+													<img src="<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_<?= (int)$video['exclusive_book_library'][$ino]; ?>/Page1/master-Page1.jpg?token=12345678901234567890abcdefghijkl" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
 													<?php endif; ?>
 												</td>
 												

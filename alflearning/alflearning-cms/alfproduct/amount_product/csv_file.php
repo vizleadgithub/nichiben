@@ -103,6 +103,7 @@ if(flock($filepoint, LOCK_EX)){
 }
 
 //ファイルへ書き込み
+$ret = csv_safe_rows($ret, true);
 fwrite($filepoint,  "商品ID,商品名,商品コード,販売単価,販売数,合計,\r\n");
 for($i=0;$i<count($ret);$i++){
 	$temp = mb_convert_encoding('"'. $ret[$i]["product_id"]    . '",'.'"'. $ret[$i]["product_name"]  . '",'.'"'. $ret[$i]["product_code"]  . '",'.'"'. $ret[$i]["pay_total"]     . '",'.'"'. $ret[$i]["buy_count"]     . '",'.'"'. $ret[$i]["all_pay_total"] . '",'."\r\n", "SJIS", "UTF-8");

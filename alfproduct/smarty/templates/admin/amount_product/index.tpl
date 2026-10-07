@@ -126,7 +126,7 @@
 		<tr style="">
 			<td class="tdc" style="">
 				<!--{if $row.buy_y != "" && $row.buy_m != ""}-->
-					<a href="?post_data=<!--{$post_data|urlencode|escape}-->&buy_y=<!--{$row.buy_y|escape|urlencode}-->&buy_m=<!--{$row.buy_m|escape|urlencode}-->">[<!--{$row.buy_y|escape}-->/<!--{$row.buy_m|escape}-->]</a>
+					<a href="?post_data=<!--{$post_data|urlencode|escape}-->&buy_y=<!--{$row.buy_y|urlencode|escape}-->&buy_m=<!--{$row.buy_m|urlencode|escape}-->">[<!--{$row.buy_y|escape}-->/<!--{$row.buy_m|escape}-->]</a>
 				<!--{else}-->
 					-
 				<!--{/if}-->

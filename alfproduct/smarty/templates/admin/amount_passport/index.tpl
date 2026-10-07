@@ -66,7 +66,7 @@
 
 
 <!--{if $disp_flg}-->
-	<a href="csv.php?data=<!--{$post_data|escape|urlencode}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
+	<a href="csv.php?data=<!--{$post_data|urlencode|escape}-->" target="_blank" rel="noopener noreferrer"><img src="/alfproduct/images/abtn_csv.png" alt="CSVダウンロード"></a>
 	<!--{$list_start}-->～<!--{$list_end}-->件を表示中（全<!--{$list_max}-->件）
 	<table class="list">
 		<tr>

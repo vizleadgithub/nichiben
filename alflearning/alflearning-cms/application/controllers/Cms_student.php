@@ -98,7 +98,7 @@ class Cms_student extends CI_Controller {
 			);
 		} else {
 			//データ取得用引数設定
-			$post = $this->input->post(NULL, TRUE);   // 全POST配列取得
+			$post = $this->input->post(NULL, FALSE);   // 全POST配列取得
 			$data['s_name']				= ($this->input->post('s_name') ?? '');
 			$data['s_lawyer_number']		= ($this->input->post('s_lawyer_number') ?? '');
 			$data['s_lawyer_division']		= ($this->input->post('s_lawyer_division') ?? '');
@@ -1348,7 +1348,7 @@ class Cms_student extends CI_Controller {
 			    $csv_data = array_values($table_data_record);
 			    mb_convert_variables('SJIS-WIN', 'UTF-8', $csv_data);
 
-			    fputcsv($fp, $csv_data);
+			    fputcsv($fp, array_map('csv_formula_safe', $csv_data));
 			    fflush($fp); // 出力をフラッシュ
 			}
 			$offset += 1000;

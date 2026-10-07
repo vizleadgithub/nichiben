@@ -36,3 +36,24 @@ if ( ! function_exists('dropdown_escape'))
 		return $escaped;
 	}
 }
+
+//=======================================================================//
+// CSVインジェクション(数式の実行)対策
+// 先頭が = + - @ タブ 改行 の文字列は、Excel等で数式として実行されるおそれがあるため、先頭に ' を付けて文字列として扱わせる。
+// 数値(-5・+3 など)と、1文字だけの - + はそのまま出力する。CSVに書き出す直前に適用すること(fputcsv の行に array_map で適用)。
+//=======================================================================//
+if ( ! function_exists('csv_formula_safe'))
+{
+	function csv_formula_safe($value)
+	{
+		if ( ! is_string($value) || $value === '')
+		{
+			return $value;
+		}
+		if (preg_match('/^[=+\-@\t\r\n]/', $value) && ! is_numeric($value) && ! ($value === '-' || $value === '+'))
+		{
+			return "'" . $value;
+		}
+		return $value;
+	}
+}

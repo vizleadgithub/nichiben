@@ -61,11 +61,11 @@ class Cms_cource extends CI_Controller {
 		$per_page = $this->config->item('pagination_per_page');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('s_name'      , $this->lang->line_or_def('common_course_name','講座名')               , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_name'      , $this->lang->line_or_def('common_course_name','講座名')               , 'trim');
 		$this->form_validation->set_rules('s_open'      , $this->lang->line_or_def('common_public_period_start','公開期間開始') , 'trim');
 		$this->form_validation->set_rules('s_close'     , $this->lang->line_or_def('common_public_period_end','公開期間終了')   , 'trim');
 		$this->form_validation->set_rules('s_id'        , $this->lang->line_or_def('common_id','ID')                            , 'trim');
-		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード')            , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード')            , 'trim');
 		$this->form_validation->run();	//バリデーション実行（その実xss対策）
 
 		//講座モデル読み込み

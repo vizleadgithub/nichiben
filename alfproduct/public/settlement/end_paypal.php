@@ -13,7 +13,7 @@ if( !$arrTemp ) {
 	exit();
 } else {
 	$access_id = $arrTemp["access_id"];
-	$arr = unserialize($arrTemp["exec_return"]);
+	$arr = unserialize($arrTemp["exec_return"], ['allowed_classes' => false]);
 }
 ?>
 <html>
@@ -23,10 +23,10 @@ if( !$arrTemp ) {
 <!--<body OnLoad='OnLoadEvent();'>-->
 <body>
 end<br>
-注文番号：<?php print($order_id); ?><br>
+注文番号：<?php print(htmlspecialchars((string)($order_id), ENT_QUOTES, 'UTF-8')); ?><br>
 <form action="https://pt01.mul-pay.jp/payment/PaypalStart.idPass" method="POST">
 <input type="hidden" name="ShopID" value="<?php echo GMOPaymentProtocol::SHOP_ID; ?>" />
-<input type="hidden" name="AccessID" value="<?php echo $access_id; ?>" />
+<input type="hidden" name="AccessID" value="<?php echo htmlspecialchars((string)($access_id), ENT_QUOTES, 'UTF-8'); ?>" />
 PayPalの決済画面へ遷移します。<br>
 <input type="submit" value="続行">
 </form>

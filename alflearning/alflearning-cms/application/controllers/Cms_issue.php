@@ -59,7 +59,7 @@ class Cms_issue extends CI_Controller {
 		$per_page = $this->config->item('pagination_per_page');
 
 		$this->form_validation->set_rules('s_cource'    , $this->lang->line_or_def('common_course_name','講座名')    , 'trim');
-		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim');
 		$this->form_validation->run();
 
 		//資料モデル読み込み
