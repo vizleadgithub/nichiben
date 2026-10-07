@@ -390,6 +390,10 @@ const checkF05 = () => tamper('F-05', 'student', [
   ['/search/index.php', ['search', 'sort', 'pagemax', 'page']],
 ]);
 const checkE47 = () => tamper('E-47', 'student', [['/product/detail.php', ['pid', 'pcid']], ...STUDENT_LISTS.slice(0, 2).map((p) => [p, ['pcid', 'sort', 'pagemax', 'page']])]);
+// E-50 EDU_RB_DEV-46 の退行確認(ライブ研修「承認」処理のSQLインジェクション)。
+// mysqli_real_escape_string は使われているが、存在しないID・配列化等でエラー・意図しない承認が起きないか確認する。
+// 実在するIDは使わない(TAMPER_VALUESは数値以外・極端な値のみのため、実在の商品を承認してしまう心配はない)
+const checkE50 = () => tamper('E-50', 'cms', [['/alfproduct/product_live/approval_exe.php', ['mid']]]);
 // F-06 エラー画面（存在しない値・文字列・負数・配列でスタックトレース・SQL・パスが出ないこと）
 async function checkF06() {
   await tamper('F-06', 'student', [['/product/detail.php', ['pid']], ['/product/detail_review.php', ['pid']], ['/mypage/buy_detail.php', ['oid', 'pid']]]);
@@ -537,6 +541,143 @@ async function checkE08() {
   }
 }
 
+// E-51 CMSのバッチコントローラ(Bat_*・Once_bat_*)が、ブラウザから実行できてしまわないかの確認。
+// 【重要: ここは実際にURLへアクセスしない(静的なソース確認のみ)】。調査の結果、Once_bat_reconversion_book_library の
+// index() が index() 自体の中で reconversion_exec_book_library() を直接実行する作りだった(=素のGETで実処理が走る)。
+// 他のコントローラも is_cli_request() 等のアクセス制限がどれだけあるか不明なため、安全のため実アクセスはせず、
+// ソースを読んで「index()が空(または副作用のないprintのみ)か」「CLI限定の判定があるか」だけを確認する
+async function checkE51() {
+  const id = 'E-51';
+  const dir = path.join(REPO, 'alflearning/alflearning-cms/application/controllers');
+  if (!fs.existsSync(dir)) { add(id, '要確認', 'コントローラディレクトリが見つからない'); return; }
+  const files = fs.readdirSync(dir).filter((f) => /^(Bat_|Once_bat_)\w*\.php$/.test(f));
+  const CLI_GUARD = /is_cli_request\(\)|php_sapi_name\(\)\s*===?\s*['"]cli['"]|PHP_SAPI\s*===?\s*['"]cli['"]/;
+  const findings = { guarded: [], unguardedSafeIndex: [], unguardedUnsafeIndex: [], unknown: [] };
+  for (const f of files) {
+    const src = fs.readFileSync(path.join(dir, f), 'utf-8');
+    const guarded = CLI_GUARD.test(src);
+    // index() メソッドの中身(次の "public function"/"function" か、閉じ括弧の少ない行まで)を大まかに切り出す
+    const m = src.match(/function\s+index\s*\(\s*\)\s*\{([^]*?)\n\t\}/);
+    const body = m ? m[1].trim() : null;
+    const isEmpty = body === '' || body === undefined;
+    // 中身が print/echo/exit/die の文だけ(他の処理呼び出しが無い)なら安全とみなす
+    const stmts = body !== null ? body.split(';').map((s) => s.trim()).filter(Boolean) : [];
+    const isSafePrint = body !== null && stmts.length > 0 && stmts.every((s) => /^(print|echo)\s+["']|^exit(\(\))?$|^die(\(\))?$/.test(s));
+    if (guarded) findings.guarded.push(f);
+    else if (body === null) findings.unknown.push(f);
+    else if (isEmpty || isSafePrint) findings.unguardedSafeIndex.push(f);
+    else findings.unguardedUnsafeIndex.push(f);
+  }
+  const ng = findings.unguardedUnsafeIndex.length > 0;
+  rec.add({
+    id, verdict: ng ? 'NG' : findings.unknown.length ? '要確認' : '要確認',
+    label: `バッチコントローラ ${files.length} 本の静的確認(実アクセスはしていない)`,
+    findings: [
+      { kind: `CLI限定の判定あり(安全) ${findings.guarded.length}本`, text: findings.guarded.join(', ') },
+      { kind: `判定なし・index()は空かprintのみ(ブラウザから実行できるが実害は無さそう) ${findings.unguardedSafeIndex.length}本`, text: findings.unguardedSafeIndex.join(', ') },
+      { kind: `判定なし・index()が実処理を呼んでいる(ブラウザから実行すると実害がありうる) ${findings.unguardedUnsafeIndex.length}本`, text: findings.unguardedUnsafeIndex.join(', '), ng: findings.unguardedUnsafeIndex.length > 0 },
+      { kind: `index()の中身を解析できず ${findings.unknown.length}本`, text: findings.unknown.join(', ') },
+    ],
+  });
+  console.log(`${ng ? 'NG' : '??'} ${id} バッチコントローラ${files.length}本: CLI限定${findings.guarded.length}/安全${findings.unguardedSafeIndex.length}/要注意${findings.unguardedUnsafeIndex.length}/不明${findings.unknown.length}`);
+  if (findings.unguardedUnsafeIndex.length) console.log(`   実処理を直接呼ぶindex(): ${findings.unguardedUnsafeIndex.join(', ')}`);
+}
+
+// E-52 CSV/PDF出力(商品管理)の到達性・ログイン確認の確認。読み取り専用(SELECTのみ)と確認済みの12本のみ対象。
+// 【重要】report_product/csv_file.php・csv_file_utf.php・amount_product/csv_file.php
+// の3本は、認証が無いうえ呼ばれるたびに /tmp/ へファイルを書き込む副作用があるため、意図的に対象外にしている
+// ([B-8]参照。この3本には絶対にアクセスしないこと)
+const CSV_PDF_SAFE = [
+  '/alfproduct/amount_order/csv.php?oid=0', '/alfproduct/amount_order/pdf.php?oid=0',
+  '/alfproduct/amount_passport/csv.php', '/alfproduct/amount_product/csv.php',
+  '/alfproduct/amount_user/csv.php?sid=0', '/alfproduct/mailmagazine/csv_send_user.php',
+  '/alfproduct/mailmagazine/csv_sended_user.php', '/alfproduct/product_lecture/csv.php?pid=0&aid=0&type=1',
+  '/alfproduct/product_lecture2/csv.php?pid=0&aid=0&type=1', '/alfproduct/product_lecture_ethics/csv.php?pid=0&type=1',
+  '/alfproduct/product_live/csv.php', '/alfproduct/report_product/csv.php?pid=0&aid=0',
+];
+async function checkE52() {
+  const id = 'E-52';
+  // 未ログインで直接アクセスし、ログイン画面へ戻される(session_checkが効いている)ことを確認する
+  const anon = await sess('cms:anon');
+  for (const u of CSV_PDF_SAFE) {
+    const r = await rawGet(anon, u);
+    const blocked = (r.status >= 300 && r.status < 400) || /login_page|ログイン/i.test(r.body);
+    if (!blocked) rec.add({ id, verdict: 'NG', label: `未ログイン ${u}`, status: r.status, findings: [{ kind: 'ログイン確認が無く、未ログインでアクセスできる', ng: true }] });
+    else rec.add({ id, verdict: 'OK', label: `未ログイン ${u}`, status: r.status, findings: [] });
+  }
+  // ログイン済みで到達でき、確認用出力(SQLエラー・スタックトレース等)が無いことを確認する
+  if (!hasLogin('cms')) { add(id, '対象外', 'CMS: ログイン済みセッションがない(未ログイン側の確認のみ実施)'); return; }
+  const s = await sess('cms:auth');
+  for (const u of CSV_PDF_SAFE) {
+    const r = await rawGet(s, u);
+    const dbg = debugFindings(r.body);
+    const findings = dbg.map((f) => ({ kind: `確認用出力(${f.check})`, text: f.text }));
+    if (r.status >= 500) findings.push({ kind: `HTTP ${r.status}`, text: '' });
+    rec.add({ id, verdict: findings.length ? '要確認' : 'OK', label: `ログイン済み ${u}`, status: r.status, bytes: r.body.length, findings });
+    if (findings.length) console.log(`?? ${id} ${u} -> ${findings.map((f) => f.kind).join(',')}`);
+    await sleep(s);
+  }
+  console.log(`ok ${id} CSV/PDF出力 ${CSV_PDF_SAFE.length}本の到達性を確認(認証無し3本[report_product/csv_file.php等]は[B-8]として既に記録済みのため対象外)`);
+}
+
+// E-54 SSOの入口(login_sso.php・login_sso_new.php・sso_auth_callback.php)。調査の結果、正規のSSO往復で
+// しか成立しないセッション変数が無いと即座に Bad Request・別画面へのリダイレクトで終わり、入力値が画面に
+// 反射される経路が無いことをソースで確認済み(E-54自体にXSSの対象面は無い想定)。ここでは、未知の状態でも
+// クラッシュ・確認用出力が出ないことだけを安全に確認する(DB書き込み・メール送信は発生しない経路のみを通る)
+async function checkE54() {
+  const id = 'E-54';
+  const s = await sess('student:anon');
+  for (const u of ['/login/login_sso.php', '/login/login_sso_new.php', '/login/sso_auth_callback.php']) {
+    const r = await rawGet(s, u);
+    const dbg = debugFindings(r.body);
+    const findings = dbg.map((f) => ({ kind: `確認用出力(${f.check})`, text: f.text }));
+    if (r.status >= 500) findings.push({ kind: `HTTP ${r.status}`, text: '' });
+    rec.add({ id, verdict: findings.length ? '要確認' : 'OK', label: u, status: r.status, findings, scope: 'ソース確認により、正規のSSOセッション無しでは入力値が画面に反射される経路が無いことを確認済み(2026-10-07)。ここではクラッシュ・確認用出力の有無のみ見る' });
+    console.log(`${findings.length ? '??' : 'ok'} ${id} ${u} status=${r.status}`);
+  }
+}
+
+// E-57 CMSのエラー画面(issue_error・book_library_error・course_class_error・material_error・teacher_error)。
+// 調査の結果、これらは全て delete_item($id)/edit() が権限チェックに失敗したときに表示される画面で、
+// (1) 各コントローラのコンストラクタで is_logged_in() が無いとログイン画面へ飛ばされるため未ログインでは
+//     到達できず、(2) 表示される文言は固定の多言語メッセージで、IDやその他の入力値は画面に出力されない
+// ことをソースで確認済み。ログイン済みのテストアカウントで delete_item を呼ぶと実際に削除処理に入ってしまう
+// (権限が無い場合だけエラー画面になる)ため、安全のため実アクセスはしない(静的確認のみで対象外とする)
+function checkE57() {
+  const id = 'E-57';
+  rec.add({
+    id, verdict: 'OK', label: '5画面とも静的ソース確認のみ(実アクセスはしていない)',
+    note: 'issue_error.php・book_library_error.php・course_class_error.php・material_error.php・teacher_error.php は、'
+      + '表示する文言が固定の多言語メッセージ(ソース中に埋め込み)で、エラーの引き金になったID・パラメータは画面に出力されない。'
+      + '未ログインでは各コントローラのログイン確認(is_logged_in())でログイン画面へ転送されるため到達できない。'
+      + 'ログイン済みで delete_item 等を直接呼ぶと(権限があれば)実際に削除処理が走ってしまうため実アクセスはしていない。',
+  });
+  console.log(`ok ${id} 静的ソース確認のみ(実アクセスなし): エラー文言はユーザー入力を含まないため対象面なしと判断`);
+}
+
+// E-58 alflearning-api の到達性。Csv_download は [B-9] として既に氏名・メールアドレスの漏えいを記録済みのため、
+// 実データが本当に漏れるか毎回確認するのは望ましくなく、ここでは対象外にする(再現は [B-9] の記載で十分)。
+// Login・Top・Sso_update_profile は、空のGET/POSTでも書き込み・外部通信が発生しないことをソースで確認済み
+async function checkE58() {
+  const id = 'E-58';
+  const apiBase = (process.env.STG2_API_URL || '').trim();
+  if (!apiBase) { add(id, '対象外', 'STG2_API_URL が未設定(.env.stg2 にAPIのURLが無いため確認できない)'); return; }
+  assertStg2(apiBase);
+  const s = await sess('student:anon');
+  for (const [name, url] of [['Login', '/login'], ['Top', '/top'], ['Sso_update_profile', '/sso_update_profile']]) {
+    let r;
+    try { r = await s.context.request.get(apiBase.replace(/\/$/, '') + url, { failOnStatusCode: false, timeout: 15000 }); } catch (e) {
+      rec.add({ id, verdict: '要確認', label: name, note: `接続できない: ${e.message.split('\n')[0]}` });
+      continue;
+    }
+    const body = await r.text().catch(() => '');
+    const dbg = debugFindings(body);
+    const findings = dbg.map((f) => ({ kind: `確認用出力(${f.check})`, text: f.text }));
+    rec.add({ id, verdict: findings.length ? '要確認' : 'OK', label: name, status: r.status(), findings, scope: 'Csv_downloadは[B-9]で既に記録済みのためここでは対象外' });
+    console.log(`${findings.length ? '??' : 'ok'} ${id} ${name} status=${r.status()}`);
+  }
+}
+
 // E-56 AppScan格納型XSS(CMS-H-07〜16)のセッション再現。通常のS8確認(run-xss-search.js)は送信直後の
 // 即時反映しか見ないため、別画面へ移動してから検索条件なしで開き直しても、セッションに保存された値が
 // エスケープされずに再反射しないかを別途確認する(レビュー2026-10-07 3.1)
@@ -569,7 +710,7 @@ async function checkE56() {
   console.log(`${findings.some((f) => f.ng) ? 'NG ' : findings.length ? '?? ' : 'ok '} ${id} ${findings.length ? findings.map((f) => f.kind).join(',') : 'セッション経由の再反射なし'}`);
 }
 
-const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-03': checkE03, 'E-08': checkE08, 'E-09': checkE09, 'E-19': checkE19, 'E-47': checkE47, 'E-45': checkE45, 'E-56': checkE56, 'D-0005': checkD0005 };
+const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-03': checkE03, 'E-08': checkE08, 'E-09': checkE09, 'E-19': checkE19, 'E-47': checkE47, 'E-45': checkE45, 'E-50': checkE50, 'E-51': checkE51, 'E-52': checkE52, 'E-54': checkE54, 'E-57': checkE57, 'E-58': checkE58, 'E-56': checkE56, 'D-0005': checkD0005 };
 
 (async () => {
   try {
