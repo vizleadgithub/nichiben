@@ -194,6 +194,7 @@ header("Pragma: public");
 header("Content-Type: text/octet-stream");
 header("Content-Disposition: attachment; filename=amount_passport_".date("YmdHis").".csv");
 
+$ret = csv_safe_rows($ret, true);
 echo mb_convert_encoding("登録番号,氏名,弁護士会,購入日,商品名,パスポート種別,入金,金額\r\n", "SJIS", "UTF-8");
 for($i=0; $i<$ret_count; $i++){
 	//++++++++++++++++++++

@@ -273,7 +273,7 @@
 																	<?= $temp; ?>
 																</div>
 																<div class="detail_values">
-																	<?= htmlspecialchars( $exam_answer[$id]['exam_answer_contents'][$id2], ENT_QUOTES, 'UTF-8', false) ?>
+																	<?= $exam_answer[$id]['exam_answer_contents'][$id2] /* Cms_examで組み立て時に無害化済み */ ?>
 																</div>
 																<div class="detail_answer">
 																	<? if( ($exam_answer[$id]['new_exam_answer_mark'][$id2]>-1) && ($exam_answer[$id]['exam_answer_mark'][$id2] != $exam_answer[$id]['new_exam_answer_mark'][$id2]) ):?>

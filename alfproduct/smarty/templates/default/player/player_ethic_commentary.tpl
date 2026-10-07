@@ -297,7 +297,7 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 							data["time"] = temp_time;
 							data["time2"] = "<!--{$time2}-->";
 							data["time3"] = "<!--{$time3}-->";
-							data["pid"] = "<!--{$pid}-->";
+							data["pid"] = "<!--{$pid|escape:'javascript'}-->";
 							
 							$.ajax({
 								type		: "GET",
@@ -336,7 +336,7 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 									var data = {};
 									data["student_id"] = "<!--{$user_id}-->";
 									data["movie_id"] = "<!--{$video_id}-->";
-									data["pid"] = "<!--{$pid}-->";
+									data["pid"] = "<!--{$pid|escape:'javascript'}-->";
 									<!--{if $video_id2!=''}-->
 										data["movie_id"] = "<!--{$video_id2}-->";
 									<!--{/if}-->
@@ -368,7 +368,7 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 									var data = {};
 									data["student_id"] = "<!--{$user_id}-->";
 									data["movie_id"] = "<!--{$video_id}-->";
-									data["pid"] = "<!--{$pid}-->";
+									data["pid"] = "<!--{$pid|escape:'javascript'}-->";
 									<!--{if $video_id2!=''}-->
 										data["movie_id"] = "<!--{$video_id2}-->";
 									<!--{/if}-->
@@ -799,8 +799,8 @@ filter: alpha(opacity=70);        /* ie lt 8 */
 		}
 	</script>
 	
-	<!-- <!--{$get_alf_player_msg1}--> -->
-	<!-- <!--{$get_alf_player_msg2}--> -->
+	<!-- <!--{$get_alf_player_msg1|escape}--> -->
+	<!-- <!--{$get_alf_player_msg2|escape}--> -->
 	
 	<!--{$player_msg}-->
 	

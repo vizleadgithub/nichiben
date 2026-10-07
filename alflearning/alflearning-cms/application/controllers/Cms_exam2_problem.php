@@ -64,7 +64,7 @@ class Cms_exam2_problem extends CI_Controller {
 		$per_page = $this->config->item('pagination_per_page');
 
 		$this->form_validation->set_rules('s_cource'              , $this->lang->line_or_def('common_course_name','講座名')               , 'trim');
-		$this->form_validation->set_rules('s_free_word'           , $this->lang->line_or_def('common_freeword','フリーワード')            , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_free_word'           , $this->lang->line_or_def('common_freeword','フリーワード')            , 'trim');
 		$this->form_validation->set_rules('s_exam2_problem_group' , $this->lang->line_or_def('common_exam2_problem_group','設問グループ') , 'trim');
 		$this->form_validation->run();
 

@@ -58,7 +58,8 @@ if ($vid2!=""){
 		exit;
 	}
 }
-if (strpos($ftn, 'contents_free_time') === false){
+// カラム名としてSQLに使うため、contents_free_time + 数字 のみ許可する(SQLへの混入を防ぐ)
+if (!preg_match('/^contents_free_time[0-9]*$/', (string)$ftn)){
 	echo '不正[003]';
 	$objDbConnect->close();
 	exit;

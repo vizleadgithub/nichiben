@@ -1217,7 +1217,7 @@ class Cms_exam extends CI_Controller {
 										// 選択した番号と一致した内容を出力
 										if( in_array( $line_contents['no'], $array_exam_answer_contents) ){
 											
-											$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), $line_contents['word']);
+											$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8', false));
 											//$line_contents['word'] = $line_contents['word'];
 										
 											if($temp != '') $temp .= "<br/>";
@@ -1229,7 +1229,7 @@ class Cms_exam extends CI_Controller {
 										//$answer_contents_correct[$i] = $line_contents['correct'];
 									}
 								}elseif($exam_answer['answer_kind']==3){
-									$temp = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), $exam_answer['exam_answer_contents']);
+									$temp = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam_answer['exam_answer_contents'], ENT_QUOTES, 'UTF-8', false));
 									//$temp = $exam_answer['exam_answer_contents'];
 								}
 								$data['exam_answer'][$idx]['exam_answer_contents'][$idx_detail] = $temp;

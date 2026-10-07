@@ -63,7 +63,7 @@
 <input type="hidden" name="town" value="<!--{$town|escape}-->" />
 </form>
 <script>
-window.onload = function(){ fnPutAddress('<!--{$input1|escape}-->'); }
+window.onload = function(){ fnPutAddress('<!--{$input1|escape:'javascript'}-->'); }
 </script>
 </body>
 </html>

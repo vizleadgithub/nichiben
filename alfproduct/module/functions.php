@@ -2340,7 +2340,7 @@ function insert_wp_posted_article_product($product_id, $status=0){
 	  tbl_product_live_training AS T4
 	      ON T1.product_id = T4.product_id
 	WHERE
-	  T1.product_id = '".$product_id."'
+	  T1.product_id = '".mysqli_real_escape_string($objDbConnect->connect, (string)$product_id)."'
 	";
 	$res = $objDbConnect->query_fetch($sql);
 	if ($res){
@@ -2406,19 +2406,19 @@ function insert_wp_posted_article_product($product_id, $status=0){
 		(
 		  '1',
 		  '".$posttime."',
-		  '".$content."',
-		  '".$title."',
+		  '".mysqli_real_escape_string($objDbConnect->connect, (string)$content)."',
+		  '".mysqli_real_escape_string($objDbConnect->connect, (string)$title)."',
 		  'publish',
 		  'open',
 		  'open',
-		  '".$slug.'-product'."',
+		  '".mysqli_real_escape_string($objDbConnect->connect, (string)$slug.'-product')."',
 		  '".$posttime."',
 		  '0',
 		  'post',
-		  '".$res['product_type_add']."',
-		  '$status',
-		  '".$res['product_id']."',
-		  '".$res['target']."'
+		  '".(int)$res['product_type_add']."',
+		  '".(int)$status."',
+		  '".mysqli_real_escape_string($objDbConnect->connect, (string)$res['product_id'])."',
+		  '".mysqli_real_escape_string($objDbConnect->connect, (string)$res['target'])."'
 		)
 		";
 		$ret = $objDbConnect->execute($sql.$where);
@@ -2428,7 +2428,7 @@ function insert_wp_posted_article_product($product_id, $status=0){
 			// パーマリンクの登録
 			$sql = "
 			UPDATE wp_posts SET
-			  guid = 'http://".$_SERVER['SERVER_NAME']."/archives/$object_id'
+			  guid = 'http://".mysqli_real_escape_string($objDbConnect->connect, (string)$_SERVER['SERVER_NAME'])."/archives/$object_id'
 			WHERE
 			  ID = '$object_id'
 			";
@@ -3236,5 +3236,42 @@ function safe_href($url): string {
 		return $url;
 	}
 	return '';
+}
+
+/**
+ * CSVインジェクション(数式の実行)対策
+ * 先頭が = + - @ タブ 改行 の文字列は、Excel等で数式として実行されるおそれがあるため、先頭に ' を付けて文字列として扱わせる。
+ * 数値(-5・+3 など)と、1文字だけの - + はそのまま出力する。CSVに書き出す直前(文字コード変換・HTMLエンティティ復元の後)に適用すること。
+ */
+if (!function_exists('csv_formula_safe')) {
+	function csv_formula_safe($value) {
+		if (!is_string($value) || $value === '') {
+			return $value;
+		}
+		if (preg_match('/^[=+\-@\t\r\n]/', $value) && !is_numeric($value) && !($value === '-' || $value === '+')) {
+			return "'" . $value;
+		}
+		return $value;
+	}
+}
+
+/**
+ * 配列(多次元可)の文字列値すべてに csv_formula_safe() を適用して返す(第2引数 true で " も "" にする)
+ */
+if (!function_exists('csv_safe_rows')) {
+	function csv_safe_rows($rows, $double_quotes = false) {
+		if (is_array($rows)) {
+			foreach ($rows as $k => $v) {
+				$rows[$k] = csv_safe_rows($v, $double_quotes);
+			}
+			return $rows;
+		}
+		$rows = csv_formula_safe($rows);
+		// 値を "..." で囲んで手書きしているCSV用: 値の中の " を "" にして、列が増えないようにする
+		if ($double_quotes && is_string($rows)) {
+			$rows = str_replace('"', '""', $rows);
+		}
+		return $rows;
+	}
 }
 ?>

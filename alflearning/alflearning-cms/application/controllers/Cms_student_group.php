@@ -54,10 +54,10 @@ class Cms_student_group extends CI_Controller {
 		$per_page = $this->config->item('pagination_per_page');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('s_student_group_name'  , $this->lang->line_or_def('common_group_name','グループ名')  , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_student_group_name'  , $this->lang->line_or_def('common_group_name','グループ名')  , 'trim');
 		$this->form_validation->set_rules('s_student_id'          , $this->lang->line_or_def('common_student_name','受講者名')  , 'trim');
 		$this->form_validation->set_rules('s_id'                  , $this->lang->line_or_def('common_id','ID')                  , 'trim');
-		$this->form_validation->set_rules('s_free_word'           , $this->lang->line_or_def('common_freeword','フリーワード')  , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_free_word'           , $this->lang->line_or_def('common_freeword','フリーワード')  , 'trim');
 		
 		$this->form_validation->run();		//バリデーション実行（その実xss対策）
 		

@@ -9,7 +9,7 @@ $ret = $objGMOPaymentProtocol->search_member($_SESSION['member_id']);
 
 <form name="form_test" method="post" action="member_card_regist.php">
 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token_get(), ENT_QUOTES, 'UTF-8'); ?>" />
-※会員ID：<input type="text" name="member_id" value="<?php echo $_SESSION['member_id']; ?>" /><br>
+※会員ID：<input type="text" name="member_id" value="<?php echo htmlspecialchars((string)$_SESSION['member_id'], ENT_QUOTES, 'UTF-8'); ?>" /><br>
 ※カード番号：<input type="text" name="card_no" value="4111111111111111" /><br>
 ※有効期限(YYMM形式)：<input type="text" name="expire" value="1601" /><br>
 継続課金：<input type="checkbox" name="fixed_flag" value="1" checked /><br><br>

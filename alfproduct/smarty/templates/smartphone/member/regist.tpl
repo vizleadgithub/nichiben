@@ -194,7 +194,7 @@
 		<td style="padding:5px;">
 			<table><tr>
 				<td>
-					<input type="password" name="password" id="password" value="<!--{$arr_input.password}-->" <!--{$password_style}--> />
+					<input type="password" name="password" id="password" value="<!--{$arr_input.password|escape}-->" <!--{$password_style}--> />
 				</td>
 			</tr><tr>
 				<td>
@@ -205,7 +205,7 @@
 				</td>
 			</tr><tr>
 				<td>
-					<input type="password" name="password_conf" id="password_conf" value="<!--{$arr_input.password_conf}-->" <!--{$password_conf_style}--> />
+					<input type="password" name="password_conf" id="password_conf" value="<!--{$arr_input.password_conf|escape}-->" <!--{$password_conf_style}--> />
 				</td>
 			</tr><tr>
 				<td>

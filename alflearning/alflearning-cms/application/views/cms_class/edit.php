@@ -158,11 +158,11 @@
 			// [2012/11/30]講座所属の受講生情報の取得
 			<?php if( isset($class['lecture_students']) ) {
 				foreach( $class['lecture_students'] as $lecture) { ?>
-					students_checked[<?= htmlspecialchars( $lecture, ENT_QUOTES, 'UTF-8') ?>] = true;
+					students_checked[<?= (int)$lecture ?>] = true;
 			<?php } } ?>
 
 			// [2012/11/30]講座所属の受講者の表示（初期表示）
-			ajax_search_cource_students(<?= htmlspecialchars( $class['cource_id'], ENT_QUOTES, 'UTF-8') ?>);
+			ajax_search_cource_students(<?= (int)$class['cource_id'] ?>);
 
 			// [2012/11/30]講座名変更時の処理
 			$("*[name=cource_id]").change(function() {

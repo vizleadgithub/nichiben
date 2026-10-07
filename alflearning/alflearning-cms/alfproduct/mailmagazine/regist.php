@@ -331,7 +331,8 @@ if(count($arr_err)==0){
 		//var_dump('php '.'/srv/alflearning/alflearning-cms/alfproduct/cron/mailmagazine_submit.php'." ".$mid." > /dev/null &");
 		//exit();
 
-		@exec('php '.'/srv/alflearning/alflearning-cms/alfproduct/cron/mailmagazine_submit.php'." ".$mid." > /dev/null &");
+		// $mid はPOST由来のため、数値(メルマガID)に限定したうえで、シェル引数としてエスケープする(OSコマンドの混入を防ぐ)
+		@exec('php '.'/srv/alflearning/alflearning-cms/alfproduct/cron/mailmagazine_submit.php'." ".escapeshellarg((string)(int)$mid)." > /dev/null &");
 		//exec('php '.realpath( dirname(__FILE__)."/../cron/mailmagazine_submit.php " )." ".$mid." > /dev/null &" );
 	}
 }

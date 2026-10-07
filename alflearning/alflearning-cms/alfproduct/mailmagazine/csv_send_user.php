@@ -163,6 +163,7 @@ header("Pragma: public");
 header("Content-Type: text/octet-stream");
 header("Content-Disposition: attachment; filename=send_user_".date("YmdHis").".csv");
 
+$ret = csv_safe_rows($ret, true);
 echo mb_convert_encoding("生徒ID,生徒名,メールアドレス\r\n", "SJIS", "UTF-8");
 for($i=0;$i<count($ret);$i++){
 	echo mb_convert_encoding('"' . $ret[$i]["student_id"] . '","' . $ret[$i]["student_name"] . '","' . $ret[$i]["student_email"] . '",' ."\r\n", "SJIS", "UTF-8");

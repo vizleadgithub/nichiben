@@ -263,13 +263,13 @@ class Cms_report extends CI_Controller {
 		$per_page = $this->config->item('pagination_per_page');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('s_name'            , $this->lang->line_or_def('common_name','名前')                                  , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_name'            , $this->lang->line_or_def('common_name','名前')                                  , 'trim');
 		$this->form_validation->set_rules('s_lawyer_number'   , $this->lang->line_or_def('common_','登録番号')                                  , 'trim');
-		$this->form_validation->set_rules('s_email'           , $this->lang->line_or_def('common_mail_address','メールアドレス')                , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_bar_association' , $this->lang->line_or_def('common_','所属弁護士会')                              , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_free_word'       , $this->lang->line_or_def('common_freeword','フリーワード')                      , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_sub_auth_ethic_training_on'       , $this->lang->line_or_def('common_','代替権限あり')             , 'trim|xss_clean');
-		$this->form_validation->set_rules('s_sub_auth_ethic_training_off'      , $this->lang->line_or_def('common_','代替権限なし')             , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_email'           , $this->lang->line_or_def('common_mail_address','メールアドレス')                , 'trim');
+		$this->form_validation->set_rules('s_bar_association' , $this->lang->line_or_def('common_','所属弁護士会')                              , 'trim');
+		$this->form_validation->set_rules('s_free_word'       , $this->lang->line_or_def('common_freeword','フリーワード')                      , 'trim');
+		$this->form_validation->set_rules('s_sub_auth_ethic_training_on'       , $this->lang->line_or_def('common_','代替権限あり')             , 'trim');
+		$this->form_validation->set_rules('s_sub_auth_ethic_training_off'      , $this->lang->line_or_def('common_','代替権限なし')             , 'trim');
 		$this->form_validation->set_rules('order_by'          , $this->lang->line_or_def('common_order_by','並び順')                            , 'trim');
 	  //$this->form_validation->set_rules('s_id'              , $this->lang->line_or_def('common_id','ID')                                      , 'trim|xss_clean');
 	  //$this->form_validation->set_rules('s_cource'          , $this->lang->line_or_def('common_course_name','講座名')                         , 'trim|xss_clean');

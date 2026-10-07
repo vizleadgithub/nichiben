@@ -472,7 +472,7 @@
 				<?=form_open_multipart("cms_video/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
 					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
-					<?=(isset($overlap_error)?'<div class="error">'.htmlspecialchars($overlap_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
+					<?=(isset($overlap_error)?'<div class="error">'.$overlap_error.'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $video['update_flg'])?>'>
 					<input type=hidden name=video_id value='<?=set_value('video_id', $video['video_id'])?>'>
 					<input type=hidden name=video_logic_name value='<?=set_value('video_logic_name', $video['video_logic_name'])?>'>
@@ -554,7 +554,7 @@
 										<div style=" margin-top: 5px;line-height:20px;"><?= $this->lang->line_or_def('common_registered_tag','登録済みタグ') ?>&nbsp;:&nbsp;
 											<?php foreach($tags_dropdown as $tagKey => $cnt) { ?>
 												<? if(($tagKey !== 'タグなし') && ($tagKey !== '') ): ?>
-													<a href="#" onclick="set_tag(<?= htmlspecialchars( json_encode((string)$tagKey, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>);return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
+													<a href="#" onclick="set_tag(<?= htmlspecialchars( json_encode((string)$tagKey, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8', false) ?>);return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
 												<? endif; ?>
 											<?php } ?>
 										</div>
@@ -580,7 +580,7 @@
 										
 
 										<?php foreach($video['exclusive_tag'] as $ino => $exclusive_tag): ?>
-											<tr sytle="height:100px;" id="exclusive_<?= $ino; ?>">
+											<tr sytle="height:100px;" id="exclusive_<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8', false) ?>">
 												<td style="vertical-align: middle;text-align: center;">
 													<input type=text name="exclusive_tag[]" maxlength="256" size="15" value='<?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8', false) ?>'><!--   -->
 												</td>
@@ -593,9 +593,9 @@
 													<?php if($video['exclusive_book_library'][$ino] < 1): ?>
 														<img src="" alt="[No Image]" style="height: 64px;width: 100px; padding:1px;background-color:white;"/ name="book_thumbnail[]">
 													<?php else: ?>
-													<img src="<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_<?= $video['exclusive_book_library'][$ino]; ?>/Page1/master-Page1.jpg?token=<?= $this->session->userdata('session_id') ?>" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
+													<img src="<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_<?= (int)$video['exclusive_book_library'][$ino]; ?>/Page1/master-Page1.jpg?token=<?= $this->session->userdata('session_id') ?>" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
 							<!--
-													<img src="<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_<?= $video['exclusive_book_library'][$ino]; ?>/Page1/master-Page1.jpg?token=12345678901234567890abcdefghijkl" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
+													<img src="<?= $this->config->item('stream_get_url')?>/school_<?= $this->session->userdata['cms_master.login.school_id'] ?>/book_library_<?= (int)$video['exclusive_book_library'][$ino]; ?>/Page1/master-Page1.jpg?token=12345678901234567890abcdefghijkl" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
 							-->
 													<?php endif; ?>
 												</td>
@@ -625,9 +625,9 @@
 
 												<td style="vertical-align: middle;text-align: center;">
 													<?php if($video['exclusive_status'][$ino] == 0): ?>
-														<input type="checkbox" value="<?= $ino; ?>" name="exclusive_status[]" checked>
+														<input type="checkbox" value="<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8', false) ?>" name="exclusive_status[]" checked>
 													<?php else: ?>
-														<input type="checkbox" value="<?= $ino; ?>" name="exclusive_status[]" >
+														<input type="checkbox" value="<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8', false) ?>" name="exclusive_status[]" >
 													<?php endif; ?>
 												</td>
 
@@ -717,7 +717,7 @@
 										<input type="button" id="btn_set_chapter" value=<?= $this->lang->line_or_def('common_addition','追加') ?> style="height: 28px;" />
 									</div>
 									<div style="float:left;line-height : 28px;margin-left: 50px;">
-										<?= $this->lang->line_or_def('common_reproduction_time','再生時間') ?> / <?= $video['video_time']; ?>
+										<?= $this->lang->line_or_def('common_reproduction_time','再生時間') ?> / <?= htmlspecialchars( (string)$video['video_time'], ENT_QUOTES, 'UTF-8', false) ?>
 									</div>
 									<div style="clear : both"></div>
 								</div>

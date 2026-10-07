@@ -129,6 +129,7 @@ if ($type == 'info') {
 		$mtb_bar_association[$key] = $val;
 	}
 	
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("受付日,ステイタス,完了,登録番号,氏名,所属弁護士会\r\n", "SJIS", "UTF-8");
 	foreach ($ret as $val){
 		// 各項目の整形
@@ -153,6 +154,7 @@ else if ($type == 'info_list') {
 	
 	$ret = _get_product_lecture_ethics_info($objDbConnect, $pid);
 	
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("登録番号,氏名\r\n", "SJIS", "UTF-8");
 	foreach ($ret as $val){
 		// 一行ずつ書き込み

@@ -620,7 +620,7 @@
 													<?= $this->lang->line_or_def('msg_correct_answer_is_check','正解はチェック') ?>
 													
 												</div>
-												<input class="<?= ($ino == 0) ? 'delete_answer_contents_hidden' : 'delete_answer_contents'; ?>" type="button" onclick="delete_answer_contents(<?= htmlspecialchars( $answer_contents_no, ENT_QUOTES, 'UTF-8') ?>);return false;" value="<?= $this->lang->line_or_def('common_deletion','削除') ?>" >
+												<input class="<?= ($ino == 0) ? 'delete_answer_contents_hidden' : 'delete_answer_contents'; ?>" type="button" onclick="delete_answer_contents(<?= (int)$answer_contents_no ?>);return false;" value="<?= $this->lang->line_or_def('common_deletion','削除') ?>" >
 												<div style="clear:both;"></div>
 											</li>
 										<?php endforeach; ?>

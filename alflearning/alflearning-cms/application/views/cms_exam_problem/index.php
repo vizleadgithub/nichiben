@@ -81,11 +81,11 @@
 							<?php foreach($exam_problem_list as $exam_problem) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam_problem/detail/<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><a href="/cms_exam_problem/detail/<?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8', false) ?>/"><?= htmlspecialchars( $exam_problem['exam_problem_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam_problem['exam_problem_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 <?php if(false){ ?>
 									<td>
-										<?= (getenv('URL_SERVICE')=='mitemo')? "": $exam_problem['teacher_name']; ?>
+										<?= (getenv('URL_SERVICE')=='mitemo')? "": htmlspecialchars( (string)$exam_problem['teacher_name'], ENT_QUOTES, 'UTF-8', false); ?>
 									</td>
 <?php } ?>
 									<td><?= htmlspecialchars( $exam_problem['answer_point'], ENT_QUOTES, 'UTF-8', false) ?></td>

@@ -65,7 +65,7 @@
 							<?php foreach($issue_list as $issue) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_issue/detail/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><a href="/cms_issue/detail/<?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8', false) ?>/"><?= htmlspecialchars( $issue['issue_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td style="word-wrap:break-word;"><?= htmlspecialchars( $issue['issue_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td><?= htmlspecialchars( $issue['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td><?= htmlspecialchars( $issue['disp_status'], ENT_QUOTES, 'UTF-8', false) ?></td>

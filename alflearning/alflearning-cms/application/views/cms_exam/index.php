@@ -70,11 +70,11 @@
 							<?php foreach($exam_list as $exam) { ?>
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-									<td><a href="/cms_exam/detail/<?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8') ?>/"><?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td><a href="/cms_exam/detail/<?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8', false) ?>/"><?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam['exam_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 <?php if(false){ ?>
 									<td>
-										<?= (getenv('URL_SERVICE')=='mitemo')? "": $exam['teacher_name']; ?>
+										<?= (getenv('URL_SERVICE')=='mitemo')? "": htmlspecialchars( (string)$exam['teacher_name'], ENT_QUOTES, 'UTF-8', false); ?>
 									</td>
 <?php } ?>
 									<td><?= htmlspecialchars( $exam['disp_status'], ENT_QUOTES, 'UTF-8', false) ?></td>

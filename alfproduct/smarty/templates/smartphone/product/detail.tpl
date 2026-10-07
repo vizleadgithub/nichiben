@@ -586,11 +586,11 @@ a.test_btn_none{
 											<!-- PC -->
 											<!--{if !$is_sp}-->
 												<!--{if $product_list.$contents_contents_key>0}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 														<div class="btn_plyer_text">始めから再生</div>
 													</div>
 													<!--{if $product_list.$video_view_flg_key}-->
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 															<div class="btn_plyer_text">続きから再生</div>
 														</div>
 													<!--{else}-->
@@ -601,11 +601,11 @@ a.test_btn_none{
 												<!--{/if}-->
 												<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0 && 1==2}-->
 													<br>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 													</div>
 													<!--{if $product_list.$video_view_flg_so_key}-->
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 															<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 														</div>
 													<!--{else}-->
@@ -619,11 +619,11 @@ a.test_btn_none{
 											<!-- SP -->
 											<!--{if $is_sp}-->
 												<!--{if $product_list.$contents_contents_key>0}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 														<div class="btn_plyer_text">始めから再生</div>
 													</div>
 													<!--{if $product_list.$video_view_flg_key}-->
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 															<div class="btn_plyer_text">続きから再生</div>
 														</div>
 													<!--{else}-->
@@ -634,11 +634,11 @@ a.test_btn_none{
 													<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0}-->
 														<br>
 														<br>
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 															<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 														</div>
 														<!--{if $product_list.$video_view_flg_so_key}-->
-															<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+															<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 															</div>
 														<!--{else}-->
@@ -652,30 +652,30 @@ a.test_btn_none{
 													<!-- x13 -->
 													<br>
 													<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 														<div class="btn_plyer_text">始めから再生</div>
 													</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 														<div class="btn_plyer_text">続きから再生</div>
 													</div>
 
 													<!-- x15 -->
 													<br>
 													<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 														<div class="btn_plyer_text">始めから再生</div>
 													</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 														<div class="btn_plyer_text">続きから再生</div>
 													</div>
 													<!-- x20 -->
 													<!--
 													<br>
 													<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 														<div class="btn_plyer_text">始めから再生</div>
 													</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 														<div class="btn_plyer_text">続きから再生</div>
 													</div>
 													-->
@@ -684,11 +684,11 @@ a.test_btn_none{
 													<br>
 													<br>
 													<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 													</div>
 													<!--{if $product_list.$video_view_flg_so_key}-->
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 															<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 														</div>
 													<!--{else}-->
@@ -700,11 +700,11 @@ a.test_btn_none{
 													<!-- x13 -->
 													<br>
 													<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 													</div>
 													<!--{if $product_list.$video_view_flg_so_key}-->
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 															<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 														</div>
 													<!--{else}-->
@@ -716,11 +716,11 @@ a.test_btn_none{
 													<!-- x15 -->
 													<br>
 													<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 													</div>
 													<!--{if $product_list.$video_view_flg_so_key}-->
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 															<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 														</div>
 													<!--{else}-->
@@ -733,11 +733,11 @@ a.test_btn_none{
 													<!--
 													<br>
 													<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 													</div>
 													<!--{if $product_list.$video_view_flg_so_key}-->
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 															<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 														</div>
 													<!--{else}-->
@@ -911,11 +911,11 @@ a.test_btn_none{
 														<!-- PC -->
 														<!--{if !$is_sp}-->
 															<!--{if $product_list.$contents_contents_key>0}-->
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -926,11 +926,11 @@ a.test_btn_none{
 															<!--{/if}-->
 															<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0 && 1==2}-->
 																<br>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -945,11 +945,11 @@ a.test_btn_none{
 														<!-- SP -->
 														<!--{if $is_sp}-->
 															<!--{if $product_list.$contents_contents_key>0}-->
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -961,11 +961,11 @@ a.test_btn_none{
 																	<br>
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -979,30 +979,30 @@ a.test_btn_none{
 																<!-- x13 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 
 																<!-- x15 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 																<!-- x20 -->
 																<!--
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 																-->
@@ -1011,11 +1011,11 @@ a.test_btn_none{
 																<br>
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1027,11 +1027,11 @@ a.test_btn_none{
 																<!-- x13 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1043,11 +1043,11 @@ a.test_btn_none{
 																<!-- x15 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1060,11 +1060,11 @@ a.test_btn_none{
 																<!--
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1084,11 +1084,11 @@ a.test_btn_none{
 														<!-- PC -->
 														<!--{if !$is_sp}-->
 															<!--{if $product_list.$contents_contents_key>0}-->
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1099,11 +1099,11 @@ a.test_btn_none{
 															<!--{/if}-->
 															<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0 && 1==2}-->
 																<br>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1118,11 +1118,11 @@ a.test_btn_none{
 														<!-- SP -->
 														<!--{if $is_sp}-->
 															<!--{if $product_list.$contents_contents_key>0}-->
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1134,11 +1134,11 @@ a.test_btn_none{
 																	<br>
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1152,30 +1152,30 @@ a.test_btn_none{
 																<!-- x13 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 
 																<!-- x15 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 																<!-- x20 -->
 																<!--
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 																-->
@@ -1184,11 +1184,11 @@ a.test_btn_none{
 																<br>
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1200,11 +1200,11 @@ a.test_btn_none{
 																<!-- x13 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1216,11 +1216,11 @@ a.test_btn_none{
 																<!-- x15 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1233,11 +1233,11 @@ a.test_btn_none{
 																<!--
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1285,11 +1285,11 @@ a.test_btn_none{
 														<!-- SP -->
 														<!--{if $is_sp}-->
 															<!--{if $product_list.$contents_contents_key>0}-->
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1301,11 +1301,11 @@ a.test_btn_none{
 																	<br>
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1319,30 +1319,30 @@ a.test_btn_none{
 																<!-- x13 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 
 																<!-- x15 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 																<!-- x20 -->
 																<!--
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 																-->
@@ -1351,11 +1351,11 @@ a.test_btn_none{
 																<br>
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1367,11 +1367,11 @@ a.test_btn_none{
 																<!-- x13 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1383,11 +1383,11 @@ a.test_btn_none{
 																<!-- x15 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1400,11 +1400,11 @@ a.test_btn_none{
 																<!--
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1428,11 +1428,11 @@ a.test_btn_none{
 														<!-- PC -->
 														<!--{if !$is_sp}-->
 															<!--{if $product_list.$contents_contents_key>0}-->
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1443,12 +1443,12 @@ a.test_btn_none{
 															<!--{/if}-->
 															<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0 && 1==2}-->
 																<br>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1490,30 +1490,30 @@ a.test_btn_none{
 																<!-- x13 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 
 																<!-- x15 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 																<!-- x20 -->
 																<!--
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 																	<div class="btn_plyer_text">始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 																	<div class="btn_plyer_text">続きから再生</div>
 																</div>
 																-->
@@ -1522,11 +1522,11 @@ a.test_btn_none{
 																<br>
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1538,21 +1538,21 @@ a.test_btn_none{
 																<!-- x13 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																</div>
 
 																<!-- x15 -->
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1565,11 +1565,11 @@ a.test_btn_none{
 																<!--
 																<br>
 																<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																	<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																</div>
 																<!--{if $product_list.$video_view_flg_so_key}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																	</div>
 																<!--{else}-->
@@ -1592,11 +1592,11 @@ a.test_btn_none{
 															<!-- PC -->
 															<!--{if !$is_sp}-->
 																<!--{if $product_list.$contents_contents_key>0}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																		<div class="btn_plyer_text">始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																			<div class="btn_plyer_text">続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1607,11 +1607,11 @@ a.test_btn_none{
 																<!--{/if}-->
 																<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0 && 1==2}-->
 																	<br>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1652,30 +1652,30 @@ a.test_btn_none{
 																	<!-- x13 -->
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 																		<div class="btn_plyer_text">始めから再生</div>
 																	</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 
 																	<!-- x15 -->
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 																		<div class="btn_plyer_text">始めから再生</div>
 																	</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																	<!-- x20 -->
 																	<!--
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 																		<div class="btn_plyer_text">始めから再生</div>
 																	</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																	-->
@@ -1684,11 +1684,11 @@ a.test_btn_none{
 																	<br>
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1700,11 +1700,11 @@ a.test_btn_none{
 																	<!-- x13 -->
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1716,11 +1716,11 @@ a.test_btn_none{
 																	<!-- x15 -->
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1733,11 +1733,11 @@ a.test_btn_none{
 																	<!--
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1759,11 +1759,11 @@ a.test_btn_none{
 															<!-- PC -->
 															<!--{if !$is_sp}-->
 																<!--{if $product_list.$contents_contents_key>0}-->
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																		<div class="btn_plyer_text">始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																			<div class="btn_plyer_text">続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1774,11 +1774,11 @@ a.test_btn_none{
 																<!--{/if}-->
 																<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0 && 1==2}-->
 																	<br>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1819,30 +1819,30 @@ a.test_btn_none{
 																	<!-- x13 -->
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 																		<div class="btn_plyer_text">始めから再生</div>
 																	</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 
 																	<!-- x15 -->
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 																		<div class="btn_plyer_text">始めから再生</div>
 																	</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																	<!-- x20 -->
 																	<!--
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 																		<div class="btn_plyer_text">始めから再生</div>
 																	</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 																		<div class="btn_plyer_text">続きから再生</div>
 																	</div>
 																	-->
@@ -1851,11 +1851,11 @@ a.test_btn_none{
 																	<br>
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1867,11 +1867,11 @@ a.test_btn_none{
 																	<!-- x13 -->
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1883,11 +1883,11 @@ a.test_btn_none{
 																	<!-- x15 -->
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -1900,11 +1900,11 @@ a.test_btn_none{
 																	<!--
 																	<br>
 																	<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																	<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																		<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																	</div>
 																	<!--{if $product_list.$video_view_flg_so_key}-->
-																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																		<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																			<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																		</div>
 																	<!--{else}-->
@@ -2342,11 +2342,11 @@ a.test_btn_none{
 																	<!-- PC -->
 																	<!--{if !$is_sp}-->
 																		<!--{if $product_list.$contents_contents_key>0}-->
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																				<div class="btn_plyer_text">始めから再生</div>
 																			</div>
 																			<!--{if $product_list.$video_view_flg_key}-->
-																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																					<div class="btn_plyer_text">続きから再生</div>
 																				</div>
 																			<!--{else}-->
@@ -2357,11 +2357,11 @@ a.test_btn_none{
 																		<!--{/if}-->
 																		<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0 && 1==2}-->
 																			<br>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																				<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																			</div>
 																			<!--{if $product_list.$video_view_flg_so_key}-->
-																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																					<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																				</div>
 																			<!--{else}-->
@@ -2375,11 +2375,11 @@ a.test_btn_none{
 																	<!-- SP -->
 																	<!--{if $is_sp}-->
 																		<!--{if $product_list.$contents_contents_key>0}-->
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 																				<div class="btn_plyer_text">始めから再生</div>
 																			</div>
 																			<!--{if $product_list.$video_view_flg_key}-->
-																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 																					<div class="btn_plyer_text">続きから再生</div>
 																				</div>
 																			<!--{else}-->
@@ -2390,11 +2390,11 @@ a.test_btn_none{
 																			<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0}-->
 																				<br>
 																				<br>
-																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																					<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																				</div>
 																				<!--{if $product_list.$video_view_flg_so_key}-->
-																					<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																					<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																						<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																					</div>
 																				<!--{else}-->
@@ -2408,30 +2408,30 @@ a.test_btn_none{
 																			<!-- x13 -->
 																			<br>
 																			<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 																				<div class="btn_plyer_text">始めから再生</div>
 																			</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 																				<div class="btn_plyer_text">続きから再生</div>
 																			</div>
 
 																			<!-- x15 -->
 																			<br>
 																			<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 																				<div class="btn_plyer_text">始めから再生</div>
 																			</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 																				<div class="btn_plyer_text">続きから再生</div>
 																			</div>
 																			<!-- x20 -->
 																			<!--
 																			<br>
 																			<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 																				<div class="btn_plyer_text">始めから再生</div>
 																			</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 																				<div class="btn_plyer_text">続きから再生</div>
 																			</div>
 																			-->
@@ -2440,11 +2440,11 @@ a.test_btn_none{
 																			<br>
 																			<br>
 																			<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																				<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																			</div>
 																			<!--{if $product_list.$video_view_flg_so_key}-->
-																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 																					<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																				</div>
 																			<!--{else}-->
@@ -2456,11 +2456,11 @@ a.test_btn_none{
 																			<!-- x13 -->
 																			<br>
 																			<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																				<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																			</div>
 																			<!--{if $product_list.$video_view_flg_so_key}-->
-																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 																					<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																				</div>
 																			<!--{else}-->
@@ -2472,11 +2472,11 @@ a.test_btn_none{
 																			<!-- x15 -->
 																			<br>
 																			<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																				<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																			</div>
 																			<!--{if $product_list.$video_view_flg_so_key}-->
-																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 																					<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																				</div>
 																			<!--{else}-->
@@ -2489,11 +2489,11 @@ a.test_btn_none{
 																			<!--
 																			<br>
 																			<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																			<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																				<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 																			</div>
 																			<!--{if $product_list.$video_view_flg_so_key}-->
-																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+																				<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 																					<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 																				</div>
 																			<!--{else}-->
@@ -2555,11 +2555,11 @@ a.test_btn_none{
 										<!-- PC -->
 										<!--{if !$is_sp}-->
 											<!--{if $product_list.$contents_contents_key>0}-->
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 													<div class="btn_plyer_text">始めから再生</div>
 												</div>
 												<!--{if $product_list.$video_view_flg_key}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 														<div class="btn_plyer_text">続きから再生</div>
 													</div>
 												<!--{else}-->
@@ -2570,11 +2570,11 @@ a.test_btn_none{
 											<!--{/if}-->
 											<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0 && 1==2}-->
 												<br>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 													<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 												</div>
 												<!--{if $product_list.$video_view_flg_so_key}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png" alt="" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 													</div>
 												<!--{else}-->
@@ -2588,11 +2588,11 @@ a.test_btn_none{
 										<!-- SP -->
 										<!--{if $is_sp}-->
 											<!--{if $product_list.$contents_contents_key>0}-->
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','')">
 													<div class="btn_plyer_text">始めから再生</div>
 												</div>
 												<!--{if $product_list.$video_view_flg_key}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','')" >
 														<div class="btn_plyer_text">続きから再生</div>
 													</div>
 												<!--{else}-->
@@ -2603,11 +2603,11 @@ a.test_btn_none{
 												<!--{if $product_list.$contents_contents_key>0 && $product_list.$contents_contents_so_key>0}-->
 													<br>
 													<br>
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 													</div>
 													<!--{if $product_list.$video_view_flg_so_key}-->
-														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+														<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 															<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 														</div>
 													<!--{else}-->
@@ -2621,30 +2621,30 @@ a.test_btn_none{
 												<!-- x13 -->
 												<br>
 												<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x13')" >
 													<div class="btn_plyer_text">始めから再生</div>
 												</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x13')" >
 													<div class="btn_plyer_text">続きから再生</div>
 												</div>
 
 												<!-- x15 -->
 												<br>
 												<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x15')" >
 													<div class="btn_plyer_text">始めから再生</div>
 												</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x15')" >
 													<div class="btn_plyer_text">続きから再生</div>
 												</div>
 												<!-- x20 -->
 												<!--
 												<br>
 												<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','','x20')" >
 													<div class="btn_plyer_text">始めから再生</div>
 												</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','','x20')" >
 													<div class="btn_plyer_text">続きから再生</div>
 												</div>
 												-->
@@ -2653,11 +2653,11 @@ a.test_btn_none{
 												<br>
 												<br>
 												<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.0倍&nbsp;</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 													<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 												</div>
 												<!--{if $product_list.$video_view_flg_so_key}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_resume_so.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 													</div>
 												<!--{else}-->
@@ -2669,11 +2669,11 @@ a.test_btn_none{
 												<!-- x13 -->
 												<br>
 												<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.3倍&nbsp;</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 													<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 												</div>
 												<!--{if $product_list.$video_view_flg_so_key}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux13')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux13')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 													</div>
 												<!--{else}-->
@@ -2685,11 +2685,11 @@ a.test_btn_none{
 												<!-- x15 -->
 												<br>
 												<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">1.5倍&nbsp;</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 													<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 												</div>
 												<!--{if $product_list.$video_view_flg_so_key}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux15')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux15')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 													</div>
 												<!--{else}-->
@@ -2702,11 +2702,11 @@ a.test_btn_none{
 												<!--
 												<br>
 												<div style="float:left;width:50px;display:block;height:30px;line-height:30px;font-size:14px;">2.0倍&nbsp;</div>
-												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+												<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 													<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>始めから再生</div>
 												</div>
 												<!--{if $product_list.$video_view_flg_so_key}-->
-													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->','aux20')" >
+													<div class="btn_plyer" style="background-image: url(/img/lecture/btn_play_so_x.png);" ontouchmove="touchMoveFlag=true;" onclick="playerFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->','aux20')" >
 														<div class="btn_plyer_text"><span style="color:#1370C0;">音声のみ</span>続きから再生</div>
 													</div>
 												<!--{else}-->
@@ -3103,17 +3103,17 @@ a.test_btn_none{
 					<center>
 						<!--{if !$is_sp}-->
 							<!--{if $product_list.$contents_contents_key>0}-->
-								<img src="/img/lecture/play_btn_off.png" alt="始めから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','')" style="cursor:pointer;" />
+								<img src="/img/lecture/play_btn_off.png" alt="始めから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','')" style="cursor:pointer;" />
 								<!--{if $product_list.$video_view_flg_key}-->
-									<img src="/img/lecture/resume_btn_off.png" alt="続きから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','')" style="cursor:pointer;" />
+									<img src="/img/lecture/resume_btn_off.png" alt="続きから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','')" style="cursor:pointer;" />
 								<!--{else}-->
 									<img src="/img/lecture/resume_btn_none.png" alt="続きから再生" style="cursor:pointer;" />
 								<!--{/if}-->
 							<!--{/if}-->
 							<!--{if $product_list.$contents_contents_so_key>0}-->
-								<img src="/img/lecture/play_btn_off_so.png" alt="始めから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape}-->')" style="cursor:pointer;" />
+								<img src="/img/lecture/play_btn_off_so.png" alt="始めから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','start','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->')" style="cursor:pointer;" />
 								<!--{if $product_list.$video_view_flg_key}-->
-									<img src="/img/lecture/resume_btn_off_so.png" alt="続きから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape}-->')" style="cursor:pointer;" />
+									<img src="/img/lecture/resume_btn_off_so.png" alt="続きから再生" ontouchmove="touchMoveFlag=true;" onclick="playerEthicFormSubmit('<!--{$product_list.$contents_contents_key|escape:'javascript'|escape}-->','<!--{$contents_free_time_key|escape}-->','<!--{$ccno|escape}-->','bookmark','<!--{$product_list.$contents_contents_so_key|escape:'javascript'|escape}-->')" style="cursor:pointer;" />
 								<!--{else}-->
 									<img src="/img/lecture/resume_btn_none_so.png" alt="続きから再生" style="cursor:pointer;" />
 								<!--{/if}-->

@@ -77,7 +77,7 @@
 						<?php foreach($student_group_list as $student_group) { ?>
 							<?php $line++;?>
 							<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-								<td class="tdc"><a href="/cms_student_group/detail/<?= htmlspecialchars( $student_group['student_group_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $student_group['student_group_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td class="tdc"><a href="/cms_student_group/detail/<?= htmlspecialchars( $student_group['student_group_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $student_group['student_group_id'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								<td class="tdc"><?= htmlspecialchars( $student_group['student_group_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
 								<td class="tdc"><?= htmlspecialchars( $student_group['student_count'], ENT_QUOTES, 'UTF-8', false) ?></td>
 							</tr>

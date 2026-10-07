@@ -273,7 +273,7 @@
 																	<?= htmlspecialchars( $temp, ENT_QUOTES, 'UTF-8', false) ?>
 																</div>
 																<div class="detail_values">
-																	<?= htmlspecialchars( $exam2_answer[$id]['exam2_answer_contents'][$id2], ENT_QUOTES, 'UTF-8', false) ?>
+																	<?= $exam2_answer[$id]['exam2_answer_contents'][$id2] /* Cms_exam2/Cms_exam2_reviewで組み立て時に無害化済み */ ?>
 																</div>
 																<div class="detail_answer">
 																	<? if( ($exam2_answer[$id]['new_exam2_answer_mark'][$id2]>-1) && ($exam2_answer[$id]['exam2_answer_mark'][$id2] != $exam2_answer[$id]['new_exam2_answer_mark'][$id2]) ):?>

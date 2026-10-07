@@ -88,7 +88,7 @@ margin-left:336px;
 							<!--{foreach name=loop1 from=$row.answer_contents_select.answer_contents item="row1" key="key1"}-->
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
-									<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled <!--{if $row1.no==$answered_info[$row.exam_problem_id].exam_answer_contents[0]|escape}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
+									<div class="content1"><input type="radio" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no|escape}-->" disabled <!--{if $row1.no==$answered_info[$row.exam_problem_id].exam_answer_contents[0]|escape}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
 									<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
@@ -99,7 +99,7 @@ margin-left:336px;
 							<!--{foreach name=loop1 from=$row.answer_contents_select.answer_contents item="row1" key="key1"}-->
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
-									<div class="content1"><input type="checkbox" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no}-->" disabled <!--{if array_search($row1.no, $answered_info[$row.exam_problem_id].exam_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
+									<div class="content1"><input type="checkbox" id="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->" name="exam_problem_<!--{$row.exam_problem_id}-->[]" value="<!--{$row1.no|escape}-->" disabled <!--{if array_search($row1.no, $answered_info[$row.exam_problem_id].exam_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
 									<div class="content2"><label for="exam_problem_<!--{$row.exam_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
@@ -153,7 +153,7 @@ margin-left:336px;
 								<!--{foreach name=loop1_q from=$row_q.answer_contents_select.answer_contents item="row1_q" key="key1_q"}-->
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<div class="problem_content">
-										<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled <!--{if $row1_q.no==$answered_info[$row_q.exam_problem_id].exam_answer_contents[0]|escape}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
+										<div class="content1"><input type="radio" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no|escape}-->" disabled <!--{if $row1_q.no==$answered_info[$row_q.exam_problem_id].exam_answer_contents[0]|escape}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
 										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
@@ -164,7 +164,7 @@ margin-left:336px;
 								<!--{foreach name=loop1_q from=$row_q.answer_contents_select.answer_contents item="row1_q" key="key1_q"}-->
 								<!--{assign var=row_no1_q value=$smarty.foreach.loop1_q.iteration}-->
 									<div class="problem_content">
-										<div class="content1"><input type="checkbox" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no}-->" disabled <!--{if array_search($row1_q.no, $answered_info[$row_q.exam_problem_id].exam_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
+										<div class="content1"><input type="checkbox" id="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->" name="exam_problem_q_<!--{$row_q.exam_problem_id}-->[]" value="<!--{$row1_q.no|escape}-->" disabled <!--{if array_search($row1_q.no, $answered_info[$row_q.exam_problem_id].exam_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1_q}-->.</div>
 										<div class="content2"><label for="exam_problem_q_<!--{$row_q.exam_problem_id}-->_<!--{$row_no1_q}-->"><!--{$row1_q.word|purify_ethic_inline_html|nl2br}--></label></div>
 									</div>
 									<br style="clear:both;">
@@ -186,12 +186,12 @@ margin-left:336px;
 			
 			<div style="text-align:center;padding:20px;">
 				<!--{if $eflg=='1'}-->
-					<a class="btn" href="/exam/confirm1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">解答を修正する</a>
+					<a class="btn" href="/exam/confirm1.php?pid=<!--{$pid|urlencode|escape}-->&ccno=<!--{$ccno|urlencode|escape}-->&eid=<!--{$eid|urlencode|escape}--><!--{if $qid!=''}-->&qid=<!--{$qid|urlencode|escape}--><!--{/if}-->">解答を修正する</a>
 				<!--{else}-->
 					<!--{if $eno==$eno_max}-->
-						<a class="btn" href="/exam/confirm1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">次へ</a>
+						<a class="btn" href="/exam/confirm1.php?pid=<!--{$pid|urlencode|escape}-->&ccno=<!--{$ccno|urlencode|escape}-->&eid=<!--{$eid|urlencode|escape}--><!--{if $qid!=''}-->&qid=<!--{$qid|urlencode|escape}--><!--{/if}-->">次へ</a>
 					<!--{else}-->
-						<a class="btn" href="/exam/index1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->&eno=<!--{$eno+1}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->">次へ</a>
+						<a class="btn" href="/exam/index1.php?pid=<!--{$pid|urlencode|escape}-->&ccno=<!--{$ccno|urlencode|escape}-->&eid=<!--{$eid|urlencode|escape}-->&eno=<!--{$eno+1}--><!--{if $qid!=''}-->&qid=<!--{$qid|urlencode|escape}--><!--{/if}-->">次へ</a>
 					<!--{/if}-->
 				<!--{/if}-->
 			</div>

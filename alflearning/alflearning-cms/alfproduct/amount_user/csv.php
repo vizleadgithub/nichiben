@@ -200,6 +200,7 @@ if( $sid == "" ){
 	header("Content-Type: text/octet-stream");
 	header("Content-Disposition: attachment; filename=amount_user_".date("YmdHis").".csv");
 
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("登録番号,氏名,メールアドレス,FP,代替権限,所属弁護士会,\r\n", "SJIS", "UTF-8");
 	for($i=0;$i<count($ret);$i++){
 		//++++++++++++++++++++
@@ -239,6 +240,7 @@ if( $sid == "" ){
 	echo mb_convert_encoding("所属弁護士会,".$arr_student[0]["association_name"].",\r\n", "SJIS", "UTF-8");
 
 	echo mb_convert_encoding("\r\n", "SJIS", "UTF-8");
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("注文ID,商品名,商品コード,入金,購入日,購入価格,申込,決済方法,商品ID\r\n", "SJIS", "UTF-8");
 	for($i=0;$i<count($ret);$i++){
 		//++++++++++++++++++++

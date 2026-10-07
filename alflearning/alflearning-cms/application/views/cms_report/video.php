@@ -33,7 +33,7 @@
 				<h2><?= $this->lang->line_or_def('msg_report_month_select','表示する月を選択してください') ?></h2>
 				<ul>
 					<? foreach($monthList as $month): ?>
-						<li><? if($month == $selectMonth): ?><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8', false) ?><? else: ?><a href="/cms_report/cms_video/<?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8', false) ?></a><? endif; ?></li>
+						<li><? if($month == $selectMonth): ?><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8', false) ?><? else: ?><a href="/cms_report/cms_video/<?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $month, ENT_QUOTES, 'UTF-8', false) ?></a><? endif; ?></li>
 					<? endforeach; ?>
 				</ul>
 				<div class="clear"></div>

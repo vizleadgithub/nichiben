@@ -64,10 +64,10 @@ class Cms_exam2_problem_group extends CI_Controller {
 		$this->load->library('pagination');
 		$per_page = $this->config->item('pagination_per_page');
 
-		$this->form_validation->set_rules('s_exam2_problem_group_name' , $this->lang->line_or_def('common_exam2_problem_group_name','設問グループ名'), 'trim|xss_clean');
+		$this->form_validation->set_rules('s_exam2_problem_group_name' , $this->lang->line_or_def('common_exam2_problem_group_name','設問グループ名'), 'trim');
 		$this->form_validation->set_rules('s_exam2_problem_id'         , $this->lang->line_or_def('common_exam2_problem_name','設問名')              , 'trim');
 		$this->form_validation->set_rules('s_id'                       , $this->lang->line_or_def('common_id','ID')                                  , 'trim');
-		$this->form_validation->set_rules('s_free_word'                , $this->lang->line_or_def('common_freeword','フリーワード')                  , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_free_word'                , $this->lang->line_or_def('common_freeword','フリーワード')                  , 'trim');
 		$this->form_validation->run();
 
 		//資料モデル読み込み

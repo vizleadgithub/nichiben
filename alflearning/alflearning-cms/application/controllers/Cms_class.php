@@ -65,7 +65,7 @@ class Cms_class extends CI_Controller {
 		$this->form_validation->set_rules('s_close'     , $this->lang->line_or_def('common_class_end_time','授業終了時間')   , 'trim'); // '公開期間終了'
 		$this->form_validation->set_rules('s_teacher'   , $this->lang->line_or_def('common_management_teacher','管理講師')   , 'trim'); // [ver2.0]
 		$this->form_validation->set_rules('s_id'        , $this->lang->line_or_def('common_id','ID')                         , 'trim');
-		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード')         , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード')         , 'trim');
 		$this->form_validation->run();	//バリデーション実行（その実xss対策）
 		
 		//授業モデル読み込み

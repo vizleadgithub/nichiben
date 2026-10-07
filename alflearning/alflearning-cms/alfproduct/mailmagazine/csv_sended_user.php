@@ -38,6 +38,7 @@ header("Pragma: public");
 header("Content-Type: text/octet-stream");
 header("Content-Disposition: attachment; filename=send_user_".date("YmdHis").".csv");
 
+$ret = csv_safe_rows($ret, true);
 echo mb_convert_encoding("生徒ID,生徒名,メールアドレス\r\n", "SJIS", "UTF-8");
 for($i=0;$i<count($ret);$i++){
 	echo mb_convert_encoding('"' . $ret[$i]["member_id"] . '","' . $ret[$i]["member_name"] . '","' . $ret[$i]["member_mail"] . '",' ."\r\n", "SJIS", "UTF-8");

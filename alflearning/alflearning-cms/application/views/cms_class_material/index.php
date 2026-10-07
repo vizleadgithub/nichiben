@@ -92,7 +92,7 @@ TABLE.list TH.list_common{
 									<?php foreach($class_material_list as $class_material) { ?>
 										<tr style="height: 66px;">
 											<td class="center_middle">
-												<input type="button" onClick="location.href='/cms_class_material/download_file/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>';;return false;" value="<?= $this->lang->line_or_def('common_download_abbreviation','DL') ?>" class="btn_r">
+												<input type="button" onClick="location.href='/cms_class_material/download_file/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= (int)$class_id ?>';;return false;" value="<?= $this->lang->line_or_def('common_download_abbreviation','DL') ?>" class="btn_r">
 											</td>
 										</tr>
 									<?php } ?>
@@ -108,7 +108,7 @@ TABLE.list TH.list_common{
 													<?php } ?>>
 											</td>
 											<td style="vertical-align: middle;width: 127px;">
-												<img class="img_thumbnail" src="/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" />
+												<img class="img_thumbnail" src="/file_container/get_class_material_thubmnail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['teacher_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['student_id'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8', false) ?>/" alt="" />
 											</td>
 											<td style="vertical-align: middle;width: 64px;">
 												<?= htmlspecialchars( $class_material['class_material_id'], ENT_QUOTES, 'UTF-8', false) ?>
@@ -177,7 +177,7 @@ TABLE.list TH.list_common{
 									<?php foreach($material_list as $material) { ?>
 										<tr style="height: 66px;">
 											<td class="center_middle">
-												<input type="button" onClick="window.open('/cms_material/detail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>')" value="<?= $this->lang->line_or_def('common_detail','詳細') ?>" class='btn_r'>
+												<input type="button" onClick="window.open('/cms_material/detail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>')" value="<?= $this->lang->line_or_def('common_detail','詳細') ?>" class='btn_r'>
 											</td>
 										</tr>
 									<?php } ?>
@@ -193,7 +193,7 @@ TABLE.list TH.list_common{
 													<?php } ?>>
 											</td>
 											<td style="vertical-align: middle;width: 113px;">
-												<img class="img_thumbnail" src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" />
+												<img class="img_thumbnail" src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>/" alt="" />
 											</td>
 											<td style="vertical-align: middle;width: 82px;">
 												<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>
@@ -214,9 +214,9 @@ TABLE.list TH.list_common{
 					</div>
 
 				<div class="submit">
-					<input type="image" src="/static/image/btn_back.png" onClick='location.href = "/cms_class/detail/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>";return false;' />
+					<input type="image" src="/static/image/btn_back.png" onClick='location.href = "/cms_class/detail/<?= (int)$class_id ?>";return false;' />
 					<input type="image" src="/static/image/btn_register.png" />
-					<input type="button" onClick="location.href='/cms_class_material/add_material/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>';;return false;" value="資料新規追加" class="btn_r">
+					<input type="button" onClick="location.href='/cms_class_material/add_material/<?= (int)$class_id ?>';;return false;" value="資料新規追加" class="btn_r">
 				</div>
 			</form>
 			

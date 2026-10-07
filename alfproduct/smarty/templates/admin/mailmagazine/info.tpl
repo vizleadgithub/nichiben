@@ -224,7 +224,7 @@
 		</script>
 		<form>
 		<div style="width:40%;float:left;text-align:right;">
-			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape:'javascript'}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
+			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape:'javascript'|escape}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
 		</div>
 		<div style="width:20%;float:left;text-align:center;">
 			<a href="javascript:void(0);" onclick="edit_item();return false;" /><img src="/alfproduct/images/btn_revise.png"></a>
@@ -253,7 +253,7 @@
 			}
 		</script>
 		<form>
-			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape:'javascript'}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
+			<a href="javascript:void(0);" onclick="location.href ='index.php?page=<!--{$page|escape:'javascript'|escape}-->';return false;" /><img src="/alfproduct/images/btn_back.png"></a>
 		</form>
 		<!--{/if}-->
 	</div>

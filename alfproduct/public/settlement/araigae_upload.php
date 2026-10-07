@@ -49,12 +49,12 @@ if ($_POST['act'] == 'file_upload' && isset($_FILES['upfile'])){
 								$err_flg = 1;
 								
 								// 有効性がエラーのユーザー情報を取得
-								$sql = "SELECT member_id, name, email FROM tbl_member WHERE del_flag = '0' AND member_id = '".$data[0]."'";
+								$sql = "SELECT member_id, name, email FROM tbl_member WHERE del_flag = '0' AND member_id = '".mysqli_real_escape_string($objDbConnect->connect, (string)$data[0])."'";
 								$ret = $objDbConnect->query_fetch($sql);
 								
 								$err_user_data[] = $ret;
 								
-								$err_msg[] = '有効性エラー(会員ID:'.$ret['member_id'].'　名前:'.$ret['name'].'　email:'.$ret['email'].')';
+								$err_msg[] = '有効性エラー(会員ID:'.htmlspecialchars((string)$ret['member_id'], ENT_QUOTES, 'UTF-8').'　名前:'.htmlspecialchars((string)$ret['name'], ENT_QUOTES, 'UTF-8').'　email:'.htmlspecialchars((string)$ret['email'], ENT_QUOTES, 'UTF-8').')';
 							}
 							
 						} else {
@@ -128,7 +128,7 @@ if ($_POST['act'] == 'file_upload' && isset($_FILES['upfile'])){
 			if ($res){
 			} else {
 				$err_flg = 1;
-				echo '送信失敗ユーザー(会員ID:'.$val['member_id'].'　名前:'.$val['name'].'　email:'.$val['email'].')';
+				echo '送信失敗ユーザー(会員ID:'.htmlspecialchars((string)$val['member_id'], ENT_QUOTES, 'UTF-8').'　名前:'.htmlspecialchars((string)$val['name'], ENT_QUOTES, 'UTF-8').'　email:'.htmlspecialchars((string)$val['email'], ENT_QUOTES, 'UTF-8').')';
 			}
 			
 		}

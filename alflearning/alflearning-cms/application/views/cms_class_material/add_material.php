@@ -80,7 +80,7 @@ TEXTAREA{
 						<?php endfor ?>
 					</table>
 					<div class="submit">
-						<input type="image" src="/static/image/btn_back.png" onClick='location.href = "/cms_class_material/material_select/<?= htmlspecialchars( $class_id, ENT_QUOTES, 'UTF-8') ?>";return false;' />
+						<input type="image" src="/static/image/btn_back.png" onClick='location.href = "/cms_class_material/material_select/<?= (int)$class_id ?>";return false;' />
 						<input type="image" src="/static/image/btn_register.png" />
 					</div>
 				</form>

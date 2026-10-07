@@ -583,7 +583,7 @@
 									<?php if($exam['marking_public_kind'] == 1): // 1:即時公開 ?>
 										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_spot_public','即時公開') ?>
 									<?php else: // 2:時限式公開 ?>
-										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_timed_public','時限式公開') ?>&nbsp;&nbsp;[<?= $exam['marking_public_open'] ?>]
+										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_timed_public','時限式公開') ?>&nbsp;&nbsp;[<?= htmlspecialchars( (string)$exam['marking_public_open'], ENT_QUOTES, 'UTF-8', false) ?>]
 									<?php endif; ?>
 <?php } ?>
 								<?php else: // 9:非公開 ?>
@@ -638,7 +638,7 @@
 													<div class="confirm_ul_li_div_detail" style="width: 70px;"><?= htmlspecialchars( $exam['exam_problems_answer_point'][$id], ENT_QUOTES, 'UTF-8', false) ?></div>
 													<div class="confirm_ul_li_div_detail" style="width: 70px;">
 														<? if($btn_kirikae_flg==2): ?>
-															<input type="button" value="<?= $this->lang->line_or_def('common_exam_problem_detail','設問詳細') ?>" onClick="show_exam_problem_detail('exam_problem_detail_<?= $id; ?>',<?= htmlspecialchars( $exam['exam_problems'][$id], ENT_QUOTES, 'UTF-8') ?>);return false;" />
+															<input type="button" value="<?= $this->lang->line_or_def('common_exam_problem_detail','設問詳細') ?>" onClick="show_exam_problem_detail('exam_problem_detail_<?= $id; ?>',<?= (int)$exam['exam_problems'][$id] ?>);return false;" />
 														<? endif; ?>
 													</div>
 													<div style="clear:both;"></div>

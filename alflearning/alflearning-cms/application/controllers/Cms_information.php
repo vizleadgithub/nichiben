@@ -58,7 +58,7 @@ class Cms_information extends CI_Controller {
 		$this->load->library('pagination');
 		$per_page = $this->config->item('pagination_per_page');
 		
-		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim|xss_clean');
+		$this->form_validation->set_rules('s_free_word' , $this->lang->line_or_def('common_freeword','フリーワード') , 'trim');
 		$this->form_validation->run();
 
 		//資料モデル読み込み
@@ -82,7 +82,7 @@ class Cms_information extends CI_Controller {
 				's_free_word'	=> $data['s_free_word'],	//search
 			));
 		} catch(Exception $e) {
-			echo $e->getMessage() ."<br>";
+			echo htmlspecialchars((string)$e->getMessage(), ENT_QUOTES, 'UTF-8', false) ."<br>";
 			exit();
 		}
 		$information_table_list = $information_list['items'];

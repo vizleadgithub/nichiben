@@ -192,15 +192,15 @@ if( $search_product_code != "" ){
 }
 if( $search_start_date != "" && $search_end_date != "" ){
 	$where.= " and ( ";
-		$where.= " ('".$search_start_date."' between  start_date and end_date OR start_date IS NULL) ";
-		$where.= " OR ('".$search_end_date."' between  start_date and end_date OR end_date IS NULL) ";
+		$where.= " ('".mysqli_real_escape_string($objDbConnect->connect, (string)$search_start_date)."' between  start_date and end_date OR start_date IS NULL) ";
+		$where.= " OR ('".mysqli_real_escape_string($objDbConnect->connect, (string)$search_end_date)."' between  start_date and end_date OR end_date IS NULL) ";
 	$where.= " ) ";
 } elseif( $search_start_date != "" ){
-	$where.= " and (start_date<='".$search_start_date."' OR start_date IS NULL) ";
-	$where.= " and (end_date>='".$search_start_date."' OR end_date IS NULL) ";
+	$where.= " and (start_date<='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_start_date)."' OR start_date IS NULL) ";
+	$where.= " and (end_date>='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_start_date)."' OR end_date IS NULL) ";
 } elseif( $search_end_date != "" ){
-	$where.= " and (start_date<='".$search_end_date."' OR start_date IS NULL) ";
-	$where.= " and (end_date>='".$search_end_date."' OR end_date IS NULL) ";
+	$where.= " and (start_date<='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_end_date)."' OR start_date IS NULL) ";
+	$where.= " and (end_date>='".mysqli_real_escape_string($objDbConnect->connect, (string)$search_end_date)."' OR end_date IS NULL) ";
 }
 $cat_where = "";
 if( count($search_category)!=0 ){
@@ -225,7 +225,7 @@ if( count($search_category)!=0 ){
 	}
 	for($i=0;$i<count($temp_arr_cat);$i++){
 		if($cat_where !="" ){ $cat_where.= " OR "; }
-		$cat_where.= " concat(',',tbl_product.term_id,',') LIKE '%,".$temp_arr_cat[$i].",%' ";
+		$cat_where.= " concat(',',tbl_product.term_id,',') LIKE '%,".mysqli_real_escape_string($objDbConnect->connect, (string)$temp_arr_cat[$i]).",%' ";
 	}
 	if($cat_where !="" ){
 		$where.= " and ( ";

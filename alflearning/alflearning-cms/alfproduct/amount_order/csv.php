@@ -221,6 +221,7 @@ if( $oid == "" ){
 	header("Content-Type: text/octet-stream");
 	header("Content-Disposition: attachment; filename=amount_order_".date("YmdHis").".csv");
 
+	$ret = csv_safe_rows($ret, true);
 	echo mb_convert_encoding("決済ID,注文ID,登録番号,氏名,弁護士会,商品コード,商品名,購入日,申込,決済方法,入金,商品ID,請求書\r\n", "SJIS", "UTF-8");
 	for($i=0;$i<count($ret);$i++){
 		//++++++++++++++++++++

@@ -98,7 +98,7 @@ function formSubmit(formName, mode){
 		<tr style="">
 			<td class="tdc" style=""><!--{$row.lawyer_number|escape}--></td>
 			<td class="tdc" style=""><!--{$row.student_name|escape}--></td>
-			<td class="tdc" style=""><!--{$row.entry_date}--></td>
+			<td class="tdc" style=""><!--{$row.entry_date|escape}--></td>
 			<td class="tdc" style=""><!--{$row.take_date}--></td>
 		</tr>
 		<!--{/foreach}-->
