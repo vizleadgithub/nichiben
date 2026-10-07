@@ -41,6 +41,48 @@ const PAYLOADS = {
     { v: '{m}&lt;script&gt;alert(1)&lt;/script&gt;', roundtrip: true },
     { v: '{m}&amp;lt;b&amp;gt;', roundtrip: true },
   ]),
+  P08: P('P08', 'URL・リンク先のスキーム', [
+    { v: "javascript:alert('{m}')" },
+    { v: "JaVaScRiPt:alert('{m}')" },
+    { v: 'java	script:alert(1)' },
+    { v: ' javascript:alert(1)' },
+    { v: '&#106;avascript:alert(1)' },
+    { v: '%6Aavascript:alert(1)' },
+    { v: 'data:text/html,<script>alert(1)</script>' },
+    { v: 'vbscript:msgbox(1)' },
+    { v: '//evil.example/' },
+    { v: '/\evil.example/' },
+    { v: 'https://evil.example@example.jp/' },
+    { v: 'https://example.jp/" onmouseover="alert(1)', sig: '" onmouseover="alert(1)' },
+  ]),
+  P11: P('P11', 'タグの入れ子・崩し・属性の抜け道', [
+    { v: '{m}<ScRiPt>alert(1)</sCrIpT>', sig: '<ScRiPt>alert(1)</sCrIpT>' },
+    { v: '{m}<scr<script>ipt>alert(1)</scr</script>ipt>', sig: '<script>ipt>alert(1)' },
+    { v: '{m}<img src=x onerror=alert(1)//', sig: '<img src=x onerror=alert(1)//' },
+    { v: '{m}<svg><script>alert(1)</script></svg>', sig: '<svg><script>alert(1)</script></svg>' },
+    { v: '{m}<math><mtext><table><mglyph><style><img src=x onerror=alert(1)>', sig: '<style><img src=x onerror=alert(1)>' },
+    { v: '{m}<a href="javascript:alert(1)">x</a>', sig: '<a href="javascript:alert(1)">' },
+    { v: '{m}<iframe srcdoc="<script>alert(1)</script>">', sig: '<iframe srcdoc=' },
+    { v: '{m}<object data="javascript:alert(1)">', sig: '<object data=' },
+    { v: '{m}<form action="javascript:alert(1)"><button>x', sig: '<form action="javascript' },
+    { v: '{m}<meta http-equiv="refresh" content="0;url=javascript:alert(1)">', sig: '<meta http-equiv' },
+    { v: '{m}<base href="//evil.example/">', sig: '<base href=' },
+    { v: '{m}<link rel=stylesheet href="//evil.example/x.css">', sig: '<link rel=stylesheet' },
+    { v: '{m}<div style="background:url(javascript:alert(1))">', sig: '<div style="background:url(javascript' },
+    { v: '{m}<div style="position:fixed;top:0;left:0;width:100%;height:100%">', sig: '<div style="position:fixed' },
+    { v: "{m}<style>@import 'http://evil.example/x.css';</style>", sig: '<style>@import' },
+    { v: '{m}<img src="http://evil.example/x.png">', sig: '<img src="http://evil.example/x.png">' },
+    { v: '{m}<input autofocus onfocus=alert(1)>', sig: '<input autofocus onfocus=alert(1)>' },
+    { v: '{m}<details open ontoggle=alert(1)>', sig: '<details open ontoggle=alert(1)>' },
+  ]),
+  P12: P('P12', 'エンコード・文字種の回避', [
+    { v: '{m}%3Cscript%3Ealert(1)%3C/script%3E', sig: '<script>alert(1)</script>' },
+    { v: '{m}\u003cscript\u003ealert(1)\u003c/script\u003e', sig: '<script>alert(1)</script>' },
+    { v: '{m}＜script＞alert(1)＜/script＞', sig: '<script>alert(1)</script>' },
+    { v: '{m}+ADw-script+AD4-alert(1)+ADw-/script+AD4-', sig: '<script>alert(1)</script>' },
+    { v: '{m}&#x3C;script&#x3E;alert(1)&#x3C;/script&#x3E;', sig: '<script>alert(1)</script>' },
+    { v: '{m}\x3cscript\x3ealert(1)\x3c/script\x3e', sig: '<script>alert(1)</script>' },
+  ]),
   P13: P('P13', '長さ・特殊文字', [
     { v: "{m}\\ ' \" ` % _ ; -- /* */", roundtrip: true },
     { v: '{m}' + 'あ'.repeat(256) },
@@ -53,11 +95,24 @@ const PAYLOADS = {
     { v: "{m}\\' OR 1=1 -- ", errCheck: true },
     { v: '{m}1 UNION SELECT NULL-- ', errCheck: true },
   ]),
+  P15: P('P15', 'テンプレート・サーバー側の式', [
+    { v: '{m}{{7*7}}', sig: '{m}49' },
+    { v: '{m}${7*7}', sig: '{m}49' },
+    { v: '{m}<?php echo 7*7; ?>', sig: '{m}49' },
+    { v: '{m}{$smarty.version}' },
+  ]),
   P17: P('P17', 'ヘッダー・リダイレクト', [
     { v: '{m}%0d%0aSet-Cookie:x=1' },
     { v: 'https://evil.example/' },
     { v: '//evil.example/' },
     { v: '/\\evil.example' },
+  ]),
+  PDATE: P('PDATE', '不正な日付', [
+    { v: '2026-02-30' }, { v: '0000-00-00' }, { v: '12345-01-01' }, { v: '２０２６-０１-０１' }, { v: '2026-12-31/2026-01-01' },
+  ]),
+  PMAIL: P('PMAIL', 'メールの特殊形式', [
+    { v: '"a<b>"@x.jp' }, { v: "a'b@x.jp" }, { v: 'a+b@x.jp' },
+    { v: '{m}"><img src=x onerror=alert(1)>@x.jp', sig: '<img src=x onerror=alert(1)>' },
   ]),
   P19: P('P19', '数値・ID・選択値の型破り', [
     { v: 'abc' }, { v: '-1' }, { v: '0' }, { v: '99999999999999999999' }, { v: '1.5' }, { v: '1e3' }, { v: '0x1' },
@@ -68,12 +123,19 @@ const PAYLOADS = {
 
 // セットごとの適用 P-ID（付録「テストセット」シートと同じ）
 const SETS = {
-  S8: ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P09', 'P10', 'P13', 'P14'],
+  S1: ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P09', 'P10', 'P11', 'P12', 'P13', 'P15'],
+  S2: ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P09', 'P10', 'P11', 'P12', 'P13', 'P15'],
+  S3: ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P08', 'P09', 'P10', 'P11', 'P12', 'P13'],
+  S4: ['P08', 'P17', 'P02', 'P03', 'P13'],
+  S5: ['PMAIL', 'P02', 'P03', 'P05', 'P06', 'P09', 'P13', 'P14'],
   S6: ['P19'],
+  S7: ['P19', 'P02', 'P13', 'PDATE'],
+  S8: ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P09', 'P10', 'P13', 'P14'],
+  S11: ['P19', 'P02', 'P05', 'P08', 'P17'],
 };
 
 // 既定(quick)は各 P-ID の先頭バリエーションだけ。P07 は textarea/title/select の3種を使う（文脈が違うため）
-const QUICK_PICK = { P07: [0, 1, 2] };
+const QUICK_PICK = { P07: [0, 1, 2], P08: [0, 1, 8], P11: [0, 2, 5, 6, 16], P12: [0, 4], P15: [0, 1] };
 
 function expand(setId, { full = false } = {}) {
   const out = [];

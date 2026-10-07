@@ -12,7 +12,8 @@ const fs = require('fs');
 const path = require('path');
 const { expand, fill } = require('./xss-payloads');
 const { Session } = require('./xss-session');
-const { debugFindings, classify, domInjection, Recorder } = require('./detect');
+const { Recorder } = require('./detect');
+const { setFields, fieldForms, inspect, resolveRoundtrip } = require('./xss-form-lib');
 
 const WAIT_MS = 300;   // サーバー負荷を避けるための間隔
 const SHEETS = {
@@ -41,34 +42,6 @@ function loadRows() {
     .slice(0, limit);
 }
 
-// フォームの各項目へ値を入れる。select は選択肢を追加、radio/checkbox は value を書き換えてチェックする
-// （画面上は入力できない値を直接送る改ざん相当。S8 の「入力どおり再表示」の確認も兼ねる）
-function setFields(page, fields) {
-  return page.evaluate((fs) => fs.map(({ name, value }) => {
-    const el = document.querySelector(`[name="${CSS.escape(name)}"]`);
-    if (!el) return { name, found: false };
-    if (el.form) el.form.setAttribute('data-xss-form', '1');   // 送信するフォームの目印
-    const tag = el.tagName.toLowerCase();
-    if (tag === 'select') {
-      const o = document.createElement('option');
-      o.value = value; o.textContent = value; el.appendChild(o); el.value = value;
-    } else if (el.type === 'radio' || el.type === 'checkbox') {
-      el.value = value; el.checked = true;
-    } else {
-      el.removeAttribute('readonly'); el.value = value;
-    }
-    return { name, found: true, type: el.type || tag };
-  }), fields);
-}
-
-// 各項目が属するフォームの番号を調べる（フォームの外の項目は -1）
-function fieldForms(page, names) {
-  return page.evaluate((ns) => ns.map((name) => {
-    const el = document.querySelector(`[name="${CSS.escape(name)}"]`);
-    return { name, found: !!el, form: el && el.form ? [...document.forms].indexOf(el.form) : -1 };
-  }), names);
-}
-
 // 検索ボタンを押す。ラベルに「検索」等を含むボタンを優先し、なければ唯一のボタン、それも無ければフォームを直接送信
 async function submitForm(session, formIndex) {
   const { page } = session;
@@ -82,36 +55,6 @@ async function submitForm(session, formIndex) {
     // 検索ボタンが見えない・押せないフォームは、フォームを直接送信する
     if (target) await target.click({ timeout: 3000 }).catch(() => form.evaluate((f) => f.requestSubmit()));
     else await form.evaluate((f) => f.requestSubmit());
-  });
-}
-
-// 1回の送信結果を検査して、行ごとの判定を返す
-async function inspect(session, res, injected, baseDialogs) {
-  const markers = injected.map((i) => i.marker);
-  const dom = await domInjection(session.page, markers);
-  const dbg = res.html ? debugFindings(res.html) : [];
-  return injected.map((i) => {
-    const findings = [];
-    const mine = (s) => s.includes(i.marker);
-    for (const d of session.dialogs) {
-      if (baseDialogs.has(d)) continue;
-      if (mine(d) || d === '1') findings.push({ kind: 'ダイアログ実行', text: d, ng: true });
-    }
-    for (const d of dom) {
-      if (d.value.includes(i.marker) || d.ng) findings.push({ kind: 'DOM上のイベント属性/JSリンク', text: `<${d.tag} ${d.attr}="${d.value}">`, ng: true });
-    }
-    if (i.payload.sig) {
-      const sig = fill(i.payload.sig, i.marker);
-      const at = res.html.indexOf(sig);
-      if (at >= 0) findings.push({ kind: '未エスケープで出現', where: classify(res.html, at), text: sig.slice(0, 120) });
-    }
-    if (i.payload.roundtrip && i.type && /text|search|textarea/.test(i.type) && !session.dialogs.length) {
-      // 入力欄に入れた値が、検索後の画面に同じ値で再表示されること（二重エスケープ・欠落の検出）
-      findings.push({ kind: '__roundtrip__', value: fill(i.payload.v, i.marker), name: i.field });
-    }
-    if (i.payload.errCheck) for (const f of dbg) findings.push({ kind: `確認用出力(${f.check})`, text: f.text });
-    if (res.status >= 500) findings.push({ kind: `HTTP ${res.status}`, text: '' });
-    return findings;
   });
 }
 
@@ -176,16 +119,7 @@ async function inspect(session, res, injected, baseDialogs) {
         const perRow = await inspect(session, res, injected, baseDialogs);
         for (let k = 0; k < injected.length; k++) {
           const i = injected[k];
-          let findings = perRow[k];
-          const rt = findings.find((f) => f.kind === '__roundtrip__');
-          findings = findings.filter((f) => f.kind !== '__roundtrip__');
-          if (rt && res.navigated) {
-            const shown = await session.page.evaluate((n) => {
-              const el = document.querySelector(`[name="${CSS.escape(n)}"]`);
-              return el ? el.value : null;
-            }, rt.name);
-            if (shown !== null && shown !== rt.value) findings.push({ kind: '再表示された値が入力と異なる', text: `入力: ${rt.value.slice(0, 60)} / 再表示: ${String(shown).slice(0, 60)}` });
-          }
+          const findings = await resolveRoundtrip(session, res, perRow[k]);
           const ng = findings.some((f) => f.ng);
           rec.add({
             id: i.id, pid: p.pid, idx: p.idx, marker: i.marker, status: res.status, url, finalUrl: res.finalUrl,

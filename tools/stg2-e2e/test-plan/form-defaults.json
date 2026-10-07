@@ -1,0 +1,11 @@
+{
+  "/cms_auth/edit": { "teacher_email": "xsstest@example.invalid" },
+  "/cms_category/edit": { "slug": "xsstest-slug" },
+  "/cms_class/edit": { "+lecture_students[]": "1" },
+  "/cms_exam/edit": { "exam_lectures[]": true, "+exam_problems[]": "1" },
+  "/cms_exam2/edit": { "exam2_lectures[]": true, "+exam2_problems[]": "1" },
+  "/cms_exam_problem/edit": { "exam_problem_lectures[]": true, "answer_contents_correct[]": true },
+  "/cms_exam2_problem/edit": { "exam2_problem_lectures[]": true },
+  "/cms_student/edit": { "student_lectures[]": true },
+  "/cms_student_sub_auth/edit": { "student_lectures[]": true }
+}
