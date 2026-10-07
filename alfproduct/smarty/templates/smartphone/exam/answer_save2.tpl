@@ -28,6 +28,6 @@ width:200px;
 	<!--{/if}-->
 </div>
 <div>
-	<a class="btn" href="javascript:void(0)" onclick="<!--{if !$err_flg}-->opener.location.href='/exam/result2.php?eid=<!--{$eid|escape:'javascript'|escape}-->&pid=<!--{$pid|escape:'javascript'|escape}-->&ccno=<!--{$ccno|escape:'javascript'|escape}--><!--{if $qid!=''}-->&qid=<!--{$qid|escape:'javascript'|escape}--><!--{/if}-->';<!--{/if}-->window.close();">閉じる</a>
+	<a class="btn" href="javascript:void(0)" onclick="<!--{if !$err_flg}-->opener.location.href='/exam/result2.php?eid=<!--{$eid|urlencode|escape:'javascript'|escape}-->&pid=<!--{$pid|urlencode|escape:'javascript'|escape}-->&ccno=<!--{$ccno|urlencode|escape:'javascript'|escape}--><!--{if $qid!=''}-->&qid=<!--{$qid|urlencode|escape:'javascript'|escape}--><!--{/if}-->';<!--{/if}-->window.close();">閉じる</a>
 </div>
 </center>

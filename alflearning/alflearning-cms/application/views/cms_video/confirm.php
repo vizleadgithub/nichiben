@@ -141,9 +141,9 @@
 															<?php 
 																$temp3  = $this->config->item('stream_get_url');
 																$temp3 .= '/school_'.$this->session->userdata['cms_master.login.school_id'];
-																$temp3 .= '/book_library_'.$video['exclusive_book_library'][$ino];
+																$temp3 .= '/book_library_'.rawurlencode((string)$video['exclusive_book_library'][$ino]);
 																if($video['exclusive_page_number'][$ino]>0){
-																	$temp3 .= '/Page'.$video['exclusive_page_number'][$ino].'/master-Page'.$video['exclusive_page_number'][$ino].'.jpg?token='.$this->session->userdata('session_id');
+																	$temp3 .= '/Page'.rawurlencode((string)$video['exclusive_page_number'][$ino]).'/master-Page'.rawurlencode((string)$video['exclusive_page_number'][$ino]).'.jpg?token='.$this->session->userdata('session_id');
 																}else{
 																	$temp3 .= '/Page1/master-Page1.jpg?token='.$this->session->userdata('session_id');
 																}

@@ -4,15 +4,15 @@ require_once( dirname(__FILE__) .'./../smarty/Smarty.class.php' );
 require_once('/srv/alfproduct/public/custom_pages/cp-load.php' );
 
 /**
- * テンプレートの |escape(html)を、管理画面(CMS)と同じ「すでにエスケープ済みの文字(&amp;等)は二重にエスケープしない」方式にそろえる。
- * 管理画面は htmlspecialchars(..., ENT_QUOTES, 'UTF-8', false) で表示しているため、受講者サイト・商品管理も同じ見え方にする(No.38)。
- * html 以外の種別(javascript・url など)は Smarty 標準の escape にそのまま委譲する。
+ * 【廃止・互換用】|escape を二重エスケープしない方式に上書きしていた関数(No.38の試み)。
+ * 次の問題が見つかったため、上書き(register_modifier)は取りやめた。
+ *   - onclick 等の2段階エスケープ(|escape:'javascript'|escape)で、2段階目の &#39; がそのまま残り、JavaScript文字列から抜けられる
+ *   - 入力欄・hidden の value に戻すと、「&amp;」が「&」に変わって保存される(往復で値が変わる)
+ * 反映前にコンパイル済みテンプレート(templates_c)に、この関数名が書き込まれている場合に備えて、
+ * Smarty標準の escape と同じ動作で関数だけ残している。templates_c を削除した後は、この関数は不要。
  */
-function alf_smarty_modifier_escape($string, $esc_type = 'html', $char_set = 'UTF-8')
+function alf_smarty_modifier_escape($string, $esc_type = 'html', $char_set = 'ISO-8859-1')
 {
-	if ($esc_type === 'html') {
-		return htmlspecialchars((string) $string, ENT_QUOTES, $char_set, false);
-	}
 	require_once(dirname(__FILE__) . '/../smarty/plugins/modifier.escape.php');
 	return smarty_modifier_escape($string, $esc_type, $char_set);
 }
@@ -27,9 +27,6 @@ class Template extends Smarty {
 	*/
 	public function __construct() {
 		parent::__construct(); //親クラス初期化//php8 update
-
-		// |escape を、二重エスケープしない方式に統一(No.38)
-		$this->register_modifier('escape', 'alf_smarty_modifier_escape');
 
 		$this->template_dir_old = $this->template_dir;
 		$this->compile_dir_old = $this->compile_dir;
