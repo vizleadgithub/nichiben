@@ -72,7 +72,8 @@ function html_policy_purifier($profile)
     $config->set('HTML.Allowed', $def['allowed']);
     $config->set('CSS.AllowedProperties', $def['css']);
     $config->set('Attr.AllowedFrameTargets', array('_blank', '_self'));
-    $config->set('URI.AllowedSchemes', array('http' => true, 'https' => true, 'mailto' => true, 'tel' => true));
+    // リンク先は http / https のみ許可(mailto: tel: は実データに使用実績がないため対象外)
+    $config->set('URI.AllowedSchemes', array('http' => true, 'https' => true));
     if (!empty($def['classes'])) {
         $config->set('Attr.AllowedClasses', $def['classes']);
     }
