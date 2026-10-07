@@ -373,7 +373,7 @@
 					<!--{if $row.thumbnail==''}-->
 						<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=100&height=100" alt="" /></a>
 					<!--{else}-->
-						<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail|escape}-->&width=100&height=100" alt="" /></a>
+						<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail|urlencode|escape}-->&width=100&height=100" alt="" /></a>
 					<!--{/if}-->
 				</div>
 
