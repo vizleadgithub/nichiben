@@ -12,6 +12,7 @@ const path = require('path');
 const { Session, SSO_BOUNCE } = require('./xss-session');
 const { SITES, chromium, env, assertStg2 } = require('./lib');
 const { debugFindings, classify, domInjection, Recorder } = require('./detect');
+const { setFields } = require('./xss-form-lib');
 
 const REPO = path.join(__dirname, '../..');
 const args = process.argv.slice(2);
@@ -493,7 +494,11 @@ function listFiles(dir, base = dir) {
 }
 async function checkE08() {
   const id = 'E-08';
-  const DEV = /(_dev|_test|_mst|_old|_bak|_bk|_copy|\d{8})(\.|\/|$)|^\/(test|info|phpinfo)\.php$|(^|\/)test\d*\.php$/i;
+  // レビュー(2026-10-07) 2.1: backup/ ディレクトリ(exam/backup・exam2/backup 等)と *_review.php(exam2の review 系)が
+  // 既存パターンに入っておらず、検出から漏れていた。
+  // alfproduct/admin/(testlogin 含む) は public/ の外側(兄弟ディレクトリ)で、現状の vhost 設定(CLAUDE.md 記載分)には
+  // 対応する Alias が見当たらず、実際のURL割り当てが不明なため、ここでは対象に追加しない(E-55 としてplan側にのみ記録。要確認)
+  const DEV = /(_dev|_test|_mst|_old|_bak|_bk|_copy|_review|\d{8})(\.|\/|$)|^\/(test|info|phpinfo)\.php$|(^|\/)test\d*\.php$|(^|\/)backup\//i;
   const STATIC_LEFTOVER = /\.(bak|old|orig|save|swp|tmp|txt|sql|log|inc|zip|gz|tar|ppt|pptx|xls|xlsx|doc|docx)$|~$|\.bak\./i;
   const roots = {
     student: { dir: path.join(REPO, 'alfproduct/public'), prefix: '' },
@@ -532,7 +537,39 @@ async function checkE08() {
   }
 }
 
-const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-03': checkE03, 'E-08': checkE08, 'E-09': checkE09, 'E-19': checkE19, 'E-47': checkE47, 'E-45': checkE45, 'D-0005': checkD0005 };
+// E-56 AppScan格納型XSS(CMS-H-07〜16)のセッション再現。通常のS8確認(run-xss-search.js)は送信直後の
+// 即時反映しか見ないため、別画面へ移動してから検索条件なしで開き直しても、セッションに保存された値が
+// エスケープされずに再反射しないかを別途確認する(レビュー2026-10-07 3.1)
+async function checkE56() {
+  const id = 'E-56';
+  if (!hasLogin('cms')) { add(id, '対象外', 'CMS: ログイン済みセッションがない'); return; }
+  const s = await sess('cms:auth');
+  const m = markerOf(id);
+  const sig = `--><img src=x onerror=alert('${m}')><!--`;
+  const payload = `${m}${sig}`;
+  const first = await s.goto('/alfproduct/product/index.php');
+  if (first.status === 'ERROR' || first.status === 'SSO' || first.status >= 400) {
+    add(id, '対象外', `画面が開けない: HTTP ${first.status}`);
+    return;
+  }
+  const set = await setFields(s.page, [{ name: 'search_word', value: payload }]);
+  if (!set[0] || !set[0].found) { add(id, '要確認', 'search_word欄が見つからない(画面構成が変わった可能性)'); return; }
+  const form = s.page.locator('form[data-xss-form]').first();
+  await s.action(() => form.evaluate((f) => (f.requestSubmit ? f.requestSubmit() : f.submit())));
+  // 別画面へ移動(ログアウトはしない。セッションは維持する)
+  await s.goto('/cms_auth/');
+  // 検索条件を付けずに同じ画面を開き直す。セッションに保存された前回の検索条件が残っていれば、ここで再反射する
+  const second = await s.goto('/alfproduct/product/index.php');
+  const findings = [];
+  if (second.status === 'ERROR' || second.status === 'SSO') { add(id, '要確認', `再アクセスできない: HTTP ${second.status}`); return; }
+  const at = second.html.indexOf(sig);
+  if (at >= 0) findings.push({ kind: '別画面に移動後も検索条件がセッションに残り、未エスケープで再反射', where: classify(second.html, at), text: sig, ng: true });
+  else if (second.html.includes(m)) findings.push({ kind: '文字としては残っている(エスケープ済み)', text: m });
+  rec.add({ id, verdict: findings.length ? (findings.some((f) => f.ng) ? 'NG' : '要確認') : 'OK', label: 'search_word(セッション再現。CMS-H-07/14相当)', status: second.status, findings });
+  console.log(`${findings.some((f) => f.ng) ? 'NG ' : findings.length ? '?? ' : 'ok '} ${id} ${findings.length ? findings.map((f) => f.kind).join(',') : 'セッション経由の再反射なし'}`);
+}
+
+const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-03': checkE03, 'E-08': checkE08, 'E-09': checkE09, 'E-19': checkE19, 'E-47': checkE47, 'E-45': checkE45, 'E-56': checkE56, 'D-0005': checkD0005 };
 
 (async () => {
   try {
