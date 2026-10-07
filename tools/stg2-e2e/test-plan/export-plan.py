@@ -26,10 +26,11 @@ ID_RE = re.compile(r'^[A-G]-\d+$')
 def find_xlsx():
     if len(sys.argv) > 1:
         return sys.argv[1]
-    hits = glob.glob(os.path.join(REPO, 'secure_report', 'XSS対応_脆弱性テスト計画_*.xlsx'))
+    # ファイル名の日付は付いていても付いていなくてもよい（XSS対応_脆弱性テスト計画[_日付].xlsx）。複数あれば更新日時が新しいもの
+    hits = glob.glob(os.path.join(REPO, 'secure_report', 'XSS対応_脆弱性テスト計画*.xlsx'))
     if not hits:
-        sys.exit('XSS対応_脆弱性テスト計画_*.xlsx が secure_report に見つかりません')
-    return sorted(hits)[-1]
+        sys.exit('XSS対応_脆弱性テスト計画*.xlsx が secure_report に見つかりません')
+    return max(hits, key=os.path.getmtime)
 
 
 def cell(v):

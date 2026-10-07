@@ -86,11 +86,28 @@ function fillBaseline(page, targetName, overrides = {}, includeTarget = false) {
   }, { targetName, overrides, includeTarget });
 }
 
-// 送信してよいボタンの判定（書き込み防止のガード）。確認・検索系のボタンだけ押し、登録・更新・削除系は押さない
+// 送信してよいボタンの判定（書き込み防止のガード）。確認・検索系のボタンだけ押し、登録・更新・削除系は押さない。
+// ボタンの「文言・画像名」と「onclick / javascript: の中身」を分けて判定する（onclick の formSubmit(…,'confirm') の "Submit" を誤って送信系と見ないため）
 const ALLOW_LABEL = /確認|confirm|検索|search|preview|プレビュー|次へ|next/i;
-const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|commit|regist|delete|remove|save|send|update|submit|insert|upload|import|csv/i;
+const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|commit|regist|delete|remove|save|send|update|insert|upload|import|csv|complete/i;
+// onclick の引数（'complete'・'regist'・'delete' など）が書き込み系なら、確認系の文言があっても押さない
+const DENY_ARG = /^(complete|regist\w*|commit|delete\w*|del|remove|exec\w*|save|update\w*|insert|upload\w*|import\w*|send\w*|cancel|reset|clear|logout|approve\w*)$/i;
 const DENY_ACTION = /commit|regist|insert|update|delete|del_|remove|save|exec|complete|send|upload|import|csv|download|approve|cancel|reset|clear|logout|bat_/i;
 const CONFIRM_ACTION = /confirm|check|valid|preview/i;
+const BUTTONS = 'button, input[type=submit], input[type=button], input[type=image], a, img[onclick]';
+
+const denyByArgs = (o) => [...String(o).matchAll(/['"]([^'"]*)['"]/g)].some((m) => DENY_ARG.test(m[1].replace(/\.php$/i, '')));
+
+// 範囲(フォームまたはページ)内のボタンを調べ、押してよいものの番号を返す
+async function pickButton(scope) {
+  const cand = scope.locator(BUTTONS);
+  const info = await cand.evaluateAll((els) => els.map((e) => ({
+    t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}${(e.querySelector && e.querySelector('img') ? (e.querySelector('img').getAttribute('src') || '').split('/').pop() : '')}`,
+    o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
+  })));
+  const idx = info.findIndex((c) => (ALLOW_LABEL.test(c.t) || ALLOW_LABEL.test(c.o)) && !DENY_LABEL.test(c.t) && !denyByArgs(c.o));
+  return { cand, info, idx };
+}
 
 // 目印のあるフォームを、確認・検索ボタンで送信する。送信できない（書き込みの可能性がある）場合は { refused } を返す
 async function submitGuarded(session, { allowFormSubmit = true } = {}) {
@@ -101,12 +118,17 @@ async function submitGuarded(session, { allowFormSubmit = true } = {}) {
   if (DENY_ACTION.test(actionPath) && !CONFIRM_ACTION.test(actionPath)) {
     return { refused: `フォームの送信先が書き込み系の可能性があるため送信しない: ${actionPath.slice(0, 80)}` };
   }
-  const cand = form.locator('button, input[type=submit], input[type=button], input[type=image], a, img[onclick]');
-  const labels = await cand.evaluateAll((els) => els.map((e) => `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}${e.getAttribute('onclick') || ''}`));
-  const idx = labels.findIndex((l) => ALLOW_LABEL.test(l) && !DENY_LABEL.test(l.replace(/onclick.*$/, '')));
+  // まずフォームの中、なければページ全体（商品管理は確認ボタンがフォームの外の <a onclick="formSubmit(…,'confirm')"> のことがある）
+  let { cand, info, idx } = await pickButton(form);
+  if (idx < 0) {
+    // フォームの外のボタンは、onclick がこのフォームの名前・id を指しているものだけ採用する（別のフォームの検索ボタンなどを押さない）
+    const formId = (await form.getAttribute('name').catch(() => '')) || (await form.getAttribute('id').catch(() => '')) || '';
+    ({ cand, info, idx } = await pickButton(page.locator('body')));
+    if (idx >= 0 && !(formId && info[idx].o.includes(formId))) idx = -1;
+  }
   const byAction = CONFIRM_ACTION.test(actionPath);
   if (idx < 0 && !(byAction && allowFormSubmit)) {
-    return { refused: `確認・検索ボタンを特定できない（書き込みの可能性があるため送信しない）。ボタン: ${labels.map((l) => l.slice(0, 20)).join(' | ').slice(0, 100)}` };
+    return { refused: `確認・検索ボタンを特定できない（書き込みの可能性があるため送信しない）。ボタン: ${info.map((c) => c.t.slice(0, 20)).join(' | ').slice(0, 100)}` };
   }
   return session.action(async () => {
     if (idx >= 0) await cand.nth(idx).click({ timeout: 3000 }).catch(() => form.evaluate((f) => f.requestSubmit()));

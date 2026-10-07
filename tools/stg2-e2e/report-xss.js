@@ -12,13 +12,15 @@ const plan = fs.existsSync(planPath) ? new Map(JSON.parse(fs.readFileSync(planPa
 let files = process.argv.slice(2);
 if (!files.length) {
   // 全ての結果を古い順に読み、同じ計画IDは新しい実行で置き換える（一部のIDだけ再実行しても、他のIDの結果が残る）
-  files = fs.readdirSync(RESULT_DIR).filter((n) => /^xss-(search-\w+|http)-.*\.json$/.test(n)).sort().map((n) => path.join(RESULT_DIR, n));
+  files = fs.readdirSync(RESULT_DIR).filter((n) => /^xss-(search-\w+|http|form-\w+)-.*\.json$/.test(n)).sort().map((n) => path.join(RESULT_DIR, n));
 }
 if (!files.length) throw new Error('結果JSONがありません。先に run-xss-search.js / run-xss-http.js を実行してください');
 
 const byId = new Map();
 for (const f of files) {
   const run = require(path.resolve(f)).entries;
+  // 下調べ(--check-pages)の実行は、攻撃文字列を送っていない（pid のある記録がない）ため、結果として数えない
+  if (/xss-form-/.test(f) && !run.some((e) => e.pid)) continue;
   const runKind = path.basename(f).replace(/^xss-(.+?)-\d{4}-.*$/, '$1');
   for (const id of new Set(run.map((e) => e.id))) {
     // 同じ種類(search-cms / search-student / http)の古い結果は、このIDについて置き換える

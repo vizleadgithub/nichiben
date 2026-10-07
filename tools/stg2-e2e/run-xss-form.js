@@ -14,7 +14,8 @@
 //   --isolated        実行中の別の自動テストと並行するとき、別のログイン状態で動かす
 //   --check-pages     攻撃文字列は送らず、通常の値で確認画面まで進めるかだけを調べる（form-defaults.json を整える下調べ用）
 //   --limit N         対象の行数を N 行に制限（動作確認用）
-//   --sheet product   商品管理(Smarty)の画面を対象にする（既定は CMS のみ。商品管理は確認画面の前に保存する画面があり得るため要注意）
+//   --site cms|product|student   対象サイト（既定 cms）。product=商品管理(Smarty)、student=受講者サイト（要 node login.js student）。
+//                     product は確認ボタンが onclick の formSubmit(…,'confirm') で動く。確認の分岐は DB へ書き込まない（書き込みは 'complete'）
 // 画面ごとに検証を通る値が必要なとき（必須項目・日付の形式など）は、test-plan/form-defaults.json に
 //   { "/cms_xxx/edit": { "項目名": "値" } } の形で指定する。確認画面まで進めなかった画面は、実行後の一覧に出る。
 const fs = require('fs');
@@ -33,9 +34,21 @@ const only = opt('--only') ? new Set(opt('--only').split(',')) : null;
 const onlyUrls = opt('--url') ? new Set(opt('--url').split(',').map((u) => '/' + u.replace(/^\/+/, ''))) : null;
 const full = args.includes('--full');
 const isolated = args.includes('--isolated');   // 別のログイン状態(.auth/cms-inspect.json)を使う。他の実行と並行するとき用
+const planOnly = args.includes('--plan-only');   // ブラウザを開かず、対象になる行・ならない行（理由つき）を一覧する。実行前の確認用
 const checkPages = args.includes('--check-pages');   // 攻撃文字列は送らず、通常の値で確認画面まで進めるかだけを画面ごとに調べる
 const limit = opt('--limit') ? Number(opt('--limit')) : Infinity;
-const sheet = opt('--sheet') === 'product' ? '管理_商品管理' : '管理_CMS';
+// 対象サイト。cms: CMS(CodeIgniter)  product: 商品管理(Smarty。CMS と同じログイン)  student: 受講者サイト（--sheet product は旧指定）
+const PROFILES = {
+  cms: { sheet: '管理_CMS', session: 'cms', kind: 'form-cms' },
+  product: { sheet: '管理_商品管理', session: 'cms', kind: 'form-product' },
+  student: { sheet: 'フロント_受講者サイト', session: 'student', kind: 'form-student' },
+};
+const siteName = opt('--site') || (opt('--sheet') === 'product' ? 'product' : 'cms');
+const profile = PROFILES[siteName];
+if (!profile) throw new Error('--site は cms / product / student のどれかを指定してください');
+const sheet = profile.sheet;
+// 受講者サイトで、開く・確認ボタンを押すだけでも副作用がありうる画面（受験・視聴・決済・会員登録・メール送信）は自動では触らない
+const STUDENT_SKIP = /^\/(player|exam|exam2|ethic_treaning|settlement|login|logout|reminder|member|data1|data1_sp|engine1|engine1_sp)(\/|$)|\/(send|regist|complete|download)\w*\.php/i;
 const marker = (id) => 'X' + id.replace('-', '');
 
 function loadRows() {
@@ -55,22 +68,61 @@ function loadRows() {
 }
 
 // 検証エラーのメッセージ（確認画面へ進めない画面で、form-defaults.json に何を足すかの手がかり）
-const validationErrors = (page) => page.evaluate(() => [...new Set([...document.querySelectorAll('.error, .err, .errors, p[class*=error], div[class*=error], span[class*=error]')]
+const validationErrors = (page) => page.evaluate(() => [...new Set([...document.querySelectorAll('.error, .err, .errors, [class*=error], [class*=err_], font[color=red], [style*="color:red"], [style*="color: red"], [style*="background-color:red"]')]
   .map((e) => e.textContent.replace(/\s+/g, ' ').trim()).filter(Boolean))].slice(0, 6));
 
 // 確認画面かどうか: 登録(commit)へ進むフォームがある画面。検証エラー時は同じ URL(…/confirm)で入力画面が再表示されるため、URL では判別できない
-const isConfirmScreen = (page) => page.evaluate(() => [...document.forms].some((f) => /commit|regist/i.test(f.getAttribute('action') || '')));
+const isConfirmScreen = (page) => page.evaluate(() => {
+  if ([...document.forms].some((f) => /commit|regist|send\.php|complete/i.test(f.getAttribute('action') || ''))) return true;
+  // 商品管理など: 登録ボタンが onclick の引数（'complete'・'regist'）で動く画面
+  return [...document.querySelectorAll('[onclick], a[href^="javascript:"]')].some((e) => /['"](complete|regist\w*|commit)['"]/i.test(`${e.getAttribute('onclick') || ''} ${e.getAttribute('href') || ''}`));
+});
 
 const defaultsPath = path.join(__dirname, 'test-plan/form-defaults.json');
 const overridesFor = (url) => (fs.existsSync(defaultsPath) ? (JSON.parse(fs.readFileSync(defaultsPath, 'utf-8'))[url] || {}) : {});
 
+// {ID} を含む URL（例: /alfproduct/product/info.php?mid={ID}）の ID を、同じ階層の一覧画面から探す。見つからなければ null
+async function resolveTemplate(session, url) {
+  if (/[・\s]|\.\.\./.test(url)) return null;
+  const [pathPart, query = ''] = url.split('?');
+  const key = (query.match(/([a-z_0-9]+)=\{[^}]*\}/i) || [])[1];
+  if (!key) return null;
+  const dir = pathPart.replace(/[^/]*$/, '');
+  const file = pathPart.slice(dir.length);
+  const lists = siteName === 'student' ? [`${dir}index.php`, '/product/list.php', '/search/index.php', '/mypage/index.php'] : [`${dir}index.php`, dir];
+  for (const l of lists) {
+    const r = await session.goto(l);
+    if (r.status === 'ERROR' || r.status === 'SSO' || r.status >= 400) continue;
+    const href = await session.page.evaluate(([f, k]) => {
+      const a = [...document.querySelectorAll('a[href]')].find((x) => x.getAttribute('href').includes(f) && new RegExp(`[?&]${k}=\d+`).test(x.getAttribute('href')));
+      return a && a.href;
+    }, [file, key]);
+    if (href) { const u = new URL(href); return u.pathname + u.search; }
+  }
+  return null;
+}
+
 (async () => {
   const rows = loadRows();
   if (!rows.length) throw new Error('対象の行がありません（plan.json・--sets・--only を確認してください）');
-  const rec = new Recorder('form-cms');
+  if (planOnly) {
+    // 画面ごとの扱いを、実行時の判定（STUDENT_SKIP・確認画面・{ID}）と同じ規則で出す。項目が画面にあるかは、実行しないとわからない
+    const why = (url) => (siteName === 'student' && STUDENT_SKIP.test(url) ? '対象外: 副作用がありうる画面'
+      : /(confirm|confirm_\w+|commit|regist\w*|complete)(\.php)?$/.test(url.split('?')[0]) ? '対象外: 確認・登録画面そのもの（段階B）'
+      : /[{}]/.test(url) ? (siteName === 'cms' ? '対象外: {ID} を含む（CMS）' : '実行: 一覧から実在のIDを探して開く')
+      : '実行');
+    const g = new Map();
+    for (const r of rows) { const k = `${why(r.url)}`; g.set(k, [...(g.get(k) || []), r]); }
+    console.log(`[${siteName}] 対象 ${rows.length} 行 / ${new Set(rows.map((r) => r.url)).size} 画面`);
+    for (const [k, rs] of [...g].sort()) console.log(`  ${k}: ${rs.length} 行 / ${new Set(rs.map((r) => r.url)).size} 画面${k === '実行' ? '' : '  例: ' + [...new Set(rs.map((r) => r.url))].slice(0, 3).join(' , ')}`);
+    const noField = rows.filter((r) => !r.fields.length);
+    console.log(`  項目名(name)が計画にない行: ${noField.length}（${noField.slice(0, 5).map((r) => r.id).join(',')}）`);
+    return;
+  }
+  const rec = new Recorder(checkPages ? 'form-check' : profile.kind);   // 下調べの結果は集計(report-xss.js)に含めない
   let statePath = null;
   if (isolated) { const insp = require('./inspect-form'); await insp.login(); statePath = insp.STATE; }
-  const session = await new Session('cms', { statePath }).open();
+  const session = await new Session(profile.session, { statePath: profile.session === 'cms' ? statePath : null }).open();
   const byUrl = new Map();
   for (const r of rows) {
     if (!byUrl.has(r.url)) byUrl.set(r.url, []);
@@ -81,8 +133,20 @@ const overridesFor = (url) => (fs.existsSync(defaultsPath) ? (JSON.parse(fs.read
 
   for (const [url, urlRows] of byUrl) {
    try {
+    // 受講者サイトの、副作用がありうる画面は自動では触らない
+    if (siteName === 'student' && STUDENT_SKIP.test(url)) {
+      for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: '受験・視聴・決済・会員登録・メール送信などの副作用がありうる画面のため、自動では触らない（手動で確認）', url });
+      console.log(`skip ${url} (${urlRows.length} 行) 副作用がありうる画面`);
+      continue;
+    }
     // 確認・登録画面そのものは、edit 画面から POST されて初めて意味を持つ（直接開いても値がない）。登録(commit)側は段階Bで扱う
-    if (/\/(confirm|confirm_\w+|commit|regist\w*)$/.test(url) || /[{}]/.test(url)) {
+    // {ID} を含む URL は、CMS は対象外（edit/{ID} は入口の探索で扱う）。商品管理・受講者サイトは一覧から実在の ID のリンクを探す
+    let startUrl = url;
+    if (/[{}]/.test(url) && siteName !== 'cms') {
+      startUrl = await resolveTemplate(session, url);
+      if (startUrl) console.log(`  ${url}: ${startUrl}`);
+    }
+    if (/(confirm|confirm_\w+|commit|regist\w*|complete)(\.php)?$/.test(url.split('?')[0]) || (/[{}]/.test(url) && !startUrl)) {
       for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: 'edit→confirm の途中・登録後の画面。edit 画面の入力として確認される／登録(commit)を伴うため段階B', url });
       console.log(`skip ${url} (${urlRows.length} 行)`);
       continue;
@@ -92,8 +156,8 @@ const overridesFor = (url) => (fs.existsSync(defaultsPath) ? (JSON.parse(fs.read
     // 入口の探索。edit を直接開いても入力画面にならない画面（「セッションエラー」・一覧へ戻される）があるため、順に試す:
     //  1) そのまま開く  2) /…/newdata（新規登録。セッションの初期化と入力画面の表示だけで、DB へは書き込まない）
     //  3) 一覧の最初の edit/{ID}（既存レコードの編集画面）。確認画面までは何も書き込まないため、既存レコードを使っても変更されない
-    let pageUrl = url;
-    let first = await session.goto(url);
+    let pageUrl = startUrl;
+    let first = await session.goto(startUrl);
     if (!(first.status < 400 && await hasTargets()) && /\/edit$/.test(url)) {
       const nd = url.replace(/edit$/, 'newdata');
       const r = await session.goto(nd);
