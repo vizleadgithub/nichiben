@@ -10,9 +10,11 @@ const SSO_BOUNCE = /location\.href\s*=\s*["']https?:\/\/(member\.nichibenren\.or
 const SSO_HOSTS = /(^|\.)nichibenren(-member-sso)?\.(or\.jp|jp)$/;
 
 class Session {
-  constructor(site, { anonymous = false } = {}) {
+  // statePath: 共有のログイン状態(.auth/cms.json)とは別のファイルを使う（他の実行と並行して調べるとき。期限切れの再ログインはしない）
+  constructor(site, { anonymous = false, statePath = null } = {}) {
     if (!SITES[site]) throw new Error('site は cms か student を指定してください');
     this.site = site;
+    this.statePath = statePath;
     this.anonymous = anonymous;
     this.baseUrl = SITES[site].baseUrl();
     assertStg2(this.baseUrl);
@@ -23,11 +25,11 @@ class Session {
   }
 
   async open() {
-    if (!this.anonymous && !fs.existsSync(SITES[this.site].state)) {
+    if (!this.anonymous && !fs.existsSync(this.statePath || SITES[this.site].state)) {
       throw new Error(`先に node login.js ${this.site} を実行してください`);
     }
     this.browser = this.browser || await chromium.launch();
-    this.context = await newContext(this.browser, this.anonymous ? null : this.site);
+    this.context = await newContext(this.browser, this.anonymous ? null : this.site, this.statePath);
     await this.context.route('**/*', (route) => {
       const u = route.request().url();
       if (SSO_HOSTS.test(new URL(u).hostname)) { this.blocked = u; return route.abort(); }
@@ -50,6 +52,7 @@ class Session {
   // セッション切れなら CMS は再ログインして true を返す。受講者は本番共用 SSO のため再ログインしない
   async recover(finalUrl) {
     if (this.anonymous || !SESSION_LOST.test(finalUrl)) return false;
+    if (this.statePath) throw new Error(`セッションが切れています（${finalUrl}）。調査用セッションは再ログインしません`);
     if (this.site === 'cms' && this.relogins < 5) {
       this.relogins++;
       console.error(`セッション切れのため CMS に再ログインします（${this.relogins}回目）`);
@@ -110,7 +113,7 @@ class Session {
   }
 
   async close() {
-    if (!this.anonymous && this.context) await this.context.storageState({ path: SITES[this.site].state }).catch(() => {});
+    if (!this.anonymous && this.context) await this.context.storageState({ path: this.statePath || SITES[this.site].state }).catch(() => {});
     if (this.browser) await this.browser.close();
   }
 }

@@ -26,12 +26,13 @@ const SITES = {
   student: { baseUrl: () => env('STG2_STUDENT_URL'), state: path.join(AUTH_DIR, 'student.json') },
 };
 
-async function newContext(browser, site) {
+async function newContext(browser, site, statePath) {
   const opts = {
     httpCredentials: { username: env('STG2_BASIC_USER'), password: env('STG2_BASIC_PASS') },
     ignoreHTTPSErrors: false,
   };
-  if (site && fs.existsSync(SITES[site].state)) opts.storageState = SITES[site].state;
+  const state = statePath || (site && SITES[site].state);
+  if (state && fs.existsSync(state)) opts.storageState = state;
   return browser.newContext(opts);
 }
 
