@@ -135,11 +135,11 @@ if( count($_POST["exam_problem_id"] ?? [])==0 ){
 								if( $exam_list['problem'][$k]["answer_kind"]=="1" || $exam_list['problem'][$k]["answer_kind"]=="2" ){
 									for( $l=0;$l<count($exam_list['problem'][$k]["answer_contents_select"]["answer_contents"]);$l++ ){
 										if( trim($_POST["exam_problem_".$_POST["exam_problem_id"][$i]][$j]) == $exam_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"] ){
-											$html_message.= '・'.htmlspecialchars((string)$exam_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"], ENT_QUOTES, 'UTF-8').'. '.nl2br(htmlspecialchars( (string)$exam_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["word"], ENT_QUOTES, 'UTF-8', false ))."<br>";
+											$html_message.= '・'.htmlspecialchars((string)$exam_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"], ENT_QUOTES, 'UTF-8').'. '.nl2br(htmlspecialchars( (string)$exam_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["word"], ENT_QUOTES, 'UTF-8'))."<br>";
 										}
 									}
 								} else {
-									$html_message.= '・'.nl2br(htmlspecialchars( (string)$_POST["exam_problem_".$_POST["exam_problem_id"][$i]][$j], ENT_QUOTES, 'UTF-8', false ))."<br>";
+									$html_message.= '・'.nl2br(htmlspecialchars( (string)$_POST["exam_problem_".$_POST["exam_problem_id"][$i]][$j], ENT_QUOTES, 'UTF-8'))."<br>";
 								}
 							}
 						}
@@ -184,11 +184,11 @@ if( count($_POST["exam_problem_id"] ?? [])==0 ){
 								if( $exam_list_q['problem'][$k]["answer_kind"]=="1" || $exam_list_q['problem'][$k]["answer_kind"]=="2" ){
 									for( $l=0;$l<count($exam_list_q['problem'][$k]["answer_contents_select"]["answer_contents"]);$l++ ){
 										if( trim($_POST["exam_problem_q_".$_POST["exam_problem_id_q"][$i]][$j]) == $exam_list_q['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"] ){
-											$html_message.= '・'.htmlspecialchars((string)$exam_list_q['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"], ENT_QUOTES, 'UTF-8').'. '.nl2br(htmlspecialchars( (string)$exam_list_q['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["word"], ENT_QUOTES, 'UTF-8', false ))."<br>";
+											$html_message.= '・'.htmlspecialchars((string)$exam_list_q['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"], ENT_QUOTES, 'UTF-8').'. '.nl2br(htmlspecialchars( (string)$exam_list_q['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["word"], ENT_QUOTES, 'UTF-8'))."<br>";
 										}
 									}
 								} else {
-									$html_message.= '・'.nl2br(htmlspecialchars( (string)$_POST["exam_problem_q_".$_POST["exam_problem_id_q"][$i]][$j], ENT_QUOTES, 'UTF-8', false ))."<br>";
+									$html_message.= '・'.nl2br(htmlspecialchars( (string)$_POST["exam_problem_q_".$_POST["exam_problem_id_q"][$i]][$j], ENT_QUOTES, 'UTF-8'))."<br>";
 								}
 							}
 						}
