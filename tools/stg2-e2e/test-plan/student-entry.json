@@ -10,5 +10,6 @@
   "exam_plain": { "_desc": "通常の試験(/exam/index.php → answer_check.php)。書き込みなし", "pid": "", "ccno": "", "eid": "", "qid": "" },
   "exam_choice": { "_desc": "選択式の試験(/exam/index1.php → answer_check1.php)。書き込みあり", "pid": "", "ccno": "", "eid": "", "qid": "", "eno": "1" },
   "exam_freetext": { "_desc": "自由記述式(/exam/index2.php → confirm2.php)。書き込みあり。最初の設問のみ回答し、最終提出(answer_check2.php)までは行わない", "pid": "", "ccno": "", "eid": "", "qid": "", "eno": "1" },
-  "survey": { "_desc": "アンケート(/exam2/index.php → answer_check.php)。書き込みなし", "pid": "", "e2id": "" }
+  "survey": { "_desc": "アンケート(/exam2/index.php → answer_check.php)。書き込みなし", "pid": "", "e2id": "" },
+  "ethic": { "_desc": "代替倫理研修(/ethic_treaning/)。pid=商品ID(get_ethic_product_id()。全アカウント共通)、qid=設問ID(tbl_ethic_question)。STG2_STUDENT_ETHIC_USER のアカウントに受講状態(tbl_ethic_question_history が status 0/1)が必要。node login.js student-ethic で別途ログインする", "pid": "", "qid": "" }
 }

@@ -19,16 +19,28 @@
 // result*.php(採点結果の表示)は、各シナリオで回答を1件登録した直後に読み取り専用で確認する(RESULT_CHECKS)。
 // resubmit_index*.php(再提出待ちの状態が必要)は、到達できる状態になっていなければ対象外として記録するだけに留める
 // (CMS側で「再提出待ち」にする操作が別途必要なため。RESUBMIT_CHECKS)。
+// confirm1.php(選択式の下書き回答の確認画面。読み取り専用)は CONFIRM_CHECKS で同様に確認する。
+// confirm2.php は exam_freetext が通常の遷移で直接検査するため、該当する計画のIDを SCENARIOS.exam_freetext.planRows に含めている
+// (confirm1.php・confirm2.php は実際にリポジトリに存在する。index1/index2 の番号付きファイル構成を exam2 にも
+//  機械的に複製した結果、exam2 側だけ実体のないファイルが計画に残っている -> DATA_ISSUES 参照)。
+//
+// ethic_treaning(代替倫理研修)は、計画の対象行がすべて S11(pid・qid のURLパラメータ改ざん。多肢選択のため文字列注入(S2)の
+// 対象項目はない)。専用の権限を持つ別アカウント(STG2_STUDENT_ETHIC_USER)が必要なため、通常の受講者セッションとは別に
+// ログインする(runEthicTamper・login.js の loginStudentEthic)。アカウント・受講状態(test-plan/student-entry.json の
+// "ethic")が未設定ならスキップする。
 //
 // まだ実装していないもの(段階Bの残課題):
-//   - ethic_treaning(対象の行はCSRFトークン以外にテスト対象の項目がなく、run-xss-form.js側の対応で十分)
 //   - 計画(plan.json)の一部のURLは実際のファイルが存在しない(下記 DATA_ISSUES 参照。xlsx側の要確認事項)
 //
-// 使い方: node run-xss-student-exam.js [exam_plain|exam_choice|exam_freetext|survey|all] [--accept-writes] [--full] [--only A-0001,...]
+// 使い方: node run-xss-student-exam.js [exam_plain|exam_choice|exam_freetext|survey|ethic|all] [--accept-writes] [--full] [--only A-0001,...]
+//   ethic は書き込みなし(URLパラメータの改ざん確認のみ)のため --accept-writes は不要。事前に node login.js student-ethic を実行し、
+//   test-plan/student-entry.json の "ethic" に実際の pid・qid を記入すること(STG2_STUDENT_ETHIC_USER が未設定ならスキップ)
 const fs = require('fs');
 const path = require('path');
 const { expand, fill } = require('./xss-payloads');
 const { Session } = require('./xss-session');
+const { chromium } = require('./lib');
+const { loginStudentEthic, STUDENT_ETHIC_STATE } = require('./login');
 const { Recorder, debugFindings, classify, domInjection } = require('./detect');
 const { loadEntry, missing, qs, prefixOf, findDynamicTextareas, fillTextareaByName } = require('./student-exam-lib');
 
@@ -39,7 +51,7 @@ const acceptWrites = args.includes('--accept-writes');
 const full = args.includes('--full');
 const only = opt('--only') ? new Set(opt('--only').split(',')) : null;
 const targets = args.filter((a) => !a.startsWith('--') && a !== opt('--only')).length
-  ? args.filter((a) => ['exam_plain', 'exam_choice', 'exam_freetext', 'survey', 'all'].includes(a))
+  ? args.filter((a) => ['exam_plain', 'exam_choice', 'exam_freetext', 'survey', 'ethic', 'all'].includes(a))
   : ['all'];
 const wantAll = targets.includes('all');
 
@@ -59,12 +71,14 @@ const SCENARIOS = {
     submitSel: 'a[onclick*="examFormSubmit"]', confirmUrlRe: /\/exam\/answer_check\.php/, writes: false,
     planRows: { s2: ['C-0035', 'C-0036'], s11: ['C-0037'] },
   },
+  // 計画の C-0022・C-0023・C-0024(ページ名「解答確認(answer_check1)」)は、ここで examFormSubmit('exec') が遷移する
+  // answer_check1.php そのものを検査しているため、同じ画面・同じ項目を指す C-0039・C-0040・C-0041 と合わせて記録する
   exam_choice: {
     entry: '/exam/index1.php', entryParams: ['pid', 'ccno', 'eid', 'qid', 'eno'],
     fieldPrefixes: ['exam_problem_', 'exam_problem_q_'], hiddenFields: ['exam_problem_id[]', 'exam_problem_id_q[]'],
     submitSel: 'a[onclick*="examFormSubmit(\'exec\'"]', confirmUrlRe: /\/exam\/answer_check1\.php/, writes: true,
     writeNote: '回答が exam_answer_retry テーブルに保存される(下書き)',
-    planRows: { s2: ['C-0039', 'C-0040'], s11: ['C-0041'] },
+    planRows: { s2: ['C-0039', 'C-0040', 'C-0022', 'C-0023'], s11: ['C-0041', 'C-0024'] },
   },
   survey: {
     entry: '/exam2/index.php', entryParams: ['pid', 'e2id'],
@@ -73,29 +87,37 @@ const SCENARIOS = {
     planRows: { s2: ['C-0154'], s11: ['C-0155'] },
   },
   // 自由記述式。index2.tpl の examFormSubmit('confirm') が /exam/confirm2.php へ遷移させる（'next'/'prev' は質問間の移動で別の画面）。
-  // 最初の設問にだけ回答し、1回の確認遷移で confirm2.php の表示（反映）を見る。質問をまたぐ往復・最終提出(answer_check2.php)までは行わない
+  // 最初の設問にだけ回答し、1回の確認遷移で confirm2.php の表示（反映）を見る。質問をまたぐ往復・最終提出(answer_check2.php)までは行わない。
+  // 計画の C-0031・C-0032・C-0033(ページ名「確認(confirm2)」)は、この confirm2.php そのものを指しているため、
+  // 同じ画面・同じ項目を指す C-0043・C-0044・C-0045 と合わせて記録する
   exam_freetext: {
     entry: '/exam/index2.php', entryParams: ['pid', 'ccno', 'eid', 'qid', 'eno'],
     fieldPrefixes: ['exam_problem_', 'exam_problem_q_'], hiddenFields: ['exam_problem_id[]', 'exam_problem_id_q[]'],
     submitSel: '[onclick*="examFormSubmit(\'confirm\'"]', confirmUrlRe: /\/exam\/confirm2\.php/, writes: true,
     writeNote: '質問への回答が index2.php の自動保存、および confirm2.php への遷移で exam_answer_retry テーブルに保存される',
-    planRows: { s2: ['C-0043', 'C-0044'], s11: ['C-0045'] },
+    planRows: { s2: ['C-0043', 'C-0044', 'C-0031', 'C-0032'], s11: ['C-0045', 'C-0033'] },
   },
 };
 
 // result*.php(採点結果の表示。読み取り専用)。回答済みの値がエスケープされて表示されるかを見る(重点項目 E-33 系)。
 // exam_plain→result.php・exam_choice→result1.php・exam_freetext→result2.php。実際の採点状態になっていなくても、
-// 画面が持つエラーメッセージ(「未受講です」等)を返すだけなら対象外として記録する
+// 画面が持つエラーメッセージ(「未受講です」等)を返すだけなら対象外として記録する。
+// 各 result*.php の、項目名のない行(C-0061・C-0065・C-0069。URL・ID改ざんの確認)も、同じ読み取り専用アクセスで兼ねる
 const RESULT_CHECKS = {
-  exam_plain: { url: '/exam/result.php', planRows: ['C-0059', 'C-0060'] },
-  exam_choice: { url: '/exam/result1.php', planRows: ['C-0063', 'C-0064'] },
-  exam_freetext: { url: '/exam/result2.php', planRows: ['C-0067', 'C-0068'] },
-  survey: { url: '/exam2/result.php', planRows: ['C-0162'] },
+  exam_plain: { url: '/exam/result.php', planRows: ['C-0059', 'C-0060', 'C-0061'] },
+  exam_choice: { url: '/exam/result1.php', planRows: ['C-0063', 'C-0064', 'C-0065'] },
+  exam_freetext: { url: '/exam/result2.php', planRows: ['C-0067', 'C-0068', 'C-0069'] },
+  survey: { url: '/exam2/result.php', planRows: ['C-0162', 'C-0160', 'C-0161'] },
 };
 // resubmit_index*.php(再提出待ちの状態が必要。通常は到達できない想定で、その旨を記録するだけに留める)
 const RESUBMIT_CHECKS = {
-  exam_choice: { url: '/exam/resubmit_index1.php', planRows: ['C-0051', 'C-0052'] },
-  exam_freetext: { url: '/exam/resubmit_index2.php', planRows: ['C-0055', 'C-0056'] },
+  exam_choice: { url: '/exam/resubmit_index1.php', planRows: ['C-0051', 'C-0052', 'C-0053'] },
+  exam_freetext: { url: '/exam/resubmit_index2.php', planRows: ['C-0055', 'C-0056', 'C-0057'] },
+};
+// confirm1.php(選択式の下書き回答の確認。読み取り専用 = SELECT のみで INSERT なし。exam_choice の entryParams で直接開ける)。
+// confirm2.php は exam_freetext の通常の遷移先そのものなので、ここでは別途アクセスしない(SCENARIOS.exam_freetext.planRows 側で記録済み)
+const CONFIRM_CHECKS = {
+  exam_choice: { url: '/exam/confirm1.php', planRows: ['C-0027', 'C-0028', 'C-0029'] },
 };
 
 function loadRows(ids) {
@@ -228,7 +250,8 @@ async function runHiddenTamper(session, rec, key, def) {
 async function checkResultAndResubmit(session, rec, key, def) {
   const check = RESULT_CHECKS[key];
   const resubmit = RESUBMIT_CHECKS[key];
-  if (!check && !resubmit) return;
+  const confirm = CONFIRM_CHECKS[key];
+  if (!check && !resubmit && !confirm) return;
   const entry = loadEntry(key);
   if (missing(entry, def.entryParams) || (def.writes && !acceptWrites)) return;   // runTextareaScenario 側で対象外として既に記録済み
 
@@ -245,7 +268,7 @@ async function checkResultAndResubmit(session, rec, key, def) {
   const submitRes = await clickSubmit(session, def.submitSel);
   if (submitRes.refused) return;
 
-  for (const target of [check, resubmit].filter(Boolean)) {
+  for (const target of [check, resubmit, confirm].filter(Boolean)) {
     const dialogsBefore = new Set(session.dialogs);
     const res = await session.goto(`${target.url}?${qs(entry, def.entryParams)}`);
     const rows = loadRows(target.planRows).filter((r) => !only || only.has(r.id));
@@ -268,6 +291,65 @@ async function checkResultAndResubmit(session, rec, key, def) {
   }
 }
 
+// 代替倫理研修(ethic_treaning)。計画の対象行はすべて S11(pid・qid の改ざん。多肢選択のため文字列注入(S2)の対象項目はない)。
+// run-xss-http.js の tamper() と同じ考え方(全パラメータに同じ改ざん値を入れて開く)だが、専用の権限を持つ別アカウント
+// (STG2_STUDENT_ETHIC_USER)でのログインが要るため、通常の受講者セッション(session)とは別に、ここだけ独立して行う
+const ETHIC_URLS = {
+  'C-0005': { url: '/ethic_treaning/index.php', params: ['pid'] },
+  'C-0006': { url: '/ethic_treaning/question.php', params: ['pid', 'qid'] },
+  'C-0008': { url: '/ethic_treaning/question_answer.php', params: ['pid', 'qid'] },
+  'C-0011': { url: '/ethic_treaning/question_retry.php', params: ['pid', 'qid'] },
+  'C-0002': { url: '/ethic_treaning/answer_history.php', params: ['pid', 'qid'] },
+  'C-0014': { url: '/ethic_treaning/result_history.php', params: ['pid'] },
+  'C-0016': { url: '/ethic_treaning/result_history_detail.php', params: ['pid', 'qid'] },
+  'C-0019': { url: '/ethic_treaning/retry.php', params: ['pid'] },
+};
+const ETHIC_TAMPER = ['-1', '0', '99999999999999999999', '1 OR 1=1'];
+
+async function runEthicTamper(rec) {
+  const rows = loadRows(Object.keys(ETHIC_URLS)).filter((r) => !only || only.has(r.id));
+  if (!rows.length) return;
+  if (!process.env.STG2_STUDENT_ETHIC_USER || !process.env.STG2_STUDENT_ETHIC_PASS) {
+    for (const r of rows) rec.add({ id: r.id, verdict: '対象外', note: 'STG2_STUDENT_ETHIC_USER/STG2_STUDENT_ETHIC_PASS が未設定(値が未記入のアカウントを使うテストはスキップする方針)', scenario: 'ethic' });
+    console.log('skip ethic: STG2_STUDENT_ETHIC_USER/PASS が未設定');
+    return;
+  }
+  const entry = loadEntry('ethic');
+  const why = missing(entry, ['pid']);
+  if (why) {
+    for (const r of rows) rec.add({ id: r.id, verdict: '対象外', note: why, scenario: 'ethic' });
+    console.log(`skip ethic: ${why}`);
+    return;
+  }
+  const browser = await chromium.launch();
+  try {
+    await loginStudentEthic(browser);
+    if (!fs.existsSync(STUDENT_ETHIC_STATE)) {
+      for (const r of rows) rec.add({ id: r.id, verdict: '対象外', note: 'ログインできない(アカウント未設定、または受講状態が未準備の可能性)', scenario: 'ethic' });
+      return;
+    }
+    const session = await new Session('student', { statePath: STUDENT_ETHIC_STATE }).open();
+    for (const r of rows) {
+      const def = ETHIC_URLS[r.id];
+      const m = marker(r.id);
+      for (const t of [...ETHIC_TAMPER, `${m}"><svg/onload=alert(1)>`]) {
+        const dialogsBefore = new Set(session.dialogs);
+        const q = def.params.map((p) => `${p}=${encodeURIComponent(t)}`).join('&');
+        const res = await session.goto(`${def.url}?${q}`);
+        if (res.status === 'ERROR' || res.status === 'SSO') continue;
+        const findings = await inspectResult(session, res, [m], dialogsBefore);
+        const ng = findings.some((f) => f.ng);
+        rec.add({ id: r.id, value: t, status: res.status, verdict: ng ? 'NG' : findings.length ? '要確認' : 'OK', findings, scenario: 'ethic', url: def.url });
+        if (findings.length) console.log(`${ng ? 'NG ' : '?? '} ${r.id} tamper=${t.slice(0, 30)} ${findings.map((f) => f.kind).join(',')}`);
+        await session.page.waitForTimeout(WAIT_MS);
+      }
+    }
+    await session.close();
+  } finally {
+    await browser.close();
+  }
+}
+
 (async () => {
   const rec = new Recorder('student-exam');
   const session = await new Session('student').open();
@@ -279,6 +361,7 @@ async function checkResultAndResubmit(session, rec, key, def) {
     await checkResultAndResubmit(session, rec, key, def);
   }
   await session.close();
+  if (wantAll || targets.includes('ethic')) await runEthicTamper(rec);
 
   const out = rec.save({ acceptWrites, full, targets, dataIssues: DATA_ISSUES.map((d) => d.note) });
   const ids = [...new Set(rec.entries.map((e) => e.id))];
