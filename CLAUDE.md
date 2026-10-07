@@ -574,6 +574,7 @@ node run-xss-search.js cms                           # 段階A: S8 検索条件�
 node run-xss-form.js --site cms --plan-only          # 段階A: 登録系(S1〜S7・S9・S10・S11、入力→確認画面まで)。まず --plan-only で対象・対象外を確認してから実行
 node run-xss-http.js                                 # 段階A: 入口以外・HTTP(F-01〜F-09)と重点項目 E-08・E-19・E-47・E-56（--only F-03 等で絞り込み。--probe-php は下記）
 node run-xss-student-exam.js --accept-writes         # 段階B: 受講者サイトの試験・アンケート（下記）
+node run-xss-data-linked.js --accept-writes          # 段階B: 重点項目 E-10・E-12・E-13（実データ紐付けが必要だった項目。下記）
 node report-xss.js                                   # 最新の結果を計画のID単位に集計し、test-results/xss-report-*.csv を出力
 ```
 
@@ -584,7 +585,8 @@ node report-xss.js                                   # 最新の結果を計画�
 - **受講者 SSO（本番と共用）へは通信しない**。ブラウザ側で SSO ドメインへの通信を遮断している。未ログインの受講者サイトはどの URL も SSO へ遷移するため、受講者サイトの確認は保存済みセッション（`node login.js student`）で行い、確認できなかったものは「対象外」と記録する。
 - 攻撃文字列の実行用定義は `xss-payloads.js`（正本は xlsx の「付録_攻撃文字列」）。検出ロジックは `detect.js`。
 - E-08 は、開発用らしき PHP（`*_dev.php` 等）を既定では**開かず、一覧のみ**出す（PHP は開くと実行され、メール送信等の副作用がありうる）。内容を確認してから `--probe-php` を付ける。
-- 受講者サイトは、決済（`settlement/*`）を除き可能な限り自動化する方針。`run-xss-form.js` の `STUDENT_SKIP`／`STUDENT_NOT_FOUND` に、画面ごとに個別調査した除外理由がある（ethic_treaning の S2(自由記述)系は対象の項目が csrf_token のみで、item-less プレフィルタにより自動的に対象外になる。S11(URL改ざん)系は `run-xss-student-exam.js` の `ethic` で別途対応。player は視聴履歴に記録されるため除外）。
+- 受講者サイトは、決済（`settlement/*`）を除き可能な限り自動化する方針。`run-xss-form.js` の `STUDENT_SKIP`／`STUDENT_NOT_FOUND` に、画面ごとに個別調査した除外理由がある（ethic_treaning の S2(自由記述)系は対象の項目が csrf_token のみで、item-less プレフィルタにより自動的に対象外になる。S11(URL改ざん)系は `run-xss-student-exam.js` の `ethic` で別途対応）。
+  - player（動画プレーヤー）は 2026-10-07 の方針変更により対象外から外した。再生開始で視聴履歴が記録される副作用はあるが、専用のテストデータ・テスト用受講者に限定し、`submitGuarded`（確認・検索系以外のボタンは押さない）にも守られるため許容する方針。記録された履歴は、書き込みテスト後の DB 復元で元に戻す。
 
 ##### 段階B: 受講者サイトの試験・アンケート（`run-xss-student-exam.js`）
 
@@ -596,6 +598,20 @@ CMS・商品管理・会員登録の「確認」画面と異なり、試験・�
 - `ethic`（代替倫理研修。`/ethic_treaning/`）: 対象行はすべて URL パラメータ(pid・qid)の改ざん確認（多肢選択のため文字列注入の対象項目はない）。専用の権限を持つ別アカウント(`STG2_STUDENT_ETHIC_USER`)が必要なため、`node login.js student-ethic` で別セッション(`.auth/student-ethic.json`)を作り、`test-plan/student-entry.json` の `"ethic"` に実際の pid・qid を記入する（未設定ならスキップ）。書き込みなしのため `--accept-writes` は不要。
 - 書き込みを行った場合は、実行後に stg2 の DB をダンプから復元する（人が実施）。
 - **計画(xlsx)側の要確認事項**: `/exam2/index1.php`・`confirm1.php`・`confirm2.php`・`answer_check1.php`・`resubmit_index1/2.php`・`result1/2.php`・`resubmit_exec_result1.php` はリポジトリに実体がない（exam2 は `index.php`→`answer_check.php` の1系統のみで、exam(非2)の番号付きファイル構成を誤って複製したとみられる）。`/exam/resubmit_exec_result1.php` も同様に実体がない（`/exam/confirm1.php`・`confirm2.php` 自体は実在し、それぞれ下書き回答の確認画面として使われている）。
+
+##### 段階B: 重点項目 E-10・E-12・E-13（実データ紐付けが必要だった項目。`run-xss-data-linked.js`）
+
+E-10(講座確認の受講者一覧)・E-12(売上の会員詳細)・E-13(売上の注文詳細)は、実在の受講者・注文データが無いと表示を確認できないとされていたが、2026-10-07 の調査で CMS 側の事前セットアップ無しに次の方法で自動生成できることが分かった。
+
+- 受講者: `member/regist.php` でテスト用の氏名(攻撃文字列入り)を登録するだけ(`S12-student-name` と同じ仕組み)。
+- 注文: **無料のeラーニング商品の詳細画面を開くと、0円の注文が自動作成される**（アプリの仕様。`alfproduct/public/product/detail.php` の `product_type_add==1 && price<=0` の分岐で確認済み。決済は発生しない）。
+- E-10 の受講者一覧: 既存の任意の講座の edit→confirm（**DBへは書き込まない**。段階Aと同じ）で、受講者欄にテスト受講者のIDを追加して送信するだけで確認画面に表示される。講座IDは `/cms_cource/` の一覧から自動取得する。
+- 必要な設定は `test-plan/data-entries.json` の `free_product_pid`（無料のeラーニング商品のID）だけ。未設定なら E-12/E-13 は対象外として記録される。
+- E-12/E-13 は受講者登録・0円注文の自動作成を伴うため `--accept-writes` が必須（段階B）。実行前に stg2 の DB をダンプすること。E-10 はDBへ書き込まないが、受講者登録は必要なため同様に `--accept-writes` が必須。
+
+**見つからなかったもの**（2026-10-07 調査。`test-plan/data-entries.json` にも記載）:
+- **E-20**（課題確認の提出ファイル名）: 受講者側の課題提出画面が `alfproduct/public` ソース内に見当たらない（アイコン画像のみ残存）。自動化以前に、機能自体が実装されているか要確認。
+- **E-60**（領収書・受講証PDFへの氏名反映）: `receipt_download.php` は `payment_status=2`(入金済み)、`ticket_download.php` は `product_type_add=2`(会場研修)が必須で、どちらも無料eラーニング商品の自動0円注文では条件を満たせない。実際に入金済みの注文、または無料枠のある会場研修商品が無ければ自動化できない。
 
 ##### 段階B: S12（表示専用の値）・F-10（入力→全画面の自動追跡）（`run-xss-s12.js`）
 
@@ -615,7 +631,8 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
 - 巡回は `<a href>` を辿るだけのため、検索ポップアップ（`window.open`・`onclick` で開く画面。E-11・E-14・E-19 等の表示先）のように通常の巡回では到達しない画面は、`run-xss-s12.js` の `EXTRA_SEEDS` に明示的な開始点として追加している。
 - **まだ実行していない（コードのみ）。** `test-plan/s12-entries.json` に追加すればさらに対象を広げられる。
 
-- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: 実在の受講者・注文・提出物・設問グループ等を特定の講座へ紐付ける必要があるもの（E-10・E-12・E-13・E-14(ポップアップ自体はEXTRA_SEEDSで到達可能だが実在データの表示確認は別途)・E-20 等）、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（アンケート回答一覧・Ajax詳細。実在の回答データとIDの特定が要る。計画のURL `/cms_exam2/answer_set_list` は実際には `/cms_exam2_review/exam2_set_list` で、コントローラ側で `$product_id`・`$exam2_id` が入力から設定されていない疑いがあり要確認）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
+- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: E-14(受講者検索ポップアップ。到達はEXTRA_SEEDSで可能だが、検索結果に実在データを出すには検索語の工夫が要る)、E-20(受講者側の課題提出画面がソースに無い。機能の実装状況を要確認)、E-60(入金済み注文・会場研修商品が必要。`run-xss-data-linked.js` 参照)、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（アンケート回答一覧・Ajax詳細。実在の回答データとIDの特定が要る。計画のURL `/cms_exam2/answer_set_list` は実際には `/cms_exam2_review/exam2_set_list` で、コントローラ側で `$product_id`・`$exam2_id` が入力から設定されていない疑いがあり要確認）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
+  - E-10・E-12・E-13（講座確認の受講者一覧・売上の会員詳細/注文詳細）は、実データ無しで自動生成する方法が見つかり `run-xss-data-linked.js` に実装済み（上記参照）。
   - E-01・E-07 は新規コード不要（E-01 は `check-debug-output.js` の既存の巡回・検出観点と同一。E-07 は cms_video の確認画面が通常の CMS 登録系テスト(S1〜S7。P06 を含む)の対象に既に含まれる）。
   - E-03（受講者レポート）・E-09（WordPressスマホ版。モバイルUA）・E-45（JSON応答のContent-Type）・F-09（セッションID再生成）・F-01のCMS側（ログイン後の戻り先）は `run-xss-http.js` に追加済み。F-04 の Host ヘッダー本体も、SNI・証明書は正規のまま Host ヘッダーの値だけ差し替える方法で追加済み（`run-xss-http.js`）。
   - S9（ファイルのアップロード）・S10（パスワード）は `run-xss-form.js` に追加済み（上記参照）。

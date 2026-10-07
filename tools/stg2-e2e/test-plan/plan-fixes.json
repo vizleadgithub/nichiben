@@ -15,7 +15,9 @@
     { "id": "B-0205", "set": { "note": "項目名(name): search_open / 種別: radio\nレビュー(2026-10-07) 3.1: AppScan CMS-H-11 の実証パラメータの1つ(格納型のみ。選択肢外の値の直接送信)。E-56参照" } },
     { "id": "B-0206", "set": { "note": "項目名(name): search_teacher / 種別: text\n他システムでの表示先: 管理画面(検索プルダウン)\nレビュー(2026-10-07) 3.1: AppScan CMS-H-05/CMS-H-12 の実証パラメータの1つ。E-56参照" } },
     { "id": "B-0207", "set": { "note": "項目名(name): search_free / 種別: radio\nレビュー(2026-10-07) 3.1: AppScan CMS-H-13 の実証パラメータの1つ(格納型のみ)。E-56参照" } },
-    { "id": "B-0208", "set": { "note": "項目名(name): search_word / 種別: text\n他システムでの表示先: 受講者サイト(商品一覧・詳細)\nレビュー(2026-10-07) 3.1: AppScan CMS-H-06/CMS-H-14 の実証パラメータの1つ。E-56参照" } }
+    { "id": "B-0208", "set": { "note": "項目名(name): search_word / 種別: text\n他システムでの表示先: 受講者サイト(商品一覧・詳細)\nレビュー(2026-10-07) 3.1: AppScan CMS-H-06/CMS-H-14 の実証パラメータの1つ。E-56参照" } },
+    { "id": "E-20", "set": { "note": "2026-10-07 調査: 受講者側の課題提出画面(issue提出)が alfproduct/public ソース内に見当たらない(mypage配下にissue関連のphpファイルが無く、アイコン画像(issue_btn.png等)のみ残存)。自動化以前に、機能自体が現在実装されているか関係者に確認が必要。対象外(機能未実装の疑い)" } },
+    { "id": "E-60", "set": { "note": "レビュー(2026-10-07) 2.1「ファイル出力」で指摘。G-01の表示先一覧に「領収書」とあるが対応する行が無かった。実際の注文・受講データが必要なため、現状は手動確認が前提。\n2026-10-07 追加調査: receipt_download.phpはtbl_order.payment_status=2(入金済み)が必須、ticket_download.phpはproduct_type_add=2(会場研修)が必須で、どちらも無料eラーニング商品を開くだけで自動作成される0円注文(payment_status=1・product_type_add=1)では条件を満たせない。実際に入金済みの注文、または無料枠のある会場研修商品が無ければ自動化できない(run-xss-data-linked.js では対応していない)" } }
   ],
   "add": [
     {
