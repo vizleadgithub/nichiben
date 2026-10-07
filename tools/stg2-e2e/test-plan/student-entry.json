@@ -1,0 +1,14 @@
+{
+  "_comment": [
+    "run-xss-student-exam.js が使う、受講者サイトの試験・アンケートの実際の入口(pid・eid 等)。",
+    "CMS で、テスト専用の講座・試験・アンケートを作り、STG2_STUDENT_USER だけを割り当てたうえで、",
+    "ここに実際の値を入れる(未記入のシナリオはスキップされる)。",
+    "CLAUDE.md の『CMS でテストデータを登録するときの注意』のとおり、開始日は遠い過去・リマインドは設定しない。",
+    "exam_choice・exam_freetext は DB へ書き込む(--accept-writes 必須)。書き込み前に stg2 の DB をダンプすること。",
+    "pid=商品ID / ccno=コンテンツ番号 / eid=試験ID(exam_id) / e2id=アンケートID(exam2_id) / qid=設問グループID(空でよいことが多い)"
+  ],
+  "exam_plain": { "_desc": "通常の試験(/exam/index.php → answer_check.php)。書き込みなし", "pid": "", "ccno": "", "eid": "", "qid": "" },
+  "exam_choice": { "_desc": "選択式の試験(/exam/index1.php → answer_check1.php)。書き込みあり", "pid": "", "ccno": "", "eid": "", "qid": "", "eno": "1" },
+  "exam_freetext": { "_desc": "自由記述式(/exam/index2.php → confirm2.php → answer_check2.php)。書き込みあり。未実装(段階Bの対象として記録のみ)", "pid": "", "ccno": "", "eid": "", "qid": "", "eno": "1" },
+  "survey": { "_desc": "アンケート(/exam2/index.php → answer_check.php)。書き込みなし", "pid": "", "e2id": "" }
+}

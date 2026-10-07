@@ -556,23 +556,38 @@ bash alflearning/mountcheck.sh
   - 受講者サイトの商品詳細は、無料 e ラーニング商品を開くとテストアカウントに 0 円注文が自動作成される（アプリの仕様）。
 - **進め方**: データを書き込まない確認（観点 3: 各画面の HTML ソースに SQL・`var_dump`・`<!--[` 等の確認用出力が無いこと）から始め、書き込みを伴う観点（1・2・4〜7）はその後に行う。
 
-#### 脆弱性テスト計画（`secure_report/XSS対応_脆弱性テスト計画_2026-10-06.xlsx`）の自動実行
+#### 脆弱性テスト計画（`secure_report/XSS対応_脆弱性テスト計画*.xlsx`）の自動実行
 
-計画の各行（ID: A-/B-/C-/D-/E-/F-/G-）を、読み取り専用で自動実行する。結果は計画の ID ごとの「NG候補」で出る。最終判定（OK/NG）は人が再現確認して xlsx に記入する。
+計画の各行（ID: A-/B-/C-/D-/E-/F-/G-）を自動実行する。結果は計画の ID ごとの「NG候補」で出る。最終判定（OK/NG）は人が再現確認して xlsx に記入する。
 
 ```
 cd tools/stg2-e2e
-python test-plan/export-plan.py                      # xlsx → test-plan/plan.json（openpyxl 必要。コミットしない）
-node run-xss-search.js cms                           # S8 検索条件（CMS・商品管理）。student も同様。--full 全バリエーション / --each 1項目ずつ / --only A-0010,...
-node run-xss-http.js                                 # 入口以外・HTTP(F-01〜F-09)と重点項目 E-08・E-19・E-47（--only F-03 等で絞り込み。--probe-php は下記）
+python test-plan/export-plan.py                      # xlsx(最終更新日時が最新のもの) → test-plan/plan.json（openpyxl 必要。コミットしない）
+node run-xss-search.js cms                           # 段階A: S8 検索条件（CMS・商品管理）。student も同様。--full 全バリエーション / --each 1項目ずつ / --only A-0010,...
+node run-xss-form.js --site cms --plan-only          # 段階A: 登録系(S1〜S7・S11、入力→確認画面まで)。まず --plan-only で対象・対象外を確認してから実行
+node run-xss-http.js                                 # 段階A: 入口以外・HTTP(F-01〜F-09)と重点項目 E-08・E-19・E-47（--only F-03 等で絞り込み。--probe-php は下記）
+node run-xss-student-exam.js --accept-writes         # 段階B: 受講者サイトの試験・アンケート（下記）
 node report-xss.js                                   # 最新の結果を計画のID単位に集計し、test-results/xss-report-*.csv を出力
 ```
 
-- いずれも **GET と検索フォームの送信だけ**（登録・更新・削除・アップロード・メール送信・決済はしない）。DB のダンプは不要。
+- **段階A（`run-xss-search.js`・`run-xss-form.js`・`run-xss-http.js`）は GET と確認画面までの送信だけ**（登録・更新・削除・アップロード・メール送信・決済はしない）。DB のダンプは不要。
+  - `run-xss-form.js`: 入力画面の各項目に攻撃文字列を入れて「確認」ボタンまで押す（`--site cms|product|student`。product は商品管理(Smarty)、student は受講者サイト。書き込み防止のガードは `xss-form-lib.js` の `submitGuarded`）。画面ごとに検証を通る値が要る場合は `test-plan/form-defaults.json` に追記する。`--check-pages` で、攻撃文字列なしに確認画面まで進めるかだけを事前に調べられる。
 - **受講者 SSO（本番と共用）へは通信しない**。ブラウザ側で SSO ドメインへの通信を遮断している。未ログインの受講者サイトはどの URL も SSO へ遷移するため、受講者サイトの確認は保存済みセッション（`node login.js student`）で行い、確認できなかったものは「対象外」と記録する。
 - 攻撃文字列の実行用定義は `xss-payloads.js`（正本は xlsx の「付録_攻撃文字列」）。検出ロジックは `detect.js`。
 - E-08 は、開発用らしき PHP（`*_dev.php` 等）を既定では**開かず、一覧のみ**出す（PHP は開くと実行され、メール送信等の副作用がありうる）。内容を確認してから `--probe-php` を付ける。
-- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: 登録系の入力項目（S1〜S7・S9〜S12 の登録→全画面の追跡、F-10）、E-02/E-03/E-05（購入・決済画面。開くだけで注文が作られうる）、E-45（JSON 画面）、F-01 のログイン後の遷移、F-04 の Host ヘッダー本体、F-09 のセッション ID 再生成、入口別の表示先（G-01〜G-12）。実施する場合は、先に DB のダンプ（人が取得）が必要。
+- 受講者サイトは、決済（`settlement/*`）を除き可能な限り自動化する方針。`run-xss-form.js` の `STUDENT_SKIP`／`STUDENT_NOT_FOUND` に、画面ごとに個別調査した除外理由がある（ethic_treaning は対象の項目が csrf_token のみで、item-less プレフィルタにより自動的に対象外になる。player は視聴履歴に記録されるため除外）。
+
+##### 段階B: 受講者サイトの試験・アンケート（`run-xss-student-exam.js`）
+
+CMS・商品管理・会員登録の「確認」画面と異なり、試験・アンケートは確認画面に見える画面（`answer_check*.php` 等）が、表示に進んだ時点で回答を DB へ書き込む（`DbConnect::execute()` で確認済み）。書き込みなしで確認画面へ到達する経路がないため、書き込みを許容して実行する。
+
+- 事前準備: CMS でテスト専用の講座・試験・アンケートを作成し（`STG2_STUDENT_USER` だけを割り当てる。開始日は遠い過去・リマインドなし）、`tools/stg2-e2e/test-plan/student-entry.json` に実際の pid・eid・e2id 等を記入する。未記入のシナリオは自動でスキップされる。
+- 対象: `exam_plain`（`/exam/index.php`。書き込みなし）・`exam_choice`（`/exam/index1.php`。書き込みあり。`--accept-writes` が必須）・`survey`（`/exam2/index.php`。書き込みなし）。
+- 書き込みを行った場合は、実行後に stg2 の DB をダンプから復元する（人が実施）。
+- **未対応**: `exam_freetext`（自由記述。質問間の移動自体が毎回自動保存され、状態遷移が複雑）、`result*.php`・`resubmit_index*.php`（試験が「採点済み」「再提出待ち」等の状態である必要があり、別途 CMS 側の準備が要る）。
+- **計画(xlsx)側の要確認事項**: `/exam2/index1.php`・`confirm1.php`・`confirm2.php`・`answer_check1.php`・`resubmit_index1/2.php`・`result1/2.php`・`resubmit_exec_result1.php` はリポジトリに実体がない（exam2 は `index.php`→`answer_check.php` の1系統のみで、exam(非2)の番号付きファイル構成を誤って複製したとみられる）。`/exam/resubmit_exec_result1.php` も同様に実体がない。
+
+- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: S9（ファイルアップロード）・S10（パスワード）、S12（表示専用の値。登録→全画面の追跡）、F-10、E-02/E-03/E-05（購入・決済画面。開くだけで注文が作られうる）、E-45（JSON 画面）、F-01 のログイン後の遷移、F-04 の Host ヘッダー本体、F-09 のセッション ID 再生成、入口別の表示先（G-01〜G-12）、上記の exam_freetext・result系・resubmit系。実施する場合は、先に DB のダンプ（人が取得）が必要。
 
 ## アーキテクチャ
 

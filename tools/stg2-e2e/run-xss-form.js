@@ -47,8 +47,31 @@ const siteName = opt('--site') || (opt('--sheet') === 'product' ? 'product' : 'c
 const profile = PROFILES[siteName];
 if (!profile) throw new Error('--site は cms / product / student のどれかを指定してください');
 const sheet = profile.sheet;
-// 受講者サイトで、開く・確認ボタンを押すだけでも副作用がありうる画面（受験・視聴・決済・会員登録・メール送信）は自動では触らない
-const STUDENT_SKIP = /^\/(player|exam|exam2|ethic_treaning|settlement|login|logout|reminder|member|data1|data1_sp|engine1|engine1_sp)(\/|$)|\/(send|regist|complete|download)\w*\.php/i;
+// 受講者サイトの除外（決済以外は自動化する方針。コードを個別に確認した理由をそれぞれ付ける）。
+// - settlement: 決済そのもの（対象外とする方針）
+// - exam・exam2・ethic_treaning: 「確認」画面に見える画面(answer_check*.php・index2.php・confirm2.php 等)が、
+//   表示に進んだ時点で回答・受講履歴を書き込む(DbConnect::execute() を grep で確認)。CMSの confirm と違い
+//   書き込みなしで確認画面に到達する経路がないため、書き込みを許容する設計(段階B)が別途必要。ここでは対象外にする
+// - player: 動画プレイヤー。再生開始が視聴履歴に記録される(player/insert_report_user_video_viewed.php)。
+//   hidden項目の改ざんテスト(S11)はこのファイルへの送信を伴いうるため対象外にする
+// - login・logout: 受講者の認証は外部SSO(member.nichibenren.or.jp)経由のみで、ローカルのログイン処理はない
+const STUDENT_SKIP = /^\/(player|exam|exam2|ethic_treaning|settlement|login|logout)(\/|$)/i;
+// 計画のURLはファイル名からの仮称を含み、現在のリポジトリに実体がないものがある(実画面で要確認)。
+// login/*・reminder/*: ログインは上記のとおりSSOのみ。reminder は該当する物理ファイルがコードベースに見当たらない
+//   (テンプレートと /reminder/ へのリンクはあるが、処理する PHP が存在しない。機能が無効化されている可能性)
+// member/zip.php: 実ファイルは member/input_zip.php（郵便番号→住所のAjax）で、URL名が実画面と異なる
+const STUDENT_NOT_FOUND = new Map([
+  [/^\/login\//i, 'ログインはSSO経由のみで、該当するローカルの処理がない'],
+  [/^\/reminder\//i, '該当する物理ファイルがコードベースに見当たらない（要確認）'],
+  [/^\/member\/zip\.php$/i, '実ファイルは member/input_zip.php（Ajax。フォーム項目なし）'],
+  [/^\/member\/regist_confirm\.php$/i, 'regist.php の確認画面(同一ファイル)。regist.php の実行で併せて確認される'],
+]);
+const notFoundReason = (url) => { for (const [re, why] of STUDENT_NOT_FOUND) if (re.test(url)) return why; return null; };
+// 確認・登録画面そのもの（ファイル名で判定）。「regist」は、CMS 側の末尾なし(…/regist)や
+// info_user_regist.php・regist_confirm.php のような action 系だけに絞る。member/regist.php・product/add.php の
+// ように、1本のスクリプトが act=confirm/complete で分岐する入力画面自体は、ファイル名だけでは判定できないため
+// ここでは対象外にしない（submitGuarded が、送信するボタン・フォームの送信先を見て書き込みを防ぐ）
+const CONFIRM_SCREEN_URL = /(confirm|confirm_\w+|commit|\w*_regist\w*|regist_\w+|complete)(\.php)?$/;
 const marker = (id) => 'X' + id.replace('-', '');
 
 function loadRows() {
@@ -107,8 +130,9 @@ async function resolveTemplate(session, url) {
   if (!rows.length) throw new Error('対象の行がありません（plan.json・--sets・--only を確認してください）');
   if (planOnly) {
     // 画面ごとの扱いを、実行時の判定（STUDENT_SKIP・確認画面・{ID}）と同じ規則で出す。項目が画面にあるかは、実行しないとわからない
-    const why = (url) => (siteName === 'student' && STUDENT_SKIP.test(url) ? '対象外: 副作用がありうる画面'
-      : /(confirm|confirm_\w+|commit|regist\w*|complete)(\.php)?$/.test(url.split('?')[0]) ? '対象外: 確認・登録画面そのもの（段階B）'
+    const why = (url) => (siteName === 'student' && notFoundReason(url) ? `対象外: ページが見つからない（${notFoundReason(url)}）`
+      : siteName === 'student' && STUDENT_SKIP.test(url) ? '対象外: 書き込み・副作用を伴わずに到達できない画面'
+      : CONFIRM_SCREEN_URL.test(url.split('?')[0]) ? '対象外: 確認・登録画面そのもの（段階B）'
       : /[{}]/.test(url) ? (siteName === 'cms' ? '対象外: {ID} を含む（CMS）' : '実行: 一覧から実在のIDを探して開く')
       : '実行');
     const g = new Map();
@@ -133,10 +157,17 @@ async function resolveTemplate(session, url) {
 
   for (const [url, urlRows] of byUrl) {
    try {
-    // 受講者サイトの、副作用がありうる画面は自動では触らない
+    // 受講者サイトで、計画のURLに実体がない画面（SSOログイン・機能が見当たらない等）
+    if (siteName === 'student' && notFoundReason(url)) {
+      const why = notFoundReason(url);
+      for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: `ページが見つからない: ${why}`, url });
+      console.log(`skip ${url} (${urlRows.length} 行) ページが見つからない: ${why}`);
+      continue;
+    }
+    // 受講者サイトの、確認画面に書き込みなしで到達できない画面は自動では触らない（コメント参照。段階Bで扱う）
     if (siteName === 'student' && STUDENT_SKIP.test(url)) {
-      for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: '受験・視聴・決済・会員登録・メール送信などの副作用がありうる画面のため、自動では触らない（手動で確認）', url });
-      console.log(`skip ${url} (${urlRows.length} 行) 副作用がありうる画面`);
+      for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: '確認画面に見える画面が表示の時点で書き込みを行うため、自動では触らない（手動・段階Bで確認）', url });
+      console.log(`skip ${url} (${urlRows.length} 行) 書き込み・副作用を伴わずに到達できない画面`);
       continue;
     }
     // 確認・登録画面そのものは、edit 画面から POST されて初めて意味を持つ（直接開いても値がない）。登録(commit)側は段階Bで扱う
@@ -146,12 +177,18 @@ async function resolveTemplate(session, url) {
       startUrl = await resolveTemplate(session, url);
       if (startUrl) console.log(`  ${url}: ${startUrl}`);
     }
-    if (/(confirm|confirm_\w+|commit|regist\w*|complete)(\.php)?$/.test(url.split('?')[0]) || (/[{}]/.test(url) && !startUrl)) {
+    if (CONFIRM_SCREEN_URL.test(url.split('?')[0]) || (/[{}]/.test(url) && !startUrl)) {
       for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: 'edit→confirm の途中・登録後の画面。edit 画面の入力として確認される／登録(commit)を伴うため段階B', url });
       console.log(`skip ${url} (${urlRows.length} 行)`);
       continue;
     }
     const allNames = [...new Set(urlRows.flatMap((r) => r.fields))];
+    // 項目名(name)が計画にない行だけの画面は、開く前に対象外にする（副作用のある画面を不要に開かないため）
+    if (!allNames.length) {
+      for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: '項目名(name)が計画にない', url });
+      console.log(`skip ${url} (${urlRows.length} 行) 項目名(name)が計画にない`);
+      continue;
+    }
     const hasTargets = async () => (await fieldForms(session.page, allNames)).some((f) => f.found);
     // 入口の探索。edit を直接開いても入力画面にならない画面（「セッションエラー」・一覧へ戻される）があるため、順に試す:
     //  1) そのまま開く  2) /…/newdata（新規登録。セッションの初期化と入力画面の表示だけで、DB へは書き込まない）
