@@ -577,7 +577,7 @@ node report-xss.js                                   # 最新の結果を計画�
 - **受講者 SSO（本番と共用）へは通信しない**。ブラウザ側で SSO ドメインへの通信を遮断している。未ログインの受講者サイトはどの URL も SSO へ遷移するため、受講者サイトの確認は保存済みセッション（`node login.js student`）で行い、確認できなかったものは「対象外」と記録する。
 - 攻撃文字列の実行用定義は `xss-payloads.js`（正本は xlsx の「付録_攻撃文字列」）。検出ロジックは `detect.js`。
 - E-08 は、開発用らしき PHP（`*_dev.php` 等）を既定では**開かず、一覧のみ**出す（PHP は開くと実行され、メール送信等の副作用がありうる）。内容を確認してから `--probe-php` を付ける。
-- 受講者サイトは、決済（`settlement/*`）を除き可能な限り自動化する方針。`run-xss-form.js` の `STUDENT_SKIP`／`STUDENT_NOT_FOUND` に、画面ごとに個別調査した除外理由がある（ethic_treaning は対象の項目が csrf_token のみで、item-less プレフィルタにより自動的に対象外になる。player は視聴履歴に記録されるため除外）。
+- 受講者サイトは、決済（`settlement/*`）を除き可能な限り自動化する方針。`run-xss-form.js` の `STUDENT_SKIP`／`STUDENT_NOT_FOUND` に、画面ごとに個別調査した除外理由がある（ethic_treaning の S2(自由記述)系は対象の項目が csrf_token のみで、item-less プレフィルタにより自動的に対象外になる。S11(URL改ざん)系は `run-xss-student-exam.js` の `ethic` で別途対応。player は視聴履歴に記録されるため除外）。
 
 ##### 段階B: 受講者サイトの試験・アンケート（`run-xss-student-exam.js`）
 
@@ -585,9 +585,10 @@ CMS・商品管理・会員登録の「確認」画面と異なり、試験・�
 
 - 事前準備: CMS でテスト専用の講座・試験・アンケートを作成し（`STG2_STUDENT_USER` だけを割り当てる。開始日は遠い過去・リマインドなし）、`tools/stg2-e2e/test-plan/student-entry.json` に実際の pid・eid・e2id 等を記入する。未記入のシナリオは自動でスキップされる。
 - 対象: `exam_plain`（`/exam/index.php`。書き込みなし）・`exam_choice`（`/exam/index1.php`。書き込みあり）・`exam_freetext`（`/exam/index2.php`→`confirm2.php`。書き込みあり。最初の設問のみ回答し最終提出はしない）・`survey`（`/exam2/index.php`。書き込みなし）。書き込みがあるシナリオは `--accept-writes` が必須。
+- 回答を1件登録した直後に、`result*.php`（採点結果）・`resubmit_index*.php`（再提出。到達できなければ対象外として記録するだけ）・`confirm1.php`（選択式の下書き回答の確認。読み取り専用）も合わせて読み取り専用で確認する（`RESULT_CHECKS`・`RESUBMIT_CHECKS`・`CONFIRM_CHECKS`）。
+- `ethic`（代替倫理研修。`/ethic_treaning/`）: 対象行はすべて URL パラメータ(pid・qid)の改ざん確認（多肢選択のため文字列注入の対象項目はない）。専用の権限を持つ別アカウント(`STG2_STUDENT_ETHIC_USER`)が必要なため、`node login.js student-ethic` で別セッション(`.auth/student-ethic.json`)を作り、`test-plan/student-entry.json` の `"ethic"` に実際の pid・qid を記入する（未設定ならスキップ）。書き込みなしのため `--accept-writes` は不要。
 - 書き込みを行った場合は、実行後に stg2 の DB をダンプから復元する（人が実施）。
-- **未対応**: `result*.php`・`resubmit_index*.php`（試験が「採点済み」「再提出待ち」等の状態である必要があり、別途 CMS 側の準備が要る）。
-- **計画(xlsx)側の要確認事項**: `/exam2/index1.php`・`confirm1.php`・`confirm2.php`・`answer_check1.php`・`resubmit_index1/2.php`・`result1/2.php`・`resubmit_exec_result1.php` はリポジトリに実体がない（exam2 は `index.php`→`answer_check.php` の1系統のみで、exam(非2)の番号付きファイル構成を誤って複製したとみられる）。`/exam/resubmit_exec_result1.php` も同様に実体がない。
+- **計画(xlsx)側の要確認事項**: `/exam2/index1.php`・`confirm1.php`・`confirm2.php`・`answer_check1.php`・`resubmit_index1/2.php`・`result1/2.php`・`resubmit_exec_result1.php` はリポジトリに実体がない（exam2 は `index.php`→`answer_check.php` の1系統のみで、exam(非2)の番号付きファイル構成を誤って複製したとみられる）。`/exam/resubmit_exec_result1.php` も同様に実体がない（`/exam/confirm1.php`・`confirm2.php` 自体は実在し、それぞれ下書き回答の確認画面として使われている）。
 
 ##### 段階B: S12（表示専用の値）・F-10（入力→全画面の自動追跡）（`run-xss-s12.js`）
 
@@ -600,17 +601,19 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
 ```
 
 - **DB へ書き込む（段階B）。実行前に stg2 の DB をダンプすること。** 登録した値は削除せず残る（手動で削除する運用）。
-- 登録先は `test-plan/s12-entries.json`（CMS の `newdata` 経由の新規登録のみ。既存レコードは編集しない）。カテゴリ名・講座名・授業名・講師名・課題名・図書室表示名・動画表示名/説明・設問名(exam/exam2)・お知らせタイトル/本文/外部リンク(CMS)、商品名(product_live・product_passport)、受講者氏名(member/regist)の17件を登録する。`xss-form-lib.js` の `submitComplete`（登録ボタンを実際に押す。`run-xss-form.js` の `submitGuarded` とは逆）を使う。
+- 登録先は `test-plan/s12-entries.json`（CMS の `newdata` 経由の新規登録のみ。既存レコードは編集しない）。カテゴリ名・講座名・授業名・講師名・課題名・図書室表示名・動画表示名/説明/タグ・教材表示名/説明・設問名(exam/exam2)・お知らせタイトル/本文/外部リンク(CMS)、商品名(product_live・product_passport)、受講者氏名(member/regist)の34件を登録する。`xss-form-lib.js` の `submitComplete`（登録ボタンを実際に押す。`run-xss-form.js` の `submitGuarded` とは逆）を使う。
 - お知らせ（`cms_information`）は WordPress へ自動投稿される（G-09・E-24・E-25・E-28・E-30 に対応）。巡回は受講者サイトと同一オリジンの WordPress ページも自然にカバーする（別サイト指定は不要）。
 - メール送信・決済を伴う入口（inquiry・mailmagazine・settlement）は対象外（CLAUDE.md の手動実施方針に合わせる）。
 - 受講者本人の氏名変更（`/mypage/edit.php`）は、削除済みの PHP 関数（`mysql_real_escape_string()`。PHP 8 では未定義）の呼び出しが残っており現状は登録自体が失敗する見込みのため、`blockedBy` 付きで対象外にしてある。
 - 巡回は `<a href>` を辿るだけのため、検索ポップアップ（`window.open`・`onclick` で開く画面。E-11・E-14・E-19 等の表示先）のように通常の巡回では到達しない画面は、`run-xss-s12.js` の `EXTRA_SEEDS` に明示的な開始点として追加している。
 - **まだ実行していない（コードのみ）。** `test-plan/s12-entries.json` に追加すればさらに対象を広げられる。
 
-- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: F-10 のうち `s12-entries.json`・`EXTRA_SEEDS` 未登録の入口・表示先（E-10・E-12・E-13・E-20 等、実在の受講者・注文・提出物を特定の講座へ紐付ける必要があるもの）、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（アンケート回答一覧・Ajax詳細。実在の回答データとIDの特定が要る。計画のURL `/cms_exam2/answer_set_list` は実際には `/cms_exam2_review/exam2_set_list` で、コントローラ側で `$product_id`・`$exam2_id` が入力から設定されていない疑いがあり要確認）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
+- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: 実在の受講者・注文・提出物・設問グループ等を特定の講座へ紐付ける必要があるもの（E-10・E-12・E-13・E-14(ポップアップ自体はEXTRA_SEEDSで到達可能だが実在データの表示確認は別途)・E-20 等）、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（アンケート回答一覧・Ajax詳細。実在の回答データとIDの特定が要る。計画のURL `/cms_exam2/answer_set_list` は実際には `/cms_exam2_review/exam2_set_list` で、コントローラ側で `$product_id`・`$exam2_id` が入力から設定されていない疑いがあり要確認）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
   - E-01・E-07 は新規コード不要（E-01 は `check-debug-output.js` の既存の巡回・検出観点と同一。E-07 は cms_video の確認画面が通常の CMS 登録系テスト(S1〜S7。P06 を含む)の対象に既に含まれる）。
   - E-03（受講者レポート）・E-09（WordPressスマホ版。モバイルUA）・E-45（JSON応答のContent-Type）・F-09（セッションID再生成）・F-01のCMS側（ログイン後の戻り先）は `run-xss-http.js` に追加済み。F-04 の Host ヘッダー本体も、SNI・証明書は正規のまま Host ヘッダーの値だけ差し替える方法で追加済み（`run-xss-http.js`）。
   - S9（ファイルのアップロード）・S10（パスワード）は `run-xss-form.js` に追加済み（上記参照）。
+  - ethic_treaning（代替倫理研修。S11のURLパラメータ改ざん）・試験/アンケートの `result*.php`・`resubmit_index*.php`・`confirm1.php` は `run-xss-student-exam.js` に追加済み（上記参照）。
+  - E-21・E-23・E-27（教材の表示名/説明・動画のタグ・コンテンツ検索ポップアップの保存済みデータ）は `s12-entries.json` に教材(`cms_material`)・動画タグ(`video_tags`)を追加して対応。E-32（商品詳細の「主催」）は、自由入力ではなく弁護士会マスタからの選択（候補から選ぶ方式）の可能性が高く、要確認のため見送り。
   - **F-01 の調査中に、CMS ログインの戻り先（backurl）にオープンリダイレクトの脆弱性を発見**（`Login_page.php::_is_valid_backurl()` が `//evil.example/` のようなプロトコル相対URLを誤って許可する）。詳細は `secure_report/stg2自動テストで発見した不具合_2026-10-07.md` の [B-7] を参照。
 
 ## アーキテクチャ
