@@ -5,7 +5,7 @@
 //   --only       実行するIDを指定（省略時は下の CHECKS すべて）
 //   --probe-php  E-08 で、リポジトリに存在する開発用らしき PHP(*_dev.php 等)にも実際にアクセスする。
 //                PHP は開くと実行されるため既定では一覧表示のみ（メール送信等の副作用がありうる）
-// 自動化していないもの（計画の該当行は手動）: F-01 のうち受講者側(SSO経由のためログインを自動化しない)・F-04 の Host ヘッダー本体・
+// 自動化していないもの（計画の該当行は手動）: F-01 のうち受講者側(SSO経由のためログインを自動化しない)・
 //   E-02/E-05 の購入・決済画面（開くだけで注文等が作られうる）
 const fs = require('fs');
 const path = require('path');
@@ -310,7 +310,12 @@ async function checkD0005() {
   }
 }
 
-// F-04 Host / X-Forwarded-Host（Host 本体の差し替えは curl --resolve 等で手動）
+// F-04 Host / X-Forwarded-Host と、Host ヘッダー本体の差し替え。
+// Host 本体は、TLS の接続先(SNI・証明書)はそのまま(stg2 のサーバーへ実際に接続する)で、HTTPリクエストの Host ヘッダーの値だけを
+// 書き換える。Apache の名前ベースのバーチャルホストは通常 SNI で確定するため、この方法でも stg2 のアプリには到達できる一方、
+// アプリが $_SERVER['HTTP_HOST'] を使って作るリンク・リダイレクト・メール本文等には、書き換えた値がそのまま渡る想定。
+// （context.request は低レベルAPIのため、ブラウザの fetch と違い Host ヘッダーを明示的に上書きできる。到達できない場合は
+//   その旨が findings に残るだけなので、結果は実行して確認すること）
 async function checkF04() {
   const id = 'F-04';
   const key = hasLogin('student') ? 'student:auth' : 'student:anon';
@@ -324,8 +329,23 @@ async function checkF04() {
     const at = r.body.search(/(href|src|action)=["'][^"']*evil\.example/i);
     if (at >= 0) f.push({ kind: '外部ホストのリンクが作られる', where: classify(r.body, at), text: r.body.slice(at, at + 120).replace(/\s+/g, ' ') });
     if (/evil\.example/.test(r.headers.location || '')) f.push({ kind: 'リダイレクト先が外部ホスト', text: r.headers.location });
-    rec.add({ id, verdict: f.length ? 'NG' : 'OK', label: `X-Forwarded-Host ${p}`, status: r.status, findings: f, scope: 'X-Forwarded-Host のみ。Hostヘッダー本体は手動' });
+    rec.add({ id, verdict: f.length ? 'NG' : 'OK', label: `X-Forwarded-Host ${p}`, status: r.status, findings: f, scope: 'X-Forwarded-Host のみ' });
     if (f.length) console.log(`NG ${id} ${p} -> ${f.map((x) => x.kind).join(',')}`);
+  }
+  // Host ヘッダー本体の差し替え。ライブラリ・サーバー側の都合で上書きできない/到達できないことがあるため、例外は「要確認」にする
+  for (const p of pages) {
+    let r;
+    try { r = await rawGet(s, p, { Host: 'evil.example' }); } catch (e) {
+      rec.add({ id, verdict: '要確認', label: `Hostヘッダー本体 ${p}`, note: `確認できず: ${e.message.split('\n')[0]}` });
+      continue;
+    }
+    const f = [];
+    if (r.status === 'ERROR') { rec.add({ id, verdict: '要確認', label: `Hostヘッダー本体 ${p}`, note: `接続できない(確認できず): ${r.error || ''}`.trim() }); continue; }
+    const at = r.body.search(/(href|src|action)=["'][^"']*evil\.example/i);
+    if (at >= 0) f.push({ kind: '外部ホストのリンクが作られる(Hostヘッダー本体)', where: classify(r.body, at), text: r.body.slice(at, at + 120).replace(/\s+/g, ' ') });
+    if (/evil\.example/.test(r.headers.location || '')) f.push({ kind: 'リダイレクト先が外部ホスト(Hostヘッダー本体)', text: r.headers.location });
+    rec.add({ id, verdict: f.length ? 'NG' : 'OK', label: `Hostヘッダー本体 ${p}`, status: r.status, findings: f, scope: 'Host ヘッダー本体の差し替え(SNI・証明書は正規のまま)' });
+    if (f.length) console.log(`NG ${id} ${p}(Host本体) -> ${f.map((x) => x.kind).join(',')}`);
   }
 }
 

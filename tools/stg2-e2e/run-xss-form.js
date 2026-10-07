@@ -7,7 +7,9 @@
 //   登録した値が他の画面にどう表示されるか（S12・F-10）は段階B（書き込みあり。DBダンプが必要）で扱う。
 //
 // 使い方: node run-xss-form.js [オプション]   (事前に node login.js cms と python test-plan/export-plan.py を実行)
-//   --sets S1,S3,S5   対象のテストセット（既定: S1,S2,S3,S4,S5,S6,S7,S11）
+//   --sets S1,S3,S5   対象のテストセット（既定: S1,S2,S3,S4,S5,S6,S7,S9,S10,S11）
+//                     S9(ファイルのアップロード)は項目種別が file の欄を対象に、setInputFiles で名前・中身に攻撃文字列を入れる。
+//                     S10(パスワード)は、確認画面・エラー時の再表示に平文のまま残っていないかを追加で確認する(通常の往復確認とは逆)
 //   --only A-0018,...  計画のIDを指定
 //   --url cms_auth/edit,cms_video/edit   対象画面のURLパスを指定（先頭の / は省略可。カンマ区切りで複数）
 //   --full            各攻撃文字列の全バリエーションを使う（既定は代表のみ）
@@ -28,7 +30,7 @@ const { setFields, fieldForms, fillBaseline, submitGuarded, inspect, resolveRoun
 const WAIT_MS = 300;
 const args = process.argv.slice(2);
 const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };
-const sets = new Set((opt('--sets') || 'S1,S2,S3,S4,S5,S6,S7,S11').split(','));
+const sets = new Set((opt('--sets') || 'S1,S2,S3,S4,S5,S6,S7,S9,S10,S11').split(','));
 const only = opt('--only') ? new Set(opt('--only').split(',')) : null;
 // 先頭の / は省略可（Git Bash がパスに変換するため）。カンマ区切りで複数指定できる
 const onlyUrls = opt('--url') ? new Set(opt('--url').split(',').map((u) => '/' + u.replace(/^\/+/, ''))) : null;
@@ -103,6 +105,17 @@ const isConfirmScreen = (page) => page.evaluate(() => {
 
 const defaultsPath = path.join(__dirname, 'test-plan/form-defaults.json');
 const overridesFor = (url) => (fs.existsSync(defaultsPath) ? (JSON.parse(fs.readFileSync(defaultsPath, 'utf-8'))[url] || {}) : {});
+
+// file 型の欄（S9 の対象以外も含む）に、検証を通す無害なダミーファイルを設定する（必須のアップロード欄があると確認画面へ進めないため）。
+// S9 の対象項目には、この後で実際の攻撃文字列(ファイル名・中身)を上書きする
+const attrEscape = (s) => String(s).replace(/(["\\])/g, '\\$1');
+async function fillBenignFiles(page) {
+  const names = await page.evaluate(() => [...document.querySelectorAll('input[type=file]')].map((el) => el.name).filter(Boolean));
+  for (const n of names) {
+    await page.locator(`[name="${attrEscape(n)}"]`).setInputFiles({ name: 'xsstest_baseline.pdf', mimeType: 'application/pdf', buffer: Buffer.from('%PDF-1.4\n% xsstest baseline\n') }).catch(() => {});
+  }
+  return names;
+}
 
 // {ID} を含む URL（例: /alfproduct/product/info.php?mid={ID}）の ID を、同じ階層の一覧画面から探す。見つからなければ null
 async function resolveTemplate(session, url) {
@@ -252,6 +265,7 @@ async function resolveTemplate(session, url) {
     // 送信前後の差分だけを「新しく出たエラー」として扱う
     const errsBefore = await validationErrors(session.page);
     await fillBaseline(session.page, targets[0].field, overrides, true);   // 対象項目も通常の値で埋める
+    await fillBenignFiles(session.page);   // file 型の必須欄があれば、無害なダミーファイルで埋める(S9)
     await setFields(session.page, [{ name: targets[0].field, value: null }]);   // 通常の値のまま（目印だけ付ける）
     const base = await submitGuarded(session);
     if (base.refused) {
@@ -275,13 +289,36 @@ async function resolveTemplate(session, url) {
       for (const p of payloads) {
         await session.goto(pageUrl);
         await fillBaseline(session.page, t.field, overrides);
-        const value = fill(p.v, marker(t.row.id));
-        const set = await setFields(session.page, [{ name: t.field, value }]);
+        await fillBenignFiles(session.page);   // 対象以外の file 欄。対象が file 型の場合は直後に攻撃文字列で上書きする
+        let value, set;
+        if (t.type === 'file') {
+          // S9: ファイル名、または中身(HTML・SVG)に攻撃文字列を入れる。中身の場合はファイル名自体は無害にする
+          const isContent = p.file === 'content';
+          value = isContent ? `xsstest_${marker(t.row.id)}${p.ext || '.pdf'}` : fill(p.v, marker(t.row.id));
+          const content = isContent ? fill(p.v, marker(t.row.id)) : `%PDF-1.4\n% XSSTEST ${marker(t.row.id)}\n`;
+          try {
+            await session.page.locator(`[name="${attrEscape(t.field)}"]`).setInputFiles({ name: value, mimeType: p.mime || 'application/pdf', buffer: Buffer.from(content) });
+          } catch (e) {
+            rec.add({ id: t.row.id, field: t.field, pid: p.pid, idx: p.idx, verdict: '要確認', note: `ファイルを設定できない: ${e.message.split('\n')[0]}`, url });
+            continue;
+          }
+          await session.page.evaluate((n) => { const el = document.querySelector(`[name="${CSS.escape(n)}"]`); if (el && el.form) el.form.setAttribute('data-xss-form', '1'); }, t.field);
+          set = [{ name: t.field, found: true, type: 'file' }];
+        } else {
+          value = fill(p.v, marker(t.row.id));
+          set = await setFields(session.page, [{ name: t.field, value }]);
+        }
         const injected = [{ id: t.row.id, marker: marker(t.row.id), field: t.field, payload: p, type: set[0].type }];
         const res = await submitGuarded(session);
         if (res.refused) { rec.add({ id: t.row.id, field: t.field, verdict: '対象外', note: res.refused, url }); break; }
         const [raw] = await inspect(session, res, injected, baseDialogs);
-        const findings = await resolveRoundtrip(session, res, raw);
+        let findings = await resolveRoundtrip(session, res, raw);
+        // S10(パスワード): 通常の往復確認(値が戻らないと「異なる」と検出する)とは期待が逆なので、その検出は使わず、
+        // 代わりに「送信した値がそのまま画面に残っている(=漏れている)」ことを検出する
+        if (t.type === 'password') {
+          findings = findings.filter((f) => f.kind !== '再表示された値が入力と異なる');
+          if (res.html && value && res.html.includes(value)) findings = [...findings, { kind: 'パスワードが画面に平文で残っている(想定外)', text: value.slice(0, 60), ng: true }];
+        }
         const ng = findings.some((f) => f.ng);
         const stage = (await isConfirmScreen(session.page)) ? '確認画面' : isConfirm ? '再表示(検証エラー等)' : '検索結果・一覧(確認画面なし)';
         rec.add({

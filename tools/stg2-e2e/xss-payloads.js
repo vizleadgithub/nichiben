@@ -119,6 +119,16 @@ const PAYLOADS = {
     { v: '1 OR 1=1', errCheck: true },
     { v: "{m}\"><svg/onload=alert(1)>", sig: '<svg/onload=alert(1)>' },
   ]),
+  // ファイルのアップロード(S9)。file: 'name' はファイル名に攻撃文字列を入れる（中身は無害なダミー）。
+  // file: 'content' はファイル名は無害にし、中身を HTML・SVG(script入り)にする（保存後に配信された場合の実行を見る）
+  P18: P('P18', 'アップロードファイル名・中身', [
+    { v: "{m}\"><img src=x onerror=alert('{m}')>.pdf", sig: "<img src=x onerror=alert('{m}')>", file: 'name' },
+    { v: "{m}';alert(1);//.pdf", sig: "{m}';alert(1);//", file: 'name' },
+    { v: 'x.php.pdf', file: 'name' },
+    { v: '{m}' + 'あ'.repeat(250) + '.pdf', file: 'name' },
+    { v: "<html><body><script>alert('{m}')</script></body></html>", sig: "<script>alert('{m}')</script>", file: 'content', ext: '.html', mime: 'text/html' },
+    { v: '<svg xmlns="http://www.w3.org/2000/svg" onload="alert(\'{m}\')"></svg>', sig: 'onload="alert(\'{m}\')"', file: 'content', ext: '.svg', mime: 'image/svg+xml' },
+  ]),
 };
 
 // セットごとの適用 P-ID（付録「テストセット」シートと同じ）
@@ -133,10 +143,13 @@ const SETS = {
   S8: ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P09', 'P10', 'P13', 'P14'],
   S11: ['P19', 'P02', 'P05', 'P08', 'P17'],
   S12: ['P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P09', 'P10', 'P11', 'P12', 'P13'],
+  S9: ['P18'],
+  // パスワード(S10)。計画の「ほか: P09,P13,P02,P05」どおり既存の P-ID を流用する
+  S10: ['P02', 'P05', 'P09', 'P13'],
 };
 
 // 既定(quick)は各 P-ID の先頭バリエーションだけ。P07 は textarea/title/select の3種を使う（文脈が違うため）
-const QUICK_PICK = { P07: [0, 1, 2], P08: [0, 1, 8], P11: [0, 2, 5, 6, 16], P12: [0, 4], P15: [0, 1] };
+const QUICK_PICK = { P07: [0, 1, 2], P08: [0, 1, 8], P11: [0, 2, 5, 6, 16], P12: [0, 4], P15: [0, 1], P18: [0, 4] };
 
 function expand(setId, { full = false } = {}) {
   const out = [];

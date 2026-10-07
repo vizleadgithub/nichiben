@@ -92,6 +92,20 @@ async function registerEntry(sessions, entry, rec) {
   return { id: entry.id, desc: entry.desc, marker: m, sig: sigFor(m), site: entry.session, registeredAt: new Date().toISOString(), finalUrl: completeRes.finalUrl };
 }
 
+// 検索ポップアップ等、<a href> ではなく window.open/onclick で開くため通常の巡回では辿り着けない画面。
+// 重点項目(E-11・E-14・E-19 等)の「表示先」としても使われるため、巡回の開始点に明示的に加える
+// （URL・パラメータは run-xss-http.js の E-19 確認(ADMIN_POPUPS)で実際に使っているものと同じ）
+const EXTRA_SEEDS = {
+  cms: [
+    '/alfproduct/product/search_product.php?gid=x', '/alfproduct/product/search_contents.php?gid=x',
+    '/alfproduct/product/search_student.php?gid=teacher_student_id', '/alfproduct/product/search_elive.php?gid=x',
+    '/alfproduct/product_ethics/search_product.php?gid=x', '/alfproduct/product_live/search_product.php?gid=x',
+    '/alfproduct/product_passport/search_product.php?gid=x',
+    '/alfproduct/amount_user/index.php', '/alfproduct/amount_order/index.php',
+  ],
+  student: [],
+};
+
 // 登録済みマーカーを使い、CMS・受講者サイトを巡回して出現箇所を探す
 async function crawlForMarkers(sessions, manifest, rec) {
   const markers = manifest.map((e) => ({ id: e.id, marker: e.marker, sig: e.sig }));
@@ -102,6 +116,7 @@ async function crawlForMarkers(sessions, manifest, rec) {
     const occurrencesByPage = [];
     const { visited, skipped } = await crawl(session, {
       maxPages,
+      seedUrls: (EXTRA_SEEDS[site] || []).map((p) => session.abs(p)),
       onPage: async (url, html, status) => {
         const occ = await findMarkerOccurrences(session, html, markers);
         if (occ.length) {

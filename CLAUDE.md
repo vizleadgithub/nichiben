@@ -564,7 +564,7 @@ bash alflearning/mountcheck.sh
 cd tools/stg2-e2e
 python test-plan/export-plan.py                      # xlsx(最終更新日時が最新のもの) → test-plan/plan.json（openpyxl 必要。コミットしない）
 node run-xss-search.js cms                           # 段階A: S8 検索条件（CMS・商品管理）。student も同様。--full 全バリエーション / --each 1項目ずつ / --only A-0010,...
-node run-xss-form.js --site cms --plan-only          # 段階A: 登録系(S1〜S7・S11、入力→確認画面まで)。まず --plan-only で対象・対象外を確認してから実行
+node run-xss-form.js --site cms --plan-only          # 段階A: 登録系(S1〜S7・S9・S10・S11、入力→確認画面まで)。まず --plan-only で対象・対象外を確認してから実行
 node run-xss-http.js                                 # 段階A: 入口以外・HTTP(F-01〜F-09)と重点項目 E-08・E-19・E-47（--only F-03 等で絞り込み。--probe-php は下記）
 node run-xss-student-exam.js --accept-writes         # 段階B: 受講者サイトの試験・アンケート（下記）
 node report-xss.js                                   # 最新の結果を計画のID単位に集計し、test-results/xss-report-*.csv を出力
@@ -572,6 +572,8 @@ node report-xss.js                                   # 最新の結果を計画�
 
 - **段階A（`run-xss-search.js`・`run-xss-form.js`・`run-xss-http.js`）は GET と確認画面までの送信だけ**（登録・更新・削除・アップロード・メール送信・決済はしない）。DB のダンプは不要。
   - `run-xss-form.js`: 入力画面の各項目に攻撃文字列を入れて「確認」ボタンまで押す（`--site cms|product|student`。product は商品管理(Smarty)、student は受講者サイト。書き込み防止のガードは `xss-form-lib.js` の `submitGuarded`）。画面ごとに検証を通る値が要る場合は `test-plan/form-defaults.json` に追記する。`--check-pages` で、攻撃文字列なしに確認画面まで進めるかだけを事前に調べられる。
+    - S9(ファイルのアップロード)は、項目種別が file の欄に Playwright の `setInputFiles`（ファイル名・中身をメモリ上のバッファで指定。OSのファイル名制限を受けない）で、ファイル名または中身(HTML・SVG)に攻撃文字列を入れる。対象以外の file 欄は無害なダミーファイルで埋める。
+    - S10(パスワード)は、通常の往復確認(値が戻らないと「異なる」と検出する)とは期待が逆のため、確認画面・エラー時の再表示に送信した値がそのまま残っていないか(平文表示)を別途検出する。
 - **受講者 SSO（本番と共用）へは通信しない**。ブラウザ側で SSO ドメインへの通信を遮断している。未ログインの受講者サイトはどの URL も SSO へ遷移するため、受講者サイトの確認は保存済みセッション（`node login.js student`）で行い、確認できなかったものは「対象外」と記録する。
 - 攻撃文字列の実行用定義は `xss-payloads.js`（正本は xlsx の「付録_攻撃文字列」）。検出ロジックは `detect.js`。
 - E-08 は、開発用らしき PHP（`*_dev.php` 等）を既定では**開かず、一覧のみ**出す（PHP は開くと実行され、メール送信等の副作用がありうる）。内容を確認してから `--probe-php` を付ける。
@@ -602,11 +604,13 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
 - お知らせ（`cms_information`）は WordPress へ自動投稿される（G-09・E-24・E-25・E-28・E-30 に対応）。巡回は受講者サイトと同一オリジンの WordPress ページも自然にカバーする（別サイト指定は不要）。
 - メール送信・決済を伴う入口（inquiry・mailmagazine・settlement）は対象外（CLAUDE.md の手動実施方針に合わせる）。
 - 受講者本人の氏名変更（`/mypage/edit.php`）は、削除済みの PHP 関数（`mysql_real_escape_string()`。PHP 8 では未定義）の呼び出しが残っており現状は登録自体が失敗する見込みのため、`blockedBy` 付きで対象外にしてある。
+- 巡回は `<a href>` を辿るだけのため、検索ポップアップ（`window.open`・`onclick` で開く画面。E-11・E-14・E-19 等の表示先）のように通常の巡回では到達しない画面は、`run-xss-s12.js` の `EXTRA_SEEDS` に明示的な開始点として追加している。
 - **まだ実行していない（コードのみ）。** `test-plan/s12-entries.json` に追加すればさらに対象を広げられる。
 
-- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: S9（ファイルアップロード）・S10（パスワード）、F-10 のうち `s12-entries.json` 未登録の入口、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（exam2のAjax応答。実在の回答データとIDの特定が要る）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、F-04 の Host ヘッダー本体、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
+- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: F-10 のうち `s12-entries.json`・`EXTRA_SEEDS` 未登録の入口・表示先（E-10・E-12・E-13・E-20 等、実在の受講者・注文・提出物を特定の講座へ紐付ける必要があるもの）、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（アンケート回答一覧・Ajax詳細。実在の回答データとIDの特定が要る。計画のURL `/cms_exam2/answer_set_list` は実際には `/cms_exam2_review/exam2_set_list` で、コントローラ側で `$product_id`・`$exam2_id` が入力から設定されていない疑いがあり要確認）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
   - E-01・E-07 は新規コード不要（E-01 は `check-debug-output.js` の既存の巡回・検出観点と同一。E-07 は cms_video の確認画面が通常の CMS 登録系テスト(S1〜S7。P06 を含む)の対象に既に含まれる）。
-  - E-03（受講者レポート）・E-09（WordPressスマホ版。モバイルUA）・E-45（JSON応答のContent-Type）・F-09（セッションID再生成）・F-01のCMS側（ログイン後の戻り先）は `run-xss-http.js` に追加済み。
+  - E-03（受講者レポート）・E-09（WordPressスマホ版。モバイルUA）・E-45（JSON応答のContent-Type）・F-09（セッションID再生成）・F-01のCMS側（ログイン後の戻り先）は `run-xss-http.js` に追加済み。F-04 の Host ヘッダー本体も、SNI・証明書は正規のまま Host ヘッダーの値だけ差し替える方法で追加済み（`run-xss-http.js`）。
+  - S9（ファイルのアップロード）・S10（パスワード）は `run-xss-form.js` に追加済み（上記参照）。
   - **F-01 の調査中に、CMS ログインの戻り先（backurl）にオープンリダイレクトの脆弱性を発見**（`Login_page.php::_is_valid_backurl()` が `//evil.example/` のようなプロトコル相対URLを誤って許可する）。詳細は `secure_report/stg2自動テストで発見した不具合_2026-10-07.md` の [B-7] を参照。
 
 ## アーキテクチャ
