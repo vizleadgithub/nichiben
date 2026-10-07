@@ -70,10 +70,10 @@
 							<th width="120"><?= $this->lang->line_or_def('common_file_name','ファイル名') ?></th>
 							<td>
 								<?php if($material['material_logic_name'] == ""): ?>
-									<?= htmlspecialchars( $material['material_name'], ENT_QUOTES, 'UTF-8', false) ?>
+									<?= htmlspecialchars( $material['material_name'], ENT_QUOTES, 'UTF-8') ?>
 								<?php endif; ?>
 								<?php if($material['material_logic_name'] != ""): ?>
-									<?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8', false) ?>
+									<?= htmlspecialchars( $material['material_logic_name'], ENT_QUOTES, 'UTF-8') ?>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -88,7 +88,7 @@
 											if($flg){	?>
 												,
 											<?php } ?>
-											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8', false) ?>
+											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8') ?>
 										<?php
 											$flg = TRUE;
 										}
@@ -99,18 +99,18 @@
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_registrant','登録者') ?></th>
-							<td ><?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
+							<td ><?= htmlspecialchars( $material['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td ><?= nl2br( htmlspecialchars( $material['material_caption'], ENT_QUOTES, 'UTF-8', false) ) ?>
+							<td ><?= nl2br( htmlspecialchars( $material['material_caption'], ENT_QUOTES, 'UTF-8') ) ?>
 							</td>
 						</tr>
 						<tr>
 							<th style="vertical-align: middle;"><?= $this->lang->line_or_def('common_thumbnail','サムネイル') ?></th>
 							<td>
-								<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>/" alt="" style="height: 200px; padding: 1px;background-color:black;"/>
+								<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>/" alt="" style="height: 200px; padding: 1px;background-color:black;"/>
 							</td>
 						</tr>
 					</table>

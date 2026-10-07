@@ -82,7 +82,7 @@ class Cms_information extends CI_Controller {
 				's_free_word'	=> $data['s_free_word'],	//search
 			));
 		} catch(Exception $e) {
-			echo htmlspecialchars((string)$e->getMessage(), ENT_QUOTES, 'UTF-8', false) ."<br>";
+			echo htmlspecialchars((string)$e->getMessage(), ENT_QUOTES, 'UTF-8') ."<br>";
 			exit();
 		}
 		$information_table_list = $information_list['items'];

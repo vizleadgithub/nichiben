@@ -13,7 +13,7 @@
 	</style>
 </head>
 
-<body class="<?= htmlspecialchars( getenv('URL_SERVICE'), ENT_QUOTES, 'UTF-8', false) ?>">
+<body class="<?= htmlspecialchars( getenv('URL_SERVICE'), ENT_QUOTES, 'UTF-8') ?>">
 	<?php 
 		$this->load->view('header/body_header', array());
 	?>
@@ -54,7 +54,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_freeword','フリーワード') ?></th>
 							<td colspan = "3">
-								<input type="text" name="s_free_word" size="45" value="<?= htmlspecialchars(set_value('s_free_word', $s_free_word, FALSE), ENT_QUOTES, 'UTF-8', false) ?>">
+								<input type="text" name="s_free_word" size="45" value="<?= htmlspecialchars(set_value('s_free_word', $s_free_word, FALSE), ENT_QUOTES, 'UTF-8') ?>">
 							</td>
 						</tr>
 					</table>
@@ -82,10 +82,10 @@
 								<?php $line++;?>
 								<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
 									<td><a href="/cms_exam2_problem/detail/<?= $exam2_problem['exam2_problem_id']; ?>/"><?=$exam2_problem['exam2_problem_id']?></td>
-									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam2_problem['exam2_problem_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+									<td style="word-wrap:break-word;"><?= htmlspecialchars( $exam2_problem['exam2_problem_name'], ENT_QUOTES, 'UTF-8') ?></td>
 <?php if(false){ ?>
 									<td>
-										<?= (getenv('URL_SERVICE')=='mitemo')? "": htmlspecialchars( $exam2_problem['teacher_name'], ENT_QUOTES, 'UTF-8', false); ?>
+										<?= (getenv('URL_SERVICE')=='mitemo')? "": htmlspecialchars( $exam2_problem['teacher_name'], ENT_QUOTES, 'UTF-8'); ?>
 									</td>
 <?php } ?>
 									<td><?=$exam2_problem['answer_point']?></td>

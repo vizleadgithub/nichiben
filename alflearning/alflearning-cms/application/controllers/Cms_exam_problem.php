@@ -1016,7 +1016,7 @@ class Cms_exam_problem extends CI_Controller {
 		if( count($data['teacher_list']) != 0 ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false);
+				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
 			}
 		}
 		
@@ -1581,19 +1581,19 @@ class Cms_exam_problem extends CI_Controller {
 			$temp_contents    = '';
 			if($exam_problems['problem_kind']== 1){
 				// 設問種類→1:テキスト
-				$temp_contents = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam_problems['problem_contents'], ENT_QUOTES, 'UTF-8', false));
+				$temp_contents = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam_problems['problem_contents'], ENT_QUOTES, 'UTF-8'));
 			}elseif($exam_problems['problem_kind'] == 2){
 				// 設問種類 → 2：ビデオ
 				$this->load->model('model_video');
 				$temp_contents_id = $exam_problems['problem_contents'];
 				$db_data          = $this->model_video->get_material(array('video_id' => $temp_contents_id));
-				$temp_contents    = htmlspecialchars((string)$db_data['video_logic_name'], ENT_QUOTES, 'UTF-8', false);
+				$temp_contents    = htmlspecialchars((string)$db_data['video_logic_name'], ENT_QUOTES, 'UTF-8');
 			}elseif($exam_problems['problem_kind'] == 3){
 				// 設問種類 → 3：図書室
 				$this->load->model('model_book_library');
 				$temp_contents_id = $exam_problems['problem_contents'];
 				$db_data          = $this->model_book_library->get_data(array('book_library_id' => $temp_contents_id));
-				$temp_contents    = htmlspecialchars((string)$db_data['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false);
+				$temp_contents    = htmlspecialchars((string)$db_data['book_library_logic_name'], ENT_QUOTES, 'UTF-8');
 			}
 			$result_data['exam_problems_problem_contents_id'] = $temp_contents_id;
 			$result_data['exam_problems_problem_contents']    = $temp_contents;
@@ -1615,7 +1615,7 @@ class Cms_exam_problem extends CI_Controller {
 					$temp_contents = '['.$this->lang->line_or_def('common_non_correct','誤').']';
 					if($line_contents['correct']==1) $temp_contents = '['.$this->lang->line_or_def('common_correct','正').']';
 							
-					$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8', false));
+					$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8'));
 					$temp_contents .= $line_contents['word'];
 					if($temp_answer_contents != '') $temp_answer_contents .= "<br/>";
 					$temp_answer_contents .= $temp_contents;
@@ -1624,7 +1624,7 @@ class Cms_exam_problem extends CI_Controller {
 				// 解答種類 → 3：フリー回答
 				$array_answer_contents = obj2arr(json_decode( $exam_problems['answer_contents'] )); // JSON型、選択した番号の文字列
 				$line_contents         = (array)$array_answer_contents['answer_contents'][0];
-				$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8', false));
+				$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8'));
 				$temp_answer_contents = $line_contents['word'];
 			}
 			$result_data['exam_problems_answer_contents'] = $temp_answer_contents;
@@ -1723,14 +1723,14 @@ class Cms_exam_problem extends CI_Controller {
 						$line_contents = (array)$array_answer_contents['answer_contents'][$i];
 						// 選択した番号と一致した内容を出力
 						if( in_array( $line_contents['no'], $array_exam_answer_contents) ){
-							$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8', false));
+							$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8'));
 							
 							if($temp_answer_contents != '') $temp_answer_contents .= "<br/>";
 							$temp_answer_contents .= $line_contents['word'];
 						}
 					}
 				}elseif($exam_answer['answer_kind']==3){
-					$temp_answer_contents = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam_answer['exam_answer_contents'], ENT_QUOTES, 'UTF-8', false));
+					$temp_answer_contents = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam_answer['exam_answer_contents'], ENT_QUOTES, 'UTF-8'));
 				}
 				$temp_result_data['exam_answer_contents'] = $temp_answer_contents;
 				

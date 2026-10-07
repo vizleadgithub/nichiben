@@ -483,17 +483,17 @@
 				</h2>
 
 				<?=form_open("cms_exam/commit")?>
-					<input type="hidden" name="exam_id" value='<?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8', false) ?>' />
+					<input type="hidden" name="exam_id" value='<?= htmlspecialchars( $exam['exam_id'], ENT_QUOTES, 'UTF-8') ?>' />
 					
 					<?php if( isset($exam['exam_students']) ): ?>
 						<?php foreach( $exam['exam_students'] as $student): ?>
-							<input type="hidden" name="exam_students[]" value='<?= htmlspecialchars( $student, ENT_QUOTES, 'UTF-8', false) ?>' />
+							<input type="hidden" name="exam_students[]" value='<?= htmlspecialchars( $student, ENT_QUOTES, 'UTF-8') ?>' />
 						<?php endforeach; ?>
 					<?php endif; ?>
 					
 					<?php if( isset($exam['exam_problems']) ): ?>
 						<?php foreach( $exam['exam_problems'] as $student): ?>
-							<input type="hidden" name="exam_problems[]" value='<?= htmlspecialchars( $student, ENT_QUOTES, 'UTF-8', false) ?>' />
+							<input type="hidden" name="exam_problems[]" value='<?= htmlspecialchars( $student, ENT_QUOTES, 'UTF-8') ?>' />
 						<?php endforeach; ?>
 					<?php endif; ?>
 					
@@ -501,7 +501,7 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam_name','問題（テスト）名') ?></th>
 							<td>
-								<?= htmlspecialchars( $exam['exam_name'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $exam['exam_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 
@@ -509,7 +509,7 @@
 						<? if( getenv('URL_SERVICE')!='mitemo' ): ?>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_management_teacher','管理講師') ?></th>
-							<td ><?= htmlspecialchars($exam['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>
+							<td ><?= htmlspecialchars($exam['teacher_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<? endif; ?>
@@ -525,7 +525,7 @@
 											if($flg){	?>
 												,
 											<?php } ?>
-											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8', false) ?>
+											<?= htmlspecialchars( $name, ENT_QUOTES, 'UTF-8') ?>
 										<?php
 											$flg = TRUE;
 										}
@@ -541,13 +541,13 @@
 <?php } ?>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam['exam_caption'], ENT_QUOTES, 'UTF-8', false) ) ?>
+							<td style="word-break: break-all;"><?= nl2br( htmlspecialchars( $exam['exam_caption'], ENT_QUOTES, 'UTF-8') ) ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_submit_period','提出期間') ?></th>
 							<td >
-								<?= htmlspecialchars( $exam['exam_open'], ENT_QUOTES, 'UTF-8', false) ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $exam['exam_close'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $exam['exam_open'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $exam['exam_close'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
@@ -583,7 +583,7 @@
 									<?php if($exam['marking_public_kind'] == 1): // 1:即時公開 ?>
 										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_spot_public','即時公開') ?>
 									<?php else: // 2:時限式公開 ?>
-										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_timed_public','時限式公開') ?>&nbsp;&nbsp;[<?= htmlspecialchars( (string)$exam['marking_public_open'], ENT_QUOTES, 'UTF-8', false) ?>]
+										<?= $this->lang->line_or_def('common_public', '公開'); ?>&nbsp;&nbsp;:&nbsp;&nbsp;<?= $this->lang->line_or_def('common_timed_public','時限式公開') ?>&nbsp;&nbsp;[<?= htmlspecialchars( (string)$exam['marking_public_open'], ENT_QUOTES, 'UTF-8') ?>]
 									<?php endif; ?>
 <?php } ?>
 								<?php else: // 9:非公開 ?>
@@ -628,14 +628,14 @@
 										<ul>
 											<?php foreach($exam['exam_problems'] as $id => $exam_problem): ?>
 												<li class="confirm_ul_li_line">
-													<input type="hidden" name="exam_problem_id[]" value='<?= htmlspecialchars( $exam['exam_problems'][$id], ENT_QUOTES, 'UTF-8', false) ?>' />
-													<div class="confirm_ul_li_div_detail" style="width:280px;">[設問<?= $id+1 ?>]&nbsp;<?= htmlspecialchars( $exam['exam_problems_name'][$id], ENT_QUOTES, 'UTF-8', false) ?></div>
+													<input type="hidden" name="exam_problem_id[]" value='<?= htmlspecialchars( $exam['exam_problems'][$id], ENT_QUOTES, 'UTF-8') ?>' />
+													<div class="confirm_ul_li_div_detail" style="width:280px;">[設問<?= $id+1 ?>]&nbsp;<?= htmlspecialchars( $exam['exam_problems_name'][$id], ENT_QUOTES, 'UTF-8') ?></div>
 													<div class="confirm_ul_li_div_detail" style="width:100px;">
 														<? if( getenv('URL_SERVICE')!='mitemo' ): ?>
-															<?= htmlspecialchars( $exam['exam_problems_teacher_name'][$id], ENT_QUOTES, 'UTF-8', false) ?>
+															<?= htmlspecialchars( $exam['exam_problems_teacher_name'][$id], ENT_QUOTES, 'UTF-8') ?>
 														<? endif; ?>
 													</div>
-													<div class="confirm_ul_li_div_detail" style="width: 70px;"><?= htmlspecialchars( $exam['exam_problems_answer_point'][$id], ENT_QUOTES, 'UTF-8', false) ?></div>
+													<div class="confirm_ul_li_div_detail" style="width: 70px;"><?= htmlspecialchars( $exam['exam_problems_answer_point'][$id], ENT_QUOTES, 'UTF-8') ?></div>
 													<div class="confirm_ul_li_div_detail" style="width: 70px;">
 														<? if($btn_kirikae_flg==2): ?>
 															<input type="button" value="<?= $this->lang->line_or_def('common_exam_problem_detail','設問詳細') ?>" onClick="show_exam_problem_detail('exam_problem_detail_<?= $id; ?>',<?= (int)$exam['exam_problems'][$id] ?>);return false;" />
@@ -656,7 +656,7 @@
 						<tr>
 							<th><?= $this->lang->line_or_def('common_criteria','判定基準') ?></th>
 							<td >
-								<?= htmlspecialchars( $exam['criteria_value'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $exam['criteria_value'], ENT_QUOTES, 'UTF-8') ?>
 								<?php if($exam['criteria_type'] == 1){ ?>
 									点
 								<?php }elseif($exam['criteria_type'] == 2){ ?>
@@ -692,7 +692,7 @@
 								<?php if(!empty($exam['answer_date'][0])): ?>
 								
 								<?php $string_exam_answer_data = (isset($exam['string_exam_answer_data']))?$exam['string_exam_answer_data']:""; ?>
-								<input type="hidden" id="string_exam_answer_data" value='<?= htmlspecialchars($string_exam_answer_data, ENT_QUOTES, 'UTF-8', false) ?>' />
+								<input type="hidden" id="string_exam_answer_data" value='<?= htmlspecialchars($string_exam_answer_data, ENT_QUOTES, 'UTF-8') ?>' />
 								
 								<ul>
 									<li>
@@ -709,7 +709,7 @@
 											<li class="confirm_ul_li_line" <?= ($exam['exam_answer_latest_flag'][$id]==0) ? 'name="not_latest"' : 'name="latest"' ; ?>>
 												<input type="hidden" name="answer_no[]" value='<?= $exam['answer_no'][$id]; ?>' />
 												<div class="confirm_ul_li_div_detail" style="width:150px;"><?= $exam['answer_date'][$id]; ?></div>
-												<div class="confirm_ul_li_div_detail" style="width:230px;"><?= htmlspecialchars($exam['answer_student_name'][$id], ENT_QUOTES, 'UTF-8', false); ?></div>
+												<div class="confirm_ul_li_div_detail" style="width:230px;"><?= htmlspecialchars($exam['answer_student_name'][$id], ENT_QUOTES, 'UTF-8'); ?></div>
 												<div class="confirm_ul_li_div_detail" style="width: 70px;"><?= $exam['answer_point_total'][$id]; ?>/<?= $exam['max_answer_point']; ?></div>
 												<div class="confirm_ul_li_div_detail" style="width: 70px;">
 													<? if($btn_kirikae_flg==2): ?>

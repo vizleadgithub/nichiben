@@ -205,7 +205,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -216,7 +216,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail1==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail1|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail1|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -226,7 +226,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail2==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail2|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail2|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -236,7 +236,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail3==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail3|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail3|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -246,7 +246,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail4==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail4|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail4|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -256,7 +256,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail5==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail5|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail5|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -266,7 +266,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail6==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail6|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail6|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -276,7 +276,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail7==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail7|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail7|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>
@@ -286,7 +286,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail8==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail8|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail8|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>

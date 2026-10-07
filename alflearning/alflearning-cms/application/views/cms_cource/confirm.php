@@ -69,21 +69,21 @@
 					<tr>
 						<th width="160px"><?= $this->lang->line_or_def('common_course_name','講座名') ?></th>
 						<td >
-							<?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?>
+							<?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?>
 						</td>
 					<tr>
 						<th><?= $this->lang->line_or_def('common_public_period','公開期間') ?></th>
 						<td >
-							<?= htmlspecialchars( $cource['cource_open'], ENT_QUOTES, 'UTF-8', false) ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $cource['cource_close'], ENT_QUOTES, 'UTF-8', false) ?>
+							<?= htmlspecialchars( $cource['cource_open'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_range','～') ?><?= htmlspecialchars( $cource['cource_close'], ENT_QUOTES, 'UTF-8') ?>
 						</td>
 					</tr>
 					<tr>
 						<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-						<td ><?= nl2br( htmlspecialchars( $cource['cource_caption'], ENT_QUOTES, 'UTF-8', false) ) ?></td>
+						<td ><?= nl2br( htmlspecialchars( $cource['cource_caption'], ENT_QUOTES, 'UTF-8') ) ?></td>
 					</tr>
 					<tr>
 						<th><?= $this->lang->line_or_def('common_note','備考') ?></th>
-						<td ><?= nl2br( htmlspecialchars( $cource['cource_note'], ENT_QUOTES, 'UTF-8', false) ) ?></td>
+						<td ><?= nl2br( htmlspecialchars( $cource['cource_note'], ENT_QUOTES, 'UTF-8') ) ?></td>
 					</tr>
 
 					<tr>

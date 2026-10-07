@@ -785,9 +785,9 @@ class Cms_exam2 extends CI_Controller {
 					
 					foreach($student_list as $idx => $student_data){
 						if($data['exam2']['exam2_students_name'] == '---'){
-							$data['exam2']['exam2_students_name'] = '[No'.htmlspecialchars($student_data['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($student_data['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($student_data['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
+							$data['exam2']['exam2_students_name'] = '[No'.htmlspecialchars($student_data['student_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($student_data['student_name'], ENT_QUOTES, 'UTF-8').'&nbsp;&lt;'.htmlspecialchars($student_data['student_email'], ENT_QUOTES, 'UTF-8').'&gt;';
 						}else{
-							$data['exam2']['exam2_students_name'] .= '<br/>'.'[No'.htmlspecialchars($student_data['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($student_data['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($student_data['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
+							$data['exam2']['exam2_students_name'] .= '<br/>'.'[No'.htmlspecialchars($student_data['student_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($student_data['student_name'], ENT_QUOTES, 'UTF-8').'&nbsp;&lt;'.htmlspecialchars($student_data['student_email'], ENT_QUOTES, 'UTF-8').'&gt;';
 						}
 					}
 					//foreach($data['exam2']['exam2_students'] as $idx => $lecture){
@@ -1213,7 +1213,7 @@ class Cms_exam2 extends CI_Controller {
 										// 選択した番号と一致した内容を出力
 										if( in_array( $line_contents['no'], $array_exam2_answer_contents) ){
 											
-											$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8', false));
+											$line_contents['word'] = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$line_contents['word'], ENT_QUOTES, 'UTF-8'));
 											//$line_contents['word'] = $line_contents['word'];
 										
 											if($temp != '') $temp .= "<br/>";
@@ -1225,7 +1225,7 @@ class Cms_exam2 extends CI_Controller {
 										//$answer_contents_correct[$i] = $line_contents['correct'];
 									}
 								}elseif($exam2_answer['answer_kind']==3){
-									$temp = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam2_answer['exam2_answer_contents'], ENT_QUOTES, 'UTF-8', false));
+									$temp = str_replace(array("\r\n", "\r", "\n"), array("<br/>", "<br/>", "<br/>"), htmlspecialchars((string)$exam2_answer['exam2_answer_contents'], ENT_QUOTES, 'UTF-8'));
 									//$temp = $exam2_answer['exam2_answer_contents'];
 								}
 								$data['exam2_answer'][$idx]['exam2_answer_contents'][$idx_detail] = $temp;
@@ -1482,7 +1482,7 @@ class Cms_exam2 extends CI_Controller {
 		if( count($data['teacher_list']) != 0 ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false);
+				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
 			}
 		}
 		
@@ -1748,7 +1748,7 @@ class Cms_exam2 extends CI_Controller {
 			// 該当ありの場合
 			
 			// 設問名の取得
-			$exam2_problem_name = '[No'.$db_data['exam2_problem_id'].'] '.htmlspecialchars($db_data['exam2_problem_name'], ENT_QUOTES, 'UTF-8', false);
+			$exam2_problem_name = '[No'.$db_data['exam2_problem_id'].'] '.htmlspecialchars($db_data['exam2_problem_name'], ENT_QUOTES, 'UTF-8');
 			
 			// 設問内容の取得 ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 			$problem_contents_title = $this->lang->line_or_def('common_exam2_problem','設問');
@@ -1765,7 +1765,7 @@ class Cms_exam2 extends CI_Controller {
 
 				$this->load->model('model_video');
 				$video_data = $this->model_video->get_material(array('video_id' => $db_data['problem_contents']));
-				$problem_contents_value .= '<span id="popup_thumbnail_name">'.'[No'.$video_data['video_id'].'] '.htmlspecialchars($video_data['video_logic_name'], ENT_QUOTES, 'UTF-8', false).'</span>';
+				$problem_contents_value .= '<span id="popup_thumbnail_name">'.'[No'.$video_data['video_id'].'] '.htmlspecialchars($video_data['video_logic_name'], ENT_QUOTES, 'UTF-8').'</span>';
 			}elseif($db_data['problem_kind'] == 3){
 				// 3:図書室
 				$problem_contents_title .= '<br/>['.$this->lang->line_or_def('common_book_library', '図書室').']';
@@ -1775,12 +1775,12 @@ class Cms_exam2 extends CI_Controller {
 				
 				$this->load->model('model_book_library');
 				$book_library_data = $this->model_book_library->get_data(array('book_library_id' => $db_data['problem_contents']));
-				$problem_contents_value .= '<span id="popup_thumbnail_name">'.'[No'.$book_library_data['book_library_id'].'] '.htmlspecialchars($book_library_data['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false).'</span>';
+				$problem_contents_value .= '<span id="popup_thumbnail_name">'.'[No'.$book_library_data['book_library_id'].'] '.htmlspecialchars($book_library_data['book_library_logic_name'], ENT_QUOTES, 'UTF-8').'</span>';
 			}else{
 				// 1:テキスト
 				$problem_contents_title .= '<br/>['.$this->lang->line_or_def('common_text', 'テキスト').']';
 				
-				$problem_contents_value = nl2br( htmlspecialchars($db_data['problem_contents'], ENT_QUOTES, 'UTF-8', false) );
+				$problem_contents_value = nl2br( htmlspecialchars($db_data['problem_contents'], ENT_QUOTES, 'UTF-8') );
 			}
 			
 			// 解答内容の取得 ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -1811,14 +1811,14 @@ class Cms_exam2 extends CI_Controller {
 					}else{
 						$problem_answer_value .= '['.$this->lang->line_or_def('common_correct', '正').'] ';
 					}
-					$problem_answer_value .= nl2br( htmlspecialchars($value_word, ENT_QUOTES, 'UTF-8', false) );
+					$problem_answer_value .= nl2br( htmlspecialchars($value_word, ENT_QUOTES, 'UTF-8') );
 				}
 			}else{
 				// 3:フリー解答
 				$problem_answer_title .= '<br/>['.$this->lang->line_or_def('common_free_exam2_answer', 'フリー解答').']';
 				
 				$line_contents        = (array)$array_answer_contents['answer_contents'][0];
-				$problem_answer_value = nl2br( htmlspecialchars($line_contents['word'], ENT_QUOTES, 'UTF-8', false) );
+				$problem_answer_value = nl2br( htmlspecialchars($line_contents['word'], ENT_QUOTES, 'UTF-8') );
 				if( empty($problem_answer_value) ){
 					$problem_answer_value = "　";
 				}

@@ -261,7 +261,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail) && $arr_input.thumbnail!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail" value="<!--{$arr_input.thumbnail|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -275,7 +275,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail1) && $arr_input.thumbnail1!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail1|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail1|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail1" value="<!--{$arr_input.thumbnail1|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail1.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -288,7 +288,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail2) && $arr_input.thumbnail2!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail2|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail2|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail2" value="<!--{$arr_input.thumbnail2|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail2.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -301,7 +301,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail3) && $arr_input.thumbnail3!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail3|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail3|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail3" value="<!--{$arr_input.thumbnail3|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail3.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -314,7 +314,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail4) && $arr_input.thumbnail4!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail4|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail4|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail4" value="<!--{$arr_input.thumbnail4|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail4.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -327,7 +327,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail5) && $arr_input.thumbnail5!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail5|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail5|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail5" value="<!--{$arr_input.thumbnail5|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail5.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -340,7 +340,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail6) && $arr_input.thumbnail6!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail6|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail6|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail6" value="<!--{$arr_input.thumbnail6|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail6.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -353,7 +353,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail7) && $arr_input.thumbnail7!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail7|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail7|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail7" value="<!--{$arr_input.thumbnail7|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail7.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -366,7 +366,7 @@ function contentsOpen(contentsNo){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail8) && $arr_input.thumbnail8!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail8|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail8|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail8" value="<!--{$arr_input.thumbnail8|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail8.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
@@ -462,7 +462,7 @@ function contentsOpen(contentsNo){
 			<!--{assign var=contents_thumbnail_key value="contents_thumbnail"|cat:$smarty.section.contents_loop.index}-->
 			<!--{if isset($arr_input.$contents_thumbnail_key) && $arr_input.$contents_thumbnail_key!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.$contents_thumbnail_key|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.$contents_thumbnail_key|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_contents_thumbnail<!--{$smarty.section.contents_loop.index}-->" value="<!--{$arr_input.$contents_thumbnail_key|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_contents_thumbnail<!--{$smarty.section.contents_loop.index}-->.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->

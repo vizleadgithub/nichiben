@@ -54,7 +54,7 @@ function searchButton(formAct){
 			<!--{if $arr_input.thumbnail==''}-->
 				未設定
 			<!--{else}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|urlencode|escape}-->&width=240&height=180" alt="" />
 			<!--{/if}-->
 		</td>
 	</tr>

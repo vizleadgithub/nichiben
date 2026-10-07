@@ -34,7 +34,7 @@
 								<?php
 								for($i2=0;$i2<count($export_data[0]["exam2_problem"]);$i2++){
 								?>
-									<th style="width:;"><?php print( htmlspecialchars((string)$export_data[0]["exam2_problem"][$i2]["exam2_problem_name"], ENT_QUOTES, 'UTF-8', false) ); ?></th>
+									<th style="width:;"><?php print( htmlspecialchars((string)$export_data[0]["exam2_problem"][$i2]["exam2_problem_name"], ENT_QUOTES, 'UTF-8') ); ?></th>
 								<?php
 								}
 								?>
@@ -46,8 +46,8 @@
 						</tr>
 
 						<form name="set_answer_form" id="set_answer_form">
-						<input type="hidden" name="exam2_id" value="<?php print( htmlspecialchars((string)$exam2_id, ENT_QUOTES, 'UTF-8', false) ); ?>">
-						<input type="hidden" name="product_id" value="<?php print( htmlspecialchars((string)$product_id, ENT_QUOTES, 'UTF-8', false) ); ?>">
+						<input type="hidden" name="exam2_id" value="<?php print( htmlspecialchars((string)$exam2_id, ENT_QUOTES, 'UTF-8') ); ?>">
+						<input type="hidden" name="product_id" value="<?php print( htmlspecialchars((string)$product_id, ENT_QUOTES, 'UTF-8') ); ?>">
 						<?php
 						$line=0;
 						if( isset($export_data[0]["student"]) ) {
@@ -66,17 +66,17 @@
 											}
 										}
 										?>
-										<input type="checkbox" name="student_id[]" id="student_id_<?php print( htmlspecialchars((string)$student["student_id"], ENT_QUOTES, 'UTF-8', false) ); ?>" value="<?php print( htmlspecialchars((string)$student["student_id"], ENT_QUOTES, 'UTF-8', false) ); ?>" <?php if($checked == 1){ print("checked"); } ?> >
+										<input type="checkbox" name="student_id[]" id="student_id_<?php print( htmlspecialchars((string)$student["student_id"], ENT_QUOTES, 'UTF-8') ); ?>" value="<?php print( htmlspecialchars((string)$student["student_id"], ENT_QUOTES, 'UTF-8') ); ?>" <?php if($checked == 1){ print("checked"); } ?> >
 									</td>
 									<td style="width:;">
 										<?php if( isset($student["info"]) ) { ?>
 											<?php if( isset($student["info"][0]) ) { ?>
-												<textarea id="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?php if(isset($export_data_review[$student['info'][0]['student_id']])){ ?><?= htmlspecialchars( $export_data_review[$student['info'][0]['student_id']], ENT_QUOTES, 'UTF-8', false) ?><?php } ?></textarea>
-												<input type="button" id="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" name="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8', false) ?>" onclick="update_exam2_answer_review_contents('<?= (int)$student['info'][0]['student_id'] ?>')" value="更新">
+												<textarea id="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>" name="exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>"><?php if(isset($export_data_review[$student['info'][0]['student_id']])){ ?><?= htmlspecialchars( $export_data_review[$student['info'][0]['student_id']], ENT_QUOTES, 'UTF-8') ?><?php } ?></textarea>
+												<input type="button" id="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>" name="btn_exam2_answer_review_contents_<?= htmlspecialchars( $student['info'][0]['student_id'], ENT_QUOTES, 'UTF-8') ?>" onclick="update_exam2_answer_review_contents('<?= (int)$student['info'][0]['student_id'] ?>')" value="更新">
 											<?php } ?>
 										<?php } ?>
 									</td>
-									<td style="width:;"><?php if( isset($student["info"]) ) { ?><?php if( isset($student["info"][0]) ) { ?><?= htmlspecialchars( $student["info"][0]['lawyer_number'], ENT_QUOTES, 'UTF-8', false) ?><?php } ?><?php } ?></td>
+									<td style="width:;"><?php if( isset($student["info"]) ) { ?><?php if( isset($student["info"][0]) ) { ?><?= htmlspecialchars( $student["info"][0]['lawyer_number'], ENT_QUOTES, 'UTF-8') ?><?php } ?><?php } ?></td>
 									<?php
 									for($i2=0;$i2<count($student["answer"]);$i2++){
 										if( isset($export_data[0]["exam2_problem"][$i2]) ){
@@ -90,7 +90,7 @@
 													for($i3=0;$i3<count($arr_temp->answer_contents);$i3++){
 														$temp = $arr_temp->answer_contents[$i3];
 														if( $temp->no ==$student['answer'][$i2]["exam2_answer_contents"] ){
-																	print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8', false)  );
+																	print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8')  );
 														}
 													}
 												}
@@ -103,7 +103,7 @@
 														for($i3=0;$i3<count($arr_temp->answer_contents);$i3++){
 															$temp = $arr_temp->answer_contents[$i3];
 															if( $temp->no == $arr_answer[$i4] ){
-																		print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8', false)."<br>"  );
+																		print(  "・".htmlspecialchars((string)$temp->word, ENT_QUOTES, 'UTF-8')."<br>"  );
 															}
 														}
 													}
@@ -115,9 +115,9 @@
 												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"] );
 												$safe_exam2_answer_id = (int)$student['answer'][$i2]["exam2_answer_id"];
 												print(  '<textarea id="exam2_answer_'.$safe_exam2_answer_id.'">'  );
-											print(  htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents"], ENT_QUOTES, 'UTF-8', false)  );
+											print(  htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents"], ENT_QUOTES, 'UTF-8')  );
 												if($student['answer'][$i2]["exam2_answer_contents_old"] != ""){
-												print(  "\r\n\r\n".htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents_old"], ENT_QUOTES, 'UTF-8', false)  );
+												print(  "\r\n\r\n".htmlspecialchars((string)$student['answer'][$i2]["exam2_answer_contents_old"], ENT_QUOTES, 'UTF-8')  );
 												}
 												print(  '</textarea>'  );
 												print(  '<input type="button" name="btn_exam2_answer_'.$safe_exam2_answer_id.'" onclick="update_exam2_answer_problem('.$safe_exam2_answer_id.', variables['.$safe_exam2_answer_id.'])" value="更新">'  );

@@ -181,7 +181,7 @@
 													$select_option = "selected";
 												}
 											?>
-											<option value="<?= $index ?>" <?= $select_option; ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8', false) ?></option>
+											<option value="<?= $index ?>" <?= $select_option; ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8') ?></option>
 										<?php //endif; ?>
 									<?php endforeach; ?>
 								</select>
@@ -251,7 +251,7 @@
 				<table class="list">
 					<tr>
 						<th style="width:96px;"><? //76px ?>
-							<?= $this->lang->line_or_def('common_','登録番号') ?> <a href="<?= htmlspecialchars( $order_by_asc, ENT_QUOTES, 'UTF-8', false) ?>" class="order_by_link">▲</a> <a href="<?= htmlspecialchars( $order_by_desc, ENT_QUOTES, 'UTF-8', false) ?>" class="order_by_link">▼</a>
+							<?= $this->lang->line_or_def('common_','登録番号') ?> <a href="<?= htmlspecialchars( $order_by_asc, ENT_QUOTES, 'UTF-8') ?>" class="order_by_link">▲</a> <a href="<?= htmlspecialchars( $order_by_desc, ENT_QUOTES, 'UTF-8') ?>" class="order_by_link">▼</a>
 						</th>
 						<th style=""><?= $this->lang->line_or_def('common_','氏名') ?></th>
 						<th style=""><?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?></th>
@@ -267,9 +267,9 @@
 						<?php foreach($student_list as $student) { ?>
 							<?php $line++;?>
 							<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-								<td class="tdc"><a onclick='edit_item("<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>");return false;' style="text-decoration: underline;"><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8', false) ?></a></td>
-								<td class="tdc"><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
-								<td class="tdc"><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td class="tdc"><a onclick='edit_item("<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>");return false;' style="text-decoration: underline;"><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8') ?></a></td>
+								<td class="tdc"><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td class="tdc"><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8') ?></td>
 								<td class="tdc">
 									<?= ($student['presence_passport']==1) ? '○' : '－' ; ?>
 								</td>
@@ -279,7 +279,7 @@
 								<td class="tdc">
 									<?php if(isset($student['bar_association_id'])): ?>
 										<?php if( isset($mtb_bar_association[$student['bar_association_id']]) ): ?>
-											<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8', false) ?>
+											<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8') ?>
 										<?php else: ?>
 											<?= ''; ?>
 										<?php endif; ?>
@@ -287,7 +287,7 @@
 								</td>
 
 								<td class="tdc">
-									<input type="checkbox" class="sub_auth_ethic_training" name="sub_auth_ethic_training[]" value='<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>' />
+									<input type="checkbox" class="sub_auth_ethic_training" name="sub_auth_ethic_training[]" value='<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>' />
 								</td>
 							</tr>
 						<?php } ?>
@@ -305,7 +305,7 @@
 <!--
 					<tr>
 						<? //$this->lang->line_or_def('common_date_of_birth','生年月日') ?>
-						<th style="width:56px;"><?= $this->lang->line_or_def('common_id','ID') ?> <a href="<?= htmlspecialchars( $order_by_asc, ENT_QUOTES, 'UTF-8', false) ?>" class="order_by_link">▲</a> <a href="<?= htmlspecialchars( $order_by_desc, ENT_QUOTES, 'UTF-8', false) ?>" class="order_by_link">▼</a></th><? //76px ?>
+						<th style="width:56px;"><?= $this->lang->line_or_def('common_id','ID') ?> <a href="<?= htmlspecialchars( $order_by_asc, ENT_QUOTES, 'UTF-8') ?>" class="order_by_link">▲</a> <a href="<?= htmlspecialchars( $order_by_desc, ENT_QUOTES, 'UTF-8') ?>" class="order_by_link">▼</a></th><? //76px ?>
 						<th style=""><?= $this->lang->line_or_def('common_name','名前') ?></th>
 						<th style=""><?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?></th>
 						<th style=""><?= $this->lang->line_or_def('common_','弁護士番号') ?></th>

@@ -261,7 +261,7 @@ function formSubmit(formName, formAction, formAct){
 		<th style="vertical-align:middle;">商品メイン画像<br>横600px × 縦600px</th>
 		<td>
 			<!--{if isset($arr_input.thumbnail) && $arr_input.thumbnail!=""}-->
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail" value="<!--{$arr_input.thumbnail|escape}-->" />
 			<!--{/if}-->
 		</td>

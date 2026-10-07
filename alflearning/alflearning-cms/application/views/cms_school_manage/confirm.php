@@ -73,18 +73,18 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_school_name','学校名') ?></th>
 							<td><!-- width="400"-->
-								<?= htmlspecialchars( $school['school_name'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $school['school_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
 							<td>
-								<?= htmlspecialchars( $school['school_caption'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $school['school_caption'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						</tr>
 							<th><?= $this->lang->line_or_def('common_note','備考') ?></th>
 							<td>
-								<?= htmlspecialchars( $school['school_note'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $school['school_note'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
@@ -134,7 +134,7 @@
 								<tr <?=($school['contract_param_live']['contract']=='undefined')?'style="display:none;"':''?> >
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_contract_class_time','契約授業時間') ?></th>
 									<td>
-										<?= htmlspecialchars( $school['contract_param_live']['time_convert'], ENT_QUOTES, 'UTF-8', false) ?><?= $this->lang->line_or_def('common_time','時間') ?>
+										<?= htmlspecialchars( $school['contract_param_live']['time_convert'], ENT_QUOTES, 'UTF-8') ?><?= $this->lang->line_or_def('common_time','時間') ?>
 									</td>
 
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_class_time_now','現在の授業時間') ?></th>
@@ -145,7 +145,7 @@
 								<tr <?=($school['contract_param_live']['contract']=='undefined')?'style="display:none;"':''?> >
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_contract_storage','契約ストレージ使用量') ?></th>
 									<td>
-										<?= htmlspecialchars( $school['contract_param_live']['strage_convert'], ENT_QUOTES, 'UTF-8', false) ?>G
+										<?= htmlspecialchars( $school['contract_param_live']['strage_convert'], ENT_QUOTES, 'UTF-8') ?>G
 									</td>
 
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_storage_now','現在のストレージ使用量') ?></th>
@@ -190,7 +190,7 @@
 								<tr <?=($school['contract_param_video']['contract']=='undefined')?'style="display:none;"':''?> >
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_contract_transfer','契約転送量') ?></th>
 									<td>
-										<?= htmlspecialchars( $school['contract_param_video']['stream_convert'], ENT_QUOTES, 'UTF-8', false) ?>G
+										<?= htmlspecialchars( $school['contract_param_video']['stream_convert'], ENT_QUOTES, 'UTF-8') ?>G
 									</td>
 
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_transfer_now','現在の転送量') ?></th>
@@ -201,7 +201,7 @@
 								<tr <?=($school['contract_param_video']['contract']=='undefined')?'style="display:none;"':''?> >
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_contract_storage','契約ストレージ使用量') ?></th>
 									<td>
-										<?= htmlspecialchars( $school['contract_param_video']['strage_convert'], ENT_QUOTES, 'UTF-8', false) ?>G
+										<?= htmlspecialchars( $school['contract_param_video']['strage_convert'], ENT_QUOTES, 'UTF-8') ?>G
 									</td>
 
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_storage_now','現在のストレージ使用量') ?></th>
@@ -247,7 +247,7 @@
 								<tr <?=($school['contract_param_book_library']['contract']=='undefined')?'style="display:none;"':''?> >
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_contract_transfer','契約転送量') ?></th>
 									<td>
-										<?= htmlspecialchars( $school['contract_param_book_library']['stream_convert'], ENT_QUOTES, 'UTF-8', false) ?>G
+										<?= htmlspecialchars( $school['contract_param_book_library']['stream_convert'], ENT_QUOTES, 'UTF-8') ?>G
 									</td>
 
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_transfer_now','現在の転送量') ?></th>
@@ -258,7 +258,7 @@
 								<tr <?=($school['contract_param_book_library']['contract']=='undefined')?'style="display:none;"':''?> >
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_contract_storage','契約ストレージ使用量') ?></th>
 									<td>
-										<?= htmlspecialchars( $school['contract_param_book_library']['strage_convert'], ENT_QUOTES, 'UTF-8', false) ?>G
+										<?= htmlspecialchars( $school['contract_param_book_library']['strage_convert'], ENT_QUOTES, 'UTF-8') ?>G
 									</td>
 
 									<th>&bull;&nbsp;<?= $this->lang->line_or_def('common_storage_now','現在のストレージ使用量') ?></th>
@@ -299,13 +299,13 @@
 								<tr>
 									<th>&bull;&nbsp;auth key</th>
 									<td colspan=3>
-										<?= htmlspecialchars( $school['contract_param_alfstream']['auth_key'], ENT_QUOTES, 'UTF-8', false) ?>
+										<?= htmlspecialchars( $school['contract_param_alfstream']['auth_key'], ENT_QUOTES, 'UTF-8') ?>
 									</td>
 								</tr>
 								<tr>
 									<th>&bull;&nbsp;code</th>
 									<td colspan=3>
-										<?= htmlspecialchars( $school['contract_param_alfstream']['code'], ENT_QUOTES, 'UTF-8', false) ?>
+										<?= htmlspecialchars( $school['contract_param_alfstream']['code'], ENT_QUOTES, 'UTF-8') ?>
 									</td>
 								</tr>
 								</table>
@@ -333,7 +333,7 @@
 										<?php if($school['contract_param_outside_elearningmanager']['api_key']==''): ?>
 											-
 										<?php else: ?>
-											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_key'], ENT_QUOTES, 'UTF-8', false) ?>
+											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_key'], ENT_QUOTES, 'UTF-8') ?>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -343,7 +343,7 @@
 										<?php if($school['contract_param_outside_elearningmanager']['api_url']==''): ?>
 											-
 										<?php else: ?>
-											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_url'], ENT_QUOTES, 'UTF-8', false) ?>
+											<?= htmlspecialchars( $school['contract_param_outside_elearningmanager']['api_url'], ENT_QUOTES, 'UTF-8') ?>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -353,17 +353,17 @@
 					<?php if( $detail_confirm_flag == 0 ): ?>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_school_admin_count','管理者数') ?></th>
-							<td ><?= htmlspecialchars( $school['school_admin_count'], ENT_QUOTES, 'UTF-8', false) ?>
+							<td ><?= htmlspecialchars( $school['school_admin_count'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_teacher_count','講師数') ?></th>
-							<td ><?= htmlspecialchars( $school['teacher_count'], ENT_QUOTES, 'UTF-8', false) ?>
+							<td ><?= htmlspecialchars( $school['teacher_count'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_student_count','受講者数') ?></th>
-							<td ><?= htmlspecialchars( $school['student_count'], ENT_QUOTES, 'UTF-8', false) ?>
+							<td ><?= htmlspecialchars( $school['student_count'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 					<?php endif ?>
@@ -376,13 +376,13 @@
 						<tr>
 							<th width="160px"><?= $this->lang->line_or_def('common_teacher_name','講師名') ?></th>
 							<td>
-								<?= htmlspecialchars( $school['school_admin_name'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $school['school_admin_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_mail_address','メールアドレス') ?></th>
 							<td>
-								<?= htmlspecialchars( $school['school_admin_email'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $school['school_admin_email'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 					</table>

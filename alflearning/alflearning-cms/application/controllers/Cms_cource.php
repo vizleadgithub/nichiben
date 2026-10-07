@@ -279,9 +279,9 @@ class Cms_cource extends CI_Controller {
 					$idx++;
 					$data['cource']['lecture_students'][$idx]    = $data_result['student_id'];
 					if($data['cource']['lecture_students_name'] == '---'){
-						$data['cource']['lecture_students_name'] = '[No'.htmlspecialchars($data_result['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($data_result['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
+						$data['cource']['lecture_students_name'] = '[No'.htmlspecialchars($data_result['student_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($data_result['student_name'], ENT_QUOTES, 'UTF-8').'&nbsp;&lt;'.htmlspecialchars($data_result['student_email'], ENT_QUOTES, 'UTF-8').'&gt;';
 					}else{
-						$data['cource']['lecture_students_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['student_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($data_result['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
+						$data['cource']['lecture_students_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['student_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($data_result['student_name'], ENT_QUOTES, 'UTF-8').'&nbsp;&lt;'.htmlspecialchars($data_result['student_email'], ENT_QUOTES, 'UTF-8').'&gt;';
 					}
 				}
 			}
@@ -297,9 +297,9 @@ class Cms_cource extends CI_Controller {
 					$idx++;
 					$data['cource']['lecture_materials'][$idx]    = $data_result['material_id'];
 					if($data['cource']['lecture_materials_name'] == '---'){
-						$data['cource']['lecture_materials_name'] = '[No'.htmlspecialchars($data_result['material_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['material_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_materials_name'] = '[No'.htmlspecialchars($data_result['material_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($data_result['material_logic_name'], ENT_QUOTES, 'UTF-8');
 					}else{
-						$data['cource']['lecture_materials_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['material_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['material_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_materials_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['material_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($data_result['material_logic_name'], ENT_QUOTES, 'UTF-8');
 					}
 				}
 			}
@@ -315,9 +315,9 @@ class Cms_cource extends CI_Controller {
 					$idx++;
 					$data['cource']['lecture_book_librarys'][$idx]    = $data_result['book_library_id'];
 					if($data['cource']['lecture_book_librarys_name'] == '---'){
-						$data['cource']['lecture_book_librarys_name'] = '[No'.htmlspecialchars($data_result['book_library_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_book_librarys_name'] = '[No'.htmlspecialchars($data_result['book_library_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($data_result['book_library_logic_name'], ENT_QUOTES, 'UTF-8');
 					}else{
-						$data['cource']['lecture_book_librarys_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['book_library_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_book_librarys_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['book_library_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($data_result['book_library_logic_name'], ENT_QUOTES, 'UTF-8');
 					}
 				}
 			}
@@ -333,9 +333,9 @@ class Cms_cource extends CI_Controller {
 					$idx++;
 					$data['cource']['lecture_videos'][$idx]    = $data_result['video_id'];
 					if($data['cource']['lecture_videos_name'] == '---'){
-						$data['cource']['lecture_videos_name'] = '[No'.htmlspecialchars($data_result['video_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['video_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_videos_name'] = '[No'.htmlspecialchars($data_result['video_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($data_result['video_logic_name'], ENT_QUOTES, 'UTF-8');
 					}else{
-						$data['cource']['lecture_videos_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['video_id'], ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($data_result['video_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_videos_name'] .= '<br/>'.'[No'.htmlspecialchars($data_result['video_id'], ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($data_result['video_logic_name'], ENT_QUOTES, 'UTF-8');
 					}
 				}
 			}
@@ -468,9 +468,9 @@ class Cms_cource extends CI_Controller {
 					$temp = $this->model_student->get_name($name_param);
 
 					if($data['cource']['lecture_students_name'] == '---'){
-						$data['cource']['lecture_students_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($temp['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
+						$data['cource']['lecture_students_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($temp['student_name'], ENT_QUOTES, 'UTF-8').'&nbsp;&lt;'.htmlspecialchars($temp['student_email'], ENT_QUOTES, 'UTF-8').'&gt;';
 					}else{
-						$data['cource']['lecture_students_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['student_name'], ENT_QUOTES, 'UTF-8', false).'&nbsp;&lt;'.htmlspecialchars($temp['student_email'], ENT_QUOTES, 'UTF-8', false).'&gt;';
+						$data['cource']['lecture_students_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($temp['student_name'], ENT_QUOTES, 'UTF-8').'&nbsp;&lt;'.htmlspecialchars($temp['student_email'], ENT_QUOTES, 'UTF-8').'&gt;';
 					}
 				}
 			}
@@ -487,9 +487,9 @@ class Cms_cource extends CI_Controller {
 					$temp = $this->model_material->get_data($name_param);
 
 					if($data['cource']['lecture_materials_name'] == '---'){
-						$data['cource']['lecture_materials_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['material_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_materials_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($temp['material_logic_name'], ENT_QUOTES, 'UTF-8');
 					}else{
-						$data['cource']['lecture_materials_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['material_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_materials_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($temp['material_logic_name'], ENT_QUOTES, 'UTF-8');
 					}
 				}
 			}
@@ -506,9 +506,9 @@ class Cms_cource extends CI_Controller {
 					$temp = $this->model_book_library->get_data($name_param);
 
 					if($data['cource']['lecture_book_librarys_name'] == '---'){
-						$data['cource']['lecture_book_librarys_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_book_librarys_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($temp['book_library_logic_name'], ENT_QUOTES, 'UTF-8');
 					}else{
-						$data['cource']['lecture_book_librarys_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['book_library_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_book_librarys_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($temp['book_library_logic_name'], ENT_QUOTES, 'UTF-8');
 					}
 				}
 			}
@@ -525,9 +525,9 @@ class Cms_cource extends CI_Controller {
 					$temp = $this->model_video->get_material($name_param);
 
 					if($data['cource']['lecture_videos_name'] == '---'){
-						$data['cource']['lecture_videos_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['video_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_videos_name'] = '[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($temp['video_logic_name'], ENT_QUOTES, 'UTF-8');
 					}else{
-						$data['cource']['lecture_videos_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8', false).']&nbsp;'.htmlspecialchars($temp['video_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$data['cource']['lecture_videos_name'] .= '<br/>'.'[No'.htmlspecialchars($lecture, ENT_QUOTES, 'UTF-8').']&nbsp;'.htmlspecialchars($temp['video_logic_name'], ENT_QUOTES, 'UTF-8');
 					}
 				}
 			}

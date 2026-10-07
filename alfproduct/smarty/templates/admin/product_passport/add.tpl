@@ -73,7 +73,7 @@ function delete_live_training_product_id(){
 			<input type="button" value="アップロード" onclick="formSubmit('form1', 'upload_thumbnail.php');" />
 			<!--{if isset($arr_input.thumbnail) && $arr_input.thumbnail!=""}-->
 				<br />
-				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|escape}-->&width=240&height=180" alt="" />
+				<img src="/alfproduct/resize_image.php?image=<!--{$arr_input.thumbnail|urlencode|escape}-->&width=240&height=180" alt="" />
 				<input type="hidden" name="hid_thumbnail" value="<!--{$arr_input.thumbnail|escape}-->" />
 				<a href="javascript:void(0);" onclick="document.form1.hid_thumbnail.value='';formSubmit('form1', 'delete_thumbnail.php');">削除</a>
 			<!--{/if}-->
