@@ -77,10 +77,10 @@
 							<th style="width:160px;"><?= $this->lang->line_or_def('common_file_name','ファイル名') ?></th>
 							<td>
 								<?php if($video['video_logic_name'] == ""): ?>
-									<?= htmlspecialchars( $video['video_name'], ENT_QUOTES, 'UTF-8', false) ?>
+									<?= htmlspecialchars( $video['video_name'], ENT_QUOTES, 'UTF-8') ?>
 								<?php endif; ?>
 								<?php if($video['video_logic_name'] != ""): ?>
-									<?= htmlspecialchars( $video['video_logic_name'], ENT_QUOTES, 'UTF-8', false) ?>
+									<?= htmlspecialchars( $video['video_logic_name'], ENT_QUOTES, 'UTF-8') ?>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -109,7 +109,7 @@
 
 						<tr>
 							<th><?= $this->lang->line_or_def('common_tag','タグ') ?></th>
-							<td ><?= htmlspecialchars( $video['video_tags'], ENT_QUOTES, 'UTF-8', false) ?></td>
+							<td ><?= htmlspecialchars( $video['video_tags'], ENT_QUOTES, 'UTF-8') ?></td>
 						</tr>
 
 						<?php if($this->Modelschoolcontract->enableService(array('serviceKey'=>'book_library'))): ?>
@@ -127,12 +127,12 @@
 											</tr>
 											<?php foreach($video['exclusive_tag'] as $ino => $exclusive_tag): ?>
 												<?php if(!empty($exclusive_tag )): ?>
-													<tr id="exclusive_<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8', false) ?>">
-														<td style="vertical-align: middle;width: 150px;"><?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8', false) ?></td>
+													<tr id="exclusive_<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8') ?>">
+														<td style="vertical-align: middle;width: 150px;"><?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8') ?></td>
 														<td style="vertical-align: middle;width: 230px;">
 															<?php foreach($book_library_exclusive as $ino2 => $temp2): ?>
 																<?php if($ino2 == $video['exclusive_book_library'][$ino]): ?>
-																	<?= htmlspecialchars( $temp2, ENT_QUOTES, 'UTF-8', false) ?>
+																	<?= htmlspecialchars( $temp2, ENT_QUOTES, 'UTF-8') ?>
 																	<?php break; ?>
 																<?php endif; ?>
 															<?php endforeach; ?>
@@ -148,9 +148,9 @@
 																	$temp3 .= '/Page1/master-Page1.jpg?token='.$this->session->userdata('session_id');
 																}
 															?>
-															<img src="<?= htmlspecialchars( $temp3, ENT_QUOTES, 'UTF-8', false) ?>" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
+															<img src="<?= htmlspecialchars( $temp3, ENT_QUOTES, 'UTF-8') ?>" alt="" style="height: 64px; padding:1px;background-color:black;"/ name="book_thumbnail[]">
 														</td>
-														<td style="vertical-align: middle;text-align: center;"><?= htmlspecialchars( (string)$video['exclusive_page_number'][$ino], ENT_QUOTES, 'UTF-8', false) ?></td>
+														<td style="vertical-align: middle;text-align: center;"><?= htmlspecialchars( (string)$video['exclusive_page_number'][$ino], ENT_QUOTES, 'UTF-8') ?></td>
 														<td style="vertical-align: middle;text-align: center;">
 															<?php if($video['exclusive_status'][$ino] == 0): ?>
 																<?= $this->lang->line_or_def('common_effectively','有効') ?>
@@ -186,9 +186,9 @@
 									<?php foreach($history_data as $history) { ?>
 									<tr style="border: 1px #808080 solid; border-style: none none solid none ;	">
 										<td width=" 50px"><?= $history['student_id'] ?></td>
-										<td width="250px"><?= htmlspecialchars( $history['student_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
+										<td width="250px"><?= htmlspecialchars( $history['student_name'], ENT_QUOTES, 'UTF-8') ?></td>
 										<td width="100px"><?= $history['percent'] ?>%</td>
-										<td width="150px"><?= htmlspecialchars( $history['reading_date'], ENT_QUOTES, 'UTF-8', false) ?></td>
+										<td width="150px"><?= htmlspecialchars( $history['reading_date'], ENT_QUOTES, 'UTF-8') ?></td>
 									</tr>
 									<?php } ?>
 								</table>

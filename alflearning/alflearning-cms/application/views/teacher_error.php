@@ -39,7 +39,7 @@
 				<br />
 				<br />
 				<center>
-					<input type=button onClick='location.href = "<?= htmlspecialchars( $returnurl, ENT_QUOTES, 'UTF-8', false) ?>";' value="　　<?= $this->lang->line_or_def('common_back','戻る') ?>　　" class='btn_r'>
+					<input type=button onClick='location.href = "<?= htmlspecialchars( $returnurl, ENT_QUOTES, 'UTF-8') ?>";' value="　　<?= $this->lang->line_or_def('common_back','戻る') ?>　　" class='btn_r'>
 				</center>
 		<!-- /#main --></div>
 			

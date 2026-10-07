@@ -296,9 +296,9 @@ class Cms_issue extends CI_Controller {
 					$ext  = strtolower(pathinfo($submit['issue_submit_logic_name'],PATHINFO_EXTENSION));
 					if($ext){
 						$name = mb_ereg_replace('.'.$ext,'',$submit['issue_submit_logic_name'],'i');
-						$submit['issue_submit_logic_name'] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8', false).'<br/>.'.htmlspecialchars($ext, ENT_QUOTES, 'UTF-8', false);
+						$submit['issue_submit_logic_name'] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8').'<br/>.'.htmlspecialchars($ext, ENT_QUOTES, 'UTF-8');
 					}else{
-						$submit['issue_submit_logic_name'] = htmlspecialchars($submit['issue_submit_logic_name'], ENT_QUOTES, 'UTF-8', false);
+						$submit['issue_submit_logic_name'] = htmlspecialchars($submit['issue_submit_logic_name'], ENT_QUOTES, 'UTF-8');
 					}
 					
 					$idx++;
@@ -594,7 +594,7 @@ class Cms_issue extends CI_Controller {
 		if( count($data['teacher_list']) != 0 ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false);
+				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
 			}
 		}
 		

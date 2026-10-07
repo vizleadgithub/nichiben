@@ -96,7 +96,7 @@
 
 				<?=form_open_multipart("cms_material/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $material['update_flg'])?>'>
 					<input type=hidden name=material_id value='<?=set_value('material_id', $material['material_id'])?>'>
 					<input type=hidden name=material_logic_name value='<?=set_value('material_logic_name', $material['material_logic_name'])?>'>
@@ -134,7 +134,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="material_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>
+												<input type="checkbox" name="material_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($material['material_lectures']) ) {
 														foreach( $material['material_lectures'] as $lecture) { 
@@ -148,7 +148,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -175,7 +175,7 @@
 						<tr>
 							<th style="vertical-align: middle;"><?= $this->lang->line_or_def('common_thumbnail','サムネイル') ?></th>
 							<td>
-								<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8', false) ?>" alt="" style="height: 200px; padding: 1px;background-color:black;"/>
+								<img src="/file_container/get_material_thubmnail/<?= htmlspecialchars( $material['material_id'], ENT_QUOTES, 'UTF-8') ?>" alt="" style="height: 200px; padding: 1px;background-color:black;"/>
 							</td>
 						</tr>
 						<?php } ?>

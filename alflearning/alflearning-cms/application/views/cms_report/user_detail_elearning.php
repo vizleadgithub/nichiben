@@ -116,15 +116,15 @@
 						<td><?= $this->lang->line_or_def('common_','所属弁護士会') ?></td>
 					</tr>
 					<tr style="background: none repeat scroll 0 0 #F6F6F3;">
-						<td><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
-						<td><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8', false) ?></td>
-						<td><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8', false) ?></td>
+						<td><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8') ?></td>
+						<td><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8') ?></td>
+						<td><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8') ?></td>
 						<td><?= ($student['presence_passport']==1) ? '○' : '－' ; ?></td>
-						<td><?= htmlspecialchars( $student['regist_date'], ENT_QUOTES, 'UTF-8', false) ?></td>
+						<td><?= htmlspecialchars( $student['regist_date'], ENT_QUOTES, 'UTF-8') ?></td>
 						<td>
 							<?php if(isset($student['bar_association_id'])): ?>
 								<?php if( isset($mtb_bar_association[$student['bar_association_id']]) ): ?>
-									<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8', false) ?>
+									<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8') ?>
 								<?php else: ?>
 									<?= ''; ?>
 								<?php endif; ?>
@@ -136,18 +136,18 @@
 				
 				<? // 画面中部、各種ボタン ?>
 				<div class="submit">
-					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>/0" class="on_select_button" ><?= $this->lang->line_or_def('common_','e-ラーニング'); ?></a>
-					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>/1" class="off_select_button"><?= $this->lang->line_or_def('common_','ライブ実務'); ?></a>
-					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>/2" class="off_select_button"><?= $this->lang->line_or_def('common_','日弁連以外主催'); ?></a>
-					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>/3" class="off_select_button"><?= $this->lang->line_or_def('common_','倫理研修'); ?></a>
-					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>/4" class="off_select_button"><?= $this->lang->line_or_def('common_','全て'); ?></a>
+					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>/0" class="on_select_button" ><?= $this->lang->line_or_def('common_','e-ラーニング'); ?></a>
+					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>/1" class="off_select_button"><?= $this->lang->line_or_def('common_','ライブ実務'); ?></a>
+					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>/2" class="off_select_button"><?= $this->lang->line_or_def('common_','日弁連以外主催'); ?></a>
+					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>/3" class="off_select_button"><?= $this->lang->line_or_def('common_','倫理研修'); ?></a>
+					<a href="/cms_report/cms_user_detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>/4" class="off_select_button"><?= $this->lang->line_or_def('common_','全て'); ?></a>
 				</div>
 				<br />
 				
 				<? // 画面中部、ページング ?>
 				<? if($total_rows > 0): ?>
 					<div style="height: 30px;line-height: 30px;text-align: center;">
-						<?= htmlspecialchars( $start_rows, ENT_QUOTES, 'UTF-8', false) ?>～<?= htmlspecialchars( $end_rows, ENT_QUOTES, 'UTF-8', false) ?>件を表示中（全<?= htmlspecialchars( $total_rows, ENT_QUOTES, 'UTF-8', false) ?>件）
+						<?= htmlspecialchars( $start_rows, ENT_QUOTES, 'UTF-8') ?>～<?= htmlspecialchars( $end_rows, ENT_QUOTES, 'UTF-8') ?>件を表示中（全<?= htmlspecialchars( $total_rows, ENT_QUOTES, 'UTF-8') ?>件）
 					</div>
 				<? endif; ?>
 
@@ -168,7 +168,7 @@
 								<td class="tdc">
 									<?
 										// [商品名]
-										print htmlspecialchars( $db_record['product_name'], ENT_QUOTES, 'UTF-8', false);
+										print htmlspecialchars( $db_record['product_name'], ENT_QUOTES, 'UTF-8');
 									?>
 								</td>
 								<td class="tdc">
@@ -210,8 +210,8 @@
 									?>
 									<br>
 									<?php if($db_record['product_kind_flg']=='3'){ ?>
-										<a href="javascript:void(0)" onclick="progressVideo(<?= htmlspecialchars( $db_record['product_id'], ENT_QUOTES, 'UTF-8', false) ?>,<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>)">研修動画</a>：<?php if($db_record['complete_video_count']==$db_record['product_video_count']){echo '100%';}else{echo $db_record['max_percent_video'].'%';} ?>/
-										<a href="javascript:void(0)" onclick="progressExam(<?= htmlspecialchars( $db_record['product_id'], ENT_QUOTES, 'UTF-8', false) ?>,<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>)">設問</a>：<?= htmlspecialchars( $db_record['answer_val_exam'], ENT_QUOTES, 'UTF-8', false) ?>/<?= htmlspecialchars( $db_record['max_val_exam'], ENT_QUOTES, 'UTF-8', false) ?>
+										<a href="javascript:void(0)" onclick="progressVideo(<?= htmlspecialchars( $db_record['product_id'], ENT_QUOTES, 'UTF-8') ?>,<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>)">研修動画</a>：<?php if($db_record['complete_video_count']==$db_record['product_video_count']){echo '100%';}else{echo $db_record['max_percent_video'].'%';} ?>/
+										<a href="javascript:void(0)" onclick="progressExam(<?= htmlspecialchars( $db_record['product_id'], ENT_QUOTES, 'UTF-8') ?>,<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>)">設問</a>：<?= htmlspecialchars( $db_record['answer_val_exam'], ENT_QUOTES, 'UTF-8') ?>/<?= htmlspecialchars( $db_record['max_val_exam'], ENT_QUOTES, 'UTF-8') ?>
 									<?php } else { ?>
 										－
 									<?php } ?>

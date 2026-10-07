@@ -1138,14 +1138,14 @@
 
 				<?=form_open_multipart("cms_exam2/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type="hidden" name="update_flg" value='<?=set_value('update_flg', $exam2['update_flg'])?>'>
 					<input type="hidden" name="exam2_id"   value='<?=set_value('exam2_id',   $exam2['exam2_id'])?>'>
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_exam2_name','アンケート名') ?></th>
 							<td>
-								<input type=text name="exam2_name" maxlength="256" size="30" value='<?= htmlspecialchars(set_value('exam2_name', $exam2['exam2_name'], FALSE), ENT_QUOTES, 'UTF-8', false) ?>'>
+								<input type=text name="exam2_name" maxlength="256" size="30" value='<?= htmlspecialchars(set_value('exam2_name', $exam2['exam2_name'], FALSE), ENT_QUOTES, 'UTF-8') ?>'>
 							</td>
 						</tr>
 
@@ -1176,7 +1176,7 @@
 										if( isset($lecture_cources) ) { 
 											foreach( $lecture_cources as $cource ){ ?>
 												<li>
-												<input type="checkbox" name="exam2_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>
+												<input type="checkbox" name="exam2_lectures[]" id="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>" value=<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>
 													<?php 
 													if( isset($exam2['exam2_lectures']) ) {
 														foreach( $exam2['exam2_lectures'] as $lecture) { 
@@ -1190,7 +1190,7 @@
 													}
 													?>
 													>
-												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8', false) ?></label>
+												<label for="lectures_<?= htmlspecialchars( $cource['cource_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $cource['cource_name'], ENT_QUOTES, 'UTF-8') ?></label>
 												</li>
 										<?php 
 										}
@@ -1228,7 +1228,7 @@
 						<tr>
 							<th style="vertical-align: top;"><?= $this->lang->line_or_def('common_caption','説明') ?></th>
 							<td >
-								<textarea name="exam2_caption" ><?= htmlspecialchars(set_value('exam2_caption', $exam2['exam2_caption'], FALSE), ENT_QUOTES, 'UTF-8', false) ?></textarea>
+								<textarea name="exam2_caption" ><?= htmlspecialchars(set_value('exam2_caption', $exam2['exam2_caption'], FALSE), ENT_QUOTES, 'UTF-8') ?></textarea>
 							</td>
 						</tr>
 						<tr>
@@ -1317,13 +1317,13 @@
 													<?php foreach( $exam2_problems_list as $exam2_problem ): ?>
 														<?php if($exam2_problem['exam2_problem_id'] == $exam2_problem_id): ?>
 															<li>
-																<input type="hidden" name="exam2_problems[]" value=<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8', false) ?> />
+																<input type="hidden" name="exam2_problems[]" value=<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8') ?> />
 																<div class="problem_name">
 																
 																<? if( getenv('URL_SERVICE')=='mitemo' ): ?>
-																	[No<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8', false) ?>] <?= htmlspecialchars( $exam2_problem['exam2_problem_name'], ENT_QUOTES, 'UTF-8', false) ?> [<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>:<?= htmlspecialchars( $exam2_problem['answer_point'], ENT_QUOTES, 'UTF-8', false) ?>]
+																	[No<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8') ?>] <?= htmlspecialchars( $exam2_problem['exam2_problem_name'], ENT_QUOTES, 'UTF-8') ?> [<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>:<?= htmlspecialchars( $exam2_problem['answer_point'], ENT_QUOTES, 'UTF-8') ?>]
 																<? else: ?>
-																	[No<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8', false) ?>] <?= htmlspecialchars( $exam2_problem['exam2_problem_name'], ENT_QUOTES, 'UTF-8', false) ?> [<?= $this->lang->line_or_def('common_management_teacher','管理講師') ?>:<?= htmlspecialchars( $exam2_problem['teacher_name'], ENT_QUOTES, 'UTF-8', false) ?>] [<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>:<?= htmlspecialchars( $exam2_problem['answer_point'], ENT_QUOTES, 'UTF-8', false) ?>]
+																	[No<?= htmlspecialchars( $exam2_problem['exam2_problem_id'], ENT_QUOTES, 'UTF-8') ?>] <?= htmlspecialchars( $exam2_problem['exam2_problem_name'], ENT_QUOTES, 'UTF-8') ?> [<?= $this->lang->line_or_def('common_management_teacher','管理講師') ?>:<?= htmlspecialchars( $exam2_problem['teacher_name'], ENT_QUOTES, 'UTF-8') ?>] [<?= $this->lang->line_or_def('common_exam2_answer_points','解答配点') ?>:<?= htmlspecialchars( $exam2_problem['answer_point'], ENT_QUOTES, 'UTF-8') ?>]
 																<? endif; ?>
 																
 																</div>

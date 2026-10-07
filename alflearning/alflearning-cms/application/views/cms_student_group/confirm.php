@@ -69,12 +69,12 @@
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_group_name','グループ名') ?></th>
 							<td>
-								<?= htmlspecialchars( $student_group['student_group_name'], ENT_QUOTES, 'UTF-8', false) ?>
+								<?= htmlspecialchars( $student_group['student_group_name'], ENT_QUOTES, 'UTF-8') ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?= $this->lang->line_or_def('common_caption','説明') ?></th>
-							<td ><?= nl2br( htmlspecialchars( $student_group['student_group_caption'], ENT_QUOTES, 'UTF-8', false) ) ?></td>
+							<td ><?= nl2br( htmlspecialchars( $student_group['student_group_caption'], ENT_QUOTES, 'UTF-8') ) ?></td>
 						</tr>
 						<tr>
 							<th>

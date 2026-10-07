@@ -293,11 +293,11 @@
 							});
 							
 							$("#student_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 							$(".select_all_affiliation.select_student").css('display','block');
 						}else{
 							$("#student_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 							$(".select_all_affiliation.select_student").css('display','none');
 						}
 					}
@@ -351,11 +351,11 @@
 								);
 							}
 							$("#material_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 							$(".select_all_affiliation.select_material").css('display','block');
 						}else{
 							$("#material_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 							$(".select_all_affiliation.select_material").css('display','none');
 						}
 					}
@@ -409,11 +409,11 @@
 								);
 							}
 							$("#book_library_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 							$(".select_all_affiliation.select_book_library").css('display','block');
 						}else{
 							$("#book_library_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 							$(".select_all_affiliation.select_book_library").css('display','none');
 						}
 					}
@@ -467,11 +467,11 @@
 								);
 							}
 							$("#video_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:"+(i)+" / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 							$(".select_all_affiliation.select_video").css('display','block');
 						}else{
 							$("#video_count").text("<?= $this->lang->line_or_def('common_indication','表示') ?>:0 / "
-							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8', false) ?>);
+							+"<?= $this->lang->line_or_def('common_total','総') ?>:"+<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8') ?>);
 							$(".select_all_affiliation.select_video").css('display','none');
 						}
 					}
@@ -729,7 +729,7 @@
 
 				<?=form_open("cms_cource/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= htmlspecialchars( $elm_message, ENT_QUOTES, 'UTF-8', false).'(code:'.htmlspecialchars( $elm_stat, ENT_QUOTES, 'UTF-8', false).')'; ?></div><? endif; ?>
+					<? if( (isset($elm_stat)) && ($elm_stat != 200) ): ?><div class="error"><?= htmlspecialchars( $elm_message, ENT_QUOTES, 'UTF-8').'(code:'.htmlspecialchars( $elm_stat, ENT_QUOTES, 'UTF-8').')'; ?></div><? endif; ?>
 					
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $cource['update_flg'])?>'>
 					<input type=hidden name=cource_id value='<?=set_value('cource_id', $cource['cource_id'])?>'>
@@ -778,7 +778,7 @@
 								<input type="button" id="btn_all_student"    value="一覧" />
 								<div style="float: right; margin-top: 6px; margin-right: 10px;">
 									<label id="student_count">
-										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8', false) ?>
+										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $cource['student_all_count'], ENT_QUOTES, 'UTF-8') ?>
 									</label>
 								</div><div style="clear:both;"></div>
 								<div id="student_list">
@@ -805,7 +805,7 @@
 								<input type="button" id="btn_all_material"    value="一覧" />
 								<div style="float: right; margin-top: 6px; margin-right: 10px;">
 									<label id="material_count">
-										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8', false) ?>
+										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $cource['material_all_count'], ENT_QUOTES, 'UTF-8') ?>
 									</label>
 								</div><div style="clear:both;"></div>
 								<div id="material_list">
@@ -831,7 +831,7 @@
 								<input type="button" id="btn_all_book_library"    value="一覧" />
 								<div style="float: right; margin-top: 6px; margin-right: 10px;">
 									<label id="book_library_count">
-										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8', false) ?>
+										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $cource['book_library_all_count'], ENT_QUOTES, 'UTF-8') ?>
 									</label>
 								</div><div style="clear:both;"></div>
 								<div id="book_library_list">
@@ -857,7 +857,7 @@
 								<input type="button" id="btn_all_video"    value="一覧" />
 								<div style="float: right; margin-top: 6px; margin-right: 10px;">
 									<label id="video_count">
-										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8', false) ?>
+										<?= $this->lang->line_or_def('common_indication','表示') ?>:0&nbsp;/&nbsp;<?= $this->lang->line_or_def('common_total','総') ?>:<?= htmlspecialchars( $cource['video_all_count'], ENT_QUOTES, 'UTF-8') ?>
 									</label>
 								</div><div style="clear:both;"></div>
 								<div id="video_list">

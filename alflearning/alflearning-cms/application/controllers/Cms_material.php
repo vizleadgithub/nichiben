@@ -619,7 +619,7 @@ class Cms_material extends CI_Controller {
 		if( count($data['teacher_list']) != 0 ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8', false);
+				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
 			}
 		}
 		
@@ -759,7 +759,7 @@ class Cms_material extends CI_Controller {
 		if($db_data['material_name'] == ''){
 			//戻り先設定
 			$data['returnurl']     = site_url('cms_material');
-			$data['error_message'] = $this->lang->line_or_def('error_download_auth','ダウンロード権限がありません<br />ログインし直してください').'<br />'.htmlspecialchars($db_data['remarks'], ENT_QUOTES, 'UTF-8', false);
+			$data['error_message'] = $this->lang->line_or_def('error_download_auth','ダウンロード権限がありません<br />ログインし直してください').'<br />'.htmlspecialchars($db_data['remarks'], ENT_QUOTES, 'UTF-8');
 			
 			//ビュー設定引数設定
 			$disp_param = array(
@@ -793,8 +793,8 @@ class Cms_material extends CI_Controller {
 				//戻り先設定
 				$data['returnurl']     = site_url('cms_material');
 				$data['error_message'] = $this->lang->line_or_def('error_not_file','ファイルが見つかりません<br />管理者に問い合わせてください')
-										.'<br /><br />'.$this->lang->line_or_def('common_file_name','ファイル名').'&nbsp;:&nbsp;'.htmlspecialchars($db_data['material_logic_name'], ENT_QUOTES, 'UTF-8', false)
-										.'<br />File Name&nbsp;:&nbsp;'.htmlspecialchars($db_data['material_name'], ENT_QUOTES, 'UTF-8', false);
+										.'<br /><br />'.$this->lang->line_or_def('common_file_name','ファイル名').'&nbsp;:&nbsp;'.htmlspecialchars($db_data['material_logic_name'], ENT_QUOTES, 'UTF-8')
+										.'<br />File Name&nbsp;:&nbsp;'.htmlspecialchars($db_data['material_name'], ENT_QUOTES, 'UTF-8');
 				//ビュー設定引数設定
 				$disp_param = array(
 								'view_name'   => 'material_error',

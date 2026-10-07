@@ -111,7 +111,7 @@
 													$select_option = "selected";
 												}
 											?>
-											<option value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8', false) ?>" <?= $select_option; ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8', false) ?></option>
+											<option value="<?= htmlspecialchars( $index, ENT_QUOTES, 'UTF-8') ?>" <?= $select_option; ?>><?= htmlspecialchars( $val, ENT_QUOTES, 'UTF-8') ?></option>
 										<?php //endif; ?>
 									<?php endforeach; ?>
 								</select>
@@ -164,7 +164,7 @@ font-size:13px;line-height: 30px;background-size:120px 28px;" onclick="" href="/
 				<table class="list">
 					<tr>
 						<th style="width:96px;"><? //76px ?>
-							<?= $this->lang->line_or_def('common_','登録番号') ?> <a href="<?= htmlspecialchars( $order_by_asc, ENT_QUOTES, 'UTF-8', false) ?>" class="order_by_link">▲</a> <a href="<?= htmlspecialchars( $order_by_desc, ENT_QUOTES, 'UTF-8', false) ?>" class="order_by_link">▼</a>
+							<?= $this->lang->line_or_def('common_','登録番号') ?> <a href="<?= htmlspecialchars( $order_by_asc, ENT_QUOTES, 'UTF-8') ?>" class="order_by_link">▲</a> <a href="<?= htmlspecialchars( $order_by_desc, ENT_QUOTES, 'UTF-8') ?>" class="order_by_link">▼</a>
 						</th>
 						<th style=""><?= $this->lang->line_or_def('common_','会員区分') ?></th>
 						<th style=""><?= $this->lang->line_or_def('common_','氏名') ?></th>
@@ -178,7 +178,7 @@ font-size:13px;line-height: 30px;background-size:120px 28px;" onclick="" href="/
 						<?php foreach($student_list as $student) { ?>
 							<?php $line++;?>
 							<tr class="<?=(($line % 2)==0 ? 'koi' : '')?>">
-								<td class="tdc"><a href="/cms_student/detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8', false) ?>"><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td class="tdc"><a href="/cms_student/detail/<?= htmlspecialchars( $student['student_id'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars( $student['lawyer_number'], ENT_QUOTES, 'UTF-8') ?></td>
 
 								<td class="tdc">
 									<?php if(isset($student['lawyer_division'])): ?><? // NULL以外の文字。空文字列はＯＫ ?>
@@ -187,7 +187,7 @@ font-size:13px;line-height: 30px;background-size:120px 28px;" onclick="" href="/
 											<?php if($mtb_lawyer_division[$student['lawyer_division']] == ''): ?>
 												<?= 'その他'; ?><? //= '－'; ?>
 											<?php else: ?>
-												<?= htmlspecialchars( $mtb_lawyer_division[$student['lawyer_division']], ENT_QUOTES, 'UTF-8', false) ?>
+												<?= htmlspecialchars( $mtb_lawyer_division[$student['lawyer_division']], ENT_QUOTES, 'UTF-8') ?>
 											<?php endif; ?>
 
 										<?php else: ?><? // 0～5以外・空の文字列が対象 ?>
@@ -201,8 +201,8 @@ font-size:13px;line-height: 30px;background-size:120px 28px;" onclick="" href="/
 									<?php endif; ?>
 								</td>
 
-								<td class="tdc"><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8', false) ?></td>
-								<td class="tdc"><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8', false) ?></td>
+								<td class="tdc"><?= htmlspecialchars( $student['student_name'], ENT_QUOTES, 'UTF-8') ?></td>
+								<td class="tdc"><?= htmlspecialchars( $student['student_email'], ENT_QUOTES, 'UTF-8') ?></td>
 								<td class="tdc">
 									<?= ($student['presence_passport']==1) ? '○' : '－' ; ?>
 								</td>
@@ -212,7 +212,7 @@ font-size:13px;line-height: 30px;background-size:120px 28px;" onclick="" href="/
 								<td class="tdc">
 									<?php if(isset($student['bar_association_id'])): ?>
 										<?php if( isset($mtb_bar_association[$student['bar_association_id']]) ): ?>
-											<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8', false) ?>
+											<?= htmlspecialchars( $mtb_bar_association[$student['bar_association_id']], ENT_QUOTES, 'UTF-8') ?>
 										<?php else: ?>
 											<?= ''; ?>
 										<?php endif; ?>

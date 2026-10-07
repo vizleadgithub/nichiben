@@ -69,20 +69,20 @@
 
 				<?=form_open_multipart("cms_category/confirm")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($overlap_error_msg)?'<div class="error">'.htmlspecialchars($overlap_error_msg, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
+					<?=(isset($overlap_error_msg)?'<div class="error">'.htmlspecialchars($overlap_error_msg, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<input type="hidden" name="update_flg" value="<?= (int) set_value('update_flg', $category['update_flg'], FALSE) ?>">
 					<input type="hidden" name="term_id" value="<?= (int) set_value('cms_category_id', $category['term_id'], FALSE) ?>">
 					<table class="form">
 						<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_category_name','カテゴリ名') ?></th>
 							<td>
-								<input type=text name="name" maxlength="256" size="30" value="<?= htmlspecialchars(set_value('name', $category['name'], FALSE), ENT_QUOTES, 'UTF-8', false) ?>" id="category_name" onkeyup="ShowLength( 'category_name_count' , value , 40);" maxlength="40"><br><span id="category_name_count" >(0/40文字)</span>
+								<input type=text name="name" maxlength="256" size="30" value="<?= htmlspecialchars(set_value('name', $category['name'], FALSE), ENT_QUOTES, 'UTF-8') ?>" id="category_name" onkeyup="ShowLength( 'category_name_count' , value , 40);" maxlength="40"><br><span id="category_name_count" >(0/40文字)</span>
 							</td>
 						</tr>
 						<!--<tr>
 							<th width="160"><?= $this->lang->line_or_def('common_category_slug','スラッグ') ?></th>
 							<td>-->
-								<input type="hidden" name="slug" maxlength="256" size="30" value="<?= htmlspecialchars(set_value('slug', $category['slug'], FALSE), ENT_QUOTES, 'UTF-8', false) ?>">
+								<input type="hidden" name="slug" maxlength="256" size="30" value="<?= htmlspecialchars(set_value('slug', $category['slug'], FALSE), ENT_QUOTES, 'UTF-8') ?>">
 							<!--</td>
 						</tr>-->
 						<tr>
@@ -91,7 +91,7 @@
 								<select name="parent" id="parent">
 									<option value="21">root</option>
 									<?php foreach( $parent_root_category_list AS $row ){ ?>
-										<option value="<?= (int) $row['term_id'] ?>" <?php if($row["term_id"]==$category['parent']){ ?> selected <?php } ?> ><?= htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8', false) ?></option>
+										<option value="<?= (int) $row['term_id'] ?>" <?php if($row["term_id"]==$category['parent']){ ?> selected <?php } ?> ><?= htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') ?></option>
 									<?php } ?>
 								</select>
 							</td>

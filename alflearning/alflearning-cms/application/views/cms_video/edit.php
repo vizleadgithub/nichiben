@@ -471,7 +471,7 @@
 
 				<?=form_open_multipart("cms_video/commit")?>
 					<?=validation_errors('<div class="error">', '</div>'); ?>
-					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8', false).'</div>':'')?>
+					<?=(isset($upload_error)?'<div class="error">'.htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8').'</div>':'')?>
 					<?=(isset($overlap_error)?'<div class="error">'.$overlap_error.'</div>':'')?>
 					<input type=hidden name=update_flg value='<?=set_value('update_flg', $video['update_flg'])?>'>
 					<input type=hidden name=video_id value='<?=set_value('video_id', $video['video_id'])?>'>
@@ -554,7 +554,7 @@
 										<div style=" margin-top: 5px;line-height:20px;"><?= $this->lang->line_or_def('common_registered_tag','登録済みタグ') ?>&nbsp;:&nbsp;
 											<?php foreach($tags_dropdown as $tagKey => $cnt) { ?>
 												<? if(($tagKey !== 'タグなし') && ($tagKey !== '') ): ?>
-													<a href="#" onclick="set_tag(<?= htmlspecialchars( json_encode((string)$tagKey, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8', false) ?>);return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8', false) ?></a>&nbsp;&nbsp;
+													<a href="#" onclick="set_tag(<?= htmlspecialchars( json_encode((string)$tagKey, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?>);return false;"><?= htmlspecialchars( $tagKey, ENT_QUOTES, 'UTF-8') ?></a>&nbsp;&nbsp;
 												<? endif; ?>
 											<?php } ?>
 										</div>
@@ -580,9 +580,9 @@
 										
 
 										<?php foreach($video['exclusive_tag'] as $ino => $exclusive_tag): ?>
-											<tr sytle="height:100px;" id="exclusive_<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8', false) ?>">
+											<tr sytle="height:100px;" id="exclusive_<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8') ?>">
 												<td style="vertical-align: middle;text-align: center;">
-													<input type=text name="exclusive_tag[]" maxlength="256" size="15" value='<?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8', false) ?>'><!--   -->
+													<input type=text name="exclusive_tag[]" maxlength="256" size="15" value='<?= htmlspecialchars( $exclusive_tag, ENT_QUOTES, 'UTF-8') ?>'><!--   -->
 												</td>
 												
 												<td style="vertical-align: middle;text-align: center;">
@@ -625,9 +625,9 @@
 
 												<td style="vertical-align: middle;text-align: center;">
 													<?php if($video['exclusive_status'][$ino] == 0): ?>
-														<input type="checkbox" value="<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8', false) ?>" name="exclusive_status[]" checked>
+														<input type="checkbox" value="<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8') ?>" name="exclusive_status[]" checked>
 													<?php else: ?>
-														<input type="checkbox" value="<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8', false) ?>" name="exclusive_status[]" >
+														<input type="checkbox" value="<?= htmlspecialchars( $ino, ENT_QUOTES, 'UTF-8') ?>" name="exclusive_status[]" >
 													<?php endif; ?>
 												</td>
 
@@ -717,7 +717,7 @@
 										<input type="button" id="btn_set_chapter" value=<?= $this->lang->line_or_def('common_addition','追加') ?> style="height: 28px;" />
 									</div>
 									<div style="float:left;line-height : 28px;margin-left: 50px;">
-										<?= $this->lang->line_or_def('common_reproduction_time','再生時間') ?> / <?= htmlspecialchars( (string)$video['video_time'], ENT_QUOTES, 'UTF-8', false) ?>
+										<?= $this->lang->line_or_def('common_reproduction_time','再生時間') ?> / <?= htmlspecialchars( (string)$video['video_time'], ENT_QUOTES, 'UTF-8') ?>
 									</div>
 									<div style="clear : both"></div>
 								</div>
@@ -741,11 +741,11 @@
 										<?php $style = 'style="background:none repeat scroll 0 0 #E9E9E9; padding: 2px 5px;"'; ?>
 										<?php foreach($chapter_data as $chapter): ?>
 											<?php $counter += 1; ?>
-											<?php $chapter_text = htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8', false)."　".htmlspecialchars((string)$chapter['chapter_name'], ENT_QUOTES, 'UTF-8', false); ?>
+											<?php $chapter_text = htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8')."　".htmlspecialchars((string)$chapter['chapter_name'], ENT_QUOTES, 'UTF-8'); ?>
 											<?php if($counter % 2 == 0): ?>
-												<option value="<?= htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8', false); ?>"><?= $chapter_text; ?></option>
+												<option value="<?= htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8'); ?>"><?= $chapter_text; ?></option>
 											<?php else: ?>
-												<option class="colors" value="<?= htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8', false); ?>"><?= $chapter_text; ?></option>
+												<option class="colors" value="<?= htmlspecialchars((string)$chapter['chapter_time'], ENT_QUOTES, 'UTF-8'); ?>"><?= $chapter_text; ?></option>
 											<?php endif; ?>
 										<?php endforeach; ?>
 										<?php for ($i = $counter; $i < 10; $i++): ?>
