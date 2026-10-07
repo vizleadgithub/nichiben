@@ -59,6 +59,6 @@ a.btn2{
 	<!--{/if}-->
 </div>
 <div style="width:200px;">
-	<a class="btn" style="margin-left: 0;" href="javascript:void(0)" onclick="<!--{if !$err_flg}-->pop_get_html('/exam2/result.php?e2id=<!--{$e2id|escape:'javascript'|escape}-->&pid=<!--{$pid|escape:'javascript'|escape}-->');<!--{/if}-->">閉じる</a>
+	<a class="btn" style="margin-left: 0;" href="javascript:void(0)" onclick="<!--{if !$err_flg}-->pop_get_html('/exam2/result.php?e2id=<!--{$e2id|urlencode|escape:'javascript'|escape}-->&pid=<!--{$pid|urlencode|escape:'javascript'|escape}-->');<!--{/if}-->">閉じる</a>
 </div>
 </center>

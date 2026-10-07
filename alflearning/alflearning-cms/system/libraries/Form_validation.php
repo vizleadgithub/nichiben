@@ -1581,24 +1581,6 @@ class CI_Form_validation {
 	// --------------------------------------------------------------------
 
 	/**
-	 * XSS Clean
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	string
-	 */
-	function xss_clean($str)
-	{
-		if ( ! isset($this->CI->security))
-		{
-			$this->CI->load->library('security');
-		}
-
-		return $this->CI->security->xss_clean($str);
-	}
-
-	// --------------------------------------------------------------------
-	/**
 	 * Reset validation vars
 	 *
 	 * Prevents subsequent validation routines from being affected by the

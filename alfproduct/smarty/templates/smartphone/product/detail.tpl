@@ -3198,7 +3198,7 @@ a.test_btn_none{
 <div style="width:700px;float:left;clear:both;background-color:#fcfcfc;border-left:solid 1px #f3f3f3;border-right:solid 1px #f3f3f3;padding:5px 15px;">
 	<div style="width:168px;float:left;text-align:center;">
 		<!--{if $product_list.thumbnail != ''}-->
-			<img src="/resize_image.php?image=<!--{$product_list.thumbnail|escape}-->&width=150&height=150" alt="" />
+			<img src="/resize_image.php?image=<!--{$product_list.thumbnail|urlencode|escape}-->&width=150&height=150" alt="" />
 		<!--{else}-->
 			<img src="/resize_image.php?image=noimage.jpg&width=150&height=150" alt="" />
 		<!--{/if}-->
@@ -3547,7 +3547,7 @@ a.test_btn_none{
 	<ul style="list-style:none;margin:0;">
 	<!--{foreach name=recommend_products from=$arr_recommend_list item=recommend_products}-->
 		<li style="float:left;width:90px;padding:5px;text-align:center;<!--{if $smarty.foreach.recommend_products.index==5}-->clear:both;<!--{/if}-->">
-		<a href="/product/detail.php?pid=<!--{$recommend_products.product_id|escape}-->" alt="<!--{$recommend_products.product_name|escape}-->" title="<!--{$recommend_products.product_name|escape}-->"><img src="/resize_image.php?image=<!--{$recommend_products.thumbnail|escape}-->&width=90&height=90" alt="" /></a><br />
+		<a href="/product/detail.php?pid=<!--{$recommend_products.product_id|escape}-->" alt="<!--{$recommend_products.product_name|escape}-->" title="<!--{$recommend_products.product_name|escape}-->"><img src="/resize_image.php?image=<!--{$recommend_products.thumbnail|urlencode|escape}-->&width=90&height=90" alt="" /></a><br />
 		<a href="/product/detail.php?pid=<!--{$recommend_products.product_id|escape}-->" alt="<!--{$recommend_products.product_name|escape}-->" title="<!--{$recommend_products.product_name|escape}-->"><!--{$recommend_products.product_name|mb_truncate:14:"..."|escape}--></a><br />
 		<!--{$recommend_products.price_intax|escape|number_format}-->円(税込)
 		</li>
@@ -3580,7 +3580,7 @@ a.test_btn_none{
 				<!--
 				<li style="float:left;width:90px;padding:5px;text-align:center;<!--{if $smarty.foreach.related_products.index==5}-->clear:both;<!--{/if}-->">
 				<!--{if $related_products.thumbnail != ''}-->
-					<a href="/product/detail.php?pid=<!--{$related_products.pid|escape}-->" alt="<!--{$related_products.name|escape}-->" title="<!--{$related_products.name|escape}-->"><img src="/resize_image.php?image=<!--{$related_products.thumbnail|escape}-->&width=90&height=90" alt="" /></a><br />
+					<a href="/product/detail.php?pid=<!--{$related_products.pid|escape}-->" alt="<!--{$related_products.name|escape}-->" title="<!--{$related_products.name|escape}-->"><img src="/resize_image.php?image=<!--{$related_products.thumbnail|urlencode|escape}-->&width=90&height=90" alt="" /></a><br />
 				<!--{else}-->
 					<a href="/product/detail.php?pid=<!--{$related_products.pid|escape}-->" alt="<!--{$related_products.name|escape}-->" title="<!--{$related_products.name|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=90&height=90" alt="" /></a><br />
 				<!--{/if}-->

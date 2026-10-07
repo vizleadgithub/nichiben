@@ -65,9 +65,9 @@
 						<img src="/img/list/list_img002.jpg" alt="eラーニング" />
 						<div style="margin-top:5px;">
 						<!--{if $row.thumbnail_flg == 1}-->
-							<a href="/product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail|escape}-->&width=155&height=85" alt="" style="" /></a>
+							<a href="/product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail|urlencode|escape}-->&width=155&height=85" alt="" style="" /></a>
 						<!--{elseif $row.thumbnail_flg == 2}-->
-							<a href="/product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_video_image.php?image=<!--{$row.video_thumbnail|escape}-->&width=155&height=85" alt="" style="" /></a>
+							<a href="/product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_video_image.php?image=<!--{$row.video_thumbnail|urlencode|escape}-->&width=155&height=85" alt="" style="" /></a>
 						<!--{else}-->
 							<a href="/product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=noimage.jpg&width=155&height=85" alt="" style="" /></a>
 						<!--{/if}-->
@@ -79,7 +79,7 @@
 						<div style="margin-top:5px;">
 						<img src="/img/list/list_img001.jpg" alt="会場研修" />
 						<!--{if $row.thumbnail != ""}-->
-							<a href="/product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail|escape}-->&width=155&height=85" alt="" style="" /></a>
+							<a href="/product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=<!--{$row.thumbnail|urlencode|escape}-->&width=155&height=85" alt="" style="" /></a>
 						<!--{else}-->
 							<!--{if $row.echic_flg == 1}-->
 								<a href="./../product/detail.php?pid=<!--{$row.product_id|escape}-->"><img src="/resize_image.php?image=product_ethic.jpg&width=155&height=85" alt="" style="" /></a>
