@@ -97,7 +97,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && $err_flg==0 ){
 ?>
 	決済エラー<br>
 	<form name="form_payment" method="post" action="#">
-	E-Mail:<input type="text" name="mail_address" value="<?php echo htmlspecialchars((string)$mail_address, ENT_QUOTES, 'UTF-8', false); ?>"><br>
+	E-Mail:<input type="text" name="mail_address" value="<?php echo htmlspecialchars((string)$mail_address, ENT_QUOTES, 'UTF-8'); ?>"><br>
 	<input type="submit" name="btn_submit" value="Submit">
 	</form>
 <?php
