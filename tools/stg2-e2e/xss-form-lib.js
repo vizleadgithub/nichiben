@@ -50,6 +50,7 @@ function fillBaseline(page, targetName, overrides = {}, includeTarget = false) {
     };
     let filled = 0;
     const radioGroups = new Set();
+    const checkboxFirstDone = new Set();
     for (const el of form.elements) {
       if ((el === target && !includeTarget) || !el.name || el.disabled) continue;
       const tag = el.tagName.toLowerCase();
@@ -66,7 +67,10 @@ function fillBaseline(page, targetName, overrides = {}, includeTarget = false) {
         const group = [...form.querySelectorAll(`input[type=radio][name="${CSS.escape(el.name)}"]`)];
         if (!group.some((r) => r.checked)) { group[0].checked = true; filled++; }
       } else if (el.type === 'checkbox') {
-        if (ov !== undefined) { el.checked = !!ov; filled++; }
+        // ov === true: 同じ名前の全チェックボックスをチェックする（複数選択可の項目用）
+        // ov === 'first': 同じ名前の最初の1つだけをチェックする（「正解は1つだけ」のような単一選択の項目用）
+        if (ov === 'first') { if (!checkboxFirstDone.has(el.name)) { el.checked = true; checkboxFirstDone.add(el.name); filled++; } else el.checked = false; }
+        else if (ov !== undefined) { el.checked = !!ov; filled++; }
       } else if (!el.value) {
         el.removeAttribute('readonly');
         el.value = ov !== undefined ? ov : guess(el);
@@ -88,7 +92,12 @@ function fillBaseline(page, targetName, overrides = {}, includeTarget = false) {
 
 // 送信してよいボタンの判定（書き込み防止のガード）。確認・検索系のボタンだけ押し、登録・更新・削除系は押さない。
 // ボタンの「文言・画像名」と「onclick / javascript: の中身」を分けて判定する（onclick の formSubmit(…,'confirm') の "Submit" を誤って送信系と見ないため）
-const ALLOW_LABEL = /確認|confirm|検索|search|preview|プレビュー|次へ|next/i;
+// 「確認」系を優先し、見つからない場合だけ「検索」等も候補にする。編集画面には、本体の確認ボタンより前に
+// 受講者・教材などを選ぶポップアップの「検索」ボタンが置かれていることがあり、先に見つかる方を押すと
+// ポップアップを開くだけで確認画面へ進めない（cms_cource 等で確認済み）
+const ALLOW_LABEL_PRIMARY = /確認|confirm/i;
+const ALLOW_LABEL_SECONDARY = /検索|search|preview|プレビュー|次へ|next/i;
+const ALLOW_LABEL = new RegExp(`${ALLOW_LABEL_PRIMARY.source}|${ALLOW_LABEL_SECONDARY.source}`, 'i');
 const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|commit|regist|delete|remove|save|send|update|insert|upload|import|csv|complete/i;
 // onclick の引数（'complete'・'regist'・'delete' など）が書き込み系なら、確認系の文言があっても押さない
 const DENY_ARG = /^(complete|regist\w*|commit|delete\w*|del|remove|exec\w*|save|update\w*|insert|upload\w*|import\w*|send\w*|cancel|reset|clear|logout|approve\w*)$/i;
@@ -105,7 +114,9 @@ async function pickButton(scope) {
     t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}${(e.querySelector && e.querySelector('img') ? (e.querySelector('img').getAttribute('src') || '').split('/').pop() : '')}`,
     o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
   })));
-  const idx = info.findIndex((c) => (ALLOW_LABEL.test(c.t) || ALLOW_LABEL.test(c.o)) && !DENY_LABEL.test(c.t) && !denyByArgs(c.o));
+  const ok = (c, re) => (re.test(c.t) || re.test(c.o)) && !DENY_LABEL.test(c.t) && !denyByArgs(c.o);
+  let idx = info.findIndex((c) => ok(c, ALLOW_LABEL_PRIMARY));
+  if (idx < 0) idx = info.findIndex((c) => ok(c, ALLOW_LABEL_SECONDARY));
   return { cand, info, idx };
 }
 
@@ -179,4 +190,21 @@ async function resolveRoundtrip(session, res, findings) {
   return rest;
 }
 
-module.exports = { setFields, fieldForms, fillBaseline, submitGuarded, inspect, resolveRoundtrip };
+// 「確認」から先へ進み、実際に登録(commit)するボタンを押す。submitGuarded とは逆に、登録・更新系のボタンを探す。
+// S12（登録→全画面で表示を確認）のように、書き込みを前提にした段階B専用。普段の確認段階テスト(run-xss-form.js)では使わない。
+// 確認画面は edit 画面とは別の新しいページ（data-xss-form の目印は付いていない）なので、画面内の最初のフォームを対象にする
+const COMPLETE_LABEL = /登録|更新|完了|決定|commit|regist\w*|complete|update\w*/i;
+async function submitComplete(session) {
+  const { page } = session;
+  // 確認画面にフォームが複数ある場合（ヘッダーの検索欄等）もあるため、ページ全体からボタンを探す
+  const cand = page.locator(BUTTONS);
+  const info = await cand.evaluateAll((els) => els.map((e) => ({
+    t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}`,
+    o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
+  })));
+  const idx = info.findIndex((c) => COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o));
+  if (idx < 0) return { refused: `登録ボタンを特定できない。ボタン: ${info.map((c) => c.t.slice(0, 20)).join(' | ').slice(0, 100)}` };
+  return session.action(() => cand.nth(idx).click({ timeout: 5000 }));
+}
+
+module.exports = { setFields, fieldForms, fillBaseline, submitGuarded, submitComplete, inspect, resolveRoundtrip };

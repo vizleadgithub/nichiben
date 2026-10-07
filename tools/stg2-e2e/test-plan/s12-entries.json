@@ -1,0 +1,17 @@
+{
+  "_comment": [
+    "run-xss-s12.js が使う、S12(表示専用の値)・F-10 用の登録エントリ。",
+    "ここに書かれた画面で実際に値を『登録(commit)』し、全画面を巡回してマーカーの出現を確認する。",
+    "書き込みを伴うため、実行前に stg2 の DB をダンプすること。テスト後は登録したレコードを削除する運用。",
+    "CMS の既存レコードの編集(update)ではなく、newdata(新規登録)経由のみを対象にする(既存データを壊さないため)。"
+  ],
+  "cms": [
+    { "id": "S12-cat", "desc": "カテゴリ名(cms_category)", "url": "/cms_category/newdata", "field": "name" },
+    { "id": "S12-cource", "desc": "講座名(cms_cource)", "url": "/cms_cource/newdata", "field": "cource_name" },
+    { "id": "S12-class", "desc": "授業名(cms_class)", "url": "/cms_class/newdata", "field": "class_name" },
+    { "id": "S12-teacher", "desc": "講師名(cms_auth)", "url": "/cms_auth/newdata", "field": "teacher_name" }
+  ],
+  "student": [
+    { "id": "S12-name", "desc": "受講者氏名(mypage/edit)。[B-0] mysql_real_escape_string の不具合により、現状は登録(保存)自体が失敗する見込み。修正後に再実行すること", "url": "/mypage/edit.php", "field": "name1", "blockedBy": "B-0" }
+  ]
+}

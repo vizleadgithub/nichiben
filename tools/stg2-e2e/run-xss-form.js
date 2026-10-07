@@ -208,6 +208,20 @@ async function resolveTemplate(session, url) {
         }
       }
     }
+    // 商品管理の info.php 等、ID(mid・pid)が必須の詳細画面。{ID} の記載がなくても、項目が見つからなければ
+    // 同じ階層の index.php から実在するIDを探す（CMSの edit/{ID} と同じ考え方）
+    if (!(first.status < 400 && await hasTargets()) && siteName === 'product' && /\/info(_review)?\.php$/.test(url)) {
+      for (const key of ['mid', 'pid']) {
+        const dir = url.replace(/[^/]*$/, '');
+        const r = await session.goto(`${dir}index.php`);
+        if (r.status >= 400) continue;
+        const href = await session.page.evaluate((k) => { const a = [...document.querySelectorAll('a[href]')].find((x) => new RegExp(`[?&]${k}=\\d+`).test(x.getAttribute('href'))); return a && a.href; }, key);
+        if (!href) continue;
+        const u = new URL(href);
+        const r2 = await session.goto(u.pathname.replace(/[^/]*$/, url.split('/').pop()) + u.search);
+        if (r2.status < 400 && await hasTargets()) { pageUrl = u.pathname.replace(/[^/]*$/, url.split('/').pop()) + u.search; first = r2; console.log(`  ${url}: 一覧から実在のID(${key})を取得 ${pageUrl}`); break; }
+      }
+    }
     if (first.status === 'ERROR' || first.status === 'SSO' || first.status >= 400) {
       const why = `HTTP ${first.status} ${first.error || ''}`.trim();
       for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: `画面が開けない: ${why}`, url });
@@ -233,6 +247,10 @@ async function resolveTemplate(session, url) {
 
     // 通常の値だけで確認画面まで進めるか（進めない画面は、確認画面の検査ができないため form-defaults.json の追加が必要）
     await session.goto(pageUrl);
+    // 検索系の画面(一覧・検索)には「確認」画面自体がなく、isConfirmScreen は常に false になる。
+    // 一方で、送信前から常に出ている入力欄の説明文(※半角入力 等)を validationErrors が拾ってしまうため、
+    // 送信前後の差分だけを「新しく出たエラー」として扱う
+    const errsBefore = await validationErrors(session.page);
     await fillBaseline(session.page, targets[0].field, overrides, true);   // 対象項目も通常の値で埋める
     await setFields(session.page, [{ name: targets[0].field, value: null }]);   // 通常の値のまま（目印だけ付ける）
     const base = await submitGuarded(session);
@@ -242,10 +260,13 @@ async function resolveTemplate(session, url) {
       console.log(`skip ${url}: ${base.refused}`);
       continue;
     }
-    const reached = await isConfirmScreen(session.page);
-    // 画面の検証エラーに加え、JavaScript の入力チェックがダイアログで送信を止めた場合はそのメッセージも手がかりとして残す
-    const errs = reached ? [] : [...await validationErrors(session.page), ...session.dialogs.map((d) => `ダイアログ: ${d}`)];
-    pages.push({ url, entry: pageUrl, baseline: reached ? '確認画面まで進める' : `確認画面へ進めない(${new URL(base.finalUrl).pathname})`, errors: errs });
+    const errsAfter = await validationErrors(session.page);
+    const newErrs = errsAfter.filter((e) => !errsBefore.includes(e));
+    const isConfirm = await isConfirmScreen(session.page);
+    // 確認画面に進んだ場合はもちろん成功。確認画面がない画面(検索・一覧系)は、新しい検証エラーが出ていなければ成功とみなす
+    const reached = isConfirm || (!isConfirm && newErrs.length === 0 && !/[{}]/.test(url));
+    const errs = reached ? [] : [...newErrs, ...session.dialogs.map((d) => `ダイアログ: ${d}`)];
+    pages.push({ url, entry: pageUrl, baseline: reached ? '確認画面まで進める' : `確認画面へ進めない(${new URL(base.finalUrl).pathname})`, errors: errs, hasConfirmScreen: isConfirm });
     if (checkPages) { console.log(`${reached ? 'ok ' : 'NG '} ${url}  ${pages[pages.length - 1].baseline}${errs.length ? `\n      エラー: ${errs.join(' / ')}` : ''}`); continue; }
     if (!reached) console.log(`注意: ${url} は通常の値でも確認画面へ進めない（検証エラーの再表示だけを検査）→ form-defaults.json で必須項目の値を指定してください`);
 
@@ -262,7 +283,7 @@ async function resolveTemplate(session, url) {
         const [raw] = await inspect(session, res, injected, baseDialogs);
         const findings = await resolveRoundtrip(session, res, raw);
         const ng = findings.some((f) => f.ng);
-        const stage = (await isConfirmScreen(session.page)) ? '確認画面' : '再表示(検証エラー等)';
+        const stage = (await isConfirmScreen(session.page)) ? '確認画面' : isConfirm ? '再表示(検証エラー等)' : '検索結果・一覧(確認画面なし)';
         rec.add({
           id: t.row.id, field: t.field, pid: p.pid, idx: p.idx, marker: marker(t.row.id), status: res.status, url, finalUrl: res.finalUrl, stage,
           verdict: ng ? 'NG' : findings.length ? '要確認' : 'OK', findings, jsErrors: session.jsErrors.slice(0, 3),

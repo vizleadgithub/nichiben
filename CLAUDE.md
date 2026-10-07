@@ -587,7 +587,22 @@ CMS・商品管理・会員登録の「確認」画面と異なり、試験・�
 - **未対応**: `exam_freetext`（自由記述。質問間の移動自体が毎回自動保存され、状態遷移が複雑）、`result*.php`・`resubmit_index*.php`（試験が「採点済み」「再提出待ち」等の状態である必要があり、別途 CMS 側の準備が要る）。
 - **計画(xlsx)側の要確認事項**: `/exam2/index1.php`・`confirm1.php`・`confirm2.php`・`answer_check1.php`・`resubmit_index1/2.php`・`result1/2.php`・`resubmit_exec_result1.php` はリポジトリに実体がない（exam2 は `index.php`→`answer_check.php` の1系統のみで、exam(非2)の番号付きファイル構成を誤って複製したとみられる）。`/exam/resubmit_exec_result1.php` も同様に実体がない。
 
-- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: S9（ファイルアップロード）・S10（パスワード）、S12（表示専用の値。登録→全画面の追跡）、F-10、E-02/E-03/E-05（購入・決済画面。開くだけで注文が作られうる）、E-45（JSON 画面）、F-01 のログイン後の遷移、F-04 の Host ヘッダー本体、F-09 のセッション ID 再生成、入口別の表示先（G-01〜G-12）、上記の exam_freetext・result系・resubmit系。実施する場合は、先に DB のダンプ（人が取得）が必要。
+##### 段階B: S12（表示専用の値）・F-10（入力→全画面の自動追跡）（`run-xss-s12.js`）
+
+「どこかの画面で攻撃文字列を登録 → 別の画面で、その値がエスケープされて表示されるか」を見る観点。1画面・1項目の確認では足りないため、(1) `test-plan/s12-entries.json` に書かれた画面で実際に値を登録し、(2) CMS・受講者サイトを広く巡回して、登録した識別マーカーの出現を探す（`s12-crawl-lib.js`）。
+
+```
+node run-xss-s12.js --register-only     # 登録のみ。test-results/s12-manifest.json に記録
+node run-xss-s12.js --crawl-only        # 保存済み manifest を使って巡回のみ
+node run-xss-s12.js                     # 登録→巡回を通しで実行（既定）
+```
+
+- **DB へ書き込む（段階B）。実行前に stg2 の DB をダンプすること。** 登録した値は削除せず残る（手動で削除する運用）。
+- 登録先は `test-plan/s12-entries.json`（カテゴリ名・講座名・授業名・講師名など、CMS の `newdata` 経由の新規登録のみ。既存レコードは編集しない）。`xss-form-lib.js` の `submitComplete`（登録ボタンを実際に押す。`run-xss-form.js` の `submitGuarded` とは逆）を使う。
+- 受講者本人の氏名変更（`/mypage/edit.php`）は、下記 [B-0] の不具合により現状は登録自体が失敗する見込みのため、`blockedBy` 付きで対象外にしてある。
+- **まだ実行していない（コードのみ）。** 登録エントリは代表的な数画面のみで、`test-plan/s12-entries.json` に追加すれば対象を広げられる。
+
+- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: S9（ファイルアップロード）・S10（パスワード）、F-10 のうち `s12-entries.json` 未登録の入口、E-02/E-03/E-05（購入・決済画面。開くだけで注文が作られうる）、E-45（JSON 画面）、F-01 のログイン後の遷移、F-04 の Host ヘッダー本体、F-09 のセッション ID 再生成、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）、上記の exam_freetext・result系・resubmit系。実施する場合は、先に DB のダンプ（人が取得）が必要。
 
 ## アーキテクチャ
 

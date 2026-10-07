@@ -198,7 +198,28 @@ async function checkF03() {
     console.log(`${verdict === 'OK' ? 'ok' : verdict === 'NG' ? 'NG' : '??'} ${id} ${u} -> ${why || `${route} → ${r.status}`}`);
   }
   for (const v of [`${m}"><img src=x onerror=alert('${m}')>`, `${m}');alert('${m}');//`, `${m}</title><img src=x onerror=alert('${m}')>`]) {
-    addProbe(id, `?s=${v.slice(0, 30)}`, await probe(s, `/?s=${encodeURIComponent(v)}`, [{ marker: m, sig: v.includes('<img') ? `<img src=x onerror=alert('${m}')>` : v }]));
+    const r = await probe(s, `/?s=${encodeURIComponent(v)}`, [{ marker: m, sig: v.includes('<img') ? `<img src=x onerror=alert('${m}')>` : v }]);
+    addProbe(id, `?s=${v.slice(0, 30)}`, r);
+    addProbe('D-0014', `?s=${v.slice(0, 30)}（標準機能の反射。F-03 と同一確認）`, r);   // D-0014 は F-03 と同じ確認対象（計画のURLが同じ /?s= のため）
+  }
+}
+
+// D-0005 WordPress お知らせ一覧(/news/)のページ送り・カテゴリ・検索パラメータの反射
+async function checkD0005() {
+  const id = 'D-0005', m = markerOf(id);
+  const s = await sess(studentKey());
+  const params = ['paged', 'cat', 's'];
+  const values = [
+    { v: `${m}"><img src=x onerror=alert('${m}')>`, sig: `<img src=x onerror=alert('${m}')>` },
+    { v: `${m}');alert('${m}');//`, sig: `${m}');alert('${m}');//` },
+    { v: `${m}%' OR '%'='` },   // LIKEの特殊文字。確認用出力(SQLエラー等)は probe() 側で自動検出
+    { v: `${m}_\\` },
+  ];
+  for (const p of params) {
+    for (const x of values) {
+      addProbe(id, `?${p}=${x.v.slice(0, 30)}`, await probe(s, `/news/?${p}=${encodeURIComponent(x.v)}`, [{ marker: m, sig: x.sig }]));
+      await sleep(s);
+    }
   }
 }
 
@@ -383,7 +404,7 @@ async function checkE08() {
   }
 }
 
-const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-08': checkE08, 'E-19': checkE19, 'E-47': checkE47 };
+const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-08': checkE08, 'E-19': checkE19, 'E-47': checkE47, 'D-0005': checkD0005 };
 
 (async () => {
   try {
