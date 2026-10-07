@@ -11,10 +11,12 @@ const SSO_HOSTS = /(^|\.)nichibenren(-member-sso)?\.(or\.jp|jp)$/;
 
 class Session {
   // statePath: 共有のログイン状態(.auth/cms.json)とは別のファイルを使う（他の実行と並行して調べるとき。期限切れの再ログインはしない）
-  constructor(site, { anonymous = false, statePath = null } = {}) {
+  // contextOptions: userAgent・viewport 等をブラウザコンテキストに追加で渡す（E-09のスマホ版確認など）
+  constructor(site, { anonymous = false, statePath = null, contextOptions = {} } = {}) {
     if (!SITES[site]) throw new Error('site は cms か student を指定してください');
     this.site = site;
     this.statePath = statePath;
+    this.contextOptions = contextOptions;
     this.anonymous = anonymous;
     this.baseUrl = SITES[site].baseUrl();
     assertStg2(this.baseUrl);
@@ -29,7 +31,7 @@ class Session {
       throw new Error(`先に node login.js ${this.site} を実行してください`);
     }
     this.browser = this.browser || await chromium.launch();
-    this.context = await newContext(this.browser, this.anonymous ? null : this.site, this.statePath);
+    this.context = await newContext(this.browser, this.anonymous ? null : this.site, this.statePath, this.contextOptions);
     await this.context.route('**/*', (route) => {
       const u = route.request().url();
       if (SSO_HOSTS.test(new URL(u).hostname)) { this.blocked = u; return route.abort(); }

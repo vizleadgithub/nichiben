@@ -5,12 +5,12 @@
 //   --only       実行するIDを指定（省略時は下の CHECKS すべて）
 //   --probe-php  E-08 で、リポジトリに存在する開発用らしき PHP(*_dev.php 等)にも実際にアクセスする。
 //                PHP は開くと実行されるため既定では一覧表示のみ（メール送信等の副作用がありうる）
-// 自動化していないもの（計画の該当行は手動）: F-01 のログイン後の遷移・F-04 の Host ヘッダー本体・F-09 のセッションID再生成・
-//   E-02/E-03/E-05 の購入・決済画面（開くだけで注文等が作られうる）・E-45 の JSON 画面
+// 自動化していないもの（計画の該当行は手動）: F-01 のうち受講者側(SSO経由のためログインを自動化しない)・F-04 の Host ヘッダー本体・
+//   E-02/E-05 の購入・決済画面（開くだけで注文等が作られうる）
 const fs = require('fs');
 const path = require('path');
 const { Session, SSO_BOUNCE } = require('./xss-session');
-const { SITES } = require('./lib');
+const { SITES, chromium, env, assertStg2 } = require('./lib');
 const { debugFindings, classify, domInjection, Recorder } = require('./detect');
 
 const REPO = path.join(__dirname, '../..');
@@ -21,10 +21,12 @@ const WAIT_MS = 200;
 
 const rec = new Recorder('http');
 const sessions = {};
+const MOBILE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
 async function sess(key) {
   if (!sessions[key]) {
     const [site, anon] = key.split(':');
-    sessions[key] = await new Session(site, { anonymous: anon === 'anon' }).open();
+    const contextOptions = key.endsWith(':sp') ? { userAgent: MOBILE_UA } : {};
+    sessions[key] = await new Session(site, { anonymous: anon === 'anon' || anon === 'sp', contextOptions }).open();
   }
   return sessions[key];
 }
@@ -146,6 +148,32 @@ async function checkF01() {
     rec.add({ id, verdict: f.length ? '要確認' : 'OK', label: `CMS未ログイン ${p.slice(0, 60)}`, status: raw.status, location: loc.slice(0, 160), findings: f, scope: '未ログイン時の反映のみ。ログイン後の遷移は手動' });
     if (f.length) console.log(`?? ${id} CMS ${p} -> ${f.map((x) => x.kind).join(',')}`);
   }
+  // CMS はログインが SSO 経由ではないため、実際にログインして戻り先を確認できる。
+  // Login_page.php の _is_valid_backurl() は「/ で始まる」ことしか見ておらず、//evil.example/ のような
+  // プロトコル相対URLも許可してしまう（ブラウザは外部サイトへのリダイレクトとして扱う。コードで確認済みの疑い）
+  for (const backurl of ['//evil.example/', '/\\evil.example', 'https://evil.example/']) {
+    const browser = await chromium.launch();
+    const context = await browser.newContext({ httpCredentials: { username: env('STG2_BASIC_USER'), password: env('STG2_BASIC_PASS') } });
+    const page = await context.newPage();
+    const base = env('STG2_CMS_URL');
+    assertStg2(base);
+    await page.goto(`${base}?backurl=${encodeURIComponent(backurl)}`);
+    await page.fill('input[name="login_id"]', env('STG2_CMS_USER')).catch(() => {});
+    await page.fill('input[name="password"]', env('STG2_CMS_PASS')).catch(() => {});
+    await Promise.all([page.waitForNavigation().catch(() => {}), page.click('form input[type="submit"]').catch(() => {})]);
+    // ログイン直後は学校選択画面を挟む場合がある（login.js と同じ処理）。backurl の遷移がその後に起きないかも確認する
+    if (page.url().includes('/school_select')) {
+      const schoolId = process.env.STG2_CMS_SCHOOL_ID || '1';
+      await page.check(`input[name="school_id"][value="${schoolId}"]`).catch(() => {});
+      await Promise.all([page.waitForNavigation().catch(() => {}), page.click('form input[type="image"]').catch(() => {})]);
+    }
+    const finalUrl = page.url();
+    const external = /^https?:\/\/evil\.example/i.test(finalUrl) || finalUrl.startsWith('evil.example');
+    rec.add({ id, verdict: external ? 'NG' : 'OK', label: `CMSログイン後の戻り先 backurl=${backurl}`, note: `遷移先: ${finalUrl}`, findings: external ? [{ kind: '外部サイトへリダイレクト', text: finalUrl, ng: true }] : [] });
+    console.log(`${external ? 'NG ' : 'ok '} ${id} CMSログイン backurl=${backurl} -> ${finalUrl}`);
+    await browser.close();
+    if (external) break;   // 学校選択を経由する通常ログインの間に挟まるため、再現したら以降は省略
+  }
 }
 
 // F-02 パス情報の付加（PHP_SELF・REQUEST_URI の反映）と、Referer・User-Agent の反映
@@ -202,6 +230,65 @@ async function checkF03() {
     addProbe(id, `?s=${v.slice(0, 30)}`, r);
     addProbe('D-0014', `?s=${v.slice(0, 30)}（標準機能の反射。F-03 と同一確認）`, r);   // D-0014 は F-03 と同じ確認対象（計画のURLが同じ /?s= のため）
   }
+}
+
+// E-09 WordPressスマホ版の確認用出力・SQLの出力(対応済みの再確認)。モバイルUAでトップ・お知らせを開く
+async function checkE09() {
+  const id = 'E-09';
+  const s = await sess('student:sp');
+  for (const u of ['/', '/news/']) {
+    addProbe(id, `(スマホ版UA) ${u}`, await probe(s, u, []));
+    await sleep(s);
+  }
+}
+
+// E-45 Ajax応答(JSON)のContent-Type・文字のエスケープ。実データが無くても、ヘッダーと空データ時の応答形式は確認できる。
+// DOM への .html() 挿入(実行可能かどうか)は画面操作が必要なため対象外（計画の備考どおり）
+async function checkE45() {
+  const id = 'E-45';
+  if (!hasLogin('cms')) { add(id, '対象外', 'CMS: ログイン済みセッションがない'); return; }
+  const s = await sess('cms:auth');
+  const endpoints = [
+    { page: '/cms_exam_problem/edit', url: '/cms_exam_problem/get_exam_answer_detail', fields: { exam_id: '0', answer_student_id: '0', answer_no: '0' } },
+    { page: '/cms_exam2_problem/edit', url: '/cms_exam2_problem/get_exam2_answer_detail', fields: { exam2_id: '0', answer_student_id: '0', answer_no: '0' } },
+  ];
+  for (const ep of endpoints) {
+    await s.goto(ep.page);
+    const result = await s.page.evaluate(async ({ url, fields }) => {
+      const token = document.cookie.match(/csrf_cookie_name=([^;]+)/);
+      const body = new URLSearchParams({ ...fields, csrf_test_name: token ? decodeURIComponent(token[1]) : '' });
+      try {
+        const r = await fetch(url, { method: 'POST', body, credentials: 'same-origin' });
+        const text = await r.text();
+        return { status: r.status, contentType: r.headers.get('content-type'), nosniff: r.headers.get('x-content-type-options'), body: text.slice(0, 300) };
+      } catch (e) { return { error: String(e).slice(0, 200) }; }
+    }, { url: s.abs(ep.url), fields: ep.fields });
+    if (result.error) { add(id, '要確認', `${ep.url}: fetch失敗 ${result.error}`); continue; }
+    const findings = [];
+    if (!/application\/json/i.test(result.contentType || '')) findings.push(`Content-Type が application/json でない(${result.contentType})`);
+    if (/<script|<img|<svg|<html/i.test(result.body || '')) findings.push('応答本文がHTMLタグを含む(JSONとして不正な形式の可能性)');
+    rec.add({ id, verdict: findings.length ? '要確認' : 'OK', label: ep.url, status: result.status, note: findings.join(' / ') || undefined,
+      scope: '実データ(登録済みの回答)が無い状態での、ヘッダーと空応答の形式のみ確認。DOMへの挿入確認は画面操作が必要(対象外)' });
+    console.log(`${findings.length ? '??' : 'ok'} ${id} ${ep.url} status=${result.status} content-type=${result.contentType} ${findings.join(',')}`);
+  }
+}
+
+// E-03 受講者レポート(倫理研修)の var_dump・確認用コメントの有無。一覧から実在の受講者IDを取得して開く
+async function checkE03() {
+  const id = 'E-03';
+  if (!hasLogin('cms')) { add(id, '対象外', 'CMS: ログイン済みセッションがない'); return; }
+  const s = await sess('cms:auth');
+  const list = await s.goto('/cms_report/cms_user');
+  const href = await s.page.evaluate(() => {
+    const a = [...document.querySelectorAll('a[href]')].find((x) => /\/cms_report\/cms_user_detail\/\d+/.test(x.getAttribute('href')));
+    return a && a.getAttribute('href');
+  }).catch(() => null);
+  if (!href) { add(id, '対象外', '一覧(/cms_report/cms_user)に受講者が1件もない、またはリンクが見つからない'); return; }
+  const studentId = href.match(/cms_user_detail\/(\d+)/)[1];
+  const url = `/cms_report/cms_user_detail/${studentId}/3`;
+  addProbe(id, `${url}（受講者ID=${studentId}。一覧から取得）`, await probe(s, url, []));
+  // 存在しない受講者IDでもエラーの詳細が出ないこと
+  addProbe(id, '/cms_report/cms_user_detail/999999999/3（存在しないID）', await probe(s, '/cms_report/cms_user_detail/999999999/3', []));
 }
 
 // D-0005 WordPress お知らせ一覧(/news/)のページ送り・カテゴリ・検索パラメータの反射
@@ -352,6 +439,27 @@ async function checkF09() {
   }
   for (const p of ['/', '/search/index.php']) addProbe(id, `Cookie値の反映 ${p}`, await probe(s, p, [{ marker: m, sig: `<img src=x onerror=alert('${m}')>` }, { marker: m, sig: v }]), 'Cookie値の反映のみ。ログイン前後のセッションIDの再生成は手動');
   await s.context.clearCookies();
+
+  // セッションIDの再生成(CMSのみ。受講者はSSO経由のため、ログインそのものを自動化しない)。
+  // 独立したブラウザコンテキストでログイン前後のCookieを比較する（保存済みの .auth/cms.json は使わない）
+  if (hasLogin('cms')) {
+    const browser = await chromium.launch();
+    const context = await browser.newContext({ httpCredentials: { username: env('STG2_BASIC_USER'), password: env('STG2_BASIC_PASS') } });
+    const page = await context.newPage();
+    const base = env('STG2_CMS_URL');
+    assertStg2(base);
+    await page.goto(base);
+    const sidName = (await context.cookies()).find((c) => /sess/i.test(c.name))?.name || 'ci_session';
+    const before = (await context.cookies()).find((c) => c.name === sidName)?.value;
+    await page.fill('input[name="login_id"]', env('STG2_CMS_USER'));
+    await page.fill('input[name="password"]', env('STG2_CMS_PASS'));
+    await Promise.all([page.waitForNavigation().catch(() => {}), page.click('form input[type="submit"]')]);
+    const after = (await context.cookies()).find((c) => c.name === sidName)?.value;
+    const regenerated = before && after && before !== after;
+    rec.add({ id, verdict: regenerated ? 'OK' : '要確認', label: 'CMSログイン前後のセッションID', note: regenerated ? undefined : `再生成されていない可能性(cookie: ${sidName})` });
+    console.log(`${regenerated ? 'ok' : '??'} ${id} CMSログイン前後のセッションID ${regenerated ? '再生成あり' : '変化なし/未検出'}`);
+    await browser.close();
+  }
 }
 
 // E-08 旧ファイル・開発用ファイルが公開領域から到達できないこと
@@ -404,7 +512,7 @@ async function checkE08() {
   }
 }
 
-const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-08': checkE08, 'E-19': checkE19, 'E-47': checkE47, 'D-0005': checkD0005 };
+const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-03': checkE03, 'E-08': checkE08, 'E-09': checkE09, 'E-19': checkE19, 'E-47': checkE47, 'E-45': checkE45, 'D-0005': checkD0005 };
 
 (async () => {
   try {

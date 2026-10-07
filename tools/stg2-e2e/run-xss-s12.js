@@ -33,15 +33,25 @@ const only = opt('--only') ? new Set(opt('--only').split(',')) : null;
 
 const ENTRIES_PATH = path.join(__dirname, 'test-plan/s12-entries.json');
 const MANIFEST_PATH = path.join(__dirname, 'test-results/s12-manifest.json');
+const DEFAULTS_PATH = path.join(__dirname, 'test-plan/form-defaults.json');
+// run-xss-form.js と同じ form-defaults.json を使う（商品カテゴリ・コンテンツ必須等、画面ごとの検証を通す既定値）
+const overridesFor = (url) => (fs.existsSync(DEFAULTS_PATH) ? (JSON.parse(fs.readFileSync(DEFAULTS_PATH, 'utf-8'))[url] || {}) : {});
 // 識別しやすく、かつ「未エスケープで出た」ことを機械的に検出できる代表の攻撃文字列（P02相当）を1種類だけ使う。
 // S12 は入口ではなく表示先の確認が目的のため、入口側は payload のバリエーションを増やさない
 const payloadFor = (marker) => fill("{m}\"><img src=x onerror=alert('{m}')>", marker);
 const sigFor = (marker) => `<img src=x onerror=alert('${marker}')>`;
+// URL欄は形式チェック(http/https必須)があるため、通常のURLの中にマーカーを仕込む（それでも出力時に属性から脱出しないかを見る）
+const urlPayloadFor = (marker) => `https://example.jp/${marker}"><img src=x onerror=alert('${marker}')>`;
 const marker = (id) => `XSSTEST_${id.replace(/[^A-Za-z0-9]/g, '')}`;
 
 function loadEntries() {
   const cfg = JSON.parse(fs.readFileSync(ENTRIES_PATH, 'utf-8'));
-  const all = [...(cfg.cms || []).map((e) => ({ ...e, session: 'cms' })), ...(cfg.student || []).map((e) => ({ ...e, session: 'student' }))];
+  // product(商品管理)は CMS と同じログインを使う（run-xss-form.js の --site product と同じ扱い）
+  const all = [
+    ...(cfg.cms || []).map((e) => ({ ...e, session: 'cms' })),
+    ...(cfg.product || []).map((e) => ({ ...e, session: 'cms' })),
+    ...(cfg.student || []).map((e) => ({ ...e, session: 'student' })),
+  ];
   return all.filter((e) => !only || only.has(e.id));
 }
 
@@ -54,7 +64,7 @@ async function registerEntry(sessions, entry, rec) {
   }
   const session = sessions[entry.session];
   const m = marker(entry.id);
-  const value = payloadFor(m);
+  const value = /url/i.test(entry.field) ? urlPayloadFor(m) : payloadFor(m);
   const first = await session.goto(entry.url);
   if (first.status === 'ERROR' || first.status === 'SSO' || first.status >= 400) {
     rec.add({ id: entry.id, verdict: '対象外', note: `画面が開けない: HTTP ${first.status}`, url: entry.url });
@@ -65,7 +75,7 @@ async function registerEntry(sessions, entry, rec) {
     rec.add({ id: entry.id, verdict: '対象外', note: '項目が画面にない', url: entry.url });
     return null;
   }
-  await fillBaseline(session.page, entry.field, {}, true);
+  await fillBaseline(session.page, entry.field, overridesFor(entry.url), true);
   await setFields(session.page, [{ name: entry.field, value }]);
   const confirmRes = await submitGuarded(session);
   if (confirmRes.refused) {

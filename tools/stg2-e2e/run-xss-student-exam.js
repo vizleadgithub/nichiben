@@ -4,24 +4,27 @@
 //   表示に進んだ時点で回答を書き込む(DbConnect::execute() をコードで確認。run-xss-form.js の調査で判明)。
 //   書き込みなしで確認画面に到達する経路がないため、書き込みを許容してテストする。
 //
-// 対象(今回実装した3シナリオ。plan.json の実在するURLと対応):
-//   exam_plain    /exam/index.php  → /exam/answer_check.php   書き込みなし(確認のみ。--accept-writes 不要)
-//   exam_choice   /exam/index1.php → /exam/answer_check1.php  書き込みあり(回答が exam_answer_retry に保存される)
-//   survey        /exam2/index.php → /exam2/answer_check.php  書き込みなし(確認のみ。--accept-writes 不要)
+// 対象(今回実装した4シナリオ。plan.json の実在するURLと対応):
+//   exam_plain     /exam/index.php  → /exam/answer_check.php  書き込みなし(確認のみ。--accept-writes 不要)
+//   exam_choice    /exam/index1.php → /exam/answer_check1.php 書き込みあり(回答が exam_answer_retry に保存される)
+//   exam_freetext  /exam/index2.php → /exam/confirm2.php      書き込みあり(質問への回答の自動保存。最初の設問のみ。最終提出はしない)
+//   survey         /exam2/index.php → /exam2/answer_check.php 書き込みなし(確認のみ。--accept-writes 不要)
 // 対象項目: exam_problem_{動的}[]・exam_problem_q_{動的}[](S2 複数行テキスト)、
 //           exam_problem_id[]・exam_problem_id_q[]・exam2_problem_id[](S11 hidden改ざん)
 //
 // 前提: 事前に CMS で、テスト専用の講座・試験・アンケートを作り(STG2_STUDENT_USER だけを割り当てる)、
 //   test-plan/student-entry.json に実際の pid・eid・e2id 等を記入しておく。未記入のシナリオはスキップする。
-//   exam_choice は DB へ書き込むため、実行前に stg2 の DB をダンプすること(--accept-writes を付けないと実行しない)。
+//   exam_choice・exam_freetext は DB へ書き込むため、実行前に stg2 の DB をダンプすること(--accept-writes を付けないと実行しない)。
+//
+// result*.php(採点結果の表示)は、各シナリオで回答を1件登録した直後に読み取り専用で確認する(RESULT_CHECKS)。
+// resubmit_index*.php(再提出待ちの状態が必要)は、到達できる状態になっていなければ対象外として記録するだけに留める
+// (CMS側で「再提出待ち」にする操作が別途必要なため。RESUBMIT_CHECKS)。
 //
 // まだ実装していないもの(段階Bの残課題):
-//   - exam_freetext(/exam/index2.php。自由記述。質問間の移動そのものが毎回自動保存される。状態遷移が複雑なため別途)
-//   - result*.php・resubmit_index*.php(試験が「採点済み」「再提出待ち」等の状態である必要があり、別途CMS側の準備が要る)
 //   - ethic_treaning(対象の行はCSRFトークン以外にテスト対象の項目がなく、run-xss-form.js側の対応で十分)
 //   - 計画(plan.json)の一部のURLは実際のファイルが存在しない(下記 DATA_ISSUES 参照。xlsx側の要確認事項)
 //
-// 使い方: node run-xss-student-exam.js [exam_plain|exam_choice|survey|all] [--accept-writes] [--full] [--only A-0001,...]
+// 使い方: node run-xss-student-exam.js [exam_plain|exam_choice|exam_freetext|survey|all] [--accept-writes] [--full] [--only A-0001,...]
 const fs = require('fs');
 const path = require('path');
 const { expand, fill } = require('./xss-payloads');
@@ -36,7 +39,7 @@ const acceptWrites = args.includes('--accept-writes');
 const full = args.includes('--full');
 const only = opt('--only') ? new Set(opt('--only').split(',')) : null;
 const targets = args.filter((a) => !a.startsWith('--') && a !== opt('--only')).length
-  ? args.filter((a) => ['exam_plain', 'exam_choice', 'survey', 'all'].includes(a))
+  ? args.filter((a) => ['exam_plain', 'exam_choice', 'exam_freetext', 'survey', 'all'].includes(a))
   : ['all'];
 const wantAll = targets.includes('all');
 
@@ -69,6 +72,30 @@ const SCENARIOS = {
     submitSel: 'a[onclick*="examFormSubmit"], a[onclick*="pop_get_html_sub"]', confirmUrlRe: /\/exam2\/answer_check\.php/, writes: false,
     planRows: { s2: ['C-0154'], s11: ['C-0155'] },
   },
+  // 自由記述式。index2.tpl の examFormSubmit('confirm') が /exam/confirm2.php へ遷移させる（'next'/'prev' は質問間の移動で別の画面）。
+  // 最初の設問にだけ回答し、1回の確認遷移で confirm2.php の表示（反映）を見る。質問をまたぐ往復・最終提出(answer_check2.php)までは行わない
+  exam_freetext: {
+    entry: '/exam/index2.php', entryParams: ['pid', 'ccno', 'eid', 'qid', 'eno'],
+    fieldPrefixes: ['exam_problem_', 'exam_problem_q_'], hiddenFields: ['exam_problem_id[]', 'exam_problem_id_q[]'],
+    submitSel: '[onclick*="examFormSubmit(\'confirm\'"]', confirmUrlRe: /\/exam\/confirm2\.php/, writes: true,
+    writeNote: '質問への回答が index2.php の自動保存、および confirm2.php への遷移で exam_answer_retry テーブルに保存される',
+    planRows: { s2: ['C-0043', 'C-0044'], s11: ['C-0045'] },
+  },
+};
+
+// result*.php(採点結果の表示。読み取り専用)。回答済みの値がエスケープされて表示されるかを見る(重点項目 E-33 系)。
+// exam_plain→result.php・exam_choice→result1.php・exam_freetext→result2.php。実際の採点状態になっていなくても、
+// 画面が持つエラーメッセージ(「未受講です」等)を返すだけなら対象外として記録する
+const RESULT_CHECKS = {
+  exam_plain: { url: '/exam/result.php', planRows: ['C-0059', 'C-0060'] },
+  exam_choice: { url: '/exam/result1.php', planRows: ['C-0063', 'C-0064'] },
+  exam_freetext: { url: '/exam/result2.php', planRows: ['C-0067', 'C-0068'] },
+  survey: { url: '/exam2/result.php', planRows: ['C-0162'] },
+};
+// resubmit_index*.php(再提出待ちの状態が必要。通常は到達できない想定で、その旨を記録するだけに留める)
+const RESUBMIT_CHECKS = {
+  exam_choice: { url: '/exam/resubmit_index1.php', planRows: ['C-0051', 'C-0052'] },
+  exam_freetext: { url: '/exam/resubmit_index2.php', planRows: ['C-0055', 'C-0056'] },
 };
 
 function loadRows(ids) {
@@ -196,6 +223,51 @@ async function runHiddenTamper(session, rec, key, def) {
   }
 }
 
+// 回答を1件登録してから、result*.php・resubmit_index*.php を読み取り専用で確認する。
+// resubmit_index*.php は「再提出待ち」の状態でないと到達できない想定のため、到達できなければ対象外として記録するだけにする
+async function checkResultAndResubmit(session, rec, key, def) {
+  const check = RESULT_CHECKS[key];
+  const resubmit = RESUBMIT_CHECKS[key];
+  if (!check && !resubmit) return;
+  const entry = loadEntry(key);
+  if (missing(entry, def.entryParams) || (def.writes && !acceptWrites)) return;   // runTextareaScenario 側で対象外として既に記録済み
+
+  // 専用のマーカーで1件だけ回答を登録する（result系の表示確認のため。全バリエーションは runTextareaScenario 側で行う）
+  const entryUrl = `${def.entry}?${qs(entry, def.entryParams)}`;
+  const opened = await session.goto(entryUrl);
+  if (opened.status === 'ERROR' || opened.status === 'SSO' || opened.status >= 400) return;
+  const prefix = def.fieldPrefixes[0];
+  const names = await findDynamicTextareas(session.page, [prefix]);
+  if (!names.length) return;
+  const m = `XRESULT_${key}`.toUpperCase();
+  const value = fill("{m}\"><img src=x onerror=alert('{m}')>", m);
+  for (const n of names) await fillTextareaByName(session.page, n, value);
+  const submitRes = await clickSubmit(session, def.submitSel);
+  if (submitRes.refused) return;
+
+  for (const target of [check, resubmit].filter(Boolean)) {
+    const dialogsBefore = new Set(session.dialogs);
+    const res = await session.goto(`${target.url}?${qs(entry, def.entryParams)}`);
+    const rows = loadRows(target.planRows).filter((r) => !only || only.has(r.id));
+    if (res.status === 'ERROR' || res.status === 'SSO' || res.status >= 400) {
+      for (const r of rows) rec.add({ id: r.id, verdict: '対象外', note: `画面が開けない: HTTP ${res.status}`, scenario: key, url: target.url });
+      continue;
+    }
+    const findings = await inspectResult(session, res, [m], dialogsBefore);
+    const ng = findings.some((f) => f.ng);
+    // resubmit は、状態条件を満たさず別画面に飛ばされた（マーカーが見えない）場合は対象外として記録する
+    const reachedData = findings.length > 0 || res.html.includes(m);
+    for (const r of rows) {
+      if (target === resubmit && !reachedData) {
+        rec.add({ id: r.id, verdict: '対象外', note: '再提出待ちの状態でないため到達できない（CMS側で該当状態を作る必要がある）', scenario: key, url: target.url });
+        continue;
+      }
+      rec.add({ id: r.id, verdict: ng ? 'NG' : findings.length ? '要確認' : 'OK', findings, scenario: key, url: target.url, status: res.status });
+    }
+    if (findings.length) console.log(`${ng ? 'NG ' : '?? '} ${key} ${target.url} ${findings.map((f) => f.kind).join(',')}`);
+  }
+}
+
 (async () => {
   const rec = new Recorder('student-exam');
   const session = await new Session('student').open();
@@ -204,6 +276,7 @@ async function runHiddenTamper(session, rec, key, def) {
     if (!wantAll && !targets.includes(key)) continue;
     await runTextareaScenario(session, rec, key, def);
     await runHiddenTamper(session, rec, key, def);
+    await checkResultAndResubmit(session, rec, key, def);
   }
   await session.close();
 

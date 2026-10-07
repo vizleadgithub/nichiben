@@ -26,10 +26,11 @@ const SITES = {
   student: { baseUrl: () => env('STG2_STUDENT_URL'), state: path.join(AUTH_DIR, 'student.json') },
 };
 
-async function newContext(browser, site, statePath) {
+async function newContext(browser, site, statePath, extra = {}) {
   const opts = {
     httpCredentials: { username: env('STG2_BASIC_USER'), password: env('STG2_BASIC_PASS') },
     ignoreHTTPSErrors: false,
+    ...extra,   // userAgent・viewport 等(E-09のスマホ版確認など)を個別に上書きする場合に使う
   };
   const state = statePath || (site && SITES[site].state);
   if (state && fs.existsSync(state)) opts.storageState = state;

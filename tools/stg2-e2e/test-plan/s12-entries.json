@@ -1,17 +1,61 @@
 {
   "_comment": [
-    "run-xss-s12.js が使う、S12(表示専用の値)・F-10 用の登録エントリ。",
+    "run-xss-s12.js が使う、S12(表示専用の値)・F-10・重点項目(E-10〜E-33系)用の登録エントリ。",
     "ここに書かれた画面で実際に値を『登録(commit)』し、全画面を巡回してマーカーの出現を確認する。",
     "書き込みを伴うため、実行前に stg2 の DB をダンプすること。テスト後は登録したレコードを削除する運用。",
-    "CMS の既存レコードの編集(update)ではなく、newdata(新規登録)経由のみを対象にする(既存データを壊さないため)。"
+    "CMS の既存レコードの編集(update)ではなく、newdata(新規登録)経由のみを対象にする(既存データを壊さないため)。",
+    "メール送信・決済を伴う入口(inquiry・mailmagazine・settlement)は対象外（CLAUDE.md の手動実施方針に合わせる）。"
   ],
   "cms": [
     { "id": "S12-cat", "desc": "カテゴリ名(cms_category)", "url": "/cms_category/newdata", "field": "name" },
     { "id": "S12-cource", "desc": "講座名(cms_cource)", "url": "/cms_cource/newdata", "field": "cource_name" },
     { "id": "S12-class", "desc": "授業名(cms_class)", "url": "/cms_class/newdata", "field": "class_name" },
-    { "id": "S12-teacher", "desc": "講師名(cms_auth)", "url": "/cms_auth/newdata", "field": "teacher_name" }
+    { "id": "S12-teacher", "desc": "講師名(cms_auth)", "url": "/cms_auth/newdata", "field": "teacher_name" },
+    { "id": "S12-issue", "desc": "課題名(cms_issue)", "url": "/cms_issue/newdata", "field": "issue_name" },
+    { "id": "S12-book", "desc": "図書室の表示名(cms_book_library)", "url": "/cms_book_library/newdata", "field": "book_library_logic_name" },
+    { "id": "S12-video", "desc": "動画の表示名(cms_video)", "url": "/cms_video/newdata", "field": "video_logic_name" },
+    { "id": "S12-video-caption", "desc": "動画の説明(cms_video。タグ許可の確認を兼ねる)", "url": "/cms_video/newdata", "field": "video_caption" },
+    { "id": "S12-exam-problem", "desc": "設問名(cms_exam_problem)", "url": "/cms_exam_problem/newdata", "field": "exam_problem_name" },
+    { "id": "S12-exam-problem-text", "desc": "設問本文(cms_exam_problem。row.problem_contents 系に対応)", "url": "/cms_exam_problem/newdata", "field": "problem_contents_text" },
+    { "id": "S12-exam-problem-note", "desc": "設問の解説(cms_exam_problem。row.problem_note 系に対応)", "url": "/cms_exam_problem/newdata", "field": "problem_note" },
+    { "id": "S12-exam-answer-text", "desc": "模範解答(cms_exam_problem。answer_contents_text)", "url": "/cms_exam_problem/newdata", "field": "answer_contents_text" },
+    { "id": "S12-exam2-problem", "desc": "設問名(cms_exam2_problem)", "url": "/cms_exam2_problem/newdata", "field": "exam2_problem_name" },
+    { "id": "S12-exam2-problem-text", "desc": "設問本文(cms_exam2_problem。row_q.problem_contents 系に対応)", "url": "/cms_exam2_problem/newdata", "field": "problem_contents_text" },
+    { "id": "S12-exam2-problem-note", "desc": "設問の解説(cms_exam2_problem。row_q.problem_note 系に対応)", "url": "/cms_exam2_problem/newdata", "field": "problem_note" },
+    {
+      "id": "S12-info-title", "desc": "お知らせタイトル(cms_information)。WordPressへ自動投稿される(G-09・E-24)",
+      "url": "/cms_information/newdata", "field": "information_title"
+    },
+    {
+      "id": "S12-info-caption", "desc": "お知らせ本文(cms_information。タグ許可の確認を兼ねる。E-28・WordPress S3)",
+      "url": "/cms_information/newdata", "field": "information_caption"
+    },
+    {
+      "id": "S12-info-url", "desc": "お知らせの外部リンク(cms_information。E-24・E-25・WordPress S4。javascript: 等は別途 run-xss-http.js 側で確認)",
+      "url": "/cms_information/newdata", "field": "information_url"
+    }
+  ],
+  "product": [
+    { "id": "S12-product-live", "desc": "商品名(product_live)", "url": "/alfproduct/product_live/add.php", "field": "product_name" },
+    { "id": "S12-product-passport", "desc": "商品名(product_passport)", "url": "/alfproduct/product_passport/add.php", "field": "product_name" },
+    { "id": "S12-product-name", "desc": "商品名(product。E-18・E-22・E-26・E-27 等)", "url": "/alfproduct/product/add.php", "field": "product_name" },
+    { "id": "S12-product-memo", "desc": "商品の備考(product。arr_input.memo 系に対応)", "url": "/alfproduct/product/add.php", "field": "memo" },
+    { "id": "S12-product-teacher", "desc": "商品の講師(product。arr_input.teacher 系に対応)", "url": "/alfproduct/product/add.php", "field": "teacher" },
+    { "id": "S12-product-search-word", "desc": "商品の検索語(product。arr_input.search_word 系に対応)", "url": "/alfproduct/product/add.php", "field": "search_word" },
+    { "id": "S12-product-free-html", "desc": "フリーHTMLエリア(product。タグ許可の確認を兼ねる。free_html_area_key 系に対応)", "url": "/alfproduct/product/add.php", "field": "free_html_area1" },
+    { "id": "S12-ethics-memo", "desc": "商品の備考(product_ethics)", "url": "/alfproduct/product_ethics/add.php", "field": "memo" },
+    { "id": "S12-ethics-teacher", "desc": "商品の講師(product_ethics)", "url": "/alfproduct/product_ethics/add.php", "field": "teacher" }
   ],
   "student": [
-    { "id": "S12-name", "desc": "受講者氏名(mypage/edit)。[B-0] mysql_real_escape_string の不具合により、現状は登録(保存)自体が失敗する見込み。修正後に再実行すること", "url": "/mypage/edit.php", "field": "name1", "blockedBy": "B-0" }
+    {
+      "id": "S12-student-name", "desc": "受講者氏名(member/regist。会員登録。G-01・G-04・E-10・E-12・E-13・E-14 等)",
+      "url": "/member/regist.php", "field": "name1"
+    },
+    { "id": "S12-student-school", "desc": "受講者の学校名(member/regist)", "url": "/member/regist.php", "field": "school_name" },
+    { "id": "S12-student-address1", "desc": "受講者の住所1(member/regist)", "url": "/member/regist.php", "field": "address1" },
+    {
+      "id": "S12-mypage-name", "desc": "受講者氏名(mypage/edit)。[B-0] mysql_real_escape_string の不具合により、現状は登録(保存)自体が失敗する見込み。修正後に再実行すること",
+      "url": "/mypage/edit.php", "field": "name1", "blockedBy": "B-0"
+    }
   ]
 }

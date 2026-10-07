@@ -582,9 +582,9 @@ node report-xss.js                                   # 最新の結果を計画�
 CMS・商品管理・会員登録の「確認」画面と異なり、試験・アンケートは確認画面に見える画面（`answer_check*.php` 等）が、表示に進んだ時点で回答を DB へ書き込む（`DbConnect::execute()` で確認済み）。書き込みなしで確認画面へ到達する経路がないため、書き込みを許容して実行する。
 
 - 事前準備: CMS でテスト専用の講座・試験・アンケートを作成し（`STG2_STUDENT_USER` だけを割り当てる。開始日は遠い過去・リマインドなし）、`tools/stg2-e2e/test-plan/student-entry.json` に実際の pid・eid・e2id 等を記入する。未記入のシナリオは自動でスキップされる。
-- 対象: `exam_plain`（`/exam/index.php`。書き込みなし）・`exam_choice`（`/exam/index1.php`。書き込みあり。`--accept-writes` が必須）・`survey`（`/exam2/index.php`。書き込みなし）。
+- 対象: `exam_plain`（`/exam/index.php`。書き込みなし）・`exam_choice`（`/exam/index1.php`。書き込みあり）・`exam_freetext`（`/exam/index2.php`→`confirm2.php`。書き込みあり。最初の設問のみ回答し最終提出はしない）・`survey`（`/exam2/index.php`。書き込みなし）。書き込みがあるシナリオは `--accept-writes` が必須。
 - 書き込みを行った場合は、実行後に stg2 の DB をダンプから復元する（人が実施）。
-- **未対応**: `exam_freetext`（自由記述。質問間の移動自体が毎回自動保存され、状態遷移が複雑）、`result*.php`・`resubmit_index*.php`（試験が「採点済み」「再提出待ち」等の状態である必要があり、別途 CMS 側の準備が要る）。
+- **未対応**: `result*.php`・`resubmit_index*.php`（試験が「採点済み」「再提出待ち」等の状態である必要があり、別途 CMS 側の準備が要る）。
 - **計画(xlsx)側の要確認事項**: `/exam2/index1.php`・`confirm1.php`・`confirm2.php`・`answer_check1.php`・`resubmit_index1/2.php`・`result1/2.php`・`resubmit_exec_result1.php` はリポジトリに実体がない（exam2 は `index.php`→`answer_check.php` の1系統のみで、exam(非2)の番号付きファイル構成を誤って複製したとみられる）。`/exam/resubmit_exec_result1.php` も同様に実体がない。
 
 ##### 段階B: S12（表示専用の値）・F-10（入力→全画面の自動追跡）（`run-xss-s12.js`）
@@ -598,11 +598,16 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
 ```
 
 - **DB へ書き込む（段階B）。実行前に stg2 の DB をダンプすること。** 登録した値は削除せず残る（手動で削除する運用）。
-- 登録先は `test-plan/s12-entries.json`（カテゴリ名・講座名・授業名・講師名など、CMS の `newdata` 経由の新規登録のみ。既存レコードは編集しない）。`xss-form-lib.js` の `submitComplete`（登録ボタンを実際に押す。`run-xss-form.js` の `submitGuarded` とは逆）を使う。
-- 受講者本人の氏名変更（`/mypage/edit.php`）は、下記 [B-0] の不具合により現状は登録自体が失敗する見込みのため、`blockedBy` 付きで対象外にしてある。
-- **まだ実行していない（コードのみ）。** 登録エントリは代表的な数画面のみで、`test-plan/s12-entries.json` に追加すれば対象を広げられる。
+- 登録先は `test-plan/s12-entries.json`（CMS の `newdata` 経由の新規登録のみ。既存レコードは編集しない）。カテゴリ名・講座名・授業名・講師名・課題名・図書室表示名・動画表示名/説明・設問名(exam/exam2)・お知らせタイトル/本文/外部リンク(CMS)、商品名(product_live・product_passport)、受講者氏名(member/regist)の17件を登録する。`xss-form-lib.js` の `submitComplete`（登録ボタンを実際に押す。`run-xss-form.js` の `submitGuarded` とは逆）を使う。
+- お知らせ（`cms_information`）は WordPress へ自動投稿される（G-09・E-24・E-25・E-28・E-30 に対応）。巡回は受講者サイトと同一オリジンの WordPress ページも自然にカバーする（別サイト指定は不要）。
+- メール送信・決済を伴う入口（inquiry・mailmagazine・settlement）は対象外（CLAUDE.md の手動実施方針に合わせる）。
+- 受講者本人の氏名変更（`/mypage/edit.php`）は、削除済みの PHP 関数（`mysql_real_escape_string()`。PHP 8 では未定義）の呼び出しが残っており現状は登録自体が失敗する見込みのため、`blockedBy` 付きで対象外にしてある。
+- **まだ実行していない（コードのみ）。** `test-plan/s12-entries.json` に追加すればさらに対象を広げられる。
 
-- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: S9（ファイルアップロード）・S10（パスワード）、F-10 のうち `s12-entries.json` 未登録の入口、E-02/E-03/E-05（購入・決済画面。開くだけで注文が作られうる）、E-45（JSON 画面）、F-01 のログイン後の遷移、F-04 の Host ヘッダー本体、F-09 のセッション ID 再生成、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）、上記の exam_freetext・result系・resubmit系。実施する場合は、先に DB のダンプ（人が取得）が必要。
+- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: S9（ファイルアップロード）・S10（パスワード）、F-10 のうち `s12-entries.json` 未登録の入口、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（exam2のAjax応答。実在の回答データとIDの特定が要る）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、F-04 の Host ヘッダー本体、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
+  - E-01・E-07 は新規コード不要（E-01 は `check-debug-output.js` の既存の巡回・検出観点と同一。E-07 は cms_video の確認画面が通常の CMS 登録系テスト(S1〜S7。P06 を含む)の対象に既に含まれる）。
+  - E-03（受講者レポート）・E-09（WordPressスマホ版。モバイルUA）・E-45（JSON応答のContent-Type）・F-09（セッションID再生成）・F-01のCMS側（ログイン後の戻り先）は `run-xss-http.js` に追加済み。
+  - **F-01 の調査中に、CMS ログインの戻り先（backurl）にオープンリダイレクトの脆弱性を発見**（`Login_page.php::_is_valid_backurl()` が `//evil.example/` のようなプロトコル相対URLを誤って許可する）。詳細は `secure_report/stg2自動テストで発見した不具合_2026-10-07.md` の [B-7] を参照。
 
 ## アーキテクチャ
 
