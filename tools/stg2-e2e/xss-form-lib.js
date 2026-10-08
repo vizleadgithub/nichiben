@@ -153,6 +153,13 @@ async function submitGuarded(session, { allowFormSubmit = true } = {}) {
     if (idx >= 0 && !(formId && info[idx].o.includes(formId))) idx = -1;
   }
   if (idx < 0) {
+    // 一覧画面の並び替え・ページング等、ボタンではなく<select>のonchange(外部JS)で自動送信される
+    // GET送信のフォームは、HTTPの意味上書き込みを伴わないため、ボタンが見つからなくてもそのまま送信してよい
+    // (2026-10-08発見。product/list_limit.php等、多くの一覧画面がこのパターンで停止していた)
+    const method = await form.evaluate((f) => f.method).catch(() => '');
+    if (method === 'get') {
+      return session.action(() => form.evaluate((f) => f.requestSubmit()));
+    }
     // 安全と判定できるボタンが見つからない場合のみ、フォームの送信先URLを見る。書き込み系の語を含み、
     // かつ確認系の語(confirm等)を含まないなら、そのまま送信するのは危険なので拒否する
     if (DENY_ACTION.test(actionPath) && !CONFIRM_ACTION.test(actionPath)) {
