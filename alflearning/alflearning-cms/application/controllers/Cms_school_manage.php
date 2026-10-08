@@ -935,7 +935,7 @@ class Cms_school_manage extends CI_Controller
 	//----------------------------------------------
 	// [2012/10/25]姓名間チェック
 	//----------------------------------------------
-	function name_check($name){
+	function name_check($name = ''){
 		// load language
 		$this->lang->load('error');
 		

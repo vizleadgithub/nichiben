@@ -644,7 +644,7 @@ class Cms_issue extends CI_Controller {
 	//----------------------------------------------
 	//日付形式チェック
 	//----------------------------------------------
-	function date_check($date){
+	function date_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -666,7 +666,7 @@ class Cms_issue extends CI_Controller {
 	//----------------------------------------------
 	//日付時刻形式チェック
 	//----------------------------------------------
-	function datetime_check($date){
+	function datetime_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -688,7 +688,7 @@ class Cms_issue extends CI_Controller {
 	//----------------------------------------------
 	//時刻形式チェック
 	//----------------------------------------------
-	function time_check($date){
+	function time_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -710,7 +710,7 @@ class Cms_issue extends CI_Controller {
 	//----------------------------------------------
 	//期間チェック
 	//----------------------------------------------
-	function period_check($eddate, $stdate){
+	function period_check($eddate = '', $stdate = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -739,7 +739,7 @@ class Cms_issue extends CI_Controller {
 	//----------------------------------------------
 	//時間チェック
 	//----------------------------------------------
-	function _checktime($hour, $min, $sec){
+	function _checktime($hour = '', $min = '', $sec = ''){
 		if ($hour < 0 || $hour > 23){
 			return FALSE;
 		}
@@ -752,7 +752,7 @@ class Cms_issue extends CI_Controller {
 		return TRUE;
 	}
 
-	public function check_required_checkbox($input) {
+	public function check_required_checkbox($input = '') {
 		if (!is_array($input)) {
 			if( !empty($input) ){
 				$temp = [$input];

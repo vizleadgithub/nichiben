@@ -327,11 +327,12 @@ class Cms_exam extends CI_Controller {
 		// POST取得（解答修正登録から「戻る」押下時に渡される変更値）
 		$temp_exam_answer_data = $this->input->post('exam_answer_data')?$this->input->post('exam_answer_data'):array();
 		
+		if(!is_array($temp_exam_answer_data)){ $temp_exam_answer_data = array(); }
 		// POST値を文字列として取得
 		$string_exam_answer_data = "";
 		foreach($temp_exam_answer_data as $exam_answer_data){
 			// 正規表現で分割 --- [0]全体、[1]解答ID(exam_answer_id)、[2]解答結果(exam_answer_mark)、[3]解答配点(exam_answer_point)
-			preg_match('/^(\d+)\/(\d+)\/(\d+)$/', $exam_answer_data, $temp);
+			if(!is_scalar($exam_answer_data) || !preg_match('/^(\d{1,9})\/(\d{1,9})\/(\d{1,9})$/', (string)$exam_answer_data, $temp)){ continue; }
 			
 			// 解答ID/解答結果/解答配点を文字列保存
 			if($string_exam_answer_data==""){
@@ -1038,6 +1039,8 @@ class Cms_exam extends CI_Controller {
 	// 解答修正登録（確認画面）
 	//----------------------------------------------
 	function exam_answer_update_confirm($exam_id = 0){
+		// ID は数字(9桁以内)だけ受け付ける。それ以外は 0 として扱い、権限なしの画面にする
+		$exam_id = preg_match('/^[0-9]{1,9}$/', (string)$exam_id) ? (int)$exam_id : 0;
 		
 		// 権限を持たない場合、エラーを返す
 		$auth_exam = $this->_get_auth_exam($exam_id);
@@ -1061,12 +1064,13 @@ class Cms_exam extends CI_Controller {
 			
 			// POST取得
 			$temp_exam_answer_data = $this->input->post('exam_answer_data')?$this->input->post('exam_answer_data'):array();
+			if(!is_array($temp_exam_answer_data)){ $temp_exam_answer_data = array(); }
 			
 			// 各値を配列化
 			$array_exam_answer_data = array();
 			foreach($temp_exam_answer_data as $exam_answer_data){
 				// 正規表現で分割 --- [0]全体、[1]解答ID(exam_answer_id)、[2]解答結果(exam_answer_mark)、[3]解答配点(exam_answer_point)
-				preg_match('/^(\d+)\/(\d+)\/(\d+)$/', $exam_answer_data, $temp);
+				if(!is_scalar($exam_answer_data) || !preg_match('/^(\d{1,9})\/(\d{1,9})\/(\d{1,9})$/', (string)$exam_answer_data, $temp)){ continue; }
 				
 				// 解答ID - 連想配列格納
 				$array_exam_answer_data[$temp[1]] = array(
@@ -1314,13 +1318,30 @@ class Cms_exam extends CI_Controller {
 
 		// POST取得
 		$exam_id               = $this->input->post('exam_id');
+		// ID は数字(9桁以内)だけ受け付ける。それ以外は 0 として扱う
+		$exam_id               = (is_scalar($exam_id) && preg_match('/^[0-9]{1,9}$/', (string)$exam_id)) ? (int)$exam_id : 0;
 		$temp_exam_answer_data = $this->input->post('exam_answer_data')?$this->input->post('exam_answer_data'):array();
+		if(!is_array($temp_exam_answer_data)){ $temp_exam_answer_data = array(); }
+
+		// 権限を持たない場合(確認画面と同じ判定)、更新せずにエラーを返す
+		if($exam_id == 0 || $this->_get_auth_exam($exam_id) == 0){
+			$this->lang->load('error');
+			$data['returnurl']       = site_url('cms_exam');
+			$data['error_message']   = $this->lang->line_or_def('error_edit_auth','修正権限がありません<br />ログインし直してください');
+			$data['select_callview'] = 'exam';
+			$this->_display_view(array(
+				'view_name'   => 'wide_use_error',
+				'submenu_idx' => 4,
+				'view_data'   => $data,
+			));
+			return;
+		}
 
 		// 各値を配列化
 		$array_exam_answer_data = array();
 		foreach($temp_exam_answer_data as $exam_answer_data){
 			// 正規表現で分割 --- [0]全体、[1]解答ID(exam_answer_id)、[2]解答結果(exam_answer_mark)、[3]解答配点(exam_answer_point)
-			preg_match('/^(\d+)\/(\d+)\/(\d+)$/', $exam_answer_data, $temp);
+			if(!is_scalar($exam_answer_data) || !preg_match('/^(\d{1,9})\/(\d{1,9})\/(\d{1,9})$/', (string)$exam_answer_data, $temp)){ continue; }
 			
 			// 解答ID - 連想配列格納
 			$array_exam_answer_data[$temp[1]] = array(
@@ -1598,7 +1619,7 @@ class Cms_exam extends CI_Controller {
 	//----------------------------------------------
 	//日付形式チェック
 	//----------------------------------------------
-	function date_check($date){
+	function date_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -1620,7 +1641,7 @@ class Cms_exam extends CI_Controller {
 	//----------------------------------------------
 	//日付時刻形式チェック
 	//----------------------------------------------
-	function datetime_check($date){
+	function datetime_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -1642,7 +1663,7 @@ class Cms_exam extends CI_Controller {
 	//----------------------------------------------
 	//時刻形式チェック
 	//----------------------------------------------
-	function time_check($date){
+	function time_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -1664,7 +1685,7 @@ class Cms_exam extends CI_Controller {
 	//----------------------------------------------
 	//期間チェック
 	//----------------------------------------------
-	function period_check($eddate, $stdate){
+	function period_check($eddate = '', $stdate = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -1693,7 +1714,7 @@ class Cms_exam extends CI_Controller {
 	//----------------------------------------------
 	//時間チェック
 	//----------------------------------------------
-	function _checktime($hour, $min, $sec){
+	function _checktime($hour = '', $min = '', $sec = ''){
 		if ($hour < 0 || $hour > 23){
 			return FALSE;
 		}
@@ -2497,7 +2518,7 @@ class Cms_exam extends CI_Controller {
 		return (bool)$this->datetime_check($date);
 	}
 
-	public function check_required_checkbox($input) {
+	public function check_required_checkbox($input = '') {
 		if (!is_array($input)) {
 			if( !empty($input) ){
 				$temp = [$input];
@@ -2510,7 +2531,7 @@ class Cms_exam extends CI_Controller {
 		}
 		return true;
 	}
-	public function check_required_checkbox2($input) {
+	public function check_required_checkbox2($input = '') {
 		if (!is_array($input)) {
 			if( !empty($input) ){
 				$temp = [$input];

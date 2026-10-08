@@ -951,7 +951,7 @@ class Cms_student extends CI_Controller {
 	//----------------------------------------------
 	//日付形式チェック
 	//----------------------------------------------
-	function date_check($date){
+	function date_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -973,7 +973,7 @@ class Cms_student extends CI_Controller {
 	//----------------------------------------------
 	// [2012/10/25]姓名間チェック
 	//----------------------------------------------
-	function name_check($name){
+	function name_check($name = ''){
 		// load language
 		$this->lang->load('error');
 		

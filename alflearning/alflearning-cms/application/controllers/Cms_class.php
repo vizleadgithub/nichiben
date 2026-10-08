@@ -970,7 +970,7 @@ class Cms_class extends CI_Controller {
 	//----------------------------------------------
 	//日付形式チェック
 	//----------------------------------------------
-	function date_check($date){
+	function date_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -992,7 +992,7 @@ class Cms_class extends CI_Controller {
 	//----------------------------------------------
 	//日付時刻形式チェック
 	//----------------------------------------------
-	function datetime_check($date){
+	function datetime_check($date = ''){
 		// load language
 		$this->lang->load('error');
 
@@ -1014,7 +1014,7 @@ class Cms_class extends CI_Controller {
 	//----------------------------------------------
 	//時刻形式チェック
 	//----------------------------------------------
-	function time_check($date){
+	function time_check($date = ''){
 		// load language
 		$this->lang->load('error');
 
@@ -1043,7 +1043,7 @@ class Cms_class extends CI_Controller {
 	//----------------------------------------------
 	//期間チェック
 	//----------------------------------------------
-	function period_check($eddate, $stdate){
+	function period_check($eddate = '', $stdate = ''){
 		return true;	//期間の指定は時間になった
 //		//エラーメッセージ設定
 //		$this->form_validation->set_message('period_check', '期間の指定が間違っています。');
@@ -1099,7 +1099,7 @@ class Cms_class extends CI_Controller {
 	//----------------------------------------------
 	//時間チェック
 	//----------------------------------------------
-	function _checktime($hour, $min, $sec){
+	function _checktime($hour = '', $min = '', $sec = ''){
 		if ($hour < 0 || $hour > 23){
 			return FALSE;
 		}
@@ -1116,7 +1116,7 @@ class Cms_class extends CI_Controller {
 	//授業時間チェック
 	//  授業開始後の更新において授業時間の短縮を禁止するためのチェック
 	//----------------------------------------------
-	function _check_classtime($date){
+	function _check_classtime($date = ''){
 		// load language
 		$this->lang->load('error');
 
@@ -1155,7 +1155,7 @@ class Cms_class extends CI_Controller {
 	//  授業開始前:0
 	//  授業開始後:テーブルの授業終了時間（日時）
 	//----------------------------------------------
-	function _check_during_class($class_id){
+	function _check_during_class($class_id = ''){
 
 		//モデル読み込み
 		$this->load->model('model_class');

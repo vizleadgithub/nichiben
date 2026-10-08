@@ -1222,7 +1222,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	//日付形式チェック
 	//----------------------------------------------
-	function date_check($date){
+	function date_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -1244,7 +1244,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	//日付時刻形式チェック
 	//----------------------------------------------
-	function datetime_check($date){
+	function datetime_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -1266,7 +1266,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	//時刻形式チェック
 	//----------------------------------------------
-	function time_check($date){
+	function time_check($date = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -1288,7 +1288,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	//期間チェック
 	//----------------------------------------------
-	function period_check($eddate, $stdate){
+	function period_check($eddate = '', $stdate = ''){
 		// load language
 		$this->lang->load('error');
 		
@@ -1317,7 +1317,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	//時間チェック
 	//----------------------------------------------
-	function _checktime($hour, $min, $sec){
+	function _checktime($hour = '', $min = '', $sec = ''){
 		if ($hour < 0 || $hour > 23){
 			return FALSE;
 		}
@@ -1421,7 +1421,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	// 設問内容の内容チェック
 	//----------------------------------------------
-	function _check_problem($param){
+	function _check_problem($param = ''){
 		$this->lang->load('error');
 		
 		//引数設定
@@ -1452,7 +1452,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	// 解答解説内容の内容チェック
 	//----------------------------------------------
-	function _check_answer_explain($param){
+	function _check_answer_explain($param = ''){
 		$this->lang->load('error');
 		
 		//引数設定
@@ -1760,7 +1760,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	// 解答内容の内容チェック
 	//----------------------------------------------
-	function _check_answer_contents($param){
+	function _check_answer_contents($param = ''){
 		$this->lang->load('error');
 		
 		//引数設定
@@ -1814,7 +1814,7 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	// 配列チェック（配列であり、各要素が単一値（配列でない）こと。空配列は可）
 	//----------------------------------------------
-	function _check_array_scalar($value){
+	function _check_array_scalar($value = ''){
 		if(!is_array($value)){
 			return false;
 		}
@@ -1843,7 +1843,7 @@ class Cms_exam_problem extends CI_Controller {
 		return implode(',', $ids);
 	}
 
-	public function check_required_checkbox($input) {
+	public function check_required_checkbox($input = '') {
 		if (!is_array($input)) {
 			if( !empty($input) ){
 				$temp = [$input];
