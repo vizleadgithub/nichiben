@@ -91,7 +91,10 @@
     { "id": "C-0341", "set": { "url": "/product/detail.php" } },
     { "id": "C-0342", "set": { "url": "/product/detail.php" } },
     { "id": "C-0343", "set": { "url": "/product/detail.php" } },
-    { "id": "C-0300", "set": { "url": "/mypage/input_zip.php" } }
+    { "id": "C-0300", "set": { "url": "/mypage/input_zip.php" } },
+    { "id": "C-0293", "set": { "note": "対象: action, csrf_token\n2026-10-08判明: フォームのボタンは会員退会の実行ボタン(alt=\"会員退会を行う\"。押すと購入履歴等の受講者データが削除される)。メール送信は無いが、新規テストデータの作成ではなく既存アカウントを退会させる操作のため、方針により自動化せず手動対応とする(xss-form-lib.jsのDENY_LABELに「退会」を追加し、誤って自動クリックされないようにした)。" } },
+    { "id": "C-0294", "set": { "url": "/mypage/refusal.php", "note": "2026-10-08調査: 計画記載のURL(/mypage/refusal_confirm.php)は実在しない(404)。refusal.phpは隠しaction欄(value=\"confirm\")を持つ自己postingフォームで、確認画面に見える内容(退会実行ボタン)がrefusal.php自体に含まれている(別ファイルではない)。C-0293(退会実行ボタン。方針により手動対応)と実質同一内容のため、同様に手動対応とする。" } },
+    { "id": "C-0382", "set": { "note": "対象: act, csrf_token, pid\n2026-10-08調査: 対象フォーム(favoriteForm。お気に入り登録。action=/mypage/favorite.php)はボタンを持たず、他要素のonclickからJSで直接submit()される作り。pidが空のまま送信するとページが応答しなくなる(ハング)ことを確認(form-defaults.jsonに既定値を追加して回避)。既定値を設定した状態でも、submitGuarded経由(他フィールドへのfillBaseline適用を含む全体のテスト手順)で実行すると再現性高くタイムアウトする一方、このフォームだけを直接送信する分には問題が無いことを確認済み(ページ内の他フィールドへの一括入力が、意図しない早期送信を誘発している可能性)。原因未特定のため引き続き要調査。" } }
   ],
   "add": [
     {

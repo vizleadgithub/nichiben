@@ -98,7 +98,7 @@ function fillBaseline(page, targetName, overrides = {}, includeTarget = false) {
 const ALLOW_LABEL_PRIMARY = /確認|confirm/i;
 const ALLOW_LABEL_SECONDARY = /検索|search|preview|プレビュー|次へ|next/i;
 const ALLOW_LABEL = new RegExp(`${ALLOW_LABEL_PRIMARY.source}|${ALLOW_LABEL_SECONDARY.source}`, 'i');
-const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|ログアウト|logout|commit|regist|delete|remove|save|send|update|insert|upload|import|csv|complete/i;
+const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|退会|ログアウト|logout|commit|regist|delete|remove|save|send|update|insert|upload|import|csv|complete/i;
 // onclick の引数（'complete'・'regist'・'delete' など）が書き込み系なら、確認系の文言があっても押さない
 const DENY_ARG = /^(complete|regist\w*|commit|delete\w*|del|remove|exec\w*|save|update\w*|insert|upload\w*|import\w*|send\w*|cancel|reset|clear|logout|approve\w*)$/i;
 const DENY_ACTION = /commit|regist|insert|update|delete|del_|remove|save|exec|complete|send|upload|import|csv|download|approve|cancel|reset|clear|logout|bat_/i;
@@ -209,6 +209,13 @@ async function submitGuarded(session, { allowFormSubmit = true, acceptWrites = f
       }
       if (completeIdx >= 0) {
         return session.action(() => completeCand.nth(completeIdx).click({ timeout: 3000 }).catch(() => form.evaluate((f) => f.requestSubmit())));
+      }
+      // フォーム内にボタンが1つも無い(他の要素のonclickからJSで直接submit()される作り。
+      // 受講者サイトのお気に入り登録フォーム(favoriteForm)等。2026-10-08発見)場合、
+      // クリックする対象が無いため直接送信する
+      const anyButton = await form.locator(BUTTONS).count().catch(() => 0);
+      if (anyButton === 0) {
+        return session.action(() => form.evaluate((f) => f.requestSubmit()));
       }
     }
     // 安全と判定できるボタンが見つからない場合のみ、フォームの送信先URLを見る。書き込み系の語を含み、

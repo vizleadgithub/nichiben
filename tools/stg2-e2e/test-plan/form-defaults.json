@@ -18,5 +18,6 @@
   "/alfproduct/product_ethics/add.php": { "arr_term_id[]": true, "+contents_contents1": "1", "+contents_free_time1": "0" },
   "/alfproduct/product/add.php": { "arr_term_id[]": true, "+contents_contents1": "1", "+contents_free_time1": "0" },
   "/alfproduct/product_live/add.php": { "arr_term_id[]": true, "capacity": "10" },
-  "/alfproduct/product_passport/add.php": { "passport_target[]": true }
+  "/alfproduct/product_passport/add.php": { "passport_target[]": true },
+  "/ranking/index.php": { "pid": "26316", "act": "add" }
 }

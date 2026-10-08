@@ -651,9 +651,9 @@ E-20(課題確認の提出ファイル名)・E-60(領収書・受講証PDFへの
   - **残り(60行)の内訳（2026-10-08更新。直接登録される22行は上記のとおり解消済みのため除外）**: POST方式でボタン検出の原因が未特定(CMS 18行: 主にcms_ranking15行・school_select・admin_top。student 3行: inquiry/conf・mypage/refusal・ranking/index)、実在のIDが見つからない(商品管理4行: amount_user/product/product_ethics/product_passportの各info.php)、405(POST専用のプレビュー・取込実行画面。商品管理33行: product/add_review27行・product_lecture系info_user_import4行・product_live_branch/add2行)、新規クラッシュ(mailmagazine/info.php。1行。[B-3]参照)、`bank_upload`(1行。既存の手動実施方針どおりで想定内の挙動)。
   - **「POST方式でボタン検出の原因が未特定」の原因判明・一部解消(2026-10-08)**: `pickButton`が、ヘッダー共通の「ログアウト」リンク(`onclick="logout_confirm(...)"`)を、関数名に含まれる"confirm"という文字列だけで「確認ボタン」と誤判定し、本来の候補を評価する前に誤って選んでしまっていた(`ok()`のDENY_LABEL判定は文言(`c.t`)しか見ておらず、onclickの関数名は見ていなかったため)。DENY_LABELに「ログアウト・logout」を追加して解消。あわせて、対象項目が属する小さな付随フォーム(ファイルアップロード欄等)とは別に、実際の送信先である本体の`<form>`(action が確認系)が存在するが、壊れたHTML(閉じタグ不足等)によりCSSの子孫セレクタでは見つからない画面(cms_ranking)向けに、ブラウザのform IDL属性(`element.form`。DOM上の親子関係ではなく実際の関連付け)で照合するフォールバックを追加した。
     - **cms_ranking(16行)・school_select(2行)は解決**(実行確認済み。school_selectは`--accept-writes`が必要)。
-    - **admin_top/outside_elearningmanager(2行)**: ボタン自体は発見できるようになったが(画像ファイル名`btn_register.png`がCOMPLETE_LABELの`regist\w*`に一致)、送信すると「システムエラーです(code:999)」になり未解決。`api_key`欄の既定値(フォーム検証の形式)に問題がある可能性があり、`form-defaults.json`での調整が必要。
-    - **mypage/refusal.php(1行。C-0293)**: ボタン自体は会員退会の実行ボタン(alt="会員退会を行う")と判明。メール送信は無い(ソース確認済み)が、既存の受講者を退会させる(購入履歴等を削除する)操作のため、他の画面(新規テストデータの登録)とはリスクの性質が異なる。自動化するかは方針を要相談。
-    - **ranking/index.php(3行)・mypage/refusal_confirm.php(1行。C-0294。退会確認画面で同様の相談が必要)・inquiry/conf.php(1行の対応漏れ)**: 未調査のまま。
+    - **admin_top/outside_elearningmanager(2行)。解決**: 送信すると「システムエラーです(code:999)」になるが、これは入力値に関わらず常に出る(eLearning Manager契約が無いstg2環境固有の制約で、エスケープ確認とは無関係と判断。計画上もapi_key・api_urlの値は攻撃文字列でよい)。エラー画面自体が入力値をそのまま再表示するため、attacker文字列のエスケープ確認はこのまま実行でき、実行確認済み(OK 2件)。
+    - **mypage/refusal.php(1行。C-0293)・mypage/refusal_confirm.php(1行。C-0294)。方針により手動**: ボタンは会員退会の実行ボタン(alt="会員退会を行う"。押すと購入履歴等の受講者データが削除される)。メール送信は無いが、新規テストデータの作成ではなく既存アカウントを退会させる操作のため手動対応とする方針に確定。`xss-form-lib.js`のDENY_LABELに「退会」を追加し、誤って自動クリックされないようにした。なお`/mypage/refusal_confirm.php`は404(実在しない)で、refusal.php自体が隠しaction欄による自己postingフォームと判明(計画データ不備の一種。重複行として処理)。
+    - **ranking/index.php(3行。うち実テスト対象はC-0382の1行。他2行はS12で別対応)。調査済み・一部判明**: 対象フォーム(`favoriteForm`。お気に入り登録。ボタンを持たず他要素のonclickからJSで直接submit()される作り)向けに、フォーム内にボタンが1つも無い場合は直接`requestSubmit()`する処理を追加した。あわせて`pid`が空のまま送信するとページがハングすることを発見し、`form-defaults.json`に既定値(実在のpid)を追加。ただしテスト手順全体(他フィールドへの一括baseline入力を含む)を通すと依然タイムアウトが再現し、単体の送信だけなら問題が無いことまでは切り分け済み。原因未特定のため引き続き要調査。
 
 **2026-10-08 の調査で副次的に発見した問題**: E-04(アンケート回答一覧)の調査中に、`Cms_exam2_review.php` のクラス名がファイル名と不一致で常に404になっていた問題と、`exam2_set_list()` が `$product_id`・`$exam2_id` を未定義変数のまま使っており常にPHP8のTypeErrorでクラッシュする問題の2件を発見し、どちらも修正した（[B-11]、解消済み。XSSとは別系統）。同じクラス名不一致のパターンが `Bat_get_alfstream_reading_history_mst.php`・`Bat_get_alfstream_reading_history_oneoff.php`・`Bat_report_oneoff_old.php` にも見つかっており未対応（使用有無の確認待ち）。E-59(Ajaxエンドポイント)の調査中に、`player/bookmark.php`・`insert_report_user_video_viewed.php`・`bookmark_delete.php` にログイン確認が無く、任意の`student_id`を指定して他人の視聴履歴・受講完了フラグを改ざんできる認可不備を発見（[B-12]）。
 
@@ -683,7 +683,7 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
   - E-03（受講者レポート）・E-09（WordPressスマホ版。モバイルUA）・E-45（JSON応答のContent-Type）・F-09（セッションID再生成）・F-01のCMS側（ログイン後の戻り先）は `run-xss-http.js` に追加済み。F-04 の Host ヘッダー本体も、SNI・証明書は正規のまま Host ヘッダーの値だけ差し替える方法で追加済み（`run-xss-http.js`）。
   - S9（ファイルのアップロード）・S10（パスワード）は `run-xss-form.js` に追加済み（上記参照）。
   - ethic_treaning（代替倫理研修。S11のURLパラメータ改ざん）・試験/アンケートの `result*.php`・`resubmit_index*.php`・`confirm1.php` は `run-xss-student-exam.js` に追加済み（上記参照）。
-  - E-21・E-23・E-27（教材の表示名/説明・動画のタグ・コンテンツ検索ポップアップの保存済みデータ）は `s12-entries.json` に教材(`cms_material`)・動画タグ(`video_tags`)を追加して対応。E-32（商品詳細の「主催」）は、自由入力ではなく弁護士会マスタからの選択（候補から選ぶ方式）の可能性が高く、要確認のため見送り。
+  - E-21・E-23・E-27（教材の表示名/説明・動画のタグ・コンテンツ検索ポップアップの保存済みデータ）は `s12-entries.json` に教材(`cms_material`)・動画タグ(`video_tags`)を追加して対応。E-32（商品詳細の「主催」。`disp_sponsor`）は、**2026-10-08の静的解析で解消**: 弁護士会マスタ由来の値だが、生成元のPHP側(`product/detail.php`等)で`htmlspecialchars()`により事前にエスケープ済みと確認済み(詳細は下記「静的解析によるモンキーテスト」節参照)。
   - **テストプランレビュー(2026-10-07)起因の追加**（`test-plan/plan-fixes.json` に新規行 E-48〜E-60 を追加。詳細は同ファイル参照）。`run-xss-http.js` に実装済み:
     - E-56(AppScan格納型XSS CMS-H-07〜16のセッション再現)
     - E-50(`product_live/approval_exe.php`。EDU_RB_DEV-46の退行確認。既存の`tamper()`を使用)
@@ -724,6 +724,22 @@ plan.json の全342 URL について、CMS(CI3コントローラ)・商品管理
   - `/mail_templates/class_notification`(A-0483) → URLではなく`application/views/mail_templates/class_notification.php`というビューファイル(メール本文のテンプレート)。ブラウザから直接開けないため、E-51/E-57と同様に静的ソース確認での対応を検討する。
 - **対象外のまま変更なし(今回あらためて確認。各既知の原因のとおり)**: exam2の`index1/index2/confirm1/confirm2/answer_check1/resubmit_index1/2/result1/2.php`(9行。架空の番号付きファイル)・`exam/resubmit_exec_result1.php`(1行)・受講者サイトの`login/*.php`(SSO専用でローカル処理なし)・`member/regist_confirm.php`・`reminder/*`。
 - WordPress関連の複合記載行(`news/`・`(トップ)`等)は、ファイル存在チェックの手法自体がWordPressの書き換えルーティングに適用できないため今回は対象外。別途、実アクセスでの確認が必要。
+
+##### 2026-10-08: 静的解析によるモンキーテスト(`scan-unescaped-output.js`)
+
+テスト計画(xlsx)には無い観点の補完として追加。Smartyテンプレート(`alfproduct/smarty/templates/default/`。商品管理・受講者サイト)・CI3ビュー(`alflearning-cms/application/views/`。CMS)を、PHP/Smartyを実行せずソースのテキストパターンだけで全件走査し、変数を出力している箇所でエスケープ系の処理(Smarty: `|escape`・`|purify_ethic_html`系、CI3: `htmlspecialchars()`・`set_value()`の2引数形式等)が見当たらないものを候補として列挙する。xlsxの「★」行(191行。備考にエスケープ関数が見当たらない旨の手動メモがある行)と同じ位置づけの、再確認前提の候補リスト。
+
+```
+cd tools/stg2-e2e
+node scan-unescaped-output.js          # 自由入力らしい変数名(name・title・comment・memo等)に絞り込み・重複除去した候補のみ表示
+node scan-unescaped-output.js --all    # 絞り込み無し(IDやスタイル文字列等を含む全候補。ノイズが多い)
+node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.csv に出力
+```
+
+- 108本のSmartyテンプレート・179本のCI3ビューを走査し、絞り込み後255件の候補(重複除去済み)を検出。
+- **最重要の確認結果**: `disp_sponsor`(商品の「主催」表示。9つのテンプレートファイルに出現。CLAUDE.mdの旧E-32「弁護士会マスタからの選択の可能性が高く要確認」に対応)は、**テンプレート側に`|escape`が無いが、生成元のPHP側(`product/detail.php`等11ファイル)で`htmlspecialchars($mtb_bar_association[$sponsor], ENT_QUOTES, 'UTF-8')`により事前にエスケープ済みと確認**。E-32の懸念は解消(安全)。副次的に、`mypage/favorite_list.php`だけ`disp_sponsor`の生成コードが丸ごとコメントアウトされており、お気に入り一覧で「主催」欄が常に空になる軽微な表示不具合を発見(セキュリティ上の問題ではない)。
+- その他の候補(`$return.html`・`$return.formhtml`。exam/exam2の設問HTML。意図的にPHP側で安全なHTMLを組み立てて渡している可能性が高い/`$exam2_problem_row.problem_contents`等。product/detail.tpl内の設問プレビュー部分。既存のexam系テストとは別経路での反射箇所として新規発見)は、個別の目視確認が必要(人手でのレビュー待ち)。
+- `_style`で終わる変数(member/regist.tpl・mypage/edit.tpl。23件)はコントローラが生成するCSSスタイル文字列で、変数名にemail/password等を含むため誤って候補に挙がっているだけと判断(フィルタの既知の誤検知)。
 
 ## アーキテクチャ
 
