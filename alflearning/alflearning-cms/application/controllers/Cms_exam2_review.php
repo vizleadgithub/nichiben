@@ -1,6 +1,6 @@
 <?php
 #[AllowDynamicProperties]
-class Cms_exam2 extends CI_Controller {
+class Cms_exam2_review extends CI_Controller {
 	//----------------------------------------------
 	//プライベート変数宣言
 	//----------------------------------------------
@@ -2450,6 +2450,9 @@ class Cms_exam2 extends CI_Controller {
 		$this->form_validation->set_rules('product_id' , $this->lang->line_or_def('common_product_id','product_id') , 'trim');
 		$this->form_validation->set_rules('exam2_id' , $this->lang->line_or_def('common_exam2_id','exam2_id') , 'trim');
 		$this->form_validation->run();
+
+		$product_id = strip_tags($this->input->get('product_id') ?? 0);
+		$exam2_id   = strip_tags($this->input->get('exam2_id') ?? 0);
 
 		if ( !$this->input->post() ){
 			$data = $this->session->userdata('exam2_review_search_cond') ?: array(

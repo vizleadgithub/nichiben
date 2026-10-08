@@ -292,6 +292,17 @@ async function checkE03() {
   addProbe(id, '/cms_report/cms_user_detail/999999999/3（存在しないID）', await probe(s, '/cms_report/cms_user_detail/999999999/3', []));
 }
 
+// E-04 アンケート回答一覧(exam2_set_list)。[B-11]のクラス名不一致(常に404)・未定義変数(常にTypeError)の
+// 2件を修正したため、最低限「クラッシュしなくなったこと」だけ確認する(実在の回答データが無いため、
+// 攻撃文字列の反射確認そのものは引き続き対象外。実データが用意できた段階で別途確認すること)
+async function checkE04() {
+  const id = 'E-04';
+  if (!hasLogin('cms')) { add(id, '対象外', 'CMS: ログイン済みセッションがない'); return; }
+  const s = await sess('cms:auth');
+  addProbe(id, '/cms_exam2_review/exam2_set_list(パラメータ無し)', await probe(s, '/cms_exam2_review/exam2_set_list', []));
+  addProbe(id, '/cms_exam2_review/exam2_set_list?product_id=0&exam2_id=0(存在しないID)', await probe(s, '/cms_exam2_review/exam2_set_list?product_id=0&exam2_id=0', []));
+}
+
 // D-0005 WordPress お知らせ一覧(/news/)のページ送り・カテゴリ・検索パラメータの反射
 async function checkD0005() {
   const id = 'D-0005', m = markerOf(id);
@@ -728,7 +739,7 @@ async function checkE56() {
   console.log(`${findings.some((f) => f.ng) ? 'NG ' : findings.length ? '?? ' : 'ok '} ${id} ${findings.length ? findings.map((f) => f.kind).join(',') : 'セッション経由の再反射なし'}`);
 }
 
-const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-03': checkE03, 'E-08': checkE08, 'E-09': checkE09, 'E-19': checkE19, 'E-47': checkE47, 'E-45': checkE45, 'E-50': checkE50, 'E-51': checkE51, 'E-52': checkE52, 'E-54': checkE54, 'E-57': checkE57, 'E-58': checkE58, 'E-56': checkE56, 'D-0005': checkD0005 };
+const CHECKS = { 'F-01': checkF01, 'F-02': checkF02, 'F-03': checkF03, 'F-04': checkF04, 'F-05': checkF05, 'F-06': checkF06, 'F-07': checkF07, 'F-08': checkF08, 'F-09': checkF09, 'E-03': checkE03, 'E-04': checkE04, 'E-08': checkE08, 'E-09': checkE09, 'E-19': checkE19, 'E-47': checkE47, 'E-45': checkE45, 'E-50': checkE50, 'E-51': checkE51, 'E-52': checkE52, 'E-54': checkE54, 'E-57': checkE57, 'E-58': checkE58, 'E-56': checkE56, 'D-0005': checkD0005 };
 
 (async () => {
   try {

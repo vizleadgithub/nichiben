@@ -573,7 +573,7 @@ cd tools/stg2-e2e
 python test-plan/export-plan.py                      # xlsx(最終更新日時が最新のもの) → test-plan/plan.json（openpyxl 必要。コミットしない）
 node run-xss-search.js cms                           # 段階A: S8 検索条件（CMS・商品管理）。student も同様。--full 全バリエーション / --each 1項目ずつ / --only A-0010,...
 node run-xss-form.js --site cms --plan-only          # 段階A: 登録系(S1〜S7・S9・S10・S11、入力→確認画面まで)。まず --plan-only で対象・対象外を確認してから実行
-node run-xss-http.js                                 # 段階A: 入口以外・HTTP(F-01〜F-09)と重点項目 E-08・E-19・E-47・E-50・E-51・E-52・E-54・E-56・E-57・E-58（--only F-03 等で絞り込み。--probe-php は下記）
+node run-xss-http.js                                 # 段階A: 入口以外・HTTP(F-01〜F-09)と重点項目 E-04・E-08・E-19・E-47・E-50・E-51・E-52・E-54・E-56・E-57・E-58（--only F-03 等で絞り込み。--probe-php は下記）
 node run-xss-student-exam.js --accept-writes         # 段階B: 受講者サイトの試験・アンケート（下記）
 node run-xss-data-linked.js --accept-writes          # 段階B: 重点項目 E-10・E-12・E-13・E-14・E-49・E-60（実データ紐付けが必要だった項目。下記）
 node report-xss.js                                   # 最新の結果を計画のID単位に集計し、test-results/xss-report-*.csv を出力
@@ -619,7 +619,7 @@ E-10(講座確認の受講者一覧)・E-12(売上の会員詳細)・E-13(売上
 
 **2026-10-07 の調査で副次的に発見した脆弱性**: E-52(CSV出力)・E-58(API到達性)の調査中に、ログイン確認(`session_check`)が無く未認証でアクセスできるエンドポイントを2件発見（`report_product/csv_file.php`・`csv_file_utf.php`、および alflearning-api の `Csv_download`。後者は氏名・メールアドレスを含む受講者一覧CSVを出力する）。`secure_report/stg2自動テストで発見した不具合_2026-10-07.md` の [B-8]・[B-9] を参照。
 
-**2026-10-08 の調査で副次的に発見した問題**: E-04(アンケート回答一覧)の調査中に、`Cms_exam2_review::exam2_set_list()` が `$product_id`・`$exam2_id` を未定義変数のまま使っており常にPHP8のTypeErrorでクラッシュするバグを発見（[B-11]。XSSとは別系統）。E-59(Ajaxエンドポイント)の調査中に、`player/bookmark.php`・`insert_report_user_video_viewed.php`・`bookmark_delete.php` にログイン確認が無く、任意の`student_id`を指定して他人の視聴履歴・受講完了フラグを改ざんできる認可不備を発見（[B-12]）。
+**2026-10-08 の調査で副次的に発見した問題**: E-04(アンケート回答一覧)の調査中に、`Cms_exam2_review.php` のクラス名がファイル名と不一致で常に404になっていた問題と、`exam2_set_list()` が `$product_id`・`$exam2_id` を未定義変数のまま使っており常にPHP8のTypeErrorでクラッシュする問題の2件を発見し、どちらも修正した（[B-11]、解消済み。XSSとは別系統）。同じクラス名不一致のパターンが `Bat_get_alfstream_reading_history_mst.php`・`Bat_get_alfstream_reading_history_oneoff.php`・`Bat_report_oneoff_old.php` にも見つかっており未対応（使用有無の確認待ち）。E-59(Ajaxエンドポイント)の調査中に、`player/bookmark.php`・`insert_report_user_video_viewed.php`・`bookmark_delete.php` にログイン確認が無く、任意の`student_id`を指定して他人の視聴履歴・受講完了フラグを改ざんできる認可不備を発見（[B-12]）。
 
 ##### 段階B: S12（表示専用の値）・F-10（入力→全画面の自動追跡）（`run-xss-s12.js`）
 
@@ -639,9 +639,10 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
 - 巡回は `<a href>` を辿るだけのため、検索ポップアップ（`window.open`・`onclick` で開く画面。E-11・E-14・E-19 等の表示先）のように通常の巡回では到達しない画面は、`run-xss-s12.js` の `EXTRA_SEEDS` に明示的な開始点として追加している。
 - **まだ実行していない（コードのみ）。** `test-plan/s12-entries.json` に追加すればさらに対象を広げられる。
 
-- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または別の機能バグ・認可不備によりXSS確認の対象にならない、もしくは手動が必要）: E-20(受講者側の課題提出画面がソースに無い。機能の実装状況を要確認)、E-60のうち受講証(`ticket_download.php`。会場研修商品が必要)、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（アンケート回答一覧。実体は `/cms_exam2_review/exam2_set_list` で、2026-10-08 調査の結果 `$product_id`・`$exam2_id` が未定義変数のまま使われており常にPHP8のTypeErrorでクラッシュする別のバグ（[B-11]）を確認。このバグの修正後でないとXSS確認に意味が無いため未自動化のまま）、E-59（Ajaxエンドポイント。2026-10-08調査の結果、応答が固定文字列`"0"`のみで反射経路自体が無いためXSS観点では対象外と判断。ただし調査の過程で、ログイン確認が無く任意の`student_id`で他人の視聴履歴・受講完了フラグを改ざんできる認可不備（[B-12]）を発見）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
+- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または別の機能バグ・認可不備によりXSS確認の対象にならない、もしくは手動が必要）: E-20(受講者側の課題提出画面がソースに無い。機能の実装状況を要確認)、E-60のうち受講証(`ticket_download.php`。会場研修商品が必要)、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-59（Ajaxエンドポイント。2026-10-08調査の結果、応答が固定文字列`"0"`のみで反射経路自体が無いためXSS観点では対象外と判断。ただし調査の過程で、ログイン確認が無く任意の`student_id`で他人の視聴履歴・受講完了フラグを改ざんできる認可不備（[B-12]）を発見）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
   - E-10・E-12・E-13・E-14・E-49・E-60(領収書)は、実データ無しで自動生成する方法が見つかり `run-xss-data-linked.js` に実装済み（上記参照）。
   - E-48・E-55（`alfproduct/admin/`。テスト関連の旧管理画面）は、2026-10-07 のコミット `88d2d63` でディレクトリごと削除されたため、`run-xss-http.js` の `checkE08` に「削除後もURLが到達できないこと」を確認するチェックを追加して対応済み（2026-10-08）。
+  - E-04（アンケート回答一覧）: 実体は `/cms_exam2_review/exam2_set_list`。2026-10-08 調査でクラス名の不一致（ファイル名`Cms_exam2_review.php`に対し`class Cms_exam2`のままで、CodeIgniterの`class_exists()`チェックに失敗し常に404）と、`$product_id`・`$exam2_id`が未定義変数のまま使われ常にPHP8のTypeErrorでクラッシュする別のバグ（両方とも[B-11]、解消済み）の2件を発見し、両方とも修正した。`run-xss-http.js`の`checkE04`で「クラッシュしなくなったこと」のみ確認する形で実装済み（実在する回答データが無いため、攻撃文字列の反射確認自体は引き続き未対応。実データが用意できた段階で追加実装すること）。
   - E-01・E-07 は新規コード不要（E-01 は `check-debug-output.js` の既存の巡回・検出観点と同一。E-07 は cms_video の確認画面が通常の CMS 登録系テスト(S1〜S7。P06 を含む)の対象に既に含まれる）。
   - E-03（受講者レポート）・E-09（WordPressスマホ版。モバイルUA）・E-45（JSON応答のContent-Type）・F-09（セッションID再生成）・F-01のCMS側（ログイン後の戻り先）は `run-xss-http.js` に追加済み。F-04 の Host ヘッダー本体も、SNI・証明書は正規のまま Host ヘッダーの値だけ差し替える方法で追加済み（`run-xss-http.js`）。
   - S9（ファイルのアップロード）・S10（パスワード）は `run-xss-form.js` に追加済み（上記参照）。
