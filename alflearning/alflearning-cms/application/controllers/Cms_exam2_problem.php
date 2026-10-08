@@ -516,23 +516,23 @@ class Cms_exam2_problem extends CI_Controller {
 		$this->lang->load('error');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'                           , $this->lang->line_or_def('common_flg','flg')                              , 'trim|numeric');
-		$this->form_validation->set_rules('exam2_problem_id'                      , $this->lang->line_or_def('common_id','ID')                                , 'trim|numeric');
+		$this->form_validation->set_rules('update_flg'                           , $this->lang->line_or_def('common_flg','flg')                              , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('exam2_problem_id'                      , $this->lang->line_or_def('common_id','ID')                                , 'trim|required|is_natural|max_length[9]');
 		$this->form_validation->set_rules('exam2_problem_name'                    , $this->lang->line_or_def('common_exam2_problem_name','設問名')             , 'trim|required');
-		$this->form_validation->set_rules('teacher_id'                           , $this->lang->line_or_def('common_management_teacher','管理講師')          , 'required');
+		$this->form_validation->set_rules('teacher_id'                           , $this->lang->line_or_def('common_management_teacher','管理講師')          , 'trim|required|is_natural_no_zero|max_length[9]');
 		$this->form_validation->set_rules('exam2_problem_lectures[]'                , $this->lang->line_or_def('common_position_course','所属講座')             , 'callback_check_required_checkbox');
-		$this->form_validation->set_rules('problem_kind'                         , $this->lang->line_or_def('common_problem_kind','設問種類')                , 'trim|numeric|required');
+		$this->form_validation->set_rules('problem_kind'                         , $this->lang->line_or_def('common_problem_kind','設問種類')                , 'trim|required|in_list['.implode(',', array_keys($this->_get_select_problem_kind())).']');
 		$this->form_validation->set_rules('problem_contents_text'                , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // テキスト
-		$this->form_validation->set_rules('problem_contents_video'               , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // ビデオID
-		$this->form_validation->set_rules('problem_contents_book_library'        , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim');  // 図書室ID
+		$this->form_validation->set_rules('problem_contents_video'               , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim|regex_match[/^-?[0-9]{1,9}$/]');  // ビデオID
+		$this->form_validation->set_rules('problem_contents_book_library'        , $this->lang->line_or_def('common_problem_contents','設問内容')            , 'trim|regex_match[/^-?[0-9]{1,9}$/]');  // 図書室ID
 		$this->form_validation->set_rules('problem_note'                         , $this->lang->line_or_def('common_problem_note','設問備考')                , 'trim');
-		$this->form_validation->set_rules('answer_kind'                          , $this->lang->line_or_def('common_answer_kind','解答種類')                 , 'trim|numeric|required');
+		$this->form_validation->set_rules('answer_kind'                          , $this->lang->line_or_def('common_answer_kind','解答種類')                 , 'trim|required|in_list['.implode(',', array_keys($this->_get_select_answer_kind())).']');
 		$this->form_validation->set_rules('answer_contents_text'                 , $this->lang->line_or_def('common_answer_contents','解答内容')             , 'trim');  // テキスト
-		$this->form_validation->set_rules('answer_point'                         , $this->lang->line_or_def('common_exam2_answer_points','解答配点')          , 'trim|is_natural');
-		$this->form_validation->set_rules('answer_explain_kind'                  , $this->lang->line_or_def('common_answer_explain_kind','解答解説種類')     , 'trim|numeric|required');
+		$this->form_validation->set_rules('answer_point'                         , $this->lang->line_or_def('common_exam2_answer_points','解答配点')          , 'trim|is_natural|max_length[9]');
+		$this->form_validation->set_rules('answer_explain_kind'                  , $this->lang->line_or_def('common_answer_explain_kind','解答解説種類')     , 'trim|required|in_list['.implode(',', array_keys($this->_get_select_answer_explain_kind())).']');
 		$this->form_validation->set_rules('answer_explain_contents_text'         , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // テキスト
-		$this->form_validation->set_rules('answer_explain_contents_video'        , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // ビデオID
-		$this->form_validation->set_rules('answer_explain_contents_book_library' , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim'); // 図書室ID
+		$this->form_validation->set_rules('answer_explain_contents_video'        , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim|regex_match[/^-?[0-9]{1,9}$/]'); // ビデオID
+		$this->form_validation->set_rules('answer_explain_contents_book_library' , $this->lang->line_or_def('common_answer_explain_contents','解答解説内容') , 'trim|regex_match[/^-?[0-9]{1,9}$/]'); // 図書室ID
 		$this->form_validation->set_rules('answer_explain_note'                  , $this->lang->line_or_def('common_answer_explain_note','解答解説備考')     , 'trim');
 		
 		// 配列型の所属講座の値をチェック
@@ -540,20 +540,14 @@ class Cms_exam2_problem extends CI_Controller {
 
 		$check_exam2_problem_lectures = $this->input->post('exam2_problem_lectures')?$this->input->post('exam2_problem_lectures'):array();
 
-		if(!check_array_data_num(array($check_exam2_problem_lectures))){
-			$this->lang->load('error');
-			$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout'); 
-			$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
-			$error_data['select_callview'] = 'admin_top';
-			
-			//ビュー設定引数設定
-			$disp_param = array(
-							'view_name'   => 'wide_use_error',
-							'submenu_idx' => 4,
-							'view_data'   => $error_data,
-						);
-			//確認フォーム表示
-			$this->_display_view($disp_param);
+		// 解答内容（選択肢系）の配列値取得
+		$check_answer_contents_no      = $this->input->post('answer_contents_no')?$this->input->post('answer_contents_no'):array();
+		$check_answer_contents_word    = $this->input->post('answer_contents_word')?$this->input->post('answer_contents_word'):array();
+		$check_answer_contents_correct = $this->input->post('answer_contents_correct')?$this->input->post('answer_contents_correct'):array();
+
+		// 配列でない値・数字以外・10桁以上の値が含まれる場合、単一値項目に配列が送信された場合は不正アクセスとして扱う
+		if(!check_array_data_ids(array($check_exam2_problem_lectures, $check_answer_contents_no, $check_answer_contents_correct)) || !check_array_data_num(array($check_exam2_problem_lectures)) || !$this->_check_array_scalar($check_answer_contents_word) || !check_post_fields_scalar(array('update_flg', 'exam2_problem_id', 'exam2_problem_name', 'teacher_id', 'problem_kind', 'problem_contents_text', 'problem_contents_video', 'problem_contents_book_library', 'problem_note', 'answer_kind', 'answer_contents_text', 'answer_point', 'answer_explain_kind', 'answer_explain_contents_text', 'answer_explain_contents_video', 'answer_explain_contents_book_library', 'answer_explain_note'))){
+			$this->_display_unjust_access();
 		}else{
 			// 設問種類・設問内容チェック
 			$problem_error_msg = $this->_check_problem(
@@ -1381,7 +1375,7 @@ class Cms_exam2_problem extends CI_Controller {
 		
 		$drop_param = array(
 					"school_id"  => $this->libauth->get_school_id(),
-					"cource_id"  => $this->input->post('cource_id'),
+					"cource_id"  => $this->_sanitize_id_list($this->input->post('cource_id')),
 					);
 
 		// 講座に属する図書室ID・図書室論理名を取得
@@ -1401,7 +1395,7 @@ class Cms_exam2_problem extends CI_Controller {
 		
 		$drop_param = array(
 					"school_id"  => $this->libauth->get_school_id(),
-					"cource_id"  => $this->input->post('cource_id'),
+					"cource_id"  => $this->_sanitize_id_list($this->input->post('cource_id')),
 					);
 
 		// 講座に属するビデオID・ビデオ論理名を取得
@@ -1794,6 +1788,57 @@ class Cms_exam2_problem extends CI_Controller {
 		}
 	}
  */
+	//----------------------------------------------
+	// 不正アクセスエラー画面表示
+	//----------------------------------------------
+	function _display_unjust_access(){
+		$this->lang->load('error');
+		$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout');
+		$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
+		$error_data['select_callview'] = 'admin_top';
+
+		//ビュー設定引数設定
+		$disp_param = array(
+						'view_name'   => 'wide_use_error',
+						'submenu_idx' => 4,
+						'view_data'   => $error_data,
+					);
+		//エラーフォーム表示
+		$this->_display_view($disp_param);
+	}
+
+	//----------------------------------------------
+	// 配列チェック（配列であり、各要素が単一値（配列でない）こと。空配列は可）
+	//----------------------------------------------
+	function _check_array_scalar($value){
+		if(!is_array($value)){
+			return false;
+		}
+		foreach($value as $v){
+			if(is_array($v)){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//----------------------------------------------
+	// カンマ区切りID群の数字以外の値を除外（SQLのIN句に使用する値の無害化）
+	//----------------------------------------------
+	function _sanitize_id_list($value){
+		if(!is_scalar($value)){
+			return '';
+		}
+		$ids = array();
+		foreach(explode(',', (string)$value) as $id){
+			$id = trim($id);
+			if(preg_match('/^[0-9]{1,9}$/', $id)){
+				$ids[] = $id;
+			}
+		}
+		return implode(',', $ids);
+	}
+
 	public function check_required_checkbox($input) {
 		if (!is_array($input)) {
 			if( !empty($input) ){

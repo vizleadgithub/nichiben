@@ -878,6 +878,9 @@ class Model_book_library extends CI_Model
 			$param
 		);
 		
+		// 講座ID群（カンマ区切り）から、数字以外の値を除外（SQLエラー・SQLインジェクション対策）
+		$param['cource_id'] = implode(',', array_filter(array_map('trim', explode(',', is_scalar($param['cource_id']) ? (string)$param['cource_id'] : '')), 'ctype_digit'));
+		
 		//SQL生成
 		$sql  = "";
 		$sql .= "SELECT book_library_id ,book_library_logic_name ,page_num ";

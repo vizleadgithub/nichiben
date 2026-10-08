@@ -110,7 +110,7 @@ class Cms_exam_problem_import extends CI_Controller {
 									);
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('teacher_id'            , $this->lang->line_or_def('common_management_teacher','管理講師')     , 'trim|required');
+		$this->form_validation->set_rules('teacher_id'            , $this->lang->line_or_def('common_management_teacher','管理講師')     , 'trim|required|is_natural_no_zero|max_length[9]');
 		$this->form_validation->set_rules('exam_problem_lectures[]' , $this->lang->line_or_def('common_position_course','所属講座')        , 'callback_check_required_checkbox');
 		//$this->form_validation->set_rules('exam_problem_groups[]'   , $this->lang->line_or_def('common_exam_problem_group','設問グループ') , 'xss_clean');
 		$this->form_validation->set_rules('local_file'            , $this->lang->line_or_def('common_file','ファイル')                   , 'trim');
@@ -123,7 +123,7 @@ class Cms_exam_problem_import extends CI_Controller {
 		$check_exam_problem_lectures = is_null($check_exam_problem_lectures) ? array() : $check_exam_problem_lectures;
 		$check_exam_problem_groups   = is_null($check_exam_problem_groups) ? array() : $check_exam_problem_groups;
 
-		if(!is_array($check_exam_problem_lectures) || !is_array($check_exam_problem_groups) || !check_array_data_num(array($check_exam_problem_lectures, $check_exam_problem_groups))){
+		if(!is_array($check_exam_problem_lectures) || !is_array($check_exam_problem_groups) || !check_array_data_num(array($check_exam_problem_lectures, $check_exam_problem_groups)) || !check_array_data_ids(array($check_exam_problem_lectures, $check_exam_problem_groups)) || !check_post_fields_scalar(array('teacher_id', 'local_file'))){
 			$this->lang->load('error');
 			$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout'); 
 			$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
@@ -999,6 +999,15 @@ class Cms_exam_problem_import extends CI_Controller {
 		
 		$exam_problem_lectures_ex = $this->input->post('exam_problem_lectures_ex');
 		$exam_problem_groups_ex = $this->input->post('exam_problem_groups_ex');
+
+		// 所属講座・設問グループの値チェック（未選択可。配列でない値・数字以外・10桁以上の値は不正アクセスとして扱う）
+		$this->load->helper('string_inspection_helper');
+		$check_exam_problem_lectures_ex = is_null($exam_problem_lectures_ex) ? array() : $exam_problem_lectures_ex;
+		$check_exam_problem_groups_ex   = is_null($exam_problem_groups_ex)   ? array() : $exam_problem_groups_ex;
+		if(!check_array_data_ids(array($check_exam_problem_lectures_ex, $check_exam_problem_groups_ex))){
+			$this->_display_unjust_access();
+			return;
+		}
 		
 		$this->load->model('model_exam_problem');
 		$export_data = $this->model_exam_problem->get_exam_problem_export_data($exam_problem_lectures_ex, $exam_problem_groups_ex);
@@ -1075,6 +1084,25 @@ class Cms_exam_problem_import extends CI_Controller {
 		}
 		
 		fclose($fp);
+	}
+
+	//----------------------------------------------
+	// 不正アクセスエラー画面表示
+	//----------------------------------------------
+	function _display_unjust_access(){
+		$this->lang->load('error');
+		$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout');
+		$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
+		$error_data['select_callview'] = 'admin_top';
+		
+		//ビュー設定引数設定
+		$disp_param = array(
+						'view_name'   => 'wide_use_error',
+						'submenu_idx' => 4,
+						'view_data'   => $error_data,
+					);
+		//エラーフォーム表示
+		$this->_display_view($disp_param);
 	}
 
 	public function check_required_checkbox($input) {

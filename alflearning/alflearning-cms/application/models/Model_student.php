@@ -1055,6 +1055,17 @@ class Model_student extends CI_Model
 						),
 						$param
 					);
+		
+		// 受講者ID群（カンマ区切り）から、数字以外の値を除外（SQLエラー・SQLインジェクション対策）
+		$student_id_array = array();
+		foreach(explode(',', (string)$param['student_id_list']) as $temp_student_id){
+			$temp_student_id = trim($temp_student_id);
+			if(preg_match('/^[0-9]{1,18}$/', $temp_student_id)){
+				$student_id_array[] = $temp_student_id;
+			}
+		}
+		$param['student_id_list'] = (count($student_id_array) > 0) ? implode(',', $student_id_array) : '0';
+		
 		//SQL投入
 		$query = $this->db->query("
 			 SELECT  student.student_id 

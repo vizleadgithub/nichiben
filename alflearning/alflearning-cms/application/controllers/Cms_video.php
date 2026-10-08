@@ -571,21 +571,30 @@ class Cms_video extends CI_Controller {
 		$this->lang->load('common');
 		$this->lang->load('error');
 		
+		// 配列項目・数値項目の型・値チェック（不正な値は不正アクセスとして扱う）
+		if(!$this->_check_video_post_data(FALSE)){
+			$this->_display_unjust_access();
+			return;
+		}
+		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|numeric');
-		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|numeric');
+		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|is_natural|max_length[9]');
+		$this->form_validation->set_rules('video_id'         , $this->lang->line_or_def('common_id','ID')                , 'trim|is_natural|max_length[9]');
 		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|required'); // 論理ファイル名
 		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim');
 		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim');
 		$this->form_validation->set_rules('video_lectures[]'   , $this->lang->line_or_def('common_position_course','所属講座')  , 'callback_check_required_checkbox');
 
-		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|numeric|required');
-		$this->form_validation->set_rules('video_popup'      , $this->lang->line_or_def('common_video_popup','確認ポップアップ')  , 'trim|numeric|required');
-		$this->form_validation->set_rules('type_x15'         , $this->lang->line_or_def('common_type_x15','1.5倍速')  , 'trim');
+		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('video_popup'      , $this->lang->line_or_def('common_video_popup','確認ポップアップ')  , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('type_x15'         , $this->lang->line_or_def('common_type_x15','1.5倍速')  , 'trim|in_list[0,1]');
 
-		$this->form_validation->set_rules('local_reading_flag'      , $this->lang->line_or_def('common_local_reading_of_ipad','iPadのローカル閲覧')     , 'trim|required');
+		$this->form_validation->set_rules('local_reading_flag'      , $this->lang->line_or_def('common_local_reading_of_ipad','iPadのローカル閲覧')     , 'trim|required|in_list[0,1]');
 		$this->form_validation->set_rules('local_reading_open'      , $this->lang->line_or_def('common_local_reading_start','ローカル閲覧開始') , 'trim|required|callback_datetime_check');
 		$this->form_validation->set_rules('local_reading_close'     , $this->lang->line_or_def('common_local_reading_end','ローカル閲覧終了') , 'trim|callback_datetime_check|callback_period_check[local_reading_open]');
+		$this->form_validation->set_rules('local_reading_close_flag' , $this->lang->line_or_def('common_local_reading_end','ローカル閲覧終了') , 'trim|in_list[0,1]');
+		$this->form_validation->set_rules('idkey'                    , 'idkey' , 'trim|regex_match[/^[A-Za-z0-9._-]{0,128}$/]');
 
 		// [2012/12/07]選択された「専属タグ」の取得
 		$exclusive_tag          = $this->input->post('exclusive_tag') ? $this->input->post('exclusive_tag'):array();
@@ -757,6 +766,12 @@ class Cms_video extends CI_Controller {
 		$this->lang->load('common');
 		$this->lang->load('error');
 		
+		// 配列項目・数値項目の型・値チェック（不正な値は不正アクセスとして扱う）
+		if(!$this->_check_video_post_data(FALSE)){
+			$this->_display_unjust_access();
+			return;
+		}
+		
 		//アップロードエラー一覧
 		$upload_error_messages = array( 
 			1=> $this->lang->line_or_def('error_file_size_over','ファイルサイズが大きすぎます'), 
@@ -770,20 +785,23 @@ class Cms_video extends CI_Controller {
 		);
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|numeric');
-		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|numeric');
+		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|is_natural|max_length[9]');
+		$this->form_validation->set_rules('video_id'         , $this->lang->line_or_def('common_id','ID')                , 'trim|is_natural|max_length[9]');
 		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|required'); // 論理ファイル名
 		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim');
 		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim');
 		$this->form_validation->set_rules('video_lectures[]'   , $this->lang->line_or_def('common_position_course','所属講座')  , 'callback_check_required_checkbox');
 
-		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|numeric|required');
-		$this->form_validation->set_rules('video_popup'      , $this->lang->line_or_def('common_video_popup','確認ポップアップ')  , 'trim|numeric|required');
-		$this->form_validation->set_rules('type_x15'         , $this->lang->line_or_def('common_type_x15','1.5倍速')  , 'trim');
+		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('video_popup'      , $this->lang->line_or_def('common_video_popup','確認ポップアップ')  , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('type_x15'         , $this->lang->line_or_def('common_type_x15','1.5倍速')  , 'trim|in_list[0,1]');
 
-		$this->form_validation->set_rules('local_reading_flag'      , $this->lang->line_or_def('common_local_reading_of_ipad','iPadのローカル閲覧')     , 'trim|required');
+		$this->form_validation->set_rules('local_reading_flag'      , $this->lang->line_or_def('common_local_reading_of_ipad','iPadのローカル閲覧')     , 'trim|required|in_list[0,1]');
 		$this->form_validation->set_rules('local_reading_open'      , $this->lang->line_or_def('common_local_reading_start','ローカル閲覧開始') , 'trim|required|callback_datetime_check');
 		$this->form_validation->set_rules('local_reading_close'     , $this->lang->line_or_def('common_local_reading_end','ローカル閲覧終了') , 'trim|callback_datetime_check|callback_period_check[local_reading_open]');
+		$this->form_validation->set_rules('local_reading_close_flag' , $this->lang->line_or_def('common_local_reading_end','ローカル閲覧終了') , 'trim|in_list[0,1]');
+		$this->form_validation->set_rules('idkey'                    , 'idkey' , 'trim|regex_match[/^[A-Za-z0-9._-]{0,128}$/]');
 
 
 		$this->form_validation->set_rules('local_file'       , $this->lang->line_or_def('common_file','ファイル')        , 'trim');
@@ -960,6 +978,12 @@ class Cms_video extends CI_Controller {
 		$this->lang->load('common');
 		$this->lang->load('error');
 		
+		// 配列項目・数値項目の型・値チェック（不正な値は不正アクセスとして扱う）
+		if(!$this->_check_video_post_data(TRUE)){
+			$this->_display_unjust_access();
+			return;
+		}
+		
 		//アップロードエラー一覧
 		$upload_error_messages = array( 
 			1=> $this->lang->line_or_def('error_file_size_over','ファイルサイズが大きすぎます'), 
@@ -972,21 +996,24 @@ class Cms_video extends CI_Controller {
 		);
 
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|numeric');
-		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|numeric');
+		$this->form_validation->set_rules('update_flg'       , $this->lang->line_or_def('common_flg','flg')              , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('material_id'      , $this->lang->line_or_def('common_id','ID')                , 'trim|is_natural|max_length[9]');
+		$this->form_validation->set_rules('video_id'         , $this->lang->line_or_def('common_id','ID')                , 'trim|is_natural|max_length[9]');
 		$this->form_validation->set_rules('video_logic_name' , $this->lang->line_or_def('common_file_name','ファイル名') , 'trim|required'); // 論理ファイル名
 		$this->form_validation->set_rules('video_caption'    , $this->lang->line_or_def('common_caption','説明')         , 'trim');
 		$this->form_validation->set_rules('video_tags'       , $this->lang->line_or_def('common_tag','タグ')             , 'trim');
 		$this->form_validation->set_rules('video_lectures[]'   , $this->lang->line_or_def('common_position_course','所属講座')  , 'callback_check_required_checkbox');
 
-		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|numeric|required');
-		$this->form_validation->set_rules('video_popup'      , $this->lang->line_or_def('common_video_popup','確認ポップアップ')  , 'trim|numeric|required');
-		$this->form_validation->set_rules('type_x15'         , $this->lang->line_or_def('common_type_x15','1.5倍速')  , 'trim');
+		$this->form_validation->set_rules('sound_only'       , $this->lang->line_or_def('common_sound_only','音声のみ')  , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('video_popup'      , $this->lang->line_or_def('common_video_popup','確認ポップアップ')  , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('type_x15'         , $this->lang->line_or_def('common_type_x15','1.5倍速')  , 'trim|in_list[0,1]');
 
 
-		$this->form_validation->set_rules('local_reading_flag'      , $this->lang->line_or_def('common_local_reading_of_ipad','iPadのローカル閲覧')     , 'trim|required');
+		$this->form_validation->set_rules('local_reading_flag'      , $this->lang->line_or_def('common_local_reading_of_ipad','iPadのローカル閲覧')     , 'trim|required|in_list[0,1]');
 		$this->form_validation->set_rules('local_reading_open'      , $this->lang->line_or_def('common_local_reading_start','ローカル閲覧開始') , 'trim|required|callback_datetime_check');
 		$this->form_validation->set_rules('local_reading_close'     , $this->lang->line_or_def('common_local_reading_end','ローカル閲覧終了') , 'trim|callback_datetime_check|callback_period_check[local_reading_open]');
+		$this->form_validation->set_rules('local_reading_close_flag' , $this->lang->line_or_def('common_local_reading_end','ローカル閲覧終了') , 'trim|in_list[0,1]');
+		$this->form_validation->set_rules('idkey'                    , 'idkey' , 'trim|regex_match[/^[A-Za-z0-9._-]{0,128}$/]');
 
 
 		$this->form_validation->set_rules('local_file'       , $this->lang->line_or_def('common_file','ファイル')        , 'trim');
@@ -1624,6 +1651,129 @@ class Cms_video extends CI_Controller {
 	}
 
 	// コールバック関数
+	//----------------------------------------------
+	// 不正アクセスエラー画面表示
+	//----------------------------------------------
+	function _display_unjust_access(){
+		$this->lang->load('error');
+		$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout');
+		$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
+		$error_data['select_callview'] = 'admin_top';
+
+		//ビュー設定引数設定
+		$disp_param = array(
+						'view_name'   => 'wide_use_error',
+						'submenu_idx' => 4,
+						'view_data'   => $error_data,
+					);
+		//エラーフォーム表示
+		$this->_display_view($disp_param);
+	}
+
+	//----------------------------------------------
+	// POST値チェック（配列項目・数値項目の型・値チェック）
+	//   $with_cut：TRUE の場合、ビデオ切り出し項目（再生時間・切り出し時間）も確認
+	//   戻り値：TRUE 問題なし、FALSE 不正な値あり
+	//----------------------------------------------
+	function _check_video_post_data($with_cut = FALSE){
+		$this->load->helper('string_inspection_helper');
+
+		// 単一値項目に、配列が送信されていないこと
+		$scalar_names = array(
+			'update_flg', 'material_id', 'video_id', 'video_logic_name', 'video_caption', 'video_tags',
+			'sound_only', 'video_popup', 'type_x15', 'local_reading_flag', 'local_reading_open', 'local_reading_close',
+			'local_reading_close_flag', 'local_file', 'idkey', 'video_time', 'max_hour', 'max_minute', 'max_second',
+		);
+		if($with_cut){
+			$scalar_names = array_merge($scalar_names, array('cut_start_hour', 'cut_start_minute', 'cut_start_second', 'cut_end_hour', 'cut_end_minute', 'cut_end_second'));
+		}
+		if(!check_post_fields_scalar($scalar_names)){
+			return FALSE;
+		}
+
+		// 配列項目が、配列で送信されていること（未送信は空配列とみなす）
+		$arrays = array();
+		foreach(array('video_lectures', 'exclusive_tag', 'exclusive_book_library', 'exclusive_page_number', 'exclusive_status', 'chapter_list') as $name){
+			$value = $this->input->post($name);
+			if(!$value){
+				$value = array();
+			}
+			if(!is_array($value)){
+				return FALSE;
+			}
+			$arrays[$name] = $value;
+		}
+
+		// 所属講座ID・専属タグ状態：数字のみ
+		if(!check_array_data_ids(array($arrays['video_lectures'], $arrays['exclusive_status']))){
+			return FALSE;
+		}
+		foreach($arrays['exclusive_status'] as $value){
+			if(!preg_match('/^[0-9]{1,2}$/', (string)$value)){
+				return FALSE;
+			}
+		}
+
+		// 専属タグ対象図書室ID・ページNo：整数（-1：未選択）
+		foreach(array('exclusive_book_library', 'exclusive_page_number') as $name){
+			foreach($arrays[$name] as $value){
+				if(!is_scalar($value) || !preg_match('/^-?[0-9]{1,9}$/', (string)$value)){
+					return FALSE;
+				}
+			}
+		}
+
+		// 専属タグ：文字列、各項目の個数が一致
+		foreach($arrays['exclusive_tag'] as $value){
+			if(!is_scalar($value) || mb_strlen((string)$value) > 256){
+				return FALSE;
+			}
+		}
+		if( (count($arrays['exclusive_tag']) != count($arrays['exclusive_book_library'])) || (count($arrays['exclusive_tag']) != count($arrays['exclusive_page_number'])) ){
+			return FALSE;
+		}
+
+		// チャプター：先頭8文字が時刻形式（空行は対象外）
+		foreach($arrays['chapter_list'] as $value){
+			if(!is_scalar($value)){
+				return FALSE;
+			}
+			$chapter_time = mb_substr((string)$value, 0, 8);
+			if( (strlen($chapter_time) > 6) && !preg_match('/^[0-9]{2}:[0-5][0-9]:[0-5][0-9]$/', $chapter_time) ){
+				return FALSE;
+			}
+		}
+
+		// 選択可能最大時・分・秒：数字のみ
+		foreach(array('max_hour', 'max_minute', 'max_second') as $name){
+			$value = $this->input->post($name);
+			if( ($value !== NULL) && ($value !== '') && !preg_match('/^[0-9]{1,3}$/', (string)$value) ){
+				return FALSE;
+			}
+		}
+
+		// ビデオ再生時間：時:分:秒（切り出し時は秒換算するため、厳密に確認）
+		$video_time = (string)$this->input->post('video_time');
+		if($with_cut){
+			if(!preg_match('/^[0-9]{1,3}:[0-9]{1,2}:[0-9]{1,2}(\.[0-9]+)?$/', $video_time)){
+				return FALSE;
+			}
+		}elseif(!preg_match('/^[0-9:.]{0,16}$/', $video_time)){
+			return FALSE;
+		}
+
+		// 切り出し時間：数字のみ
+		if($with_cut){
+			foreach(array('cut_start_hour', 'cut_start_minute', 'cut_start_second', 'cut_end_hour', 'cut_end_minute', 'cut_end_second') as $name){
+				if(!preg_match('/^[0-9]{1,3}$/', (string)$this->input->post($name))){
+					return FALSE;
+				}
+			}
+		}
+
+		return TRUE;
+	}
+
 	public function check_required_checkbox($input) {
 		if (!is_array($input)) {
 			if( !empty($input) ){

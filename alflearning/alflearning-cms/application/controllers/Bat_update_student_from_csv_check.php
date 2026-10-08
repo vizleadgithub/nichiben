@@ -7,7 +7,7 @@ class Bat_update_student_from_csv_check extends CI_Controller {
 		$this->load->library('email');
 		$this->load->helper('unit');
 
-		ini_set('display_errors', 'On');
+		ini_set('display_errors', is_cli() ? 'On' : 'Off');  // 画面(Web)にはエラーを出さない
 		ini_set('log_errors', 'On');
 		ini_set('error_reporting', E_ALL);
 	}

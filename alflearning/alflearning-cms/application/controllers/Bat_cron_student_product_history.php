@@ -22,7 +22,7 @@ class Bat_cron_student_product_history extends CI_Controller {
 		$this->load->database();
 
 		// テスト時使用。
-		ini_set('display_errors', 'On');
+		ini_set('display_errors', is_cli() ? 'On' : 'Off');  // 画面(Web)にはエラーを出さない
 		ini_set('log_errors', 'On');
 		ini_set('error_reporting', E_ALL);
 	}

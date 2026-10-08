@@ -232,7 +232,7 @@ class Cms_exam extends CI_Controller {
 			// 　　　　　　既存学校の場合、講座IDでフィルターしていたため、講座受講者テーブルに値なし
 			// 　　　　　　課題講座IDを取得し、その講座IDに属する生徒を表示
 			$data['exam']['exam_students']  = array();
-			if( $this->input->post('exam_students') ){
+			if( $this->input->post('exam_students') && is_array($this->input->post('exam_students')) ){
 				$data['exam']['exam_students'] = $this->input->post('exam_students');
 			}else{
 				$param_select_student = array(
@@ -253,7 +253,7 @@ class Cms_exam extends CI_Controller {
 			// 　POSTあり：POSTの値を使用。
 			// 　POSTなし：セッション内の値を使用して、受講者IDをDBより取得。
 			$data['exam']['exam_problems'] = array();
-			if( $this->input->post('exam_problems') ){
+			if( $this->input->post('exam_problems') && is_array($this->input->post('exam_problems')) ){
 				$data['exam']['exam_problems'] = $this->input->post('exam_problems');
 			}else{
 				$exam_problems = $this->model_exam->get_exam_problems($data['exam']);
@@ -605,28 +605,28 @@ class Cms_exam extends CI_Controller {
 		$this->lang->load('error');
 		
 		//検証ルールの設定
-		$this->form_validation->set_rules('update_flg'    , $this->lang->line_or_def('common_flg','flg')                     , 'trim|numeric');
-		$this->form_validation->set_rules('exam_id'       , $this->lang->line_or_def('common_id','ID')                       , 'trim|numeric');
+		$this->form_validation->set_rules('update_flg'    , $this->lang->line_or_def('common_flg','flg')                     , 'trim|required|in_list[0,1]');
+		$this->form_validation->set_rules('exam_id'       , $this->lang->line_or_def('common_id','ID')                       , 'trim|required|is_natural|max_length[9]');
 		$this->form_validation->set_rules('exam_name'     , $this->lang->line_or_def('common_exam_name','問題（テスト）名')  , 'trim|required');
 		$this->form_validation->set_rules('exam_lectures[]' , $this->lang->line_or_def('common_position_course','所属講座')    , 'callback_check_required_checkbox');
 		$this->form_validation->set_rules('exam_caption'  , $this->lang->line_or_def('common_caption','説明')                , 'trim');
 		$this->form_validation->set_rules('exam_open'     , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|required|callback_datetime_check');
 		$this->form_validation->set_rules('exam_close'    , $this->lang->line_or_def('common_submit_period','提出期間')      , 'trim|required|callback_datetime_check|callback_period_check[exam_open]');
-		$this->form_validation->set_rules('public_flag'   , $this->lang->line_or_def('common_indication_status','公開設定')  , 'trim|required');
-		$this->form_validation->set_rules('resubmit_flag' , $this->lang->line_or_def('common_resubmit','再提出')             , 'trim|required');
+		$this->form_validation->set_rules('public_flag'   , $this->lang->line_or_def('common_indication_status','公開設定')  , 'trim|required|in_list[0,9]');
+		$this->form_validation->set_rules('resubmit_flag' , $this->lang->line_or_def('common_resubmit','再提出')             , 'trim|required|in_list[0,1]');
 		
-		$this->form_validation->set_rules('marking_public_flag' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim|required');
-		$this->form_validation->set_rules('marking_public_kind' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim');
-		$this->form_validation->set_rules('marking_public_open' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim');
+		$this->form_validation->set_rules('marking_public_flag' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim|required|in_list[0,9]');
+		$this->form_validation->set_rules('marking_public_kind' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim|required|in_list[1,2]');
+		$this->form_validation->set_rules('marking_public_open' , $this->lang->line_or_def('common_marking_public_status','採点公開設定') , 'trim|callback_marking_public_open_check');
 		
-		$this->form_validation->set_rules('teacher_id'    , $this->lang->line_or_def('common_management_teacher','管理講師') , 'trim|required');
+		$this->form_validation->set_rules('teacher_id'    , $this->lang->line_or_def('common_management_teacher','管理講師') , 'trim|required|is_natural_no_zero|max_length[9]');
 //		$this->form_validation->set_rules('exam_students' , $this->lang->line_or_def('common_student','受講者')              , 'trim|required');
 		$this->form_validation->set_rules('exam_problems[]' , $this->lang->line_or_def('common_exam_problem','設問')           , 'callback_check_required_checkbox2');
 
-		$this->form_validation->set_rules('display_format'   , $this->lang->line_or_def('common_display_format'  ,'表示形式')  , 'trim|required');
+		$this->form_validation->set_rules('display_format'   , $this->lang->line_or_def('common_display_format'  ,'表示形式')  , 'trim|required|in_list[0,1,2]');
 
-		$this->form_validation->set_rules('criteria_type'  , $this->lang->line_or_def('common_criteria','判定基準') , 'trim|required');
-		$this->form_validation->set_rules('criteria_value' , $this->lang->line_or_def('common_criteria','判定基準') , 'trim|required');
+		$this->form_validation->set_rules('criteria_type'  , $this->lang->line_or_def('common_criteria','判定基準') , 'trim|required|in_list[1,2,3]');
+		$this->form_validation->set_rules('criteria_value' , $this->lang->line_or_def('common_criteria','判定基準') , 'trim|required|is_natural|max_length[9]');
 
 		// 配列型の所属講座・受講者・設問の値をチェック
 		$this->load->helper('string_inspection_helper');
@@ -635,20 +635,9 @@ class Cms_exam extends CI_Controller {
 		$check_exam_students = $this->input->post('exam_students')?$this->input->post('exam_students'):array();
 		$check_exam_problems = $this->input->post('exam_problems')?$this->input->post('exam_problems'):array();
 
-		if(!check_array_data_num(array($check_exam_lectures, $check_exam_students, $check_exam_problems))){
-			$this->lang->load('error');
-			$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout'); 
-			$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
-			$error_data['select_callview'] = 'admin_top';
-			
-			//ビュー設定引数設定
-			$disp_param = array(
-							'view_name'   => 'wide_use_error',
-							'submenu_idx' => 4,
-							'view_data'   => $error_data,
-						);
-			//確認フォーム表示
-			$this->_display_view($disp_param);
+		// 配列でない値・数字以外・10桁以上の値が含まれる場合は不正アクセスとして扱う
+		if(!check_array_data_ids(array($check_exam_lectures, $check_exam_students, $check_exam_problems)) || !check_array_data_num(array($check_exam_lectures, $check_exam_students, $check_exam_problems)) || !check_post_fields_scalar(array('update_flg', 'exam_id', 'exam_name', 'exam_caption', 'exam_open', 'exam_close', 'public_flag', 'resubmit_flag', 'marking_public_flag', 'marking_public_kind', 'marking_public_open', 'teacher_id', 'display_format', 'criteria_type', 'criteria_value'))){
+			$this->_display_unjust_access();
 		}else{
 			// 通知チェック
 			// time が空の場合は登録対象外
@@ -657,6 +646,11 @@ class Cms_exam extends CI_Controller {
 			$exam_remind_unit      = array();
 			$temp_exam_remind_time = $this->input->post('remind_time')?$this->input->post('remind_time'):array();
 			$temp_exam_remind_unit = $this->input->post('remind_unit')?$this->input->post('remind_unit'):array();
+			// 配列以外（文字列等）が送信された場合は、通知なしとして扱う
+			if(!is_array($temp_exam_remind_time) || !is_array($temp_exam_remind_unit)){
+				$temp_exam_remind_time = array();
+				$temp_exam_remind_unit = array();
+			}
 			
 			
 			// 個数が1以上、両方の配列個数が同じ場合
@@ -665,7 +659,7 @@ class Cms_exam extends CI_Controller {
 				$remind_check_list = '0,';
 				foreach($temp_exam_remind_time as $ino => $remind_time){
 					// 時間がゼロ以上・単位が指定文字の場合、取得
-					if(  ((is_numeric($remind_time)) && ($remind_time>0)) && (($temp_exam_remind_unit[$ino]=='minute') || ($temp_exam_remind_unit[$ino]=='hour') || ($temp_exam_remind_unit[$ino]=='day'))  ){
+					if(  ((is_numeric($remind_time)) && ($remind_time>0)) && isset($temp_exam_remind_unit[$ino]) && (($temp_exam_remind_unit[$ino]=='minute') || ($temp_exam_remind_unit[$ino]=='hour') || ($temp_exam_remind_unit[$ino]=='day'))  ){
 						
 						// 重複していないかを確認
 						
@@ -723,6 +717,18 @@ class Cms_exam extends CI_Controller {
 				$this->_display_view($disp_param);
 			}else{
 				// 成功
+				// 選択済み設問の存在確認（存在しない設問IDは不正アクセスとして扱う）
+				$this->load->model('model_exam_problem');
+				$exam_problems_info = array();
+				foreach($check_exam_problems as $idx => $exam_problem_id){
+					$exam_problem_info = $this->model_exam_problem->get_name(array('exam_problem_id' => $exam_problem_id));
+					if(empty($exam_problem_info)){
+						$this->_display_unjust_access();
+						return;
+					}
+					$exam_problems_info[$idx] = $exam_problem_info;
+				}
+
 				$data['btn_kirikae_flg'] = 1;
 
 				$data['exam']['update_flg']           = $this->input->post('update_flg');
@@ -816,11 +822,8 @@ class Cms_exam extends CI_Controller {
 				$this->load->model('model_exam_problem');
 				if($data['exam']['exam_problems']){
 					foreach($data['exam']['exam_problems'] as $idx => $lecture){
-						//データ取得用引数設定
-						$name_param = array(
-										'exam_problem_id' => $lecture,
-									);
-						$data_result = $this->model_exam_problem->get_name($name_param);
+						// 設問情報は、上記存在確認時に取得済みの値を使用
+						$data_result = $exam_problems_info[$idx];
 						
 						$data['exam']['exam_problems_name'][$idx]         = $data_result['exam_problem_name'];
 						$data['exam']['exam_problems_teacher_name'][$idx] = $data_result['teacher_name'];
@@ -897,6 +900,21 @@ class Cms_exam extends CI_Controller {
 			// 受講者ID・設問IDを、POST取得
 			$edit_form_data['exam_students']    = $this->input->post('exam_students')?$this->input->post('exam_students'):array();
 			$edit_form_data['exam_problems']    = $this->input->post('exam_problems')?$this->input->post('exam_problems'):array();
+
+			// 受講者ID・設問IDの値チェック（配列でない値・数字以外・10桁以上の値・存在しない設問IDは不正アクセスとして扱う）
+			$this->load->helper('string_inspection_helper');
+			if(!check_array_data_ids(array($edit_form_data['exam_students'], $edit_form_data['exam_problems'])) || !check_array_data_num(array($edit_form_data['exam_students'], $edit_form_data['exam_problems']))){
+				$this->_display_unjust_access();
+				return;
+			}
+			$this->load->model('model_exam_problem');
+			foreach($edit_form_data['exam_problems'] as $exam_problem_id){
+				$exam_problem_info = $this->model_exam_problem->get_name(array('exam_problem_id' => $exam_problem_id));
+				if(empty($exam_problem_info)){
+					$this->_display_unjust_access();
+					return;
+				}
+			}
 
 			//モデル読み込み
 			$this->load->model('model_exam');
@@ -2446,6 +2464,37 @@ class Cms_exam extends CI_Controller {
 		}
 		
 		return true;
+	}
+
+	//----------------------------------------------
+	// 不正アクセスエラー画面表示
+	//----------------------------------------------
+	function _display_unjust_access(){
+		$this->lang->load('error');
+		$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout');
+		$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
+		$error_data['select_callview'] = 'admin_top';
+
+		//ビュー設定引数設定
+		$disp_param = array(
+						'view_name'   => 'wide_use_error',
+						'submenu_idx' => 4,
+						'view_data'   => $error_data,
+					);
+		//エラーフォーム表示
+		$this->_display_view($disp_param);
+	}
+
+	//----------------------------------------------
+	// 採点公開日時チェック（未入力は許可、入力時は日時形式を確認）
+	//----------------------------------------------
+	function marking_public_open_check($date = ''){
+		if($date === NULL || $date === ''){
+			return TRUE;
+		}
+		$this->lang->load('error');
+		$this->form_validation->set_message('marking_public_open_check', $this->lang->line_or_def('error_datetime','%sの日時の形式が間違っています。') );
+		return (bool)$this->datetime_check($date);
 	}
 
 	public function check_required_checkbox($input) {

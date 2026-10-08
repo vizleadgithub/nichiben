@@ -450,7 +450,7 @@ class Model_teacher extends CI_Model
 									FROM
 										teacher
 									WHERE
-										teacher_id = '{$param['teacher_id']}'
+										teacher_id = {$this->db->escape($param['teacher_id'])}
 									AND
 										status = 0
 								");

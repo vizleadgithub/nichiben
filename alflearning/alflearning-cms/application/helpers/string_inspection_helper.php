@@ -156,4 +156,51 @@ function _check_data_num($param){
 	// 戻り値返却
 	return $check_result_data;
 }
+//=======================================================================//
+// 配列型ID群チェック（チェックボックス・hidden配列用）
+//   引数：チェック対象の配列の配列  例）array($exam_lectures, $exam_problems)
+//   戻り値：true  各要素が配列で、全ての値が 1～9桁の数字（0を含む自然数）
+//           false 要素が配列でない（文字列等が渡された）、数字以外・10桁以上の値を含む
+//   ※10桁以上を拒否するのは、DBのINT型範囲外の値による登録エラーを防ぐため
+//=======================================================================//
+function check_array_data_ids($params = array()){
+	if( !is_array($params) ){
+		return false;
+	}
+	foreach($params as $param){
+		if( !is_array($param) ){
+			return false;
+		}
+		if( !_check_data_ids($param) ){
+			return false;
+		}
+	}
+	return true;
+}
+//=======================================================================//
+// 単一値項目（select・radio・hidden・text 等）に、配列が送信されていないかのチェック
+//   引数：項目名の配列  例）array('update_flg', 'exam_id')
+//   戻り値：true  指定項目に配列が送信されていない（未送信を含む）
+//           false 指定項目のいずれかに配列が送信されている
+//=======================================================================//
+function check_post_fields_scalar($names = array()){
+	foreach($names as $name){
+		if( isset($_POST[$name]) && is_array($_POST[$name]) ){
+			return false;
+		}
+	}
+	return true;
+}
+function _check_data_ids($param){
+	foreach($param as $value){
+		if( is_array($value) ){
+			if( !_check_data_ids($value) ){
+				return false;
+			}
+		}elseif( !is_scalar($value) || !preg_match('/^[0-9]{1,9}$/', (string)$value) ){
+			return false;
+		}
+	}
+	return true;
+}
 ?>

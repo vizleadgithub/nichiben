@@ -10,7 +10,7 @@ class Bat_student_report extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		ini_set("display_errors",1);
+		ini_set('display_errors', is_cli() ? 'On' : 'Off');  // 画面(Web)にはエラーを出さない
 		ini_set('error_reporting',E_ALL);
 
 		//DB接続
