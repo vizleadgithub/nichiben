@@ -9,13 +9,67 @@
     "  - 講座IDは /cms_cource/ の一覧から自動取得する(既存の講座を使うが、確認画面までで実際の更新はしない。段階Aと同じ)",
     "必要なのは free_product_pid（無料のeラーニング商品のID）だけ。空なら対象外として記録される。",
     "",
-    "見つからなかったもの(2026-10-07 調査。別途要対応):",
-    "  - E-20(課題確認の提出ファイル名): 受講者側の課題提出画面(issue提出)がソースに存在しない(アイコン画像のみ残存)。",
-    "    自動化以前に、機能自体が実装されているか関係者に確認が必要",
-    "  - E-60(領収書・受講証PDFへの氏名反映): receipt_download.php は payment_status=2(入金済み)が必須、",
-    "    ticket_download.php は product_type_add=2(会場研修)が必須で、どちらも無料eラーニング商品の自動0円注文",
-    "    (payment_status=1・product_type_add=1)では条件を満たせない。実際に入金済みの注文、または会場研修の",
-    "    無料枠がなければ自動化できない。CMS管理画面から手動でテスト注文を作成できるか要確認"
+    "以下は共通のマーカー文字列(run-xss-data-linked.js の MARKER/NAME_PAYLOAD と同じ値)。",
+    "下記のSQL・手動登録では、この文字列をそのままコピーして使うこと(自動テスト側はこの文字列で検索する)。",
+    "  マーカー: XSSTEST_DATALINK",
+    "  攻撃文字列(NAME_PAYLOAD): XSSTEST_DATALINK\"><img src=x onerror=alert('XSSTEST_DATALINK')>"
   ],
-  "free_product_pid": "26316"
+  "free_product_pid": "26316",
+
+  "_comment_issue": [
+    "E-20(課題確認の提出ファイル名)。2026-10-08 開発者回答: 受講者側に課題提出画面が無く(issue_submitへの",
+    "INSERT処理がソース上どこにも無い)自動生成できない。CMS側の表示(/cms_issue/detail/{issue_id}。",
+    "issue_submit_name・issue_submit_logic_name・issue_submit_caption を組み立てる際に無害化。Cms_issue.php:299,301等)",
+    "は、データさえあれば確認できるため、人がSQLで直接テスト行を投入する。",
+    "",
+    "人の作業手順:",
+    "  1. CMSでテスト専用の課題を1件作成する(/cms_issue/newdata。名前は「[XSSTEST] E-20」等。",
+    "     既存のS12-issueと同じ画面)。登録後のURL(/cms_issue/detail/{id})からissue_idを控える",
+    "  2. 任意の既存の受講者ID(student_id)を控える(表示にはstudent_idでの絞り込みは無いため、どの値でもよいが、",
+    "     issue_submitにFK制約がある場合は実在するstudent_idを使うこと。/cms_student で検索して確認)",
+    "  3. stg2のDBへ以下のSQLを実行する(issue_idとstudent_idは実際の値に置き換える。issue_submit_logic_name",
+    "     は拡張子判定に使われるため末尾に.txtを残すこと):",
+    "     INSERT INTO issue_submit (issue_id, student_id, issue_submit_name, issue_submit_logic_name, issue_submit_caption, issue_submit_date, status)",
+    "     VALUES ({issue_id}, {student_id}, 'XSSTEST_DATALINK\"><img src=x onerror=alert(\\'XSSTEST_DATALINK\\')>', 'XSSTEST_DATALINK\"><img src=x onerror=alert(\\'XSSTEST_DATALINK\\')>.txt', 'XSSTEST_DATALINK\"><img src=x onerror=alert(\\'XSSTEST_DATALINK\\')>', NOW(), 0);",
+    "     ※事前に `DESCRIBE issue_submit;` でカラムの型・NOT NULL制約を確認し、他に必須のカラムがあれば追加すること",
+    "  4. 下記 issue_id に、1で控えた値を記入する",
+    "自動テストは /cms_issue/detail/{issue_id} を開いて読み取るだけ(書き込みなし)"
+  ],
+  "issue_id": null,
+
+  "_comment_paid_order": [
+    "E-60(領収書・受講証PDFへの商品名反映)。2026-10-08 開発者回答: amount_order/info.php の mode=pay(入金済みへの",
+    "変更)、および無料会場研修の購入(payment_free.php)は、いずれも受講者へメール送信を伴うことが判明した",
+    "(CLAUDE.mdの方針によりメール送信を伴う操作は自動化しない)。そのため、注文の作成・入金確認は人が手動で行い、",
+    "自動テストはできあがった注文IDでのダウンロード・確認だけを行う(読み取りのみ)。",
+    "",
+    "【領収書(receipt_order_id)の人の作業手順】",
+    "  1. 無料のeラーニング商品(free_product_pid)の詳細ページをテスト受講者で開き、0円注文を自動作成させる",
+    "     (商品名に攻撃文字列が入っていないので、代わりに商品管理で攻撃文字列入りの無料商品を別途登録してから",
+    "     同様に開いてもよい)",
+    "  2. CMSの商品管理 > 売上 > 注文一覧で、その注文の詳細画面(amount_order/info.php?oid=...)を開き、",
+    "     「入金済みに変更」ボタン(mode=pay)を押す(メールがテスト受講者へ1通届く。人の手動操作なので問題ない)",
+    "  3. そのoid(URLの?oid=の値)を下記 receipt_order_id に記入する",
+    "  注意: 領収書のダウンロードに成功すると、その注文は1回しか再ダウンロードできない(tbl_order.receipt_flgが",
+    "  立つため)。テストを再実行する場合は、新しい注文で1〜3をやり直すこと",
+    "",
+    "【受講証(ticket_order_detail_id)の人の作業手順】",
+    "  1. 商品管理の会場研修(/alfproduct/product_live/add.php)で、商品名に攻撃文字列",
+    "     (XSSTEST_DATALINK\"><img src=x onerror=alert('XSSTEST_DATALINK')>)を入れ、価格を0円にした商品を登録する",
+    "     (開催日は遠い未来にする。受講証には注文した時点の商品名が記録されるため、攻撃文字列は注文前に",
+    "     入れておく必要がある)",
+    "  2. テスト受講者でログインし、その商品をカートに入れて購入する(価格0円なので決済は発生しないが、",
+    "     購入確認メールがテスト受講者へ1通届く。人の手動操作なので問題ない)",
+    "  3. 作成された注文明細ID(order_detail_id。CMSの注文詳細や受講者サイトのticket_list.php等のURLから確認できる)",
+    "     を下記 ticket_order_detail_id に記入する",
+    "  受講証は発行済みフラグの更新処理が無効化されているため、同じ値で何度でも再実行できる"
+  ],
+  "receipt_order_id": null,
+  "ticket_order_detail_id": null,
+
+  "_comment_not_found": [
+    "見つからなかったもの(2026-10-07 調査。別途要対応):",
+    "  - E-60のうち受講証は、上記のとおり2026-10-08に自動生成手段(人の手動登録+自動ダウンロード)が確立した。",
+    "    以前の「会場研修の無料枠が無いと自動化できない」という記載は解消済み"
+  ]
 }

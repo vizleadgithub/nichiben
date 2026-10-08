@@ -109,12 +109,19 @@ const defaultsPath = path.join(__dirname, 'test-plan/form-defaults.json');
 const overridesFor = (url) => (fs.existsSync(defaultsPath) ? (JSON.parse(fs.readFileSync(defaultsPath, 'utf-8'))[url] || {}) : {});
 
 // file 型の欄（S9 の対象以外も含む）に、検証を通す無害なダミーファイルを設定する（必須のアップロード欄があると確認画面へ進めないため）。
-// S9 の対象項目には、この後で実際の攻撃文字列(ファイル名・中身)を上書きする
+// S9 の対象項目には、この後で実際の攻撃文字列(ファイル名・中身)を上書きする。
+// 既定はPDFだが、拡張子チェックがある欄（CSV取り込み画面等）は form-defaults.json で項目名に "csv" を指定する
+// （例: { "local_file": "csv" }）と、CSV形式のダミーファイルになる
 const attrEscape = (s) => String(s).replace(/(["\\])/g, '\\$1');
-async function fillBenignFiles(page) {
+const BENIGN_FILES = {
+  pdf: { name: 'xsstest_baseline.pdf', mimeType: 'application/pdf', buffer: Buffer.from('%PDF-1.4\n% xsstest baseline\n') },
+  csv: { name: 'xsstest_baseline.csv', mimeType: 'text/csv', buffer: Buffer.from('xsstest_col1,xsstest_col2\n1,2\n') },
+};
+async function fillBenignFiles(page, overrides = {}) {
   const names = await page.evaluate(() => [...document.querySelectorAll('input[type=file]')].map((el) => el.name).filter(Boolean));
   for (const n of names) {
-    await page.locator(`[name="${attrEscape(n)}"]`).setInputFiles({ name: 'xsstest_baseline.pdf', mimeType: 'application/pdf', buffer: Buffer.from('%PDF-1.4\n% xsstest baseline\n') }).catch(() => {});
+    const file = BENIGN_FILES[overrides[n]] || BENIGN_FILES.pdf;
+    await page.locator(`[name="${attrEscape(n)}"]`).setInputFiles(file).catch(() => {});
   }
   return names;
 }
@@ -267,7 +274,7 @@ async function resolveTemplate(session, url) {
     // 送信前後の差分だけを「新しく出たエラー」として扱う
     const errsBefore = await validationErrors(session.page);
     await fillBaseline(session.page, targets[0].field, overrides, true);   // 対象項目も通常の値で埋める
-    await fillBenignFiles(session.page);   // file 型の必須欄があれば、無害なダミーファイルで埋める(S9)
+    await fillBenignFiles(session.page, overrides);   // file 型の必須欄があれば、無害なダミーファイルで埋める(S9)
     await setFields(session.page, [{ name: targets[0].field, value: null }]);   // 通常の値のまま（目印だけ付ける）
     const base = await submitGuarded(session);
     if (base.refused) {
@@ -291,7 +298,7 @@ async function resolveTemplate(session, url) {
       for (const p of payloads) {
         await session.goto(pageUrl);
         await fillBaseline(session.page, t.field, overrides);
-        await fillBenignFiles(session.page);   // 対象以外の file 欄。対象が file 型の場合は直後に攻撃文字列で上書きする
+        await fillBenignFiles(session.page, overrides);   // 対象以外の file 欄。対象が file 型の場合は直後に攻撃文字列で上書きする
         let value, set;
         if (t.type === 'file') {
           // S9: ファイル名、または中身(HTML・SVG)に攻撃文字列を入れる。中身の場合はファイル名自体は無害にする

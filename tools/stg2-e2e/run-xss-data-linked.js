@@ -1,37 +1,42 @@
 // 重点項目 E-10(講座確認の受講者一覧)・E-12(売上の会員詳細)・E-13(売上の注文詳細)・E-14(受講者検索ポップアップ)・
-// E-49(商品検索スマホ版のカテゴリ名。全量一覧No.49の退行確認)・E-60(領収書PDFへの氏名反映)の自動実行。
+// E-20(課題確認の提出ファイル名)・E-49(商品検索スマホ版のカテゴリ名。全量一覧No.49の退行確認)・
+// E-60(領収書・受講証PDFへの商品名反映)の自動実行。
 //
-// これらは「実在の受講者・注文データが無いと表示を確認できない」として長らく未自動化だったが、2026-10-07の調査で
-// 次の方法により CMS 側の事前セットアップ無しで自動生成できることが分かった。
+// E-10/E-12/E-13/E-14/E-49 は「実在の受講者・注文データが無いと表示を確認できない」として長らく未自動化だったが、
+// 2026-10-07の調査で次の方法により CMS 側の事前セットアップ無しで自動生成できることが分かった。
 //   - 受講者: member/regist.php でテスト用の氏名(攻撃文字列入り)を登録するだけ(S12-student-nameと同じ仕組み)
 //   - 注文: 無料のeラーニング商品の詳細ページを開くと、0円の注文が自動作成される(アプリの仕様。決済は発生しない。
 //     alfproduct/public/product/detail.php の `product_type_add==1 && price<=0` の分岐で確認済み)
 //   - E-10の受講者一覧: 既存の任意の講座の edit→confirm(DBへは書き込まない。段階Aと同じ)で、受講者欄に
 //     登録したテスト受講者のIDを追加して送信するだけで、確認画面にその受講者名が表示される(commitはしない)
-//   - E-60の領収書: 無料のeラーニング商品を「攻撃文字列入りの商品名」で自前に登録し、STG2_STUDENT_USER(保存済み
-//     セッション)にその商品を開かせて0円注文を作らせる。CMS管理画面の amount_order/info.php には、実際の決済
-//     (GMO)を経由せず入金済みに変更する管理機能(mode=pay)があり、これを使うと receipt_download.php の
-//     条件(tbl_order.payment_status=2)を満たせる(1明細のみの注文が全額入金済みになると、tbl_order側の
-//     ステータスも自動的に追従する処理が amount_order/info.php 内にあることをコードで確認済み)。
-//     受講者本人の氏名は変更できない([B-0])ため、受講者名ではなく商品名に攻撃文字列を入れて確認する。
 //
-// 段階: E-10は段階A相当(confirmまでで登録・更新はしない)。E-12/E-13/E-60は、受講者登録・商品登録・無料商品の
-//   0円注文の自動作成・(E-60のみ)入金済みへの変更を伴うため段階B相当(DBへ書き込む。決済は発生しない)。
-//   実行前に stg2 の DB をダンプすること。
+// 段階: E-10は段階A相当(confirmまでで登録・更新はしない)。E-12/E-13/E-14/E-49は、受講者登録・商品登録・
+//   無料商品の0円注文の自動作成を伴うため段階B相当(DBへ書き込む。決済は発生しない)。実行前に stg2 の DB を
+//   ダンプすること。これらは --accept-writes が必須。
 //
-// 必要な設定: test-plan/data-entries.json の free_product_pid（無料のeラーニング商品のID）。未設定なら
-//   E-12/E-13 は対象外として記録される。講座IDは /cms_cource/ の一覧から自動取得する。E-60は商品自体を
-//   新規登録するため free_product_pid は使わない。
+// E-20・E-60(領収書・受講証)は、2026-10-08 の開発者回答により方針が変わった。
+//   - E-20: 受講者側に課題提出画面が無く(ソース上INSERT処理が存在しない)、自動生成できない。CMS側の表示
+//     (/cms_issue/detail/{issue_id}。issue_submit_name・issue_submit_logic_name・issue_submit_caption を
+//     組み立てる際に無害化)は、データさえあれば確認できるため、人が issue_submit テーブルへ直接SQLで
+//     テスト行を1件投入し、自動テストは読み取りのみ行う。
+//   - E-60: 従来は商品の自前登録→0円注文の自動作成→amount_order/info.php の mode=pay(入金済みへの変更)
+//     までを自動化していたが、mode=pay は受講者へメール送信を伴うことが判明した(order8.mail を mb_send_mail)。
+//     同様に無料会場研修の購入(payment_free.php)も受講者へメール送信を伴う(order9.mail)。
+//     CLAUDE.md の方針(メール送信を伴う操作は自動化しない)に反するため、**商品登録・購入・入金確認はすべて
+//     人がCMS画面・受講者サイトから手動で行う**方式に変更した。自動テストは、人が用意した注文ID
+//     (領収書: data-entries.json の receipt_order_id。受講証: ticket_order_detail_id)を使って
+//     ダウンロード・確認するだけ(読み取りのみ。書き込み・メール送信は無い)。
+//     領収書は成功すると tbl_order.receipt_flg が立ち1注文につき1回しか再現できない(再実行には新しい
+//     入金済み注文が必要)。受講証は発行済みフラグの更新処理がコメントアウトされており何度でも再実行できる。
+//   具体的な人の作業手順・SQL文は test-plan/data-entries.json のコメントを参照。
 //
-// E-60の制約: 領収書(receipt_download.php)は入金済みの0円注文で確認できるが、受講証(ticket_download.php)は
-//   会場研修商品(product_type_add=2)が必須で、こちらの自動0円注文の仕組み(product_type_add==1限定)の対象外。
-//   PDFの中身は文字コードが圧縮されている場合があり、マーカーの検出はベストエフォート(見つからない場合は
-//   手動でPDFを開いて確認すること)。
+// 必要な設定: test-plan/data-entries.json の free_product_pid（無料のeラーニング商品のID。E-12/E-13/E-10用）・
+//   issue_id（E-20。テスト用の課題のID）・receipt_order_id（E-60領収書。入金済みの注文ID）・
+//   ticket_order_detail_id（E-60受講証。会場研修注文の注文明細ID）。未設定の項目はそれぞれ対象外として記録される。
 //
-// 見つからなかったもの(2026-10-07 調査。別途要対応。test-plan/data-entries.json 参照):
-//   - E-20(課題確認の提出ファイル名): 受講者側の課題提出画面がソースに存在しない(機能自体の実装状況を要確認)
-//
-// 使い方: node run-xss-data-linked.js [--only E-10,E-12,E-13,E-14,E-49,E-60] [--accept-writes]
+// 使い方: node run-xss-data-linked.js [--only E-10,E-12,E-13,E-14,E-20,E-49,E-60] [--accept-writes]
+//   --accept-writes は E-10/E-12/E-13/E-14/E-49(書き込みを伴う)にのみ必要。E-20・E-60(領収書・受講証)は
+//   読み取りのみのため --accept-writes が無くても実行される(data-entries.json が未設定なら対象外になるだけ)。
 const fs = require('fs');
 const path = require('path');
 const { fill } = require('./xss-payloads');
@@ -195,101 +200,32 @@ async function checkE10(rec) {
   }
 }
 
-// 商品管理でテスト用の無料のeラーニング商品を登録する(product_name に攻撃文字列・product_code に識別しやすい
-// 平文のコードを入れる)。検索(product_code・product_name 共にLIKE一致)で見つけやすくするため
-const PRODUCT_CODE = 'XSSTESTE60';
-async function registerMarkerProduct(cms) {
-  const url = '/alfproduct/product/add.php';
-  const first = await cms.goto(url);
-  if (first.status === 'ERROR' || first.status === 'SSO' || first.status >= 400) return { error: `画面が開けない: HTTP ${first.status}` };
-  const found = (await fieldForms(cms.page, ['product_name']))[0];
-  if (!found || !found.found) return { error: `${url} に product_name 欄がない(画面構成が変わった可能性)` };
-  await fillBaseline(cms.page, 'product_name', { ...overridesFor(url), price: '0', product_kind_flg: '1', product_code: PRODUCT_CODE }, true);
-  await setFields(cms.page, [{ name: 'product_name', value: NAME_PAYLOAD }]);
-  const confirmRes = await submitGuarded(cms);
-  if (confirmRes.refused) return { error: `確認画面へ進めない: ${confirmRes.refused}` };
-  const completeRes = await submitComplete(cms);
-  if (completeRes.refused) return { error: `登録を完了できない: ${completeRes.refused}` };
-  console.log(`無料商品を登録しました: ${NAME_PAYLOAD}(${PRODUCT_CODE}) -> ${completeRes.finalUrl}`);
-  return { ok: true };
-}
-
-// 商品一覧(search_product_name)から、登録した商品の product_id(mid) を探す
-async function findProductId(cms) {
-  const res = await cms.goto('/alfproduct/product/index.php');
-  if (res.status === 'ERROR' || res.status === 'SSO' || res.status >= 400) return null;
-  const found = (await fieldForms(cms.page, ['search_product_name']))[0];
-  if (!found || !found.found) return null;
-  await setFields(cms.page, [{ name: 'search_product_name', value: PRODUCT_CODE }]);
-  const result = await submitGuarded(cms).catch(() => ({ refused: true }));
-  const html = result && result.html ? result.html : await cms.page.content();
-  const m = html.match(/info\.php\?mid=(\d+)/);
-  return m ? m[1] : null;
-}
-
-// 注文一覧(search_product_code)から、無料商品の0円注文の oid を探す
-async function findOrderId(cms) {
-  const res = await cms.goto('/alfproduct/amount_order/index.php');
-  if (res.status === 'ERROR' || res.status === 'SSO' || res.status >= 400) return null;
-  const found = (await fieldForms(cms.page, ['search_product_code']))[0];
-  if (!found || !found.found) return null;
-  await setFields(cms.page, [{ name: 'search_product_code', value: PRODUCT_CODE }]);
-  const result = await submitGuarded(cms).catch(() => ({ refused: true }));
-  const html = result && result.html ? result.html : await cms.page.content();
-  const m = html.match(/info\.php\?oid=(\d+)/);
-  return m ? m[1] : null;
-}
-
-// amount_order/info.php の「入金済に変更」(mode=pay)を押す。実際のGMO決済は経由しない管理機能
-// (1明細のみの注文がすべて入金済みになると、tbl_order 側のステータスも自動で追従することをコードで確認済み)
-async function markOrderPaid(cms, oid) {
-  const res = await cms.goto(`/alfproduct/amount_order/info.php?oid=${oid}`);
-  if (res.status === 'ERROR' || res.status === 'SSO' || res.status >= 400) return { error: `注文詳細が開けない: HTTP ${res.status}` };
-  const m = res.html.match(/order_detail_id\.value='(\d+)'/);
-  if (!m) return { error: '「入金済に変更」ボタンが見つからない(画面構成が変わった可能性)' };
-  const orderDetailId = m[1];
-  const after = await cms.action(() => cms.page.evaluate((odid) => {
-    const f = document.forms['list_form'];
-    f.mode.value = 'pay';
-    f.order_detail_id.value = odid;
-    f.submit();
-  }, orderDetailId));
-  return { ok: true, html: after.html };
-}
-
-// 受講者サイトのマイページ(buy_list.php)から、対象の注文の領収書ダウンロードフォームを送信する
+// 受講者サイトのマイページ(buy_list.php)から、対象の注文の領収書ダウンロードフォームを送信する(POST。CSRF同梱)。
+// 注文は人が事前にCMS画面・受講者サイトから入金済みにしておく(mode=pay等はメール送信を伴うため自動化しない)
 async function downloadReceipt(student, oid) {
   const res = await student.goto('/mypage/buy_list.php');
   if (res.status === 'ERROR' || res.status === 'SSO' || res.status >= 400) return { error: `マイページが開けない: HTTP ${res.status}` };
   const hasForm = await student.page.evaluate((oid) => !!document.getElementById(`receipt_download_form${oid}`), oid);
-  if (!hasForm) return { error: `注文(oid=${oid})の領収書ダウンロードフォームが見つからない(入金済みになっていない可能性)` };
+  if (!hasForm) return { error: `注文(oid=${oid})の領収書ダウンロードフォームが見つからない(入金済みになっていない、またはこの受講者の注文でない可能性)` };
   const after = await student.action(() => student.page.evaluate((oid) => {
     document.getElementById(`receipt_download_form${oid}`).submit();
   }, oid));
   return { ok: true, status: after.status, html: after.html };
 }
 
-// E-60: 無料商品を攻撃文字列入りの商品名で登録 → テストアカウントに開かせて0円注文を作らせる →
-// 管理機能で入金済みに変更 → 領収書をダウンロードし、商品名がPDFにエスケープされて出力されるか確認する
-async function checkE60(rec) {
+// E-60(領収書): 人が事前に用意した入金済みの注文(data-entries.json の receipt_order_id)で領収書をダウンロードし、
+// 商品名がPDFにエスケープされて出力されるか確認する(読み取りのみ。書き込み・メール送信は無い)
+async function checkReceipt(rec) {
   const id = 'E-60';
   if (!want(id)) return;
-  if (!acceptWrites) { rec.add({ id, verdict: '対象外', note: '商品登録・注文の作成・入金済みへの変更を伴う。--accept-writes を付けて実行してください' }); return; }
-  const cms = await new Session('cms').open();
+  const oid = dataEntries.receipt_order_id;
+  if (!oid) {
+    rec.add({ id, verdict: '対象外', note: 'test-plan/data-entries.json の receipt_order_id が未設定(入金済みの注文のorder_idを、人が用意して記入してください。手順はdata-entries.jsonのコメント参照)' });
+    console.log('skip E-60(領収書): receipt_order_id が未設定');
+    return;
+  }
   const student = await new Session('student').open();
   try {
-    const reg = await registerMarkerProduct(cms);
-    if (reg.error) { rec.add({ id, verdict: '要確認', note: reg.error }); return; }
-    const pid = await findProductId(cms);
-    if (!pid) { rec.add({ id, verdict: '要確認', note: '登録した商品が商品一覧の検索結果に見つからない' }); return; }
-    console.log(`商品ID(pid)=${pid} が見つかりました`);
-    const detail = await student.goto(`/product/detail.php?pid=${pid}`);
-    if (detail.status === 'ERROR' || detail.status === 'SSO' || detail.status >= 400) { rec.add({ id, verdict: '要確認', note: `商品詳細が開けない: HTTP ${detail.status}` }); return; }
-    const oid = await findOrderId(cms);
-    if (!oid) { rec.add({ id, verdict: '要確認', note: '0円注文が注文一覧の検索結果に見つからない(自動作成されなかった可能性)' }); return; }
-    console.log(`注文ID(oid)=${oid} が見つかりました`);
-    const paid = await markOrderPaid(cms, oid);
-    if (paid.error) { rec.add({ id, verdict: '要確認', note: paid.error, label: `amount_order/info.php?oid=${oid}` }); return; }
     const dl = await downloadReceipt(student, oid);
     if (dl.error) { rec.add({ id, verdict: '要確認', note: dl.error, label: `mypage/buy_list.php(oid=${oid})` }); return; }
     const findings = [];
@@ -297,12 +233,80 @@ async function checkE60(rec) {
     const bodyText = dl.html || '';
     if (bodyText.includes(SIG)) findings.push({ kind: '未エスケープで出現(PDF内に攻撃文字列がそのまま検出)', text: SIG, ng: true });
     else if (bodyText.includes(MARKER)) findings.push({ kind: '文字として検出(エスケープされている可能性)', text: MARKER });
-    else findings.push({ kind: 'PDFの生テキストからマーカーを検出できず(PDFが圧縮されている可能性。手動でPDFを開いて確認してください)', text: '' });
-    rec.add({ id, verdict: findings.some((f) => f.ng) ? 'NG' : findings[0].kind.includes('検出できず') ? '要確認' : 'OK', label: `receipt_download.php(oid=${oid})`, status: dl.status, findings, scope: 'PDF内のテキスト検出はベストエフォート(圧縮されていると検出できない)' });
-    console.log(`E-60 receipt_download.php(oid=${oid}) ${findings.map((f) => f.kind).join(',')}`);
+    else findings.push({ kind: 'PDFの生テキストからマーカーを検出できず(PDFが圧縮されている、注文時の商品名にマーカーが入っていない等の可能性。手動でPDFを開いて確認してください)', text: '' });
+    rec.add({
+      id, verdict: findings.some((f) => f.ng) ? 'NG' : findings[0].kind.includes('検出できず') ? '要確認' : 'OK', label: `receipt_download.php(oid=${oid})`, status: dl.status, findings,
+      scope: 'PDF内のテキスト検出はベストエフォート(圧縮されていると検出できない)。ダウンロード成功後はtbl_order.receipt_flgが立ち、この注文では再実行できない(再実行には新しい入金済み注文が必要)',
+    });
+    console.log(`E-60(領収書) receipt_download.php(oid=${oid}) ${findings.map((f) => f.kind).join(',')}`);
+  } finally {
+    await student.close();
+  }
+}
+
+// 受講者サイトのマイページから、対象の注文明細(odid)の受講証をダウンロードする(GET。CSRF無し)。
+// ticket_download.php の発行済みフラグ更新処理はコメントアウトされているため、副作用なく何度でも実行できる
+async function downloadTicket(student, odid) {
+  const res = await student.goto(`/mypage/ticket_download.php?odid=${odid}`);
+  if (res.status === 'ERROR' || res.status === 'SSO') return { error: `受講証画面が開けない: ${res.status}` };
+  return { ok: true, status: res.status, html: res.html };
+}
+
+// E-60(受講証): 人が事前に登録・購入した会場研修商品の注文明細ID(data-entries.json の ticket_order_detail_id)で
+// 受講証をダウンロードし、商品名がPDFにエスケープされて出力されるか確認する(読み取りのみ。何度でも再実行できる)
+async function checkTicket(rec) {
+  const id = 'E-60';
+  if (!want(id)) return;
+  const odid = dataEntries.ticket_order_detail_id;
+  if (!odid) {
+    rec.add({ id, verdict: '対象外', note: 'test-plan/data-entries.json の ticket_order_detail_id が未設定(無料の会場研修商品を登録・購入し、作成された注文明細IDを人が記入してください。手順はdata-entries.jsonのコメント参照)' });
+    console.log('skip E-60(受講証): ticket_order_detail_id が未設定');
+    return;
+  }
+  const student = await new Session('student').open();
+  try {
+    const dl = await downloadTicket(student, odid);
+    if (dl.error) { rec.add({ id, verdict: '要確認', note: dl.error, label: `mypage/ticket_download.php(odid=${odid})` }); return; }
+    const findings = [];
+    if (dl.status >= 400) findings.push({ kind: `HTTP ${dl.status}`, text: '' });
+    const bodyText = dl.html || '';
+    if (bodyText.includes(SIG)) findings.push({ kind: '未エスケープで出現(PDF内に攻撃文字列がそのまま検出)', text: SIG, ng: true });
+    else if (bodyText.includes(MARKER)) findings.push({ kind: '文字として検出(エスケープされている可能性)', text: MARKER });
+    else findings.push({ kind: 'PDFの生テキストからマーカーを検出できず(PDFが圧縮されている、注文時の商品名にマーカーが入っていない、odidが誤っている等の可能性。手動でPDFを開いて確認してください)', text: '' });
+    rec.add({ id, verdict: findings.some((f) => f.ng) ? 'NG' : findings[0].kind.includes('検出できず') ? '要確認' : 'OK', label: `ticket_download.php(odid=${odid})`, status: dl.status, findings, scope: 'PDF内のテキスト検出はベストエフォート(圧縮されていると検出できない)' });
+    console.log(`E-60(受講証) ticket_download.php(odid=${odid}) ${findings.map((f) => f.kind).join(',')}`);
+  } finally {
+    await student.close();
+  }
+}
+
+// E-20: 人が issue_submit テーブルへ直接SQLで投入したテスト行(issue_submit_name・issue_submit_logic_name・
+// issue_submit_caption にマーカーを含む)が、CMSの課題確認画面(/cms_issue/detail/{issue_id})にエスケープされて
+// 表示されるかを見る(読み取りのみ)。受講者側に提出画面が無いため、データ投入は人が行う(data-entries.json参照)
+async function checkE20(rec) {
+  const id = 'E-20';
+  if (!want(id)) return;
+  const issueId = dataEntries.issue_id;
+  if (!issueId) {
+    rec.add({ id, verdict: '対象外', note: 'test-plan/data-entries.json の issue_id が未設定(テスト用の課題を作成しissue_submitへSQLでテスト行を投入後、issue_idを記入してください。手順はdata-entries.jsonのコメント参照)' });
+    console.log('skip E-20: issue_id が未設定');
+    return;
+  }
+  const cms = await new Session('cms').open();
+  try {
+    const res = await cms.goto(`/cms_issue/detail/${issueId}`);
+    if (res.status === 'ERROR' || res.status === 'SSO' || res.status >= 400) { rec.add({ id, verdict: '要確認', note: `画面が開けない: HTTP ${res.status}` }); return; }
+    const findings = [];
+    const at = res.html.indexOf(SIG);
+    if (at >= 0) findings.push({ kind: '未エスケープで出現', where: classify(res.html, at), text: SIG, ng: true });
+    else if (res.html.includes(MARKER)) findings.push({ kind: '文字として表示(エスケープ済み)', text: MARKER });
+    else findings.push({ kind: '提出一覧にマーカーが見当たらない(issue_submitへのテスト行投入が済んでいないか、issue_idが違う可能性)', text: '' });
+    const dom = await domInjection(cms.page, [MARKER]);
+    for (const d of dom) findings.push({ kind: 'DOM上のイベント属性/JSリンク', text: `<${d.tag} ${d.attr}="${d.value}">`, ng: true });
+    rec.add({ id, verdict: findings.some((f) => f.ng) ? 'NG' : findings[0].kind.includes('見当たらない') ? '要確認' : 'OK', label: `cms_issue/detail/${issueId}`, status: res.status, findings });
+    console.log(`E-20 cms_issue/detail/${issueId} ${findings.map((f) => f.kind).join(',')}`);
   } finally {
     await cms.close();
-    await student.close();
   }
 }
 
@@ -389,17 +393,19 @@ async function checkE49(rec) {
 
 (async () => {
   const rec = new Recorder('data-linked');
-  console.log(`E-10・E-12・E-13・E-14・E-49・E-60 / --accept-writes=${acceptWrites}`);
+  console.log(`E-10・E-12・E-13・E-14・E-20・E-49・E-60 / --accept-writes=${acceptWrites}`);
   await checkE1213(rec);
   await checkE10(rec);
   await checkE14(rec);
   await checkE49(rec);
-  await checkE60(rec);
+  await checkE20(rec);
+  await checkReceipt(rec);
+  await checkTicket(rec);
   const out = rec.save({ acceptWrites });
   const ids = [...new Set(rec.entries.map((e) => e.id))];
   const c = { NG: 0, '要確認': 0, OK: 0, '対象外': 0 };
   ids.forEach((id) => c[rec.worst(id)]++);
   console.log(`\n結果 ${ids.length} 件: NG ${c.NG} / 要確認 ${c['要確認']} / OK ${c.OK} / 対象外 ${c['対象外']}`);
-  if (rec.entries.length) console.log('※受講者登録・0円注文の作成を行いました。確認後、stg2 の DB をダンプから復元してください。');
+  if (acceptWrites) console.log('※書き込みを伴うチェック(E-10/E-12/E-13/E-14/E-49)を実行した場合、確認後 stg2 の DB をダンプから復元してください。E-20・E-60(領収書・受講証)は読み取りのみです。');
   console.log(`結果: ${out}`);
 })().catch((e) => { console.error(e.message); process.exit(1); });
