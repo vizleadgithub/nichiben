@@ -18,7 +18,7 @@ $iid = $_GET["iid"];
 $sql = "";
 $sql.= "update tbl_inquiry set ";
 $sql.= "del_flg='1' ";
-$sql.= " where inquiry_id='".mysql_escape_string($iid)."' ";
+$sql.= " where inquiry_id='".mysqli_real_escape_string($objDbConnect->connect, $iid)."' ";
 $ret = $objDbConnect->execute($sql);
 if(!$ret){
 	$arr_err["db"] = "更新に失敗しました。";

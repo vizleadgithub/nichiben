@@ -43,7 +43,8 @@ if( count($ret)>0 ){
 	
 	$sql = "insert into tbl_order(order_no,price,tax,payment_type,payment_status,order_date,buy_comp_flg,member_id) values('".$temp_date.$temp_no."','".$cart_total_price."','".tax_cal_yen($cart_total_price)."','99','2','".date("Y-m-d H:i:s")."','1','".$_SESSION['user']['id']."')";
 	$objDbConnect->execute($sql);
-	$order_id = mysql_insert_id();
+	$ret = $objDbConnect->query_fetch("SELECT LAST_INSERT_ID() as order_id");
+	$order_id = $ret["order_id"];
 	
 	foreach ($cart as $key => $val){
 		// 会場研修

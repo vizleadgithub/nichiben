@@ -2482,6 +2482,10 @@ class Cms_exam2_review extends CI_Controller {
 		$row[] = "登録番号";
 		$row[] = "会員区分";
 		$row[] = "所属弁護士会";
+		// 該当データが無い場合(存在しないIDの指定など)は、見出しだけのCSVにする(未定義の添字でエラーにならないようにする)
+		if(empty($export_data[0]) || !is_array($export_data[0])){
+			$export_data = array(array("exam2_problem"=>array(), "student"=>array()));
+		}
 		for($i2=0;$i2<count($export_data[0]["exam2_problem"]);$i2++){
 			$row[] = $export_data[0]["exam2_problem"][$i2];
 		}

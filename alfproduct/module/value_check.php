@@ -6,6 +6,11 @@
 //////////////////////////////////////////////////////////////
 function cmCheckInput($input, $n, $args=NULL)
 {
+	// 配列・オブジェクトが渡された場合は、文字列チェック(空欄・数字・形式など)の対象外として、エラー扱いにする
+	// (PHP 8 では trim()・preg_match() が TypeError になり、サーバー内部のパスが画面に出るため)
+	if ((is_array($input) || is_object($input)) && $n != 'CK_NULL' && $n != 'CK_NONE') {
+		return 1;
+	}
 	switch ($n)
 	{
 	//空欄

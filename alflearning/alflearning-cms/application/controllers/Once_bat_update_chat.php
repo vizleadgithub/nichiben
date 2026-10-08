@@ -37,7 +37,7 @@ class Once_bat_update_chat extends CI_Controller {
 			$params["submit_teacher_id"] = str_replace("master_", "", $chat["user_id"]);
 			$params["target_student_id"] = 0;
 
-			if (ereg("mp3", $chat["message"])) { $params["file_type"] = ".mp3"; }
+			if (strpos($chat["message"], "mp3") !== false) { $params["file_type"] = ".mp3"; }
 			else { $params["file_type"] = ".m4a"; }
 
 			$chat["message"] = str_replace("==========VOICEPlAY==========", "", $chat["message"]);

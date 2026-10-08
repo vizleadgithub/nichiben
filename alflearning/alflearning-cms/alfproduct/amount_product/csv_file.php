@@ -2,8 +2,16 @@
 set_time_limit(180);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 date_default_timezone_set('Asia/Tokyo');
-include( "/srv/alfproduct/module/DbConnect.php" );
+include("/srv/alfproduct/module/module.php");
 $objDbConnect = new DbConnect();
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ログイン確認(未ログインでは、CSVを出力しない)
+$objAlfSession = new AlfSession();
+$arr_session = $objAlfSession->session_check();
+if(!$arr_session){
+	header("Location: /?backurl=".$_SERVER['PHP_SELF']);
+	exit();
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $all_pay_total = 0;
 $all_buy_count = 0;

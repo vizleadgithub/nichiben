@@ -9,7 +9,7 @@
 				msnbot|FlashGet|WebBooster|MIDown|moget|InternetLinkAgent|Wget|InterGet|WebFetch|
 				WebCrawler|ArchitextSpider|Scooter|WebAuto|InfoNaviRobot|httpdown|Inetdown|Slurp|
 				Spider|^Iron33|^fetch|^PageDown|^BMChecker|^Jerky|^Nutscrape|Baiduspider|TMCrawler)/m";
-		if(preg_match($robot,$UserAgent) || ereg($robot,$UserAgent)) {
+		if(preg_match($robot,$UserAgent)) {
 			return true;
 		}else{
 			return false;

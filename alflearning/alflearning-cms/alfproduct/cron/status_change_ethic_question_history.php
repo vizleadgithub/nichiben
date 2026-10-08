@@ -22,7 +22,7 @@ $res = $objDbConnect->query_fetch_arr($sql);
 if ($res){
 	// 倫理研修問題の進捗ステータス更新
 	foreach ($res as $val){
-		$sql = "UPDATE tbl_ethic_question_history SET status = '".mysql_escape_string($val['status'])."' WHERE student_id = '".mysql_escape_string($val['student_id'])."' AND product_id = '".mysql_escape_string($val['product_id'])."'";
+		$sql = "UPDATE tbl_ethic_question_history SET status = '".mysqli_real_escape_string($objDbConnect->connect, $val['status'])."' WHERE student_id = '".mysqli_real_escape_string($objDbConnect->connect, $val['student_id'])."' AND product_id = '".mysqli_real_escape_string($objDbConnect->connect, $val['product_id'])."'";
 		$objDbConnect->execute($sql);
 	}
 	

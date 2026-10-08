@@ -14,30 +14,30 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 $agent = $_SERVER['HTTP_USER_AGENT']; 
 
 $isPad = false;
-if(ereg("iPad", $agent)){//iPad
+if(preg_match("/iPad/", $agent)){//iPad
 	$isPad = true;
 }
 $isApple = false;
-if(ereg("iPhone", $agent)){//iPhone
+if(preg_match("/iPhone/", $agent)){//iPhone
 	$isApple = true;
-} elseif(ereg("iPad", $agent)){//iPhone
+} elseif(preg_match("/iPad/", $agent)){//iPhone
 	$isApple = true;
-} elseif(ereg("iPod", $agent)){//iPhone
+} elseif(preg_match("/iPod/", $agent)){//iPhone
 	$isApple = true;
 }
 $isAndroid = false;
-if(ereg("Android", $agent)){//Android
+if(preg_match("/Android/", $agent)){//Android
 	$isAndroid = true;
 }
 $isAndroidTablet = false;
-if(ereg("Android", $agent)){
-	if(ereg("Mobile", $agent) && ereg("SC-01C", $agent)){
+if(preg_match("/Android/", $agent)){
+	if(preg_match("/Mobile/", $agent) && preg_match("/SC-01C/", $agent)){
 		$isAndroidTablet = true;
-	}elseif(ereg("mobile", $agent)){
+	}elseif(preg_match("/mobile/", $agent)){
 		$isAndroidTablet = false;
-	} elseif(ereg("Mobile", $agent)){
+	} elseif(preg_match("/Mobile/", $agent)){
 		$isAndroidTablet = false;
-	} elseif(ereg("Tablet", $agent)){
+	} elseif(preg_match("/Tablet/", $agent)){
 		$isAndroidTablet = true;
 	} else {
 		$isAndroidTablet = true;
