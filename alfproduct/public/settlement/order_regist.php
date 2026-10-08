@@ -27,6 +27,12 @@ $order_id = 0;
 $temp_date = $_POST["temp_date"];
 $temp_no   = $_POST["temp_no"];
 $payment_type = $_POST["payment_type"];
+// 注文番号の元になる日付・連番は、数字だけ受け付ける(SQLに直接組み込むため)
+if(!is_string($temp_date) || !preg_match('/^[0-9]{1,16}$/', $temp_date) || !is_string($temp_no) || !preg_match('/^[0-9]{1,16}$/', $temp_no)){
+	$template->layout_noside('settlement/err.tpl');
+	$objDbConnect->close();
+	exit;
+}
 
 
 

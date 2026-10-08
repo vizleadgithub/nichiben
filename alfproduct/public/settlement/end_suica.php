@@ -9,7 +9,7 @@ $sql = "select * from tbl_order where order_id='".$order_id."'";
 $ret = $objDbConnect->query($sql);
 $arrTemp = $objDbConnect->fetch($ret);
 if( !$arrTemp ) {
-	print("order err.1");
+	//print("order err.1");
 	exit();
 } else {
 	$arr = unserialize($arrTemp["exec_return"], ['allowed_classes' => false]);

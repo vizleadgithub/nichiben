@@ -127,7 +127,8 @@ if( $err_msg=="" ){
 				append_error_message($err_msg, $i.'行目：入金日が記載されていません。');
 			} else {
 				$arr_date = explode("|", str_replace(":", "|", str_replace(" ", "|", str_replace("-", "|", str_replace("/", "|", trim($data[3]))))) );
-				if( checkdate($arr_date[1], $arr_date[2], $arr_date[0]) ){
+				// 年・月・日が数字として分解できる場合だけ、日付の確認をする(数字以外では checkdate() が例外になるため)
+				if( count($arr_date)==3 && ctype_digit($arr_date[0]) && ctype_digit($arr_date[1]) && ctype_digit($arr_date[2]) && checkdate((int)$arr_date[1], (int)$arr_date[2], (int)$arr_date[0]) ){
 					$data["receipt_date"] = $arr_date[0]."-".$arr_date[1]."-".$arr_date[2]."";
 				} else {
 					append_error_message($err_msg, $i.'行目：入金日は「YYYY/MM/DD」の形式で記載してください。');
@@ -143,8 +144,8 @@ if( $err_msg=="" ){
 			$sql.= "tbl_order ";
 			$sql.= "LEFT JOIN student ON tbl_order.member_id=student.student_id ";
 			$sql.= "WHERE ";
-			$sql.= "tbl_order.order_no='".$data["order_no"]."' ";
-			$sql.= " OR lpad(tbl_order.order_no, 13, '0')='".$data["order_no"]."' ";
+			$sql.= "tbl_order.order_no='".mysqli_real_escape_string($objDbConnect->connect, (string)$data["order_no"])."' ";
+			$sql.= " OR lpad(tbl_order.order_no, 13, '0')='".mysqli_real_escape_string($objDbConnect->connect, (string)$data["order_no"])."' ";
 			$ret = $objDbConnect->query_fetch_arr($sql);
 			if( count($ret)>0 ){
 				$data["order_id"] = $ret[0]["order_id"];
@@ -167,10 +168,11 @@ if( $err_msg=="" ){
 			$sql.= "tbl_order_detail ";
 			$sql.= "LEFT JOIN tbl_product ON tbl_order_detail.product_id=tbl_product.product_id ";
 			$sql.= "WHERE ";
-			$sql.= "tbl_order_detail.order_id='".$data["order_id"]."' ";
+			$sql.= "tbl_order_detail.order_id='".mysqli_real_escape_string($objDbConnect->connect, (string)$data["order_id"])."' ";
 			$sql.= " AND ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) ";
-			$sql.= " AND tbl_order_detail.product_id='".$data[1]."' ";
-			$ret = $objDbConnect->query_fetch_arr($sql);
+			$sql.= " AND tbl_order_detail.product_id='".mysqli_real_escape_string($objDbConnect->connect, (string)$data[1])."' ";
+			// 商品IDが数字でない行は、エラーを記録済みのため、SQLを実行しない
+			$ret = (is_numeric($data[1]) ? $objDbConnect->query_fetch_arr($sql) : array());
 			if( count($ret)>0 ){
 				$data["order_detail_id"] = $ret[0]["order_detail_id"];
 				$data["product_name"] = $ret[0]["product_name"];
@@ -186,6 +188,9 @@ if( $err_msg=="" ){
 			$data["take_date"] = date("Y-m-d");
 			//========================================
 			$csv[] = $data;
+		} elseif( !(count($data)==1 && $data[0]===null) ){
+			// 列数が4でない行(空行は除く)は、取り込めないため、エラーとして表示する
+			append_error_message($err_msg, $i.'行目：列数が正しくありません。「注文No・商品ID・振込金額・入金日」の4列で記載してください。');
 		}
 		$i += 1;
 	}

@@ -33,7 +33,8 @@ $etc3 = "";
 
 $claim_flg = 0;
 if (isset($_POST["claim_flg"])){
-	$claim_flg = $_POST["claim_flg"];
+	// 請求書送付希望は 0・1 だけ受け付ける(それ以外は 0。SQLに直接組み込むため)
+	$claim_flg = (is_scalar($_POST["claim_flg"]) && (string)$_POST["claim_flg"] === '1') ? 1 : 0;
 }
 
 // カード有効期限セレクトボックス年

@@ -91,8 +91,13 @@ $order_payment_status_sql.= "ELSE '3' END)";
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $sql_update_student = '';
 
-if(in_array($mode, array("pay","nopay","cancel","nocancel"))){
+// mode が指定された場合は、値にかかわらず、必ず CSRF トークンを検証する(許可値以外でも、下の再計算処理が実行されるため)
+if($mode!=""){
 	csrf_token_verify();
+	// 許可値以外は、何も処理しない
+	if(!in_array($mode, array("pay","nopay","cancel","nocancel"))){
+		$mode = "";
+	}
 }
 
 if($mode=="pay"){
