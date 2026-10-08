@@ -57,3 +57,23 @@ if ( ! function_exists('csv_formula_safe'))
 		return $value;
 	}
 }
+
+//=======================================================================//
+// csv_formula_safe() で付けた先頭の ' を、CSV取り込み時に外す(出力したCSVをそのまま取り込めるようにする)
+// 先頭が ' で、2文字目が = + - @ タブ 改行 のものだけ外す。それ以外の ' は利用者が入力した文字なので変更しない。
+//=======================================================================//
+if ( ! function_exists('csv_formula_restore'))
+{
+	function csv_formula_restore($value)
+	{
+		if ( ! is_string($value))
+		{
+			return $value;
+		}
+		if (preg_match("/^'[=+\-@\t\r\n]/", $value))
+		{
+			return substr($value, 1);
+		}
+		return $value;
+	}
+}

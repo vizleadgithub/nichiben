@@ -322,6 +322,8 @@ class Cms_exam_problem_import extends CI_Controller {
 				if($arrayRecord === false){
 					break;
 				}
+				// 出力時に数式対策で付けた先頭の ' を外す
+				$arrayRecord = array_map('csv_formula_restore', $arrayRecord);
 				
 				$temp_import_result = array();  // 戻り値情報格納
 				$exam_problem       = array();  // テーブル登録情報格納
@@ -827,7 +829,7 @@ class Cms_exam_problem_import extends CI_Controller {
 		if( count($data['teacher_list']) != 0 ) {
 			$data['teachers'][''] = '';
 			foreach ( $data['teacher_list'] as $teacher ) {
-				$data['teachers'][$teacher['teacher_id']] = htmlspecialchars($teacher['teacher_name'], ENT_QUOTES, 'UTF-8');
+				$data['teachers'][$teacher['teacher_id']] = $teacher['teacher_name'];
 			}
 		}
 		

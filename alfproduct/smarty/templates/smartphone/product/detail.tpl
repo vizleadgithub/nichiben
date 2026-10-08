@@ -122,11 +122,6 @@ a.test_btn_none{
 </style>
 
 <!--{*$product_list|var_dump*}-->
-<!--
-[<!--{$product_list.contents_baisoku_flg1}-->]
-[<!--{$product_list.contents_baisoku_flg2}-->]
-[<!--{$product_list.contents_baisoku_flg3}-->]
--->
 <!--{$pankuzu}-->
 
 <!--{if $product_list.product_type_add == 1 && $buy_flg}-->

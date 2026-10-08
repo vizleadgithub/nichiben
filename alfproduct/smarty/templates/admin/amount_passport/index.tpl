@@ -101,7 +101,7 @@
 					<!--{$row.product_name_TP|escape}-->
 				<!--{/if}-->
 			</td>
-			<td><!--{$row.disp_passport_target|escape}--></td>
+			<td><!--{$row.disp_passport_target}--></td>
 			<td>
 				<!--{if $row.payment_status=="0"}-->未入金
 				<!--{elseif $row.payment_status=="1"}-->未入金

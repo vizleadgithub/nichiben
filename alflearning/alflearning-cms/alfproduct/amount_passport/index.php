@@ -308,7 +308,7 @@ if ($ret){
 		if ($arr_list[$key]['passport_target'] != ''){
 			$arr_pt = explode('|', trim($arr_list[$key]['passport_target'], '|'));
 			foreach ($arr_pt as $val1){
-				$disp_passport_target.= $arr_passport_target[$val1] . '<br />';
+				$disp_passport_target.= htmlspecialchars((string)$arr_passport_target[$val1], ENT_QUOTES, 'UTF-8') . '<br />';
 			}
 			$disp_passport_target = preg_replace('#<br />$#', '', $disp_passport_target);
 		}
