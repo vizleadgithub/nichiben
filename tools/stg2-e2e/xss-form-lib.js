@@ -96,7 +96,10 @@ function fillBaseline(page, targetName, overrides = {}, includeTarget = false) {
 // 受講者・教材などを選ぶポップアップの「検索」ボタンが置かれていることがあり、先に見つかる方を押すと
 // ポップアップを開くだけで確認画面へ進めない（cms_cource 等で確認済み）
 const ALLOW_LABEL_PRIMARY = /確認|confirm/i;
-const ALLOW_LABEL_SECONDARY = /検索|search|preview|プレビュー|次へ|next/i;
+// btn_revise: 商品管理のinfo.php(詳細表示)の「修正」ボタン(文言は画像のみ。ファイル名btn_revise.pngで
+// 判定。onclick="formSubmit('form1','add.php','edit')")。add.php側のact='edit'処理は表示用のテンプレート
+// 変数を設定するだけでDB書き込みが無いことをソースで確認済み(2026-10-08発見。info.phpのS11テストに必要)
+const ALLOW_LABEL_SECONDARY = /検索|search|preview|プレビュー|次へ|next|btn_revise/i;
 const ALLOW_LABEL = new RegExp(`${ALLOW_LABEL_PRIMARY.source}|${ALLOW_LABEL_SECONDARY.source}`, 'i');
 const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|退会|ログアウト|logout|commit|regist|delete|remove|save|send|update|insert|upload|import|csv|complete/i;
 // onclick の引数（'complete'・'regist'・'delete' など）が書き込み系なら、確認系の文言があっても押さない
