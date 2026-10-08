@@ -1,4 +1,5 @@
-// 重点項目 E-10(講座確認の受講者一覧)・E-12(売上の会員詳細)・E-13(売上の注文詳細)・E-60(領収書PDFへの氏名反映)の自動実行。
+// 重点項目 E-10(講座確認の受講者一覧)・E-12(売上の会員詳細)・E-13(売上の注文詳細)・E-14(受講者検索ポップアップ)・
+// E-49(商品検索スマホ版のカテゴリ名。全量一覧No.49の退行確認)・E-60(領収書PDFへの氏名反映)の自動実行。
 //
 // これらは「実在の受講者・注文データが無いと表示を確認できない」として長らく未自動化だったが、2026-10-07の調査で
 // 次の方法により CMS 側の事前セットアップ無しで自動生成できることが分かった。
@@ -30,7 +31,7 @@
 // 見つからなかったもの(2026-10-07 調査。別途要対応。test-plan/data-entries.json 参照):
 //   - E-20(課題確認の提出ファイル名): 受講者側の課題提出画面がソースに存在しない(機能自体の実装状況を要確認)
 //
-// 使い方: node run-xss-data-linked.js [--only E-10,E-12,E-13,E-60] [--accept-writes]
+// 使い方: node run-xss-data-linked.js [--only E-10,E-12,E-13,E-14,E-49,E-60] [--accept-writes]
 const fs = require('fs');
 const path = require('path');
 const { fill } = require('./xss-payloads');
@@ -339,12 +340,60 @@ async function checkE14(rec) {
   }
 }
 
+// 商品管理でカテゴリ(cms_category)を新規登録する(wp_terms/wp_term_taxonomyへ直接書き込まれる。S12-catと同じ仕組み)
+async function registerMarkerCategory(cms) {
+  const url = '/cms_category/newdata';
+  const first = await cms.goto(url);
+  if (first.status === 'ERROR' || first.status === 'SSO' || first.status >= 400) return { error: `画面が開けない: HTTP ${first.status}` };
+  const found = (await fieldForms(cms.page, ['name']))[0];
+  if (!found || !found.found) return { error: `${url} に name 欄がない(画面構成が変わった可能性)` };
+  await fillBaseline(cms.page, 'name', overridesFor(url), true);
+  await setFields(cms.page, [{ name: 'name', value: NAME_PAYLOAD }]);
+  const confirmRes = await submitGuarded(cms);
+  if (confirmRes.refused) return { error: `確認画面へ進めない: ${confirmRes.refused}` };
+  const completeRes = await submitComplete(cms);
+  if (completeRes.refused) return { error: `登録を完了できない: ${completeRes.refused}` };
+  console.log(`カテゴリを登録しました: ${NAME_PAYLOAD} -> ${completeRes.finalUrl}`);
+  return { ok: true };
+}
+
+// E-49: 登録したカテゴリ名が、受講者サイトの商品検索(スマホ版)の画面内スクリプト(arr_cat_name)に
+// エスケープされて出るかを見る(全量一覧No.49/コミットae445150の退行確認)。カテゴリは/search/index.phpの
+// SQLに絞り込み条件が無く全件が無条件で一覧に出る仕組みのため、検索操作は不要
+const MOBILE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
+async function checkE49(rec) {
+  const id = 'E-49';
+  if (!want(id)) return;
+  if (!acceptWrites) { rec.add({ id, verdict: '対象外', note: 'カテゴリ登録(書き込み)を伴う。--accept-writes を付けて実行してください' }); return; }
+  const cms = await new Session('cms').open();
+  const sp = await new Session('student', { contextOptions: { userAgent: MOBILE_UA } }).open();
+  try {
+    const reg = await registerMarkerCategory(cms);
+    if (reg.error) { rec.add({ id, verdict: '要確認', note: reg.error }); return; }
+    const res = await sp.goto('/search/index.php');
+    if (res.status === 'ERROR' || res.status === 'SSO' || res.status >= 400) { rec.add({ id, verdict: '要確認', note: `画面が開けない(スマホ版UA): HTTP ${res.status}` }); return; }
+    const findings = [];
+    const at = res.html.indexOf(SIG);
+    if (at >= 0) findings.push({ kind: '未エスケープで出現(画面内スクリプト)', where: classify(res.html, at), text: SIG, ng: true });
+    else if (res.html.includes(MARKER)) findings.push({ kind: '文字として表示(エスケープ済み)', text: MARKER });
+    else findings.push({ kind: 'カテゴリ一覧にマーカーが見当たらない(一覧の生成条件が変わった可能性)', text: '' });
+    const dom = await domInjection(sp.page, [MARKER]);
+    for (const d of dom) findings.push({ kind: 'DOM上のイベント属性/JSリンク', text: `<${d.tag} ${d.attr}="${d.value}">`, ng: true });
+    rec.add({ id, verdict: findings.some((f) => f.ng) ? 'NG' : findings[0].kind.includes('見当たらない') ? '要確認' : 'OK', label: '/search/index.php(スマホ版UA)', status: res.status, findings });
+    console.log(`E-49 search/index.php(スマホ版) ${findings.map((f) => f.kind).join(',')}`);
+  } finally {
+    await cms.close();
+    await sp.close();
+  }
+}
+
 (async () => {
   const rec = new Recorder('data-linked');
-  console.log(`E-10・E-12・E-13・E-14・E-60 / --accept-writes=${acceptWrites}`);
+  console.log(`E-10・E-12・E-13・E-14・E-49・E-60 / --accept-writes=${acceptWrites}`);
   await checkE1213(rec);
   await checkE10(rec);
   await checkE14(rec);
+  await checkE49(rec);
   await checkE60(rec);
   const out = rec.save({ acceptWrites });
   const ids = [...new Set(rec.entries.map((e) => e.id))];

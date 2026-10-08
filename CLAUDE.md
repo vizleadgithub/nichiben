@@ -575,7 +575,7 @@ node run-xss-search.js cms                           # 段階A: S8 検索条件�
 node run-xss-form.js --site cms --plan-only          # 段階A: 登録系(S1〜S7・S9・S10・S11、入力→確認画面まで)。まず --plan-only で対象・対象外を確認してから実行
 node run-xss-http.js                                 # 段階A: 入口以外・HTTP(F-01〜F-09)と重点項目 E-08・E-19・E-47・E-50・E-51・E-52・E-54・E-56・E-57・E-58（--only F-03 等で絞り込み。--probe-php は下記）
 node run-xss-student-exam.js --accept-writes         # 段階B: 受講者サイトの試験・アンケート（下記）
-node run-xss-data-linked.js --accept-writes          # 段階B: 重点項目 E-10・E-12・E-13・E-14・E-60（実データ紐付けが必要だった項目。下記）
+node run-xss-data-linked.js --accept-writes          # 段階B: 重点項目 E-10・E-12・E-13・E-14・E-49・E-60（実データ紐付けが必要だった項目。下記）
 node report-xss.js                                   # 最新の結果を計画のID単位に集計し、test-results/xss-report-*.csv を出力
 ```
 
@@ -600,7 +600,7 @@ CMS・商品管理・会員登録の「確認」画面と異なり、試験・�
 - 書き込みを行った場合は、実行後に stg2 の DB をダンプから復元する（人が実施）。
 - **計画(xlsx)側の要確認事項**: `/exam2/index1.php`・`confirm1.php`・`confirm2.php`・`answer_check1.php`・`resubmit_index1/2.php`・`result1/2.php`・`resubmit_exec_result1.php` はリポジトリに実体がない（exam2 は `index.php`→`answer_check.php` の1系統のみで、exam(非2)の番号付きファイル構成を誤って複製したとみられる）。`/exam/resubmit_exec_result1.php` も同様に実体がない（`/exam/confirm1.php`・`confirm2.php` 自体は実在し、それぞれ下書き回答の確認画面として使われている）。
 
-##### 段階B: 重点項目 E-10・E-12・E-13・E-14・E-60（実データ紐付けが必要だった項目。`run-xss-data-linked.js`）
+##### 段階B: 重点項目 E-10・E-12・E-13・E-14・E-49・E-60（実データ紐付けが必要だった項目。`run-xss-data-linked.js`）
 
 E-10(講座確認の受講者一覧)・E-12(売上の会員詳細)・E-13(売上の注文詳細)・E-14(受講者検索ポップアップ)・E-60(領収書PDFへの氏名反映)は、実在の受講者・注文データが無いと表示を確認できないとされていたが、2026-10-07 の調査で CMS 側の事前セットアップ無しに次の方法で自動生成できることが分かった。
 
@@ -611,12 +611,15 @@ E-10(講座確認の受講者一覧)・E-12(売上の会員詳細)・E-13(売上
 - E-60(領収書): **テスト専用の無料商品を、攻撃文字列入りの商品名で自前に登録**し、受講者が開くと0円注文が作られる。`amount_order/info.php` の管理機能（`mode=pay`。実際のGMO決済を経由せず入金済みに変更できる）で `receipt_download.php` の条件（`payment_status=2`）を満たし、領収書PDFを取得して商品名のエスケープを確認する（受講者本人の氏名は [B-0] により変更できないため、商品名で確認する）。PDF内のテキスト検出はベストエフォート（圧縮されていると検出できないことがある）。
 - 必要な設定は `test-plan/data-entries.json` の `free_product_pid`（無料のeラーニング商品のID）だけ（E-12/E-13 用。E-60 は商品を自前で登録するため不要）。未設定なら E-12/E-13 は対象外として記録される。
 - 書き込みを伴うため（E-10 も受講者登録は必要）、いずれも `--accept-writes` が必須（段階B）。実行前に stg2 の DB をダンプすること。
+- E-49(全量一覧No.49の退行確認。商品検索スマホ版のカテゴリ名): `cms_category/newdata` でテスト専用のカテゴリ(攻撃文字列入りの名前)を登録するだけで確認できる(`cms_category` は `wp_terms`/`wp_term_taxonomy` に直接書き込むため、`S12-cat` の実行有無に関わらず単体で成立する)。スマホ版UAで `/search/index.php` を開き、画面内スクリプト(`arr_cat_name`)のエスケープを確認する（カテゴリ一覧の生成に絞り込み条件が無いため検索操作は不要）。2026-10-08 実装済み。
 
 **見つからなかったもの**（2026-10-07 調査。`test-plan/data-entries.json` にも記載）:
 - **E-20**（課題確認の提出ファイル名）: 受講者側の課題提出画面が `alfproduct/public` ソース内に見当たらない（アイコン画像のみ残存）。自動化以前に、機能自体が実装されているか要確認。
 - **E-60 のうち受講証**（`ticket_download.php`）: `product_type_add=2`(会場研修)が必須で、無料eラーニング商品の自動0円注文の仕組み（`product_type_add==1` 限定）では条件を満たせない。実際に無料枠のある会場研修商品が無ければ自動化できない。
 
 **2026-10-07 の調査で副次的に発見した脆弱性**: E-52(CSV出力)・E-58(API到達性)の調査中に、ログイン確認(`session_check`)が無く未認証でアクセスできるエンドポイントを2件発見（`report_product/csv_file.php`・`csv_file_utf.php`、および alflearning-api の `Csv_download`。後者は氏名・メールアドレスを含む受講者一覧CSVを出力する）。`secure_report/stg2自動テストで発見した不具合_2026-10-07.md` の [B-8]・[B-9] を参照。
+
+**2026-10-08 の調査で副次的に発見した問題**: E-04(アンケート回答一覧)の調査中に、`Cms_exam2_review::exam2_set_list()` が `$product_id`・`$exam2_id` を未定義変数のまま使っており常にPHP8のTypeErrorでクラッシュするバグを発見（[B-11]。XSSとは別系統）。E-59(Ajaxエンドポイント)の調査中に、`player/bookmark.php`・`insert_report_user_video_viewed.php`・`bookmark_delete.php` にログイン確認が無く、任意の`student_id`を指定して他人の視聴履歴・受講完了フラグを改ざんできる認可不備を発見（[B-12]）。
 
 ##### 段階B: S12（表示専用の値）・F-10（入力→全画面の自動追跡）（`run-xss-s12.js`）
 
@@ -636,8 +639,9 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
 - 巡回は `<a href>` を辿るだけのため、検索ポップアップ（`window.open`・`onclick` で開く画面。E-11・E-14・E-19 等の表示先）のように通常の巡回では到達しない画面は、`run-xss-s12.js` の `EXTRA_SEEDS` に明示的な開始点として追加している。
 - **まだ実行していない（コードのみ）。** `test-plan/s12-entries.json` に追加すればさらに対象を広げられる。
 
-- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または手動が必要）: E-20(受講者側の課題提出画面がソースに無い。機能の実装状況を要確認)、E-60のうち受講証(`ticket_download.php`。会場研修商品が必要)、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（アンケート回答一覧・Ajax詳細。実在の回答データとIDの特定が要る。計画のURL `/cms_exam2/answer_set_list` は実際には `/cms_exam2_review/exam2_set_list` で、コントローラ側で `$product_id`・`$exam2_id` が入力から設定されていない疑いがあり要確認。未調査）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
-  - E-10・E-12・E-13・E-14・E-60(領収書)は、実データ無しで自動生成する方法が見つかり `run-xss-data-linked.js` に実装済み（上記参照）。
+- **まだ自動化していないもの**（書き込み・メール・決済を伴う、または別の機能バグ・認可不備によりXSS確認の対象にならない、もしくは手動が必要）: E-20(受講者側の課題提出画面がソースに無い。機能の実装状況を要確認)、E-60のうち受講証(`ticket_download.php`。会場研修商品が必要)、E-02/E-05（購入・決済画面。開くだけで注文が作られうる）、E-04（アンケート回答一覧。実体は `/cms_exam2_review/exam2_set_list` で、2026-10-08 調査の結果 `$product_id`・`$exam2_id` が未定義変数のまま使われており常にPHP8のTypeErrorでクラッシュする別のバグ（[B-11]）を確認。このバグの修正後でないとXSS確認に意味が無いため未自動化のまま）、E-59（Ajaxエンドポイント。2026-10-08調査の結果、応答が固定文字列`"0"`のみで反射経路自体が無いためXSS観点では対象外と判断。ただし調査の過程で、ログイン確認が無く任意の`student_id`で他人の視聴履歴・受講完了フラグを改ざんできる認可不備（[B-12]）を発見）、F-01 のうち受講者側（SSO経由のためログインを自動化しない）、入口別の表示先（G-01〜G-12。一部は s12-entries.json の G-05 相当でカバー）。実施する場合は、先に DB のダンプ（人が取得）が必要。
+  - E-10・E-12・E-13・E-14・E-49・E-60(領収書)は、実データ無しで自動生成する方法が見つかり `run-xss-data-linked.js` に実装済み（上記参照）。
+  - E-48・E-55（`alfproduct/admin/`。テスト関連の旧管理画面）は、2026-10-07 のコミット `88d2d63` でディレクトリごと削除されたため、`run-xss-http.js` の `checkE08` に「削除後もURLが到達できないこと」を確認するチェックを追加して対応済み（2026-10-08）。
   - E-01・E-07 は新規コード不要（E-01 は `check-debug-output.js` の既存の巡回・検出観点と同一。E-07 は cms_video の確認画面が通常の CMS 登録系テスト(S1〜S7。P06 を含む)の対象に既に含まれる）。
   - E-03（受講者レポート）・E-09（WordPressスマホ版。モバイルUA）・E-45（JSON応答のContent-Type）・F-09（セッションID再生成）・F-01のCMS側（ログイン後の戻り先）は `run-xss-http.js` に追加済み。F-04 の Host ヘッダー本体も、SNI・証明書は正規のまま Host ヘッダーの値だけ差し替える方法で追加済み（`run-xss-http.js`）。
   - S9（ファイルのアップロード）・S10（パスワード）は `run-xss-form.js` に追加済み（上記参照）。
@@ -652,7 +656,9 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
     - E-57(CMSエラー画面。ユーザー入力が画面に出力されないことをソースで確認済みのため、**実アクセスはせず**静的確認の結果をOKとして記録)
     - E-58(alflearning-api。Csv_downloadは[B-9]のため対象外、Login・Top・Sso_update_profileのみ確認。`STG2_API_URL`の設定が必要)
     - E-08(旧ファイル・開発用ファイル)は `backup/` ディレクトリ・`*_review.php` をパターンに追加。S6・S7・S8・S11 の攻撃文字列セットに P02・P03・P05・P06・P12 相当を追加（`xss-payloads.js`）。
-    - 現状プラン行のみ(未実装): E-48・E-49(全量一覧No.48/49の退行確認。対象画面が未特定)・E-53(決済。方針により手動)・E-55(`alfproduct/admin/`。vhost設定上のURL割り当てが不明)・E-59(Ajaxエンドポイント。bookmark等は書き込みを伴うため要検討)・E-04(アンケート回答一覧。未調査)・E-60のうち受講証(会場研修商品が必要)。
+    - E-55(`alfproduct/admin/`)・E-48(全量一覧No.48の退行確認): `alfproduct/admin/`(testlogin含む)が `88d2d63`(2026-10-07)でリポジトリから全削除されたため、`checkE08` に削除後の到達不能確認を追加して2026-10-08に実装済み（上記参照）。
+    - E-49(全量一覧No.49の退行確認)は `run-xss-data-linked.js` に実装済み（上記参照）。
+    - 現状プラン行のみ(未実装・別の問題によりブロック中): E-53(決済。方針により手動)・E-59(Ajaxエンドポイント。調査の結果XSS観点では対象外。[B-12]参照)・E-04(アンケート回答一覧。別の機能バグ[B-11]によりブロック中)・E-60のうち受講証(会場研修商品が必要)。
   - **F-01 の調査中に、CMS ログインの戻り先（backurl）にオープンリダイレクトの脆弱性を発見**（`Login_page.php::_is_valid_backurl()` が `//evil.example/` のようなプロトコル相対URLを誤って許可する）。詳細は `secure_report/stg2自動テストで発見した不具合_2026-10-07.md` の [B-7] を参照。
 
 ## アーキテクチャ
@@ -664,7 +670,6 @@ nichiben/
 ├── alfproduct/
 │   ├── module/          # フロントエンド全体で共有する PHP ライブラリ群
 │   │   ├── functions.php          # コアの手続き型関数（約 3200 行）
-│   │   ├── functions_mst.php      # マスターデータ系ヘルパー関数（約 3100 行）
 │   │   ├── functions_wp.php       # WP 由来のレガシー関数（現在 WP自体 は未使用）
 │   │   ├── DbConnect.php          # PDO データベースラッパー
 │   │   ├── AlfSession.php         # セッション管理
@@ -704,7 +709,7 @@ nichiben/
 
 ### コーディング規約
 
-- **alfproduct に MVC なし** — ページは共有関数（`module/`）を include するフラット PHP ファイルです。ビジネスロジックは `functions.php` / `functions_mst.php` に集約されています。
+- **alfproduct に MVC なし** — ページは共有関数（`module/`）を include するフラット PHP ファイルです。ビジネスロジックは `functions.php` に集約されています（`functions_mst.php` は重複していた未使用コードのため `a494b16` で削除済み）。
 - **alflearning-cms は CI3 規約に従います** — コントローラーは `CI_Controller`、モデルは `CI_Model` を継承し、`application/config/autoload.php` で自動ロードします。
 - **データベース** — alfproduct では PDO（`DbConnect.php`）、CMS では CI の `$this->db` を使用します。PHP 8.3 + mysqli/pdo_mysql 拡張を使用。
 - **PDF 生成** — mPDF・FPDI・FPDF・TCPDF の 4 ライブラリが共存しています。編集対象ファイルの既存パターンに合わせて選択してください。

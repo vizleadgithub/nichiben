@@ -500,8 +500,12 @@ async function checkE08() {
   const id = 'E-08';
   // レビュー(2026-10-07) 2.1: backup/ ディレクトリ(exam/backup・exam2/backup 等)と *_review.php(exam2の review 系)が
   // 既存パターンに入っておらず、検出から漏れていた。
-  // alfproduct/admin/(testlogin 含む) は public/ の外側(兄弟ディレクトリ)で、現状の vhost 設定(CLAUDE.md 記載分)には
-  // 対応する Alias が見当たらず、実際のURL割り当てが不明なため、ここでは対象に追加しない(E-55 としてplan側にのみ記録。要確認)
+  // alfproduct/admin/(testlogin 含む)は当初、現状の vhost 設定(CLAUDE.md 記載分)には対応する Alias が見当たらず
+  // 実際のURL割り当てが不明なため対象に追加していなかった(E-55)。2026-10-07、コミット 88d2d63 で
+  // alfproduct/admin/ ディレクトリ自体がリポジトリから全削除されたため、「URLが割り当てられているなら到達できない
+  // こと」を確認する形で E-55 として下に追加する(全量一覧 No.48「管理画面 テスト関連の3画面」の対象とみられる
+  // alfproduct/admin/testlogin/ 配下もこれに含まれるため、E-48 の退行確認を兼ねる。ソースが存在しない削除済み
+  // ディレクトリへの GET のみで、副作用は無い)
   const DEV = /(_dev|_test|_mst|_old|_bak|_bk|_copy|_review|\d{8})(\.|\/|$)|^\/(test|info|phpinfo)\.php$|(^|\/)test\d*\.php$|(^|\/)backup\//i;
   const STATIC_LEFTOVER = /\.(bak|old|orig|save|swp|tmp|txt|sql|log|inc|zip|gz|tar|ppt|pptx|xls|xlsx|doc|docx)$|~$|\.bak\./i;
   const roots = {
@@ -539,6 +543,20 @@ async function checkE08() {
       `${site}: 開発用らしき PHP ${phpDev.length} 件${probePhp ? ` → 404/403 以外 ${reachPhp.length} 件` : '（--probe-php 未指定のためアクセスしていない。開くと実行されるため、内容を確認してから実施）'}`,
       { site, phpDev, reachPhp });
   }
+
+  // E-55・E-48: alfproduct/admin/(testlogin 含む)は 88d2d63 でリポジトリから全削除済み。削除後も
+  // URL が(Alias・コピー配置等により)到達できてしまわないかを、商品管理(受講者サイトと同じドメイン)側で確認する
+  const adminPaths = ['/admin/', '/admin/testlogin/', '/admin/testlogin/index.php', '/admin/amount_user/index.php', '/admin/product/add.php'];
+  const sStudent = await sess(studentKey());
+  const adminReach = [];
+  for (const u of adminPaths) {
+    const r = await rawGet(sStudent, u);
+    if (!r.bounced && r.status === 200 && r.body.length && !/<title>(404|Not Found)/i.test(r.body)) adminReach.push({ url: u, status: r.status, bytes: r.body.length });
+    await sleep(sStudent);
+  }
+  const adminNote = `alfproduct/admin/(testlogin含む)は88d2d63で削除済み。削除後にURLが到達できないことを${adminPaths.length}件確認 → 到達できるもの ${adminReach.length} 件`;
+  add('E-55', adminReach.length ? 'NG' : 'OK', adminNote, { adminReach });
+  add('E-48', adminReach.length ? 'NG' : 'OK', `管理画面テスト関連の3画面(全量一覧No.48)はalfproduct/admin/testlogin配下とみられる。ディレクトリごと削除済みのため、E-55の確認で代替(対象の3画面を個別に特定はできていない)`, { adminReach });
 }
 
 // E-51 CMSのバッチコントローラ(Bat_*・Once_bat_*)が、ブラウザから実行できてしまわないかの確認。
