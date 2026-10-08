@@ -139,9 +139,11 @@ async function submitGuarded(session, { allowFormSubmit = true } = {}) {
   const form = page.locator('form[data-xss-form]').first();
   const action = (await form.getAttribute('action').catch(() => '')) || '';
   const actionPath = new URL(action || page.url(), page.url()).pathname + new URL(action || page.url(), page.url()).search;
-  if (DENY_ACTION.test(actionPath) && !CONFIRM_ACTION.test(actionPath)) {
-    return { refused: `フォームの送信先が書き込み系の可能性があるため送信しない: ${actionPath.slice(0, 80)}` };
-  }
+  // まずボタン単位の判定(文言・onclick引数を見る pickButton/ok)を行い、安全なボタンが見つからない場合に限って
+  // フォームの送信先URLを見る。自己postingフォーム(member/regist.php・product/add.php等。隠しact欄で
+  // 確認/登録を切り替える設計)は、送信先URLが"regist"等の書き込み系の語を含むことがあり、URLだけで先に
+  // 判定すると、実際には安全な「確認」ボタンがあってもその中身を見る前に拒否してしまっていた(2026-10-08発見。
+  // member/regist.phpのregisterMarkerStudent()が常に失敗していた原因)。
   // まずフォームの中、なければページ全体（商品管理は確認ボタンがフォームの外の <a onclick="formSubmit(…,'confirm')"> のことがある）
   let { cand, info, idx } = await pickButton(form);
   if (idx < 0) {
@@ -150,9 +152,23 @@ async function submitGuarded(session, { allowFormSubmit = true } = {}) {
     ({ cand, info, idx } = await pickButton(page.locator('body')));
     if (idx >= 0 && !(formId && info[idx].o.includes(formId))) idx = -1;
   }
-  const byAction = CONFIRM_ACTION.test(actionPath);
-  if (idx < 0 && !(byAction && allowFormSubmit)) {
-    return { refused: `確認・検索ボタンを特定できない（書き込みの可能性があるため送信しない）。ボタン: ${info.map((c) => c.t.slice(0, 20)).join(' | ').slice(0, 100)}` };
+  if (idx < 0) {
+    // 一覧画面の並び替え・ページング等、ボタンではなく<select>のonchange(外部JS)で自動送信される
+    // GET送信のフォームは、HTTPの意味上書き込みを伴わないため、ボタンが見つからなくてもそのまま送信してよい
+    // (2026-10-08発見。product/list_limit.php等、多くの一覧画面がこのパターンで停止していた)
+    const method = await form.evaluate((f) => f.method).catch(() => '');
+    if (method === 'get') {
+      return session.action(() => form.evaluate((f) => f.requestSubmit()));
+    }
+    // 安全と判定できるボタンが見つからない場合のみ、フォームの送信先URLを見る。書き込み系の語を含み、
+    // かつ確認系の語(confirm等)を含まないなら、そのまま送信するのは危険なので拒否する
+    if (DENY_ACTION.test(actionPath) && !CONFIRM_ACTION.test(actionPath)) {
+      return { refused: `フォームの送信先が書き込み系の可能性があるため送信しない: ${actionPath.slice(0, 80)}` };
+    }
+    const byAction = CONFIRM_ACTION.test(actionPath);
+    if (!(byAction && allowFormSubmit)) {
+      return { refused: `確認・検索ボタンを特定できない（書き込みの可能性があるため送信しない）。ボタン: ${info.map((c) => c.t.slice(0, 20)).join(' | ').slice(0, 100)}` };
+    }
   }
   return session.action(async () => {
     if (idx >= 0) await cand.nth(idx).click({ timeout: 3000 }).catch(() => form.evaluate((f) => f.requestSubmit()));
