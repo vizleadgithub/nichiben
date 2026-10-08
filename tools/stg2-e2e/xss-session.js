@@ -40,7 +40,37 @@ class Session {
     this.page = await this.context.newPage();
     this.page.on('dialog', (d) => { this.dialogs.push(d.message()); d.dismiss().catch(() => {}); });
     this.page.on('pageerror', (e) => this.jsErrors.push(String(e.message).slice(0, 200)));
+    // CSVダウンロード等(cms_exam2_download/export 等。確認画面ではなくファイル応答を返す画面)で、
+    // ダウンロードを放置するとページが不安定になりその後のlocator.evaluateが30秒タイムアウトすることが
+    // あったため、即キャンセルする(2026-10-08発見。ダウンロード自体の内容確認はこの仕組みでは行わない)
+    this.page.on('download', (d) => d.cancel().catch(() => {}));
     return this;
+  }
+
+  // ページ(タブ)がクラッシュした後に復旧する(特定の攻撃文字列がレンダラーをクラッシュさせるケースがあるため。
+  // その1件だけ要確認にして続行するための復旧用)。タブ単位の復旧(同じcontextでnewPage)では、ブラウザ自体が
+  // 不安定になっていて次のナビゲーションで再度落ちることが分かった(2026-10-08発見。cms_book_library の
+  // book_library_logic_name で確認)ため、毎回ブラウザごと起動し直す(ログイン状態は直前の
+  // storageStateファイルから復元。失効していてもgoto()側の自動再ログイン(recover())で復旧する)
+  async recreatePage() {
+    // クラッシュ後のブラウザは close() 自体が応答せず固まることがあるため、短いタイムアウトで諦めて
+    // プロセスを強制終了する(2026-10-08発見。相次ぐクラッシュで復旧そのものが止まっていた)
+    const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
+    await withTimeout(this.context.close(), 5000).catch(() => {});
+    await withTimeout(this.browser.close(), 5000).catch(() => {
+      try { this.browser.process() && this.browser.process().kill('SIGKILL'); } catch {}
+    });
+    this.browser = await chromium.launch();
+    this.context = await newContext(this.browser, this.anonymous ? null : this.site, this.statePath, this.contextOptions);
+    await this.context.route('**/*', (route) => {
+      const u = route.request().url();
+      if (SSO_HOSTS.test(new URL(u).hostname)) { this.blocked = u; return route.abort(); }
+      return route.continue();
+    });
+    this.page = await this.context.newPage();
+    this.page.on('dialog', (d) => { this.dialogs.push(d.message()); d.dismiss().catch(() => {}); });
+    this.page.on('pageerror', (e) => this.jsErrors.push(String(e.message).slice(0, 200)));
+    this.page.on('download', (d) => d.cancel().catch(() => {}));
   }
 
   reset() { this.dialogs = []; this.jsErrors = []; this.blocked = null; }

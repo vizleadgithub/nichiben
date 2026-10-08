@@ -1,10 +1,12 @@
 // テスト計画の登録系テストセット（S1〜S7・S11）の自動実行【段階A: 入力 → 確認画面まで】。観点1・2・6の一部。
 // 入力画面の各項目に、項目ごとの識別マーカー入りの攻撃文字列を入れて「確認」ボタンを押し、確認画面・検証エラー時の再表示を検査する。
 //
-// データベースへは書き込まない: CMS(CodeIgniter)の確認画面は、検証済みの値をセッションに保存するだけで、DB へ書き込むのは
+// 既定ではデータベースへ書き込まない: CMS(CodeIgniter)の確認画面は、検証済みの値をセッションに保存するだけで、DB へ書き込むのは
 //   登録(commit)の段階。このスクリプトは登録・更新・削除ボタンを押さない（xss-form-lib.js の submitGuarded で、ボタンのラベル・
 //   画像名・フォームの送信先から判定し、確認・検索系以外は送信しない）。
 //   登録した値が他の画面にどう表示されるか（S12・F-10）は段階B（書き込みあり。DBダンプが必要）で扱う。
+//   --accept-writes を付けると、newdata→confirmの中間段階が無く入力からそのまま登録される画面(cms_issue等)でも、
+//   登録・更新系のボタンを探して実際に押す(書き込みを伴う。決済・メール送信を伴う画面は対象外。DBダンプが必要)。
 //
 // 使い方: node run-xss-form.js [オプション]   (事前に node login.js cms と python test-plan/export-plan.py を実行)
 //   --sets S1,S3,S5   対象のテストセット（既定: S1,S2,S3,S4,S5,S6,S7,S9,S10,S11）
@@ -15,6 +17,8 @@
 //   --full            各攻撃文字列の全バリエーションを使う（既定は代表のみ）
 //   --isolated        実行中の別の自動テストと並行するとき、別のログイン状態で動かす
 //   --check-pages     攻撃文字列は送らず、通常の値で確認画面まで進めるかだけを調べる（form-defaults.json を整える下調べ用）
+//   --accept-writes   確認画面が無く直接登録される画面でも、登録ボタンを押して実際に書き込む(段階B相当)。
+//                     攻撃文字列ごとに実データが作られる(件数が多い)。実行前にstg2のDBをダンプし、確認後に復元すること
 //   --limit N         対象の行数を N 行に制限（動作確認用）
 //   --site cms|product|student   対象サイト（既定 cms）。product=商品管理(Smarty)、student=受講者サイト（要 node login.js student）。
 //                     product は確認ボタンが onclick の formSubmit(…,'confirm') で動く。確認の分岐は DB へ書き込まない（書き込みは 'complete'）
@@ -38,6 +42,9 @@ const full = args.includes('--full');
 const isolated = args.includes('--isolated');   // 別のログイン状態(.auth/cms-inspect.json)を使う。他の実行と並行するとき用
 const planOnly = args.includes('--plan-only');   // ブラウザを開かず、対象になる行・ならない行（理由つき）を一覧する。実行前の確認用
 const checkPages = args.includes('--check-pages');   // 攻撃文字列は送らず、通常の値で確認画面まで進めるかだけを画面ごとに調べる
+// newdata→confirmの中間段階が無く、入力からそのまま登録される画面(cms_issue等)向け。実際に登録(書き込み)まで行う(段階B)。
+// 決済・メール送信を伴う画面は対象外(settlementはSTUDENT_SKIPで除外済み。他は呼び出し側で個別に確認すること)
+const acceptWrites = args.includes('--accept-writes');
 const limit = opt('--limit') ? Number(opt('--limit')) : Infinity;
 // 対象サイト。cms: CMS(CodeIgniter)  product: 商品管理(Smarty。CMS と同じログイン)  student: 受講者サイト（--sheet product は旧指定）
 const PROFILES = {
@@ -71,6 +78,15 @@ const STUDENT_NOT_FOUND = new Map([
   [/^\/member\/regist_confirm\.php$/i, 'regist.php の確認画面(同一ファイル)。regist.php の実行で併せて確認される'],
 ]);
 const notFoundReason = (url) => { for (const [re, why] of STUDENT_NOT_FOUND) if (re.test(url)) return why; return null; };
+// ソースを読んで確認済みで、反射先(HTML・CSV等への出力)が無いと分かっている項目は対象外にする(実行してもエラーを
+// 検出できない上、この画面(cms_exam2_download/edit)はボタンを押すとCSVダウンロード応答を返す設計のため、
+// 既定値を整えても(フィルタ対象の講座を1件選んでも)サーバー側の処理が重く安定してタイムアウトする。
+// Model_exam2_export::get_exam2_problem_export_data() を確認し、product_name・product_code は
+// escape_like_str() 済みのSQLのLIKE条件としてのみ使われ(SQLi対策済み)、画面・CSVのどちらにも値そのものが
+// 出力されない(絞り込み条件としてのみ使う)ことを確認したため、XSSの反射経路が無いと判断した(2026-10-08)
+const NO_REFLECTION = new Map([
+  ['/cms_exam2_download/edit', new Set(['product_name', 'product_code'])],
+]);
 // 確認・登録画面そのもの（ファイル名で判定）。「regist」は、CMS 側の末尾なし(…/regist)や
 // info_user_regist.php・regist_confirm.php のような action 系だけに絞る。member/regist.php・product/add.php の
 // ように、1本のスクリプトが act=confirm/complete で分岐する入力画面自体は、ファイル名だけでは判定できないため
@@ -175,7 +191,7 @@ async function resolveTemplate(session, url) {
     byUrl.get(r.url).push(r);
   }
   const pages = [];
-  console.log(`${rows.length} 行 / ${byUrl.size} 画面 / セット ${[...sets].join(',')}`);
+  console.log(`${rows.length} 行 / ${byUrl.size} 画面 / セット ${[...sets].join(',')}${acceptWrites ? ' / --accept-writes(確認画面が無い画面は実際に登録します)' : ''}`);
 
   for (const [url, urlRows] of byUrl) {
    try {
@@ -260,7 +276,8 @@ async function resolveTemplate(session, url) {
       if (!r.fields.length) { rec.add({ id: r.id, verdict: '対象外', note: '項目名(name)が計画にない', url }); continue; }
       for (const f of r.fields) {
         const i = info.get(f);
-        if (!i || !i.found) rec.add({ id: r.id, field: f, verdict: '対象外', note: '画面に項目がない（コントローラで受け取る値など。入力欄の有無を要確認）', url });
+        if (NO_REFLECTION.get(url)?.has(f)) rec.add({ id: r.id, field: f, verdict: '対象外', note: 'ソース確認済み: SQLのLIKE条件としてのみ使われ(escape_like_str済み)、画面・CSVに値が出力されないため反射経路が無い(Model_exam2_export::get_exam2_problem_export_data)', url });
+        else if (!i || !i.found) rec.add({ id: r.id, field: f, verdict: '対象外', note: '画面に項目がない（コントローラで受け取る値など。入力欄の有無を要確認）', url });
         else if (i.form < 0) rec.add({ id: r.id, field: f, verdict: '対象外', note: 'フォームの外の項目', url });
         else targets.push({ row: r, field: f, type: i.type });
       }
@@ -276,7 +293,7 @@ async function resolveTemplate(session, url) {
     await fillBaseline(session.page, targets[0].field, overrides, true);   // 対象項目も通常の値で埋める
     await fillBenignFiles(session.page, overrides);   // file 型の必須欄があれば、無害なダミーファイルで埋める(S9)
     await setFields(session.page, [{ name: targets[0].field, value: null }]);   // 通常の値のまま（目印だけ付ける）
-    const base = await submitGuarded(session);
+    const base = await submitGuarded(session, { acceptWrites });
     if (base.refused) {
       for (const t of targets) rec.add({ id: t.row.id, field: t.field, verdict: '対象外', note: base.refused, url });
       pages.push({ url, baseline: '送信できない', note: base.refused });
@@ -296,6 +313,7 @@ async function resolveTemplate(session, url) {
     for (const t of targets) {
       const payloads = expand(t.row.set, { full });
       for (const p of payloads) {
+       try {
         await session.goto(pageUrl);
         await fillBaseline(session.page, t.field, overrides);
         await fillBenignFiles(session.page, overrides);   // 対象以外の file 欄。対象が file 型の場合は直後に攻撃文字列で上書きする
@@ -318,7 +336,7 @@ async function resolveTemplate(session, url) {
           set = await setFields(session.page, [{ name: t.field, value }]);
         }
         const injected = [{ id: t.row.id, marker: marker(t.row.id), field: t.field, payload: p, type: set[0].type }];
-        const res = await submitGuarded(session);
+        const res = await submitGuarded(session, { acceptWrites });
         if (res.refused) { rec.add({ id: t.row.id, field: t.field, verdict: '対象外', note: res.refused, url }); break; }
         const [raw] = await inspect(session, res, injected, baseDialogs);
         let findings = await resolveRoundtrip(session, res, raw);
@@ -336,6 +354,19 @@ async function resolveTemplate(session, url) {
         });
         if (findings.length) console.log(`${ng ? 'NG ' : '?? '} ${t.row.id} ${t.field} ${p.pid}.${p.idx} [${stage}] ${findings.map((f) => f.kind + (f.where ? `[${f.where}]` : '')).join(', ')}`);
         await session.page.waitForTimeout(WAIT_MS);
+       } catch (e) {
+        // この1件でレンダラーがクラッシュした、またはページが応答しなくなった(タイムアウト)可能性がある。
+        // ブラウザを起動し直して次の攻撃文字列へ進む(1件の失敗で画面全体のテストを失わないため。2026-10-08発見:
+        // cms_book_library で複数回再現したがペイロードを変えても別の箇所で再現したため、特定の攻撃文字列が
+        // 原因ではなくヘッドレスChromiumの偶発的な不安定さと判明。cms_exam2_download(CSV応答の画面。
+        // download イベントの未処理が原因だった。Session側で対応済み)でも別途発生していた)
+        const brief = e.message.split('\n')[0].slice(0, 150);
+        const recoverable = /crash|timeout.*exceeded/i.test(brief);
+        rec.add({ id: t.row.id, field: t.field, pid: p.pid, idx: p.idx, verdict: '要確認', note: `実行エラー${recoverable ? '(ブラウザの復旧後、次の項目へ進めた。偶発的な可能性があるため要確認)' : ''}: ${brief}`, url });
+        console.log(`${recoverable ? 'recover' : 'error'} ${t.row.id} ${t.field} ${p.pid}.${p.idx}: ${brief}`);
+        if (recoverable) await session.recreatePage();
+        else throw e;
+       }
       }
     }
     console.log(`done ${url}  (${targets.length} 項目)`);
@@ -348,7 +379,8 @@ async function resolveTemplate(session, url) {
     console.log(`error ${url}: ${brief}`);
    }
   }
-  await session.close();
+  // ブラウザがクラッシュした状態でも、ここまで記録した結果は失わずに保存する
+  await session.close().catch((e) => console.log(`session.close() エラー(無視): ${e.message.split('\n')[0]}`));
   const out = rec.save({ sets: [...sets], full, sheet, pages });
   const ids = [...new Set(rec.entries.map((e) => e.id))];
   const c = { NG: 0, '要確認': 0, OK: 0, '対象外': 0 };
@@ -359,5 +391,6 @@ async function resolveTemplate(session, url) {
     console.log(`確認画面まで進めなかった画面 ${stuck.length} / ${pages.length}:`);
     stuck.forEach((p) => console.log(`  ${p.url}  ${p.baseline}${(p.errors || []).length ? `\n      ${p.errors.join(' / ')}` : ''}`));
   }
+  if (acceptWrites) console.log('※--accept-writesにより、確認画面が無い画面では実際にデータを登録しました。確認後、stg2のDBをダンプから復元してください。');
   console.log(`結果: ${out}`);
 })().catch((e) => { console.error(e.message); process.exit(1); });

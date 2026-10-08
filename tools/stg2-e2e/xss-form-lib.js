@@ -133,8 +133,11 @@ async function pickButton(scope) {
   return { cand, info, idx };
 }
 
-// 目印のあるフォームを、確認・検索ボタンで送信する。送信できない（書き込みの可能性がある）場合は { refused } を返す
-async function submitGuarded(session, { allowFormSubmit = true } = {}) {
+// 目印のあるフォームを、確認・検索ボタンで送信する。送信できない（書き込みの可能性がある）場合は { refused } を返す。
+// acceptWrites: true の場合、安全な確認・検索ボタンが見つからなかったときに限り、登録・更新系のボタン
+// (COMPLETE_LABEL。cms_issue/newdata等、確認画面を経由せず直接登録される画面向け)を探して押す(実際に書き込む。
+// 段階B。決済・メール送信を伴う画面は呼び出し側で対象から除外すること)
+async function submitGuarded(session, { allowFormSubmit = true, acceptWrites = false } = {}) {
   const { page } = session;
   const form = page.locator('form[data-xss-form]').first();
   const action = (await form.getAttribute('action').catch(() => '')) || '';
@@ -159,6 +162,27 @@ async function submitGuarded(session, { allowFormSubmit = true } = {}) {
     const method = await form.evaluate((f) => f.method).catch(() => '');
     if (method === 'get') {
       return session.action(() => form.evaluate((f) => f.requestSubmit()));
+    }
+    // 書き込みを許容する場合(段階B)は、登録・更新系のボタン(COMPLETE_LABEL)を対象フォーム内から探して押す。
+    // newdata→confirmの中間段階が無く、入力からそのまま登録される画面(cms_issue/newdata等)向け
+    if (acceptWrites) {
+      const completeInfo = await evalInfo(form);
+      let completeIdx = completeInfo.findIndex((c) => COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o));
+      let completeCand = form.locator(BUTTONS);
+      if (completeIdx < 0) {
+        // 文言が無い画像ボタン(<input type=image src="btn_ok.png"> 等。alt/value/onclickが無く、
+        // ファイル名からも意味を判定できない)だけの画面向け。ここまでで確認・検索ボタン(pickButton)も
+        // COMPLETE_LABELも見つからなかった場合、フォーム内の「本物の送信コントロール」(submit/image。
+        // <a>やonclick付きimg等、押しても送信されない物は対象外)のうち、明らかな削除・キャンセル等
+        // (DENY_LABEL)ではないものを最後の手段として対象にする(cms_issue/newdata等。2026-10-08発見)
+        const generic = form.locator('input[type=submit], input[type=image], button[type=submit], button:not([type])');
+        const genericInfo = await evalInfo(generic);
+        const genericIdx = genericInfo.findIndex((c) => !DENY_LABEL.test(c.t) && !DENY_LABEL.test(c.o));
+        if (genericIdx >= 0) { completeCand = generic; completeIdx = genericIdx; }
+      }
+      if (completeIdx >= 0) {
+        return session.action(() => completeCand.nth(completeIdx).click({ timeout: 3000 }).catch(() => form.evaluate((f) => f.requestSubmit())));
+      }
     }
     // 安全と判定できるボタンが見つからない場合のみ、フォームの送信先URLを見る。書き込み系の語を含み、
     // かつ確認系の語(confirm等)を含まないなら、そのまま送信するのは危険なので拒否する

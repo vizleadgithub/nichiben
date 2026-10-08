@@ -13,6 +13,7 @@
   "/member/regist.php": { "kana1": "ヤマダ", "kana2": "タロウ", "password": "Xsstest1234", "password_conf": "Xsstest1234" },
   "/cms_exam_problem_import/edit": { "exam_problem_lectures[]": true, "local_file": "csv" },
   "/cms_exam2_problem_import/edit": { "exam2_problem_lectures[]": true, "local_file": "csv" },
+  "/cms_exam2_download/edit": { "exam2_problem_lectures_ex[]": "first" },
   "/alfproduct/mailmagazine/conf.php": { "submit_datetime": "2099/01/01 00:00" },
   "/alfproduct/product_ethics/add.php": { "arr_term_id[]": true, "+contents_contents1": "1", "+contents_free_time1": "0" },
   "/alfproduct/product/add.php": { "arr_term_id[]": true, "+contents_contents1": "1", "+contents_free_time1": "0" },
