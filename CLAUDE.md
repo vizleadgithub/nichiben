@@ -704,6 +704,22 @@ node run-xss-s12.js                     # 登録→巡回を通しで実行（�
 
 **副産物の発見**: 受講者側の問い合わせフォームにも、管理画面側(B-0052等)と同じ「テンプレート名(form.tpl)と実ファイル名の取り違え」バグがあった（計画記載の`/inquiry/form.php`は実在せず、実体は`/inquiry/index.php`）。`plan-fixes.json`で修正し、`submitGuarded`の`CONFIRM_ACTION`に`conf.php`パターンを追加（ボタン文言が「送信する」でDENY_LABEL扱いされ、確認画面(`conf.php`)への遷移を安全と判定できていなかったため）。C-0165〜172の7行を解消(3行は実際に自動テスト実行、4行は項目が存在しない/csrf_token単独のため正しく対象外)。
 
+##### 2026-10-08: 「計画データ不備」バケット(60行)の精査
+
+plan.json の全342 URL について、CMS(CI3コントローラ)・商品管理/受講者サイト(alfproduct)それぞれの実ファイル存在をスクリプトで機械チェックし、1件ずつソース確認した。
+
+- **URL修正・解消(計30行。`plan-fixes.json`で修正済み)**:
+  - `/search/index20260323.php`(13行) → `/search/index.php`。日付らしき文字列が付いたファイルは存在せず、下書き・旧版のファイル名が紛れ込んだと見られる。E-49で既に使用実績のあるURLで確認済み。
+  - `/product/detail_review.php`(16行) → `/product/detail.php`。対象項目(`product_list.free_html_area1`・`contents_baisoku_flg`系・`disp_sponsor`・`exam2_problem_row`等)がすべて`detail.tpl`に実在することをgrepで確認。
+  - `/mypage/zip.php`(1行) → `/mypage/input_zip.php`。`member/zip.php`(既知。[既存対応] `member/input_zip.php`が実体)と同種の命名違い。なおinput_zip.phpはAjax専用でフォーム項目が無いため、member/zip.php同様に実行時は「対象項目なし」が正しい結果になる。
+- **重複行(計14行。xlsx側での削除・統合を推奨。コード側の対応は不要)**: `product`・`product_ethics`・`product_live`・`product_live_branch`・`product_passport`の各`add_confirm.php`(計10行。B-0154/155・B-0285/286・B-0399/400・B-0427/428・B-0451/452)と、`report_product`の`__info.php`・`_info.php`(計4行。B-0462〜465)は、いずれも実ファイルが存在せず、対象項目は既存の`add.php`・`info.php`自身のS11/S12「まとめ」行(例: product=B-0137/B-0153、report_product=B-0478/479)と完全に重複している。各製品種別ごとに「確認画面」を独立ファイルと誤認してコピー&ペーストしたと見られる。
+- **機能削除により対象外(7行)**: `/cms_information_old/edit`・`/`(A-0227〜233)。コントローラは元々存在せず、ビュー(`application/views/cms_information_old/`)も2026-10-08付のコミット`f360754`(「不要ファイルの削除」)で削除済み。計画作成時点では存在した機能が、別エンジニアの整理により退役したと見られる。
+- **要個別対応(2行)**:
+  - `/login/login_page`(A-0459) → 正しいURLは`/login_page`(CMS, `Login_page.php`)だが、ログイン済みセッションで開くと`/admin_top`へリダイレクトされ、かつ`xss-session.js`の`recover()`が`/login_page`を含むURLを「セッション切れ」と誤検知して再ログインを繰り返す。未ログイン状態での検証方法を別途検討する必要がある。
+  - `/mail_templates/class_notification`(A-0483) → URLではなく`application/views/mail_templates/class_notification.php`というビューファイル(メール本文のテンプレート)。ブラウザから直接開けないため、E-51/E-57と同様に静的ソース確認での対応を検討する。
+- **対象外のまま変更なし(今回あらためて確認。各既知の原因のとおり)**: exam2の`index1/index2/confirm1/confirm2/answer_check1/resubmit_index1/2/result1/2.php`(9行。架空の番号付きファイル)・`exam/resubmit_exec_result1.php`(1行)・受講者サイトの`login/*.php`(SSO専用でローカル処理なし)・`member/regist_confirm.php`・`reminder/*`。
+- WordPress関連の複合記載行(`news/`・`(トップ)`等)は、ファイル存在チェックの手法自体がWordPressの書き換えルーティングに適用できないため今回は対象外。別途、実アクセスでの確認が必要。
+
 ## アーキテクチャ
 
 ### ディレクトリ構成
