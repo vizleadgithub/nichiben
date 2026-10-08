@@ -246,14 +246,31 @@ async function resolveTemplate(session, url) {
         }
       }
     }
-    // 商品管理の info.php 等、ID(mid・pid)が必須の詳細画面。{ID} の記載がなくても、項目が見つからなければ
-    // 同じ階層の index.php から実在するIDを探す（CMSの edit/{ID} と同じ考え方）
-    if (!(first.status < 400 && await hasTargets()) && siteName === 'product' && /\/info(_review)?\.php$/.test(url)) {
-      for (const key of ['mid', 'pid']) {
+    // 商品管理の info.php 等、ID(mid・pid・sid)が必須の詳細画面。{ID} の記載がなくても、項目が見つからなければ
+    // 同じ階層の index.php から実在するIDを探す（CMSの edit/{ID} と同じ考え方）。index.php が検索結果一覧では
+    // なく検索フォームだけを返す画面(amount_user・product・product_ethics・product_passport等)もあるため、
+    // GETでリンクが見つからない場合は search_form を空検索のまま送信してから再度探す(2026-10-08発見)。
+    // mid無しで開いても act・csrf_token・mid 自体は空の値で骨組みだけ表示される画面があり、hasTargets()
+    // (項目名があるかどうかだけを見る)では「実データが無い空の状態」を検出できなかったため、IDらしき
+    // 項目(mid・pid・sid)の値が空でないかも合わせて確認する
+    const hasRealId = async () => {
+      const vals = await session.page.evaluate((ks) => ks.map((k) => { const el = document.querySelector(`[name="${k}"]`); return el ? el.value : null; }), ['mid', 'pid', 'sid']);
+      return vals.some((v) => v && v !== '0');
+    };
+    if (!(first.status < 400 && await hasTargets() && (!/\/info(_review)?\.php$/.test(url) || await hasRealId())) && siteName === 'product' && /\/info(_review)?\.php$/.test(url)) {
+      for (const key of ['mid', 'pid', 'sid']) {
         const dir = url.replace(/[^/]*$/, '');
-        const r = await session.goto(`${dir}index.php`);
+        let r = await session.goto(`${dir}index.php`);
         if (r.status >= 400) continue;
-        const href = await session.page.evaluate((k) => { const a = [...document.querySelectorAll('a[href]')].find((x) => new RegExp(`[?&]${k}=\\d+`).test(x.getAttribute('href'))); return a && a.href; }, key);
+        const findHref = (k) => session.page.evaluate((kk) => { const a = [...document.querySelectorAll('a[href]')].find((x) => new RegExp(`[?&]${kk}=\\d+`).test(x.getAttribute('href'))); return a && a.href; }, k);
+        let href = await findHref(key);
+        if (!href) {
+          const hasSearchForm = await session.page.evaluate(() => !!document.forms['search_form']).catch(() => false);
+          if (hasSearchForm) {
+            r = await session.action(() => session.page.evaluate(() => document.forms['search_form'].requestSubmit()));
+            href = await findHref(key);
+          }
+        }
         if (!href) continue;
         const u = new URL(href);
         const r2 = await session.goto(u.pathname.replace(/[^/]*$/, url.split('/').pop()) + u.search);
