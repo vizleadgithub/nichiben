@@ -14,7 +14,7 @@ function html_policy_definitions()
     $general = 'h1[style],h2[style],h3[style],h4[style],h5[style],h6[style],'
         . 'p[style],br[style],ul[style],li,div[id|class|style],span[style],'
         . 'a[href|target|title],img[src|alt|title|width|height|class|style],'
-        . 'strong,b,font[color],del[datetime]';
+        . 'strong,b,font[color],del';
 
     $general_css = array(
         'margin', 'margin-left', 'margin-bottom', 'padding', 'padding-bottom',

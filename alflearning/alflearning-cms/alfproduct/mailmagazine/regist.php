@@ -332,7 +332,10 @@ if(count($arr_err)==0){
 		//exit();
 
 		// $mid はPOST由来のため、数値(メルマガID)に限定したうえで、シェル引数としてエスケープする(OSコマンドの混入を防ぐ)
-		@exec('php '.'/srv/alflearning/alflearning-cms/alfproduct/cron/mailmagazine_submit.php'." ".escapeshellarg((string)(int)$mid)." > /dev/null &");
+		// 数値以外・0以下のIDでは実行しない(cron側は引数が0だと、送信予定時刻を過ぎた未送信のメルマガを全件送るため)
+		if ((int)$mid > 0) {
+			@exec('php '.'/srv/alflearning/alflearning-cms/alfproduct/cron/mailmagazine_submit.php'." ".escapeshellarg((string)(int)$mid)." > /dev/null &");
+		}
 		//exec('php '.realpath( dirname(__FILE__)."/../cron/mailmagazine_submit.php " )." ".$mid." > /dev/null &" );
 	}
 }
