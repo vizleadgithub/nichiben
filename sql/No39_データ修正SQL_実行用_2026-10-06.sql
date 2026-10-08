@@ -9,7 +9,7 @@
 -- 検証元: 本番ダンプ(2026-09-29)。実行時点の値が違えば、手順3の合計が44にならないので判別できる。
 -- 実行方法: 手順ごとに、phpMyAdmin等で順に実行すること(手順3のSTART TRANSACTIONからSELECT @nまでを実行→件数を確認→COMMITまたはROLLBACKを別に実行)。
 --   mysql < ファイル の一括実行は不可。COMMITがコメントのため、接続を閉じたときに更新がすべて取り消される(エラーは出ない)。
--- (C)の空白は、&nbsp;(画面上は空白)に対応する改行しない空白(U+00A0)に置き換える。通常の半角スペースではない。
+-- (C)の空白は、&nbsp;(画面上は空白)に対応する通常の半角スペースに置き換える。
 -- =====================================================================
 SET NAMES utf8mb4;
 
@@ -202,9 +202,9 @@ SET @n = @n + ROW_COUNT();
 UPDATE tbl_product SET contents_contents1so_name = '01_1_M&A仲介契約書の解説_2_秘密保持契約書の解説【E10407】' WHERE product_id = 25087 AND contents_contents1so_name = '01_1_M&amp;A仲介契約書の解説_2_秘密保持契約書の解説【E10407】';
 SET @n = @n + ROW_COUNT();
 -- (C) ダウンロード表示名(&nbsp;混入)
-UPDATE tbl_product SET contents_download_before1_1 = '第一部 裁判員裁判大づかみ(全編).pdf' WHERE product_id = 13 AND contents_download_before1_1 = '第一部&nbsp;裁判員裁判大づかみ(全編).pdf';
+UPDATE tbl_product SET contents_download_before1_1 = '第一部 裁判員裁判大づかみ(全編).pdf' WHERE product_id = 13 AND contents_download_before1_1 = '第一部&nbsp;裁判員裁判大づかみ(全編).pdf';
 SET @n = @n + ROW_COUNT();
-UPDATE tbl_product SET contents_download_before1_10 = '第二部 裁判員のこころを掴む(全編).pdf' WHERE product_id = 13 AND contents_download_before1_10 = '第二部&nbsp;裁判員のこころを掴む(全編).pdf';
+UPDATE tbl_product SET contents_download_before1_10 = '第二部 裁判員のこころを掴む(全編).pdf' WHERE product_id = 13 AND contents_download_before1_10 = '第二部&nbsp;裁判員のこころを掴む(全編).pdf';
 SET @n = @n + ROW_COUNT();
 -- (D) 講師名(&#22989;混入)
 UPDATE tbl_product SET teacher = '矢吹公敏（東京）、向宣明（第一東京）、宮川裕光（第二東京）、姜姍（中国律師）' WHERE product_id = 14206 AND teacher = '矢吹公敏（東京）、向宣明（第一東京）、宮川裕光（第二東京）、姜&#22989;（中国律師）';
@@ -390,9 +390,9 @@ SELECT product_id FROM tbl_product WHERE product_id = 25086 AND contents_content
 UNION ALL
 SELECT product_id FROM tbl_product WHERE product_id = 25087 AND contents_contents1so_name = '01_1_M&A仲介契約書の解説_2_秘密保持契約書の解説【E10407】'
 UNION ALL
-SELECT product_id FROM tbl_product WHERE product_id = 13 AND contents_download_before1_1 = '第一部 裁判員裁判大づかみ(全編).pdf'
+SELECT product_id FROM tbl_product WHERE product_id = 13 AND contents_download_before1_1 = '第一部 裁判員裁判大づかみ(全編).pdf'
 UNION ALL
-SELECT product_id FROM tbl_product WHERE product_id = 13 AND contents_download_before1_10 = '第二部 裁判員のこころを掴む(全編).pdf'
+SELECT product_id FROM tbl_product WHERE product_id = 13 AND contents_download_before1_10 = '第二部 裁判員のこころを掴む(全編).pdf'
 UNION ALL
 SELECT product_id FROM tbl_product WHERE product_id = 14206 AND teacher = '矢吹公敏（東京）、向宣明（第一東京）、宮川裕光（第二東京）、姜姍（中国律師）'
 ) t;
