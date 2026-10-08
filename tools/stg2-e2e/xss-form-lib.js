@@ -106,15 +106,28 @@ const CONFIRM_ACTION = /confirm|check|valid|preview/i;
 const BUTTONS = 'button, input[type=submit], input[type=button], input[type=image], a, img[onclick]';
 
 const denyByArgs = (o) => [...String(o).matchAll(/['"]([^'"]*)['"]/g)].some((m) => DENY_ARG.test(m[1].replace(/\.php$/i, '')));
+const ok = (c, re) => (re.test(c.t) || re.test(c.o)) && !DENY_LABEL.test(c.t) && !denyByArgs(c.o);
+const evalInfo = (loc) => loc.evaluateAll((els) => els.map((e) => ({
+  t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}${(e.querySelector && e.querySelector('img') ? (e.querySelector('img').getAttribute('src') || '').split('/').pop() : '')}`,
+  o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
+})));
+// 商品登録(product/add.php 等)のような、ファイル欄が数百個ありHTMLが数MBになる画面では、BUTTONS(全候補)を
+// evaluateAll するだけで非常に時間がかかり(実測90秒超)、確認ボタンを見失うことがあった(2026-10-08 発見)。
+// 実際の確認ボタンは onclick="formSubmit(...,'confirm')" のような形が大半のため、まずそれだけに絞った
+// 狭いセレクタで探し、見つかればそれを使う（従来の判定(ok/ALLOW_LABEL)はそのまま使うため、見つけた場合の
+// 結果は全候補を評価したときと同じになる）。見つからない場合だけ、従来どおり全候補を評価する
+const FAST_CONFIRM = 'a[onclick*="confirm" i], a[href*="confirm" i], button[onclick*="confirm" i], input[onclick*="confirm" i], button:has-text("確認"), input[type=submit][value*="確認"], input[type=image][alt*="確認"]';
 
 // 範囲(フォームまたはページ)内のボタンを調べ、押してよいものの番号を返す
 async function pickButton(scope) {
+  const fast = scope.locator(FAST_CONFIRM);
+  if (await fast.count().catch(() => 0) > 0) {
+    const info = await evalInfo(fast);
+    const idx = info.findIndex((c) => ok(c, ALLOW_LABEL_PRIMARY));
+    if (idx >= 0) return { cand: fast, info, idx };
+  }
   const cand = scope.locator(BUTTONS);
-  const info = await cand.evaluateAll((els) => els.map((e) => ({
-    t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}${(e.querySelector && e.querySelector('img') ? (e.querySelector('img').getAttribute('src') || '').split('/').pop() : '')}`,
-    o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
-  })));
-  const ok = (c, re) => (re.test(c.t) || re.test(c.o)) && !DENY_LABEL.test(c.t) && !denyByArgs(c.o);
+  const info = await evalInfo(cand);
   let idx = info.findIndex((c) => ok(c, ALLOW_LABEL_PRIMARY));
   if (idx < 0) idx = info.findIndex((c) => ok(c, ALLOW_LABEL_SECONDARY));
   return { cand, info, idx };
