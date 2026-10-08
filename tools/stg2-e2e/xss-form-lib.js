@@ -98,7 +98,7 @@ function fillBaseline(page, targetName, overrides = {}, includeTarget = false) {
 const ALLOW_LABEL_PRIMARY = /確認|confirm/i;
 const ALLOW_LABEL_SECONDARY = /検索|search|preview|プレビュー|次へ|next/i;
 const ALLOW_LABEL = new RegExp(`${ALLOW_LABEL_PRIMARY.source}|${ALLOW_LABEL_SECONDARY.source}`, 'i');
-const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|commit|regist|delete|remove|save|send|update|insert|upload|import|csv|complete/i;
+const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|ログアウト|logout|commit|regist|delete|remove|save|send|update|insert|upload|import|csv|complete/i;
 // onclick の引数（'complete'・'regist'・'delete' など）が書き込み系なら、確認系の文言があっても押さない
 const DENY_ARG = /^(complete|regist\w*|commit|delete\w*|del|remove|exec\w*|save|update\w*|insert|upload\w*|import\w*|send\w*|cancel|reset|clear|logout|approve\w*)$/i;
 const DENY_ACTION = /commit|regist|insert|update|delete|del_|remove|save|exec|complete|send|upload|import|csv|download|approve|cancel|reset|clear|logout|bat_/i;
@@ -113,6 +113,10 @@ const ok = (c, re) => (re.test(c.t) || re.test(c.o)) && !DENY_LABEL.test(c.t) &&
 const evalInfo = (loc) => loc.evaluateAll((els) => els.map((e) => ({
   t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}${(e.querySelector && e.querySelector('img') ? (e.querySelector('img').getAttribute('src') || '').split('/').pop() : '')}`,
   o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
+  // e.form: HTML の form IDL 属性。壊れた(閉じタグが無い等の)HTMLでは、見た目上は<form>の外にある要素でも
+  // ブラウザの実際のDOM構築ではその<form>に関連付けられることがある(CSSの子孫セレクタでは見つからない。
+  // cms_ranking等で発見。2026-10-08)。この場合でも送信時にはその関連付けに従って送信される
+  formId: e.form ? (e.form.id || e.form.name || '') : '',
 })));
 // 商品登録(product/add.php 等)のような、ファイル欄が数百個ありHTMLが数MBになる画面では、BUTTONS(全候補)を
 // evaluateAll するだけで非常に時間がかかり(実測90秒超)、確認ボタンを見失うことがあった(2026-10-08 発見)。
@@ -142,7 +146,7 @@ async function pickButton(scope) {
 // 段階B。決済・メール送信を伴う画面は呼び出し側で対象から除外すること)
 async function submitGuarded(session, { allowFormSubmit = true, acceptWrites = false } = {}) {
   const { page } = session;
-  const form = page.locator('form[data-xss-form]').first();
+  let form = page.locator('form[data-xss-form]').first();
   const action = (await form.getAttribute('action').catch(() => '')) || '';
   const actionPath = new URL(action || page.url(), page.url()).pathname + new URL(action || page.url(), page.url()).search;
   // まずボタン単位の判定(文言・onclick引数を見る pickButton/ok)を行い、安全なボタンが見つからない場合に限って
@@ -157,6 +161,26 @@ async function submitGuarded(session, { allowFormSubmit = true, acceptWrites = f
     const formId = (await form.getAttribute('name').catch(() => '')) || (await form.getAttribute('id').catch(() => '')) || '';
     ({ cand, info, idx } = await pickButton(page.locator('body')));
     if (idx >= 0 && !(formId && info[idx].o.includes(formId))) idx = -1;
+  }
+  if (idx < 0) {
+    // 対象項目がページ内の小さな付随フォーム(ファイルアップロード用等)に属しており、本来の送信先は
+    // 別の<form>(action が confirm 等)であることがある(cms_ranking等。項目ごとに別々の<form>で囲まれて
+    // いるが、実際の送信はそれらとは独立した1つのメインフォームで行う作り)。さらにそのメインフォームの
+    // 実際のボタン群が、壊れたHTML(閉じタグの不足等)によりDOM上は<form>の子孫にならず、CSSの子孫
+    // セレクタ(scope.locator(...))では見つからないことがある。ブラウザのform IDL属性(evalInfoのformId。
+    // 子孫関係ではなく実際の関連付け)で照合することで見つける(cms_ranking等。2026-10-08発見)
+    const otherForms = page.locator('form:not([data-xss-form])');
+    const otherCount = await otherForms.count().catch(() => 0);
+    for (let i = 0; i < otherCount && idx < 0; i++) {
+      const otherForm = otherForms.nth(i);
+      const otherAction = (await otherForm.getAttribute('action').catch(() => '')) || '';
+      if (!otherAction || !CONFIRM_ACTION.test(new URL(otherAction, page.url()).pathname)) continue;
+      const otherFormId = (await otherForm.getAttribute('id').catch(() => '')) || (await otherForm.getAttribute('name').catch(() => '')) || '';
+      if (!otherFormId) continue;
+      const byAssoc = info.reduce((a, c, j) => (c.formId === otherFormId ? [...a, j] : a), []);
+      const foundIdx = byAssoc.find((j) => ok(info[j], ALLOW_LABEL_PRIMARY)) ?? byAssoc.find((j) => ok(info[j], ALLOW_LABEL_SECONDARY));
+      if (foundIdx !== undefined) { idx = foundIdx; form = otherForm; break; }
+    }
   }
   if (idx < 0) {
     // 一覧画面の並び替え・ページング等、ボタンではなく<select>のonchange(外部JS)で自動送信される
