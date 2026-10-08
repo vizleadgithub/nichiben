@@ -582,7 +582,7 @@ node report-xss.js                                   # 最新の結果を計画�
 
 - **段階A（`run-xss-search.js`・`run-xss-form.js`・`run-xss-http.js`）は GET と確認画面までの送信だけ**（登録・更新・削除・アップロード・メール送信・決済はしない）。DB のダンプは不要。
   - `run-xss-form.js`: 入力画面の各項目に攻撃文字列を入れて「確認」ボタンまで押す（`--site cms|product|student`。product は商品管理(Smarty)、student は受講者サイト。書き込み防止のガードは `xss-form-lib.js` の `submitGuarded`）。画面ごとに検証を通る値が要る場合は `test-plan/form-defaults.json` に追記する。`--check-pages` で、攻撃文字列なしに確認画面まで進めるかだけを事前に調べられる。
-    - S9(ファイルのアップロード)は、項目種別が file の欄に Playwright の `setInputFiles`（ファイル名・中身をメモリ上のバッファで指定。OSのファイル名制限を受けない）で、ファイル名または中身(HTML・SVG)に攻撃文字列を入れる。対象以外の file 欄は無害なダミーファイルで埋める。
+    - S9(ファイルのアップロード)は、項目種別が file の欄に Playwright の `setInputFiles`（ファイル名・中身をメモリ上のバッファで指定。OSのファイル名制限を受けない）で、ファイル名または中身(HTML・SVG)に攻撃文字列を入れる。対象以外の file 欄は無害なダミーファイルで埋める(既定はPDF。拡張子チェックがある画面は `form-defaults.json` で項目名に `"csv"` を指定するとCSV形式のダミーになる。例: `cms_exam_problem_import/edit`)。
     - S10(パスワード)は、通常の往復確認(値が戻らないと「異なる」と検出する)とは期待が逆のため、確認画面・エラー時の再表示に送信した値がそのまま残っていないか(平文表示)を別途検出する。
 - **受講者 SSO（本番と共用）へは通信しない**。ブラウザ側で SSO ドメインへの通信を遮断している。未ログインの受講者サイトはどの URL も SSO へ遷移するため、受講者サイトの確認は保存済みセッション（`node login.js student`）で行い、確認できなかったものは「対象外」と記録する。
 - 攻撃文字列の実行用定義は `xss-payloads.js`（正本は xlsx の「付録_攻撃文字列」）。検出ロジックは `detect.js`。
@@ -629,6 +629,13 @@ E-20(課題確認の提出ファイル名)・E-60(領収書・受講証PDFへの
 **2026-10-07 の調査で副次的に発見した脆弱性**: E-52(CSV出力)・E-58(API到達性)の調査中に、ログイン確認(`session_check`)が無く未認証でアクセスできるエンドポイントを2件発見（`report_product/csv_file.php`・`csv_file_utf.php`、および alflearning-api の `Csv_download`。後者は氏名・メールアドレスを含む受講者一覧CSVを出力する）。`secure_report/stg2自動テストで発見した不具合_2026-10-07.md` の [B-8]・[B-9] を参照。
 
 **2026-10-08 判明: 自作の自動テストコード自体がメール送信ポリシーに違反していた**。旧 `checkE60` が自動実行していた `amount_order/info.php` の `mode=pay` は、受講者へメール送信を伴うことが開発者回答で判明した。これは該当テストを実行するたびにテスト用アカウントへ実メールを送っていたことを意味する（送信先はテスト用アカウントのみのため実害は小さいと見ている）。上記のとおりコードは削除・再設計済み。
+
+**2026-10-08: `--check-pages` で実際にstg2へアクセスし、未自動化行の具体的な停止理由を調査・一部解消**。S1〜S11の対象画面のうち、確認画面まで進めない画面を洗い出した結果:
+- **[B-2]（解消済み）**: `/cms_student/edit`・`/cms_student_sub_auth/edit`（計54行）が、受講講座チェックボックスの検証バグ（`set_rules`に`[]`が無い）で常に確認画面へ進めなかった。`Cms_student.php`・`Cms_student_sub_auth.php`・`Cms_exam2_review.php`の3箇所を修正(詳細は不具合まとめの[B-2]参照)。stg2へのデプロイ後、両画面とも確認画面まで進めることを確認済み。
+- **CSV取り込み画面の既定値不足**: `/cms_exam_problem_import/edit`・`/cms_exam2_problem_import/edit`（計12行）が、テストコードのダミーアップロードファイルがPDF固定のため「csv形式のみ有効」エラーで進めなかった。`fillBenignFiles()`に項目ごとのファイル形式指定(`form-defaults.json`で`"csv"`を指定)を追加し解消（stg2で確認画面到達を確認済み。テストコード側のみの変更のためデプロイ待ちは無い）。
+- **確認画面が無く直接登録される画面**: `cms_issue`・`cms_book_library`・`cms_class_material`・`cms_exam2_download`・`cms_student_csv_upload`（計19行）は、newdata→confirmの2段階ではなく直接commit等へ送信する設計のため、書き込みをしない段階Aでは原理的に確認できない（`submitGuarded`が安全側に倒して送信を拒否する。対応するなら段階Bでの作り直しが必要）。
+- **確認ボタンの検出漏れ**: `cms_ranking`・`school_select`・`admin_top/outside_elearningmanager`（計18行）は原因未特定（`pickButton`が候補を見つけられない）。追加調査が必要。
+- 商品管理・受講者サイトは未調査（同様の洗い出しが残っている）。
 
 **2026-10-08 の調査で副次的に発見した問題**: E-04(アンケート回答一覧)の調査中に、`Cms_exam2_review.php` のクラス名がファイル名と不一致で常に404になっていた問題と、`exam2_set_list()` が `$product_id`・`$exam2_id` を未定義変数のまま使っており常にPHP8のTypeErrorでクラッシュする問題の2件を発見し、どちらも修正した（[B-11]、解消済み。XSSとは別系統）。同じクラス名不一致のパターンが `Bat_get_alfstream_reading_history_mst.php`・`Bat_get_alfstream_reading_history_oneoff.php`・`Bat_report_oneoff_old.php` にも見つかっており未対応（使用有無の確認待ち）。E-59(Ajaxエンドポイント)の調査中に、`player/bookmark.php`・`insert_report_user_video_viewed.php`・`bookmark_delete.php` にログイン確認が無く、任意の`student_id`を指定して他人の視聴履歴・受講完了フラグを改ざんできる認可不備を発見（[B-12]）。
 

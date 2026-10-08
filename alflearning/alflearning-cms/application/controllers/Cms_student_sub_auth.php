@@ -478,7 +478,7 @@ class Cms_student_sub_auth extends CI_Controller {
 			$this->form_validation->set_rules('student_password_check'  , $this->lang->line_or_def('common_password_conf','パスワード（確認入力）')    , 'trim|required|matches[student_password]');
 		}
 	//	$this->form_validation->set_rules('student_birthday'      , $this->lang->line_or_def('common_date_of_birth','生年月日')               , 'trim|xss_clean|required|callback_date_check');
-		$this->form_validation->set_rules('student_lectures'      , $this->lang->line_or_def('common_attendance_class','受講講座')            , 'required');
+		$this->form_validation->set_rules('student_lectures[]'      , $this->lang->line_or_def('common_attendance_class','受講講座')            , 'required');
 		$this->form_validation->set_rules('student_note'          , $this->lang->line_or_def('common_note','備考')                            , 'trim');
 		
 		// 法学館対応
