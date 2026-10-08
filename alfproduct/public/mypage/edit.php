@@ -510,36 +510,36 @@ if(!isset($_POST['act'])){
 				$objDbConnect->tran_begin();
 				
 				$sql = "update student set ";
-				$sql.= "  student_name='".mysql_real_escape_string($name1)." ".mysql_real_escape_string($name2)."',";
-				$sql.= "  student_name_kana='".mysql_real_escape_string($kana1)." ".mysql_real_escape_string($kana2)."',";
-				$sql.= "  zip='".mysql_real_escape_string($zip)."',";
-				$sql.= "  pref='".mysql_real_escape_string($pref_id)."',";
-				$sql.= "  address1='".mysql_real_escape_string($address1)."',";
-				$sql.= "  address2='".mysql_real_escape_string($address2)."',";
-				$sql.= "  address3='".mysql_real_escape_string($address3)."',";
-				$sql.= "  student_email='".mysql_real_escape_string($email)."',";
+				$sql.= "  student_name='".mysqli_real_escape_string($objDbConnect->connect, $name1)." ".mysqli_real_escape_string($objDbConnect->connect, $name2)."',";
+				$sql.= "  student_name_kana='".mysqli_real_escape_string($objDbConnect->connect, $kana1)." ".mysqli_real_escape_string($objDbConnect->connect, $kana2)."',";
+				$sql.= "  zip='".mysqli_real_escape_string($objDbConnect->connect, $zip)."',";
+				$sql.= "  pref='".mysqli_real_escape_string($objDbConnect->connect, $pref_id)."',";
+				$sql.= "  address1='".mysqli_real_escape_string($objDbConnect->connect, $address1)."',";
+				$sql.= "  address2='".mysqli_real_escape_string($objDbConnect->connect, $address2)."',";
+				$sql.= "  address3='".mysqli_real_escape_string($objDbConnect->connect, $address3)."',";
+				$sql.= "  student_email='".mysqli_real_escape_string($objDbConnect->connect, $email)."',";
 //var_dump($_SESSION["mypage.edit.password"]);
 //var_dump($password);
 				if( $_SESSION["mypage.edit.password"]!=$password ) {
 					$sql.= "  student_password_encrypt='".hash('sha256', $password)."',";
 				}
 //exit();
-				$sql.= "  password_question='".mysql_real_escape_string($password_question)."',";
+				$sql.= "  password_question='".mysqli_real_escape_string($objDbConnect->connect, $password_question)."',";
 				if( $password_answer!="") {
 					$sql.= "  password_answer='".hash('sha256', $password_answer)."',";
 				}
-				$sql.= "  job='".mysql_real_escape_string($job)."',";
-				$sql.= "  job_type='".mysql_real_escape_string($job_type)."',";
-				$sql.= "  school_name='".mysql_real_escape_string($school_name)."',";
-				$sql.= "  school_grade='".mysql_real_escape_string($school_grade)."',";
-				$sql.= "  age='".mysql_real_escape_string($age)."',";
-				$sql.= "  sex='".mysql_real_escape_string($gender)."',";
-				$sql.= "  student_no='".mysql_real_escape_string($student_no)."',";
-				$sql.= "  mailmagazine_flg='".mysql_real_escape_string($mail_magazine_flag)."',";
-				$sql.= "  mailmagazine_ids='".mysql_real_escape_string($mail_magazine)."',";
+				$sql.= "  job='".mysqli_real_escape_string($objDbConnect->connect, $job)."',";
+				$sql.= "  job_type='".mysqli_real_escape_string($objDbConnect->connect, $job_type)."',";
+				$sql.= "  school_name='".mysqli_real_escape_string($objDbConnect->connect, $school_name)."',";
+				$sql.= "  school_grade='".mysqli_real_escape_string($objDbConnect->connect, $school_grade)."',";
+				$sql.= "  age='".mysqli_real_escape_string($objDbConnect->connect, $age)."',";
+				$sql.= "  sex='".mysqli_real_escape_string($objDbConnect->connect, $gender)."',";
+				$sql.= "  student_no='".mysqli_real_escape_string($objDbConnect->connect, $student_no)."',";
+				$sql.= "  mailmagazine_flg='".mysqli_real_escape_string($objDbConnect->connect, $mail_magazine_flag)."',";
+				$sql.= "  mailmagazine_ids='".mysqli_real_escape_string($objDbConnect->connect, $mail_magazine)."',";
 				$sql.= "  update_at='".$regist_date."' ";
 				//$sql.= "  '$regist_date'";
-				//$sql.= "  media_id='".mysql_real_escape_string($media)."',";
+				//$sql.= "  media_id='".mysqli_real_escape_string($objDbConnect->connect, $media)."',";
 				//$sql.= "  school_id='".SCHOOL_ID."',";
 				//$sql.= "  member_type='1',";
 				//$sql.= "  '$address1',";
@@ -594,7 +594,7 @@ function getRandomString($nLengthRequired = 8){
     mt_srand();
     $sRes = "";
     for($i = 0; $i < $nLengthRequired; $i++) {
-        $sRes .= $sCharList{mt_rand(0, strlen($sCharList) - 1)};
+        $sRes .= $sCharList[mt_rand(0, strlen($sCharList) - 1)];
     }
     return $sRes;
 }

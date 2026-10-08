@@ -6,6 +6,15 @@ $_SERVER['HTTPS'] = 'on';
 include(dirname(__FILE__) ."./../../module/bookmark_module.php");
 $objDbConnect = new DbConnect();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ログイン中の受講者本人の分だけ処理する(リクエストの student_id は、セッションの受講者IDと一致するものだけ受け付ける)
+require_once(dirname(__FILE__) ."./../../module/session_start.php");
+$session_student_id = (isset($_SESSION['user']['id']) ? (string)$_SESSION['user']['id'] : '');
+if ($session_student_id === '' || !isset($_GET['student_id']) || (string)$_GET['student_id'] !== $session_student_id) {
+	$objDbConnect->close();
+	print("0");
+	exit;
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //ini_set('display_errors', 1);
 //echo("[".$_GET['student_id']."]");
 //echo("[".$_GET['movie_id']."]");

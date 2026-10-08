@@ -140,6 +140,7 @@ $sql = "select * from mtb_bar_association";
 $arr_bar_association = $objDbConnect->query_fetch_arr($sql);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $member_count = 0;
+$arr_err = array();
 if(count($arr_err)==0){
 	$sql = "select count(student.student_id) as c from student where student.status=0 ";
 	if( $arr_session["cms_master.login.school_id"]>0 && trim($arr_session["cms_master.login.school_id"])!="" ){

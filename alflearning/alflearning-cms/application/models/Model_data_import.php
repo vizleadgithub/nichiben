@@ -3515,7 +3515,7 @@ echo "product update\n";
 					if ($mch[2]) {
 						$cnt = 0;
 						foreach ($mch[2] as $k1 => $v1) {
-							if (!eregi("JavaScript:", $v1) && $v1 != "/") {
+							if (stripos($v1, "JavaScript:") === false && $v1 != "/") {
 								// 文字変換
 								// $v1 = str_replace("〜", "～", $v1);
 								// $v1 = str_replace("−", "－", $v1);

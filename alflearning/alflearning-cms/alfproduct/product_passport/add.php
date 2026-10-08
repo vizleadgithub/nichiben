@@ -323,7 +323,7 @@ function err_check($template, $arr_input){
 					$err_msg['price'] = '商品価格は半角数字で入力してください。';
 				}
 			}
-			if(cmCheckInput($arr_input['passport_target'], 'CK_KARA')){
+			if(!is_array($arr_input['passport_target']) || count($arr_input['passport_target']) == 0){
 				$err_msg['passport_target'] = '対象者は必須です。';
 			}
 		}

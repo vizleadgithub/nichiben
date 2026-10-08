@@ -502,7 +502,8 @@ if(!isset($_POST['act'])){
 				if(!$ret1){
 					$err_flag = 1;
 				} else {
-					$member_id = mysql_insert_id();
+					$ret_id = $objDbConnect->query_fetch("SELECT LAST_INSERT_ID() as insert_id");
+					$member_id = $ret_id["insert_id"];
 					
 					// コースID登録
 					$sql = "INSERT INTO student_lecture (student_id,cource_id,update_at) VALUES ('".$member_id."','".COURCE_ID."','".$regist_date."')";

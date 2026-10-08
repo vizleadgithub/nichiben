@@ -229,16 +229,26 @@ class Login_page extends CI_Controller {
 
 	// backurlの妥当性を確認する関数
 	private function _is_valid_backurl($url) {
-		// / で始まる場合（自サイト内へのリダイレクト許可）
-		if (preg_match('#^/.*#', $url)) {
+		$url = (string)$url;
+
+		// 制御文字・空白・バックスラッシュを含むものは不正(ブラウザが //evil.example や /\evil.example として解釈するのを防ぐ)
+		if (preg_match('/[\x00-\x20\x7f\\\\]/', $url)) {
+			return false;
+		}
+
+		// 自サイト内のパス( / で始まり、2文字目が / でないもの。// で始まるものは外部サイトを指す)
+		if (preg_match('#^/(?!/)#', $url)) {
 			return true;
 		}
 
-		// 自サイトのURLの場合（http/https対応）
+		// 自サイトのURL(http/https のみ。ユーザー情報付きは不正)
 		$base_url = parse_url(base_url(), PHP_URL_HOST); // 自サイトのホスト名を取得
 		$parsed_url = parse_url($url);
 
-		if (isset($parsed_url['host']) && $parsed_url['host'] === $base_url) {
+		if (is_array($parsed_url)
+			&& isset($parsed_url['scheme']) && in_array(strtolower($parsed_url['scheme']), array('http', 'https'), true)
+			&& isset($parsed_url['host']) && strcasecmp($parsed_url['host'], (string)$base_url) === 0
+			&& !isset($parsed_url['user']) && !isset($parsed_url['pass'])) {
 			return true;
 		}
 

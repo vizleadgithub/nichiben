@@ -24,8 +24,8 @@ if (isset($_POST['act'])){
 	// 今後アラート表示するかのフラグDB登録
 	if (isset($_POST['passport_pop_flg'])){
 		if ($_POST['passport_pop_flg'] == '1'){
-			$sql ="INSERT INTO student_add SET student_id = '".mysql_escape_string($_SESSION['user']['id'])."', passport_pop_flg = '".mysql_escape_string($_POST['passport_pop_flg'])."'";
 			$objDbConnect = new DbConnect();
+			$sql ="INSERT INTO student_add SET student_id = '".mysqli_real_escape_string($objDbConnect->connect, $_SESSION['user']['id'])."', passport_pop_flg = '".mysqli_real_escape_string($objDbConnect->connect, $_POST['passport_pop_flg'])."'";
 			$res = $objDbConnect->execute($sql);
 			if ($res){
 				$_SESSION['user']['passport_pop_flg'] = 1;
