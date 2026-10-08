@@ -80,13 +80,8 @@ def apply_plan_fixes(rows):
         return rows
     with open(FIXES_PATH, 'r', encoding='utf-8') as f:
         fixes = json.load(f)
+    # 'add' を先に適用する(modify が同じファイル内の add 行を対象にできるようにするため)
     by_id = {r['id']: r for r in rows}
-    for patch in fixes.get('modify', []):
-        target = by_id.get(patch['id'])
-        if target is None:
-            print(f'  警告: plan-fixes.json の modify 対象 ID が見つかりません: {patch["id"]}')
-            continue
-        target.update(patch.get('set', {}))
     existing_ids = set(by_id)
     for new_row in fixes.get('add', []):
         if new_row['id'] in existing_ids:
@@ -97,7 +92,14 @@ def apply_plan_fixes(rows):
         base.update(new_row)
         base['source'] = 'plan-fixes.json'
         rows.append(base)
+        by_id[new_row['id']] = base
         existing_ids.add(new_row['id'])
+    for patch in fixes.get('modify', []):
+        target = by_id.get(patch['id'])
+        if target is None:
+            print(f'  警告: plan-fixes.json の modify 対象 ID が見つかりません: {patch["id"]}')
+            continue
+        target.update(patch.get('set', {}))
     return rows
 
 

@@ -54,10 +54,12 @@ const sheet = profile.sheet;
 // - exam・exam2・ethic_treaning: 「確認」画面に見える画面(answer_check*.php・index2.php・confirm2.php 等)が、
 //   表示に進んだ時点で回答・受講履歴を書き込む(DbConnect::execute() を grep で確認)。CMSの confirm と違い
 //   書き込みなしで確認画面に到達する経路がないため、書き込みを許容する設計(段階B)が別途必要。ここでは対象外にする
-// - player: 動画プレイヤー。再生開始が視聴履歴に記録される(player/insert_report_user_video_viewed.php)。
-//   hidden項目の改ざんテスト(S11)はこのファイルへの送信を伴いうるため対象外にする
 // - login・logout: 受講者の認証は外部SSO(member.nichibenren.or.jp)経由のみで、ローカルのログイン処理はない
-const STUDENT_SKIP = /^\/(player|exam|exam2|ethic_treaning|settlement|login|logout)(\/|$)/i;
+// player(動画プレイヤー)は、2026-10-07 の方針変更により対象外から外した。再生開始で視聴履歴が記録される
+// (player/insert_report_user_video_viewed.php)副作用はあるが、専用のテストデータ・テスト用受講者に限定し、
+// submitGuarded のガード（確認・検索系以外のボタンは押さない。再生ボタンはどちらにも該当しないため押されない）
+// にも守られるため許容する。記録された履歴は、書き込みテスト後のDB復元で元に戻す
+const STUDENT_SKIP = /^\/(exam|exam2|ethic_treaning|settlement|login|logout)(\/|$)/i;
 // 計画のURLはファイル名からの仮称を含み、現在のリポジトリに実体がないものがある(実画面で要確認)。
 // login/*・reminder/*: ログインは上記のとおりSSOのみ。reminder は該当する物理ファイルがコードベースに見当たらない
 //   (テンプレートと /reminder/ へのリンクはあるが、処理する PHP が存在しない。機能が無効化されている可能性)

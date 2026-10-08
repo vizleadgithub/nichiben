@@ -4,6 +4,8 @@
 *.log
 
 /secure_report/*.md
+# 不具合まとめだけはGit管理する(チームで共有するため)
+!/secure_report/stg2自動テストで発見した不具合_2026-10-07.md
 /secure_report/*.pdf
 /secure_report/body-*
 /secure_report/edu*
