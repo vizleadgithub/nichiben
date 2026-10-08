@@ -10,6 +10,7 @@
   "/cms_student/edit": { "student_lectures[]": true },
   "/cms_student_sub_auth/edit": { "student_lectures[]": true },
   "/cms_material/newdata": { "material_lectures[]": true },
+  "/member/regist.php": { "kana1": "ヤマダ", "kana2": "タロウ", "password": "Xsstest1234", "password_conf": "Xsstest1234" },
   "/cms_exam_problem_import/edit": { "exam_problem_lectures[]": true, "local_file": "csv" },
   "/cms_exam2_problem_import/edit": { "exam2_problem_lectures[]": true, "local_file": "csv" },
   "/alfproduct/mailmagazine/conf.php": { "submit_datetime": "2099/01/01 00:00" },
