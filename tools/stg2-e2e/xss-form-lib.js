@@ -102,7 +102,10 @@ const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|commit|regi
 // onclick の引数（'complete'・'regist'・'delete' など）が書き込み系なら、確認系の文言があっても押さない
 const DENY_ARG = /^(complete|regist\w*|commit|delete\w*|del|remove|exec\w*|save|update\w*|insert|upload\w*|import\w*|send\w*|cancel|reset|clear|logout|approve\w*)$/i;
 const DENY_ACTION = /commit|regist|insert|update|delete|del_|remove|save|exec|complete|send|upload|import|csv|download|approve|cancel|reset|clear|logout|bat_/i;
-const CONFIRM_ACTION = /confirm|check|valid|preview/i;
+// conf.php はこのアプリで「確認画面」に使われるファイル名の慣例(mailmagazine/conf.php・inquiry/conf.php等で既出)。
+// 受講者サイトの問い合わせフォーム(inquiry/index.php→conf.php)のボタン文言が「送信する」(DENY_LABEL)のため、
+// ボタン単位では安全と判定できず、送信先URLの判定でも拾えていなかった(2026-10-08発見)
+const CONFIRM_ACTION = /confirm|check|valid|preview|conf\.php$/i;
 const BUTTONS = 'button, input[type=submit], input[type=button], input[type=image], a, img[onclick]';
 
 const denyByArgs = (o) => [...String(o).matchAll(/['"]([^'"]*)['"]/g)].some((m) => DENY_ARG.test(m[1].replace(/\.php$/i, '')));
@@ -255,9 +258,17 @@ async function submitComplete(session) {
     t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}`,
     o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
   })));
-  const idx = info.findIndex((c) => COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o));
-  if (idx < 0) return { refused: `登録ボタンを特定できない。ボタン: ${info.map((c) => c.t.slice(0, 20)).join(' | ').slice(0, 100)}` };
-  return session.action(() => cand.nth(idx).click({ timeout: 5000 }));
+  const idxs = info.reduce((a, c, i) => ((COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o)) ? [...a, i] : a), []);
+  if (!idxs.length) return { refused: `登録ボタンを特定できない。ボタン: ${info.map((c) => c.t.slice(0, 20)).join(' | ').slice(0, 100)}` };
+  // 文言が一致する候補が複数ある場合(ページ内のナビゲーション等が偶然一致することがある。2026-10-08発見)、
+  // 最初の候補が実際にはクリックできない(非表示等)ことがあるため、クリックできる候補が見つかるまで順に試す
+  for (let i = 0; i < idxs.length; i++) {
+    try {
+      return await session.action(() => cand.nth(idxs[i]).click({ timeout: 3000 }));
+    } catch (e) {
+      if (i === idxs.length - 1) throw e;
+    }
+  }
 }
 
 module.exports = { setFields, fieldForms, fillBaseline, submitGuarded, submitComplete, inspect, resolveRoundtrip };

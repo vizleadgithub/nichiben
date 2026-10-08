@@ -30,12 +30,17 @@
 //     入金済み注文が必要)。受講証は発行済みフラグの更新処理がコメントアウトされており何度でも再実行できる。
 //   具体的な人の作業手順・SQL文は test-plan/data-entries.json のコメントを参照。
 //
-// 必要な設定: test-plan/data-entries.json の free_product_pid（無料のeラーニング商品のID。E-12/E-13/E-10用）・
+// B-0015(売上の注文詳細「atena」欄): 2026-10-08、手動実施バケットの監査中に「mode=payとは無関係の別フォーム
+//   (downloadForm→pdf.php。領収書の下書きPDFを画面内表示するだけでメール送信は無い)」と判明し自動化対象にした。
+//   E-13と同じoid(E-12/E-13の実行経路)に相乗りするため、--only には E-12,E-13 も含めること(どちらも検証結果
+//   として記録したくない場合でも、oid特定のために内部的に必要)。
+//
+// 必要な設定: test-plan/data-entries.json の free_product_pid（無料のeラーニング商品のID。E-12/E-13/E-10/B-0015用）・
 //   issue_id（E-20。テスト用の課題のID）・receipt_order_id（E-60領収書。入金済みの注文ID）・
 //   ticket_order_detail_id（E-60受講証。会場研修注文の注文明細ID）。未設定の項目はそれぞれ対象外として記録される。
 //
-// 使い方: node run-xss-data-linked.js [--only E-10,E-12,E-13,E-14,E-20,E-49,E-60] [--accept-writes]
-//   --accept-writes は E-10/E-12/E-13/E-14/E-49(書き込みを伴う)にのみ必要。E-20・E-60(領収書・受講証)は
+// 使い方: node run-xss-data-linked.js [--only E-10,E-12,E-13,E-14,E-20,E-49,E-60,B-0015] [--accept-writes]
+//   --accept-writes は E-10/E-12/E-13/E-14/E-49/B-0015(書き込みを伴う)にのみ必要。E-20・E-60(領収書・受講証)は
 //   読み取りのみのため --accept-writes が無くても実行される(data-entries.json が未設定なら対象外になるだけ)。
 const fs = require('fs');
 const path = require('path');
@@ -88,34 +93,60 @@ async function findStudentId(cms) {
   return m ? m[1] : null;
 }
 
+// B-0015: 売上の注文詳細(amount_order/info.php)の「atena」欄。確認画面を経由せず、別フォーム(downloadForm)で
+// pdf.php(領収書の下書きPDF。Content-Dispositionが無く画面内で表示される。ダウンロードにはならない)へ直接POSTされる
+// ため、通常のrun-xss-form.jsのsubmitGuardedでは対象にできない。E-13で見つけたoidを使って個別に確認する
+async function checkAtena(rec, cms, oid) {
+  const id = 'B-0015';
+  const payload = fill("{m}'); alert('{m}');//", MARKER);
+  await cms.goto(`/alfproduct/amount_order/info.php?oid=${oid}`);
+  const hasForm = await cms.page.evaluate(() => !!document.getElementById('atena'));
+  if (!hasForm) { rec.add({ id, verdict: '要確認', note: `atena欄が見つからない(oid=${oid})` }); return; }
+  await cms.page.evaluate((v) => { document.getElementById('atena').value = v; }, payload);
+  const res = await cms.action(() => cms.page.evaluate(() => document.forms.downloadForm.submit()));
+  const findings = [];
+  if (res.status >= 400) findings.push({ kind: `HTTP ${res.status}`, text: '' });
+  const body = res.html || '';
+  if (body.includes(payload)) findings.push({ kind: '未エスケープで出現(PDF内に攻撃文字列がそのまま検出)', text: payload, ng: true });
+  else if (body.includes(MARKER)) findings.push({ kind: '文字として検出(エスケープされている可能性)', text: MARKER });
+  else findings.push({ kind: 'PDFの生テキストからマーカーを検出できず(圧縮されている可能性。手動でPDFを開いて確認してください)', text: '' });
+  rec.add({
+    id, verdict: findings.some((f) => f.ng) ? 'NG' : findings[0].kind.includes('検出できず') ? '要確認' : 'OK', label: `amount_order/pdf.php(oid=${oid})`, status: res.status, findings,
+    scope: 'PDF内のテキスト検出はベストエフォート(圧縮されていると検出できない)。領収書の下書き表示のみでDB書き込み・メール送信は無い',
+  });
+  console.log(`B-0015 amount_order/pdf.php(oid=${oid}) ${findings.map((f) => f.kind).join(',')}`);
+}
+
 // E-12・E-13: 無料のeラーニング商品を開いて0円注文を自動作成させ、売上の会員詳細・注文詳細を確認する
 async function checkE1213(rec) {
+  // B-0015(atena欄)はE-13で見つけたoidに相乗りするため、E-12/E-13のどちらも対象外でもB-0015だけなら実行する
   const ids = ['E-12', 'E-13'].filter(want);
-  if (!ids.length) return;
+  const idsAll = [...ids, ...(want('B-0015') ? ['B-0015'] : [])];
+  if (!idsAll.length) return;
   const pid = dataEntries.free_product_pid;
   if (!pid) {
-    for (const id of ids) rec.add({ id, verdict: '対象外', note: 'test-plan/data-entries.json の free_product_pid が未設定(無料のeラーニング商品のIDを記入してください)' });
-    console.log('skip E-12/E-13: free_product_pid が未設定');
+    for (const id of idsAll) rec.add({ id, verdict: '対象外', note: 'test-plan/data-entries.json の free_product_pid が未設定(無料のeラーニング商品のIDを記入してください)' });
+    console.log('skip E-12/E-13/B-0015: free_product_pid が未設定');
     return;
   }
   if (!acceptWrites) {
-    for (const id of ids) rec.add({ id, verdict: '対象外', note: '書き込みを伴う(受講者登録・0円注文の自動作成)。--accept-writes を付けて実行してください' });
-    console.log('skip E-12/E-13: 書き込みを伴う(--accept-writes 未指定)');
+    for (const id of idsAll) rec.add({ id, verdict: '対象外', note: '書き込みを伴う(受講者登録・0円注文の自動作成)。--accept-writes を付けて実行してください' });
+    console.log('skip E-12/E-13/B-0015: 書き込みを伴う(--accept-writes 未指定)');
     return;
   }
   const cms = await new Session('cms').open();
   const student = await new Session('student').open();
   try {
     const reg = await registerMarkerStudent(student);
-    if (reg.error) { for (const id of ids) rec.add({ id, verdict: '要確認', note: reg.error }); return; }
+    if (reg.error) { for (const id of idsAll) rec.add({ id, verdict: '要確認', note: reg.error }); return; }
     const detail = await student.goto(`/product/detail.php?pid=${encodeURIComponent(pid)}`);
     if (detail.status === 'ERROR' || detail.status === 'SSO' || detail.status >= 400) {
-      for (const id of ids) rec.add({ id, verdict: '対象外', note: `無料商品の詳細画面が開けない: HTTP ${detail.status}(pidを確認してください)` });
+      for (const id of idsAll) rec.add({ id, verdict: '対象外', note: `無料商品の詳細画面が開けない: HTTP ${detail.status}(pidを確認してください)` });
       return;
     }
     const sid = await findStudentId(cms);
     if (!sid) {
-      for (const id of ids) rec.add({ id, verdict: '要確認', note: '登録した受講者が /cms_student の検索結果に見つからない' });
+      for (const id of idsAll) rec.add({ id, verdict: '要確認', note: '登録した受講者が /cms_student の検索結果に見つからない' });
       return;
     }
     console.log(`受講者ID(sid)=${sid} が見つかりました`);
@@ -146,10 +177,12 @@ async function checkE1213(rec) {
           for (const d of dom2) findings2.push({ kind: 'DOM上のイベント属性/JSリンク(確認ダイアログ等)', text: `<${d.tag} ${d.attr}="${d.value}">`, ng: true });
           rec.add({ id: 'E-13', verdict: findings2.some((f) => f.ng) ? 'NG' : findings2.length ? 'OK' : '要確認', label: `amount_order/info.php?oid=${oid}`, status: res2.status, findings: findings2 });
           console.log(`E-13 amount_order/info.php?oid=${oid} ${findings2.map((f) => f.kind).join(',') || '(マーカー未検出)'}`);
+          if (want('B-0015')) await checkAtena(rec, cms, oid);
         }
       }
-    } else if (want('E-13')) {
-      rec.add({ id: 'E-13', verdict: '要確認', note: 'E-12(sidの特定)と同時実行が必要です。--only に E-12 も含めてください' });
+    } else {
+      if (want('E-13')) rec.add({ id: 'E-13', verdict: '要確認', note: 'E-12(sidの特定)と同時実行が必要です。--only に E-12 も含めてください' });
+      if (want('B-0015')) rec.add({ id: 'B-0015', verdict: '要確認', note: 'oidの特定にE-12・E-13の経路を使うため、同時実行が必要です。--only に E-12,E-13 も含めてください' });
     }
   } finally {
     await cms.close();
