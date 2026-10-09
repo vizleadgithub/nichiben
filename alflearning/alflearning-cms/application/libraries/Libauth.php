@@ -332,6 +332,9 @@ class Libauth
 		
 		// 日弁連対応　講座を非表示固定
 		$auths['course'] = 0;
+		// 商品管理(alfproduct)側のメニューと項目数をそろえるため、学校選択・授業を非表示固定
+		$auths['school_select'] = 0;
+		$auths['course_class'] = 0;
 
 		// [20131118-NICHIBENREN_KENSHU-106]コンテンツ（ビデオ）は、管理者（日弁連）以外表示しないように修正
 		if( $this->get_bar_association_id() != 1 && $this->get_bar_association_id() != '1' ){
