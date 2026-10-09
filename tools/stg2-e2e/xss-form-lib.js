@@ -160,6 +160,9 @@ const evalInfo = (loc) => loc.evaluateAll((els) => els.map((e) => ({
 // 狭いセレクタで探し、見つかればそれを使う（従来の判定(ok/ALLOW_LABEL)はそのまま使うため、見つけた場合の
 // 結果は全候補を評価したときと同じになる）。見つからない場合だけ、従来どおり全候補を評価する
 const FAST_CONFIRM = 'a[onclick*="confirm" i], a[href*="confirm" i], button[onclick*="confirm" i], input[onclick*="confirm" i], button:has-text("確認"), input[type=submit][value*="確認"], input[type=image][alt*="確認"]';
+// submitComplete用。product/add.php等、ファイル欄が数百個ありBUTTONS全候補のevaluateAllが30秒超かかる画面向けに、
+// 先に狭いセレクタ(onclickにcomplete/commit/regist等を含むもの)だけで探す(2026-10-09発見。pickButtonのFAST_CONFIRMと同じ考え方)
+const FAST_COMPLETE = 'a[onclick*="complete" i], button[onclick*="complete" i], input[onclick*="complete" i], a[onclick*="commit" i], button[onclick*="commit" i], input[onclick*="commit" i], a[onclick*="regist" i], button[onclick*="regist" i], input[onclick*="regist" i]';
 
 // 範囲(フォームまたはページ)内のボタンを調べ、押してよいものの番号を返す
 async function pickButton(scope) {
@@ -330,14 +333,22 @@ async function resolveRoundtrip(session, res, findings) {
 const COMPLETE_LABEL = /登録|更新|完了|決定|commit|regist\w*|complete|update\w*/i;
 async function submitComplete(session) {
   const { page } = session;
-  // 確認画面にフォームが複数ある場合（ヘッダーの検索欄等）もあるため、ページ全体からボタンを探す
-  const cand = page.locator(BUTTONS);
-  const info = await cand.evaluateAll((els) => els.map((e) => ({
+  const evalComplete = (loc) => loc.evaluateAll((els) => els.map((e) => ({
     t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}`,
     o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
     isFormControl: e.tagName === 'BUTTON' || (e.tagName === 'INPUT' && ['submit', 'button', 'image'].includes(e.type)),
   })));
+  // ファイル欄が数百個ある画面(product/add.php等)はBUTTONS全候補のevaluateAllが30秒超かかるため、
+  // 先に狭いセレクタ(FAST_COMPLETE)だけで探す(2026-10-09発見)
+  let cand = page.locator(FAST_COMPLETE);
+  let info = await cand.count().catch(() => 0) > 0 ? await evalComplete(cand) : [];
   let idxs = info.reduce((a, c, i) => ((COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o)) ? [...a, i] : a), []);
+  if (!idxs.length) {
+    // 確認画面にフォームが複数ある場合（ヘッダーの検索欄等）もあるため、ページ全体からボタンを探す
+    cand = page.locator(BUTTONS);
+    info = await evalComplete(cand);
+    idxs = info.reduce((a, c, i) => ((COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o)) ? [...a, i] : a), []);
+  }
   if (!idxs.length) {
     // 文言の無い画像ボタン(btn_ok.png等)しか無い画面向け。submitGuarded の acceptWrites フォールバックと同じ考え方で、
     // 本当に危険な操作(削除・取消等)でない候補を最後の手段として対象にする(2026-10-09発見。cms_category/confirm等)。
