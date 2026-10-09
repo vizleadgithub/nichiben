@@ -38,7 +38,26 @@ class Pager {
 		$this->pager_url2 = $pager_url2;
 	}
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/**
+	* 現在のページを、1〜最終ページの範囲に収める
+	* 「すべて」(page_max=0) への切り替え時に、前のページ番号が残って、ページャーが崩れるのを防ぐ
+	*/
+	function normalizeNowPage(){
+		$max = 1;
+		if( $this->list_max>0 && $this->page_max>0 ){
+			$max = (int)ceil($this->list_max / $this->page_max);
+		}
+		$this->now_page = (int)$this->now_page;
+		if( $this->now_page > $max ){
+			$this->now_page = $max;
+		}
+		if( $this->now_page < 1 ){
+			$this->now_page = 1;
+		}
+	}
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function getOffsetStart(){
+		$this->normalizeNowPage();
 		$arr = array();
 		if( ($this->now_page - 1)<0 ){
 			$arr["start"] = 0;
@@ -52,6 +71,7 @@ class Pager {
 	}
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function getOffsetEnd(){
+		$this->normalizeNowPage();
 		$arr = array();
 		if( ($this->now_page - 1)<0 ){
 			$arr["start"] = 0;
@@ -69,6 +89,7 @@ class Pager {
 	}
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function getOffset(){
+		$this->normalizeNowPage();
 		$arr = array();
 		if( ($this->now_page - 1)<0 ){
 			$arr["start"] = 0;
@@ -86,6 +107,7 @@ class Pager {
 	}
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function getPager(){
+		$this->normalizeNowPage();
 		$arr = array();
 		$arr["start"] = $this->now_page - 2;
 		if( $arr["start"] < 1 ){

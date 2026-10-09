@@ -1,6 +1,8 @@
 <?php
 $_SERVER['HTTPS'] = 'on';
 ini_set('display_errors', 0);
+// 管理画面のタブが付けるキャッシュ回避用のパラメータ（_=日時）を取り除く。残ると、GET が空でなくなり、初期表示で検索が実行される
+unset($_GET['_']);
 //+++++++++++++++++++++++++++++++++++++++++++
 mb_language('Japanese');
 date_default_timezone_set('Asia/Tokyo');

@@ -13,7 +13,7 @@ $objDbConnect = new DbConnect();
 $objPager = new Pager();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $pagemax = 5;
-if( isset($_SESSION["mypage.ticket_download.pagemax"]) && !empty($_SESSION["mypage.ticket_download.pagemax"]) ){
+if( isset($_SESSION["mypage.ticket_download.pagemax"]) && is_numeric($_SESSION["mypage.ticket_download.pagemax"]) ){
 	$pagemax = $_SESSION["mypage.ticket_download.pagemax"];
 }
 
@@ -32,6 +32,11 @@ if( isset($_GET["page"]) && !empty($_GET["page"]) && is_numeric($_GET["page"]) )
 if( isset($_GET["pagemax"]) && is_numeric($_GET["pagemax"]) ){
 	$pagemax = $_GET["pagemax"];
 	$_SESSION["mypage.ticket_download.pagemax"] = $pagemax;
+	// 表示件数を変更したとき（ページの指定がないとき）は、1ページ目に戻す。前のページ番号が残ると、ページャーが崩れる
+	if( !(isset($_GET["page"]) && is_numeric($_GET["page"])) ){
+		$page = 1;
+		$_SESSION["ticket_download.page"] = 1;
+	}
 }
 $objPager->setNowPage( $page );
 $objPager->setPageMax( $pagemax );

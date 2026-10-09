@@ -10,7 +10,7 @@ $mtb_bar_association = get_mtb_bar_association();
 $mtb_product_flg = get_mtb_product_flg_icon();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $pagemax = 5;
-if( isset($_SESSION["productlistbarassociationliveother.pagemax"]) && !empty($_SESSION["productlistbarassociationliveother.pagemax"]) ){
+if( isset($_SESSION["productlistbarassociationliveother.pagemax"]) && is_numeric($_SESSION["productlistbarassociationliveother.pagemax"]) ){
 	$pagemax = $_SESSION["productlistbarassociationliveother.pagemax"];
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
@@ -29,6 +29,11 @@ if( isset($_GET["page"]) && !empty($_GET["page"]) && is_numeric($_GET["page"]) )
 if( isset($_GET["pagemax"]) && is_numeric($_GET["pagemax"]) ){
 	$pagemax = $_GET["pagemax"];
 	$_SESSION["productlistbarassociationliveother.pagemax"] = $pagemax;
+	// 表示件数を変更したとき（ページの指定がないとき）は、1ページ目に戻す。前のページ番号が残ると、ページャーが崩れる
+	if( !(isset($_GET["page"]) && is_numeric($_GET["page"])) ){
+		$page = 1;
+		$_SESSION["productlistbarassociationliveother.page"] = 1;
+	}
 }
 $objPager->setNowPage( $page );
 $objPager->setPageMax( $pagemax );
