@@ -3200,7 +3200,8 @@ function csrf_token_get(): string {
 function csrf_token_verify(): void {
 	$stored = $_SESSION['csrf_token'] ?? '';
 	$posted = $_POST['csrf_token'] ?? '';
-	if (empty($stored) || !hash_equals($stored, $posted)) {
+	// 配列等で送られた場合に hash_equals() が TypeError(500・内部パス表示)にならないよう、文字列以外は不一致として扱う
+	if (empty($stored) || !is_string($stored) || !is_string($posted) || !hash_equals($stored, $posted)) {
 		http_response_code(403);
 		exit;
 	}

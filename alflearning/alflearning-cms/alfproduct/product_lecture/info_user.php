@@ -55,7 +55,7 @@ $aid = '';
 //$atype = '';
 if(isset($_REQUEST["aid"])){
 	$aid = $_REQUEST["aid"];
-	if (!preg_match('/^[0-9]*$/', (string)$aid)) { $aid = ''; }  // 数値以外は無視(SQLへの混入防止)
+	if (!is_scalar($aid) || !preg_match('/^[0-9]*$/', (string)$aid)) { $aid = ''; }  // 数値以外(配列含む)は無視(SQLへの混入防止)
 }
 //if(isset($_POST["atype"])){
 //	$atype = $_POST["atype"];
@@ -141,13 +141,14 @@ foreach ($tmp_mtb_bar_association as $key => $val){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 削除ID＆削除結果
+// 数値以外(文字列・配列)は無視する(SQLへの混入防止・配列によるTypeErrorでのエラー画面表示防止)
 $oid = '';
-if(isset($_POST["oid"])){
-	$oid = $_POST["oid"];
+if(isset($_POST["oid"]) && is_scalar($_POST["oid"]) && preg_match('/^[0-9]+$/', (string)$_POST["oid"])){
+	$oid = (string)$_POST["oid"];
 }
 $odid = '';
-if(isset($_POST["odid"])){
-	$odid = $_POST["odid"];
+if(isset($_POST["odid"]) && is_scalar($_POST["odid"]) && preg_match('/^[0-9]+$/', (string)$_POST["odid"])){
+	$odid = (string)$_POST["odid"];
 }
 $res = '';
 if(isset($_GET["res"])){
@@ -359,12 +360,14 @@ if(!isset($_POST['mode'])){
 	$template->assign('unit_total', $unit_total);
 	$template->assign('fp_fix_flg', $fp_fix_flg);
 	$template->assign('page_name', 'product_lecture');
+	$template->assign('csrf_token', csrf_token_get());
 	$template->admin_layout('product_lecture/info_user.tpl');
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 // 削除(キャンセル)
 elseif($_POST['mode'] == 'delete') {
+	csrf_token_verify();
 	if (strlen($odid) > 0) {
 		// 削除ロジックを入れる
 		$sql = "update tbl_order_detail set payment_status = '9' where order_detail_id = '$odid'";
@@ -384,6 +387,7 @@ elseif($_POST['mode'] == 'delete') {
 
 // 受講ステータス変更
 elseif($_POST['mode'] == 'participation') {
+	csrf_token_verify();
 	if (strlen($odid) > 0) {
 		if ($_POST['flg'] == 1){
 			$sql = "update tbl_order_detail set participation_flg = '0' where order_detail_id = '$odid'";
@@ -404,6 +408,7 @@ elseif($_POST['mode'] == 'participation') {
 
 // 支払ステータス変更
 elseif($_POST['mode'] == 'status') {
+	csrf_token_verify();
 	if (strlen($odid) > 0) {
 		$sql = '';
 		if ($_POST['flg'] == 1){
@@ -430,6 +435,7 @@ elseif($_POST['mode'] == 'status') {
 
 // FP固定
 elseif($_POST['mode'] == 'fp_fix') {
+	csrf_token_verify();
 	// 講座のFP固定フラグ更新
 	$sql = "UPDATE rel_product_bar_association_branch SET fp_fix_flg = 1 WHERE product_id = '$pid' AND bar_association_branch_id = '$aid'";
 	$objDbConnect->execute($sql);

@@ -163,6 +163,7 @@ function formSubmitFpFix(formName, mode, pid, aid){
 </form>
 
 <form action="info_user.php" accept-charset="utf-8" method="post" name="list_form">
+<input type="hidden" name="csrf_token" value="<!--{$csrf_token|escape}-->">
 <input type="hidden" name="mode" value="">
 <input type="hidden" name="pid" value="">
 <input type="hidden" name="aid" value="">
