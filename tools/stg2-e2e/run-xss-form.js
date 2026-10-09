@@ -29,7 +29,7 @@ const path = require('path');
 const { expand, fill } = require('./xss-payloads');
 const { Session } = require('./xss-session');
 const { Recorder } = require('./detect');
-const { setFields, fieldForms, fillBaseline, submitGuarded, inspect, resolveRoundtrip } = require('./xss-form-lib');
+const { setFields, fieldForms, fillBaseline, submitGuarded, inspect, resolveRoundtrip, markBestForm } = require('./xss-form-lib');
 
 const WAIT_MS = 300;
 const args = process.argv.slice(2);
@@ -277,6 +277,66 @@ async function resolveTemplate(session, url) {
         if (r2.status < 400 && await hasTargets()) { pageUrl = u.pathname.replace(/[^/]*$/, url.split('/').pop()) + u.search; first = r2; console.log(`  ${url}: 一覧から実在のID(${key})を取得 ${pageUrl}`); break; }
       }
     }
+    // product_lecture・product_lecture2・product_lecture_ethics の info_user.php・info_user_import.php は、
+    // 単純な index.php → 対象ファイル直行では到達できない。親画面 info.php をまず実在の pid で開き、
+    // (1) info_user.php: info.php 上の「管理」リンク(kanri_flg が立つ行のみ。href に info_user.php?...aid=数字 を含む)
+    // (2) info_user_import.php: info_user.php 上の「CSV取り込み」ボタン(info_user_import_form を送信)、
+    //     ただし product_lecture_ethics には info_user.php 自体が無く、info.php から直接 info_user_import_form を
+    //     送信する作りのため aid は不要(2026-10-08発見)
+    if (!(first.status < 400 && await hasTargets()) && siteName === 'product' && /\/info_user(_import)?\.php$/.test(url)) {
+      const dir = url.replace(/[^/]*$/, '');
+      const wantImport = /info_user_import\.php$/.test(url);
+      let infoHref = null;
+      for (const key of ['pid', 'mid', 'sid']) {
+        let r = await session.goto(`${dir}index.php`);
+        if (r.status >= 400) continue;
+        const findHref = (k) => session.page.evaluate((kk) => { const a = [...document.querySelectorAll('a[href]')].find((x) => x.getAttribute('href').includes('info.php') && new RegExp(`[?&]${kk}=\\d+`).test(x.getAttribute('href'))); return a && a.href; }, k);
+        let href = await findHref(key);
+        if (!href) {
+          const hasSearchForm = await session.page.evaluate(() => !!document.forms['search_form']).catch(() => false);
+          if (hasSearchForm) {
+            r = await session.action(() => session.page.evaluate(() => document.forms['search_form'].requestSubmit()));
+            href = await findHref(key);
+          }
+        }
+        if (href) { infoHref = href; break; }
+      }
+      if (infoHref) {
+        const u = new URL(infoHref);
+        const rInfo = await session.goto(u.pathname + u.search);
+        if (rInfo.status < 400) {
+          const hasImportFormHere = await session.page.evaluate(() => !!document.forms['info_user_import_form']).catch(() => false);
+          if (wantImport && hasImportFormHere) {
+            // product_lecture_ethics: info.php 自身に CSV 取り込みフォームがある（aid 不要）
+            const r3 = await session.action(() => session.page.evaluate(() => document.forms['info_user_import_form'].requestSubmit()));
+            if (r3.status < 400 && await hasTargets()) {
+              const fu = new URL(r3.finalUrl);
+              pageUrl = fu.pathname + fu.search; first = r3; console.log(`  ${url}: 親画面(info.php)のCSV取り込みフォーム経由で取得 ${pageUrl}`);
+            }
+          } else {
+            // product_lecture・product_lecture2: info.php 上の「管理」リンク(aid付き)で info_user.php へ
+            const userHref = await session.page.evaluate(() => { const a = [...document.querySelectorAll('a[href]')].find((x) => /info_user\.php\?.*aid=\d+/.test(x.getAttribute('href') || '')); return a && a.href; });
+            if (userHref) {
+              const uu = new URL(userHref);
+              const r3 = await session.goto(uu.pathname + uu.search);
+              if (r3.status < 400 && await hasTargets()) {
+                if (!wantImport) { pageUrl = uu.pathname + uu.search; first = r3; console.log(`  ${url}: 一覧から実在のID(aid)を取得 ${pageUrl}`); }
+                else {
+                  const hasImportForm = await session.page.evaluate(() => !!document.forms['info_user_import_form']).catch(() => false);
+                  if (hasImportForm) {
+                    const r4 = await session.action(() => session.page.evaluate(() => document.forms['info_user_import_form'].requestSubmit()));
+                    if (r4.status < 400 && await hasTargets()) {
+                      const fu = new URL(r4.finalUrl);
+                      pageUrl = fu.pathname + fu.search; first = r4; console.log(`  ${url}: 親画面(info_user.php)のCSV取り込みフォーム経由で取得 ${pageUrl}`);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
     if (first.status === 'ERROR' || first.status === 'SSO' || first.status >= 400) {
       const why = `HTTP ${first.status} ${first.error || ''}`.trim();
       for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: `画面が開けない: ${why}`, url });
@@ -285,6 +345,10 @@ async function resolveTemplate(session, url) {
     }
     const baseDialogs = new Set(session.dialogs);
     const overrides = overridesFor(url);
+    // 対象項目(allNames)を最も多く含むフォームに先に印を付ける。項目名(pid・aid等)が複数の小さな
+    // フォームに重複する画面(product_lecture/info_user.php等)で、本体と無関係な小さなフォームを
+    // 誤って送信対象にしてしまうことを防ぐ(2026-10-08発見)
+    await markBestForm(session.page, allNames);
     const info = new Map((await fieldForms(session.page, allNames)).map((f) => [f.name, f]));
 
     // 項目ごとのテスト対象を作る
@@ -303,6 +367,7 @@ async function resolveTemplate(session, url) {
 
     // 通常の値だけで確認画面まで進めるか（進めない画面は、確認画面の検査ができないため form-defaults.json の追加が必要）
     await session.goto(pageUrl);
+    await markBestForm(session.page, allNames);   // goto で読み込み直した新しいページにも、先に本体フォームの印を付け直す
     // 検索系の画面(一覧・検索)には「確認」画面自体がなく、isConfirmScreen は常に false になる。
     // 一方で、送信前から常に出ている入力欄の説明文(※半角入力 等)を validationErrors が拾ってしまうため、
     // 送信前後の差分だけを「新しく出たエラー」として扱う
@@ -332,6 +397,7 @@ async function resolveTemplate(session, url) {
       for (const p of payloads) {
        try {
         await session.goto(pageUrl);
+        await markBestForm(session.page, allNames);
         await fillBaseline(session.page, t.field, overrides);
         await fillBenignFiles(session.page, overrides);   // 対象以外の file 欄。対象が file 型の場合は直後に攻撃文字列で上書きする
         let value, set;
@@ -389,10 +455,17 @@ async function resolveTemplate(session, url) {
     console.log(`done ${url}  (${targets.length} 項目)`);
    } catch (e) {
     if (/セッションが切れています/.test(e.message)) throw e;
-    // 画面単位の失敗（タイムアウト等）は、その画面の未記録の行を「要確認」にして次へ進む
-    const done = new Set(rec.entries.filter((x) => x.url === url).map((x) => x.id));
+    // 画面単位の失敗（タイムアウト等）は、その画面の未記録の項目を「要確認」にして次へ進む。
+    // id単位ではなく(id, field)単位で判定する: 1つの行(id)が複数項目(field)を持つ場合(S11「まとめ」行等)、
+    // 一部の項目だけ記録された状態でタイムアウトすると、id単位の判定では「記録済み」と誤認し、
+    // 残りの項目が「要確認」にすらならず記録が欠落していた(2026-10-08発見。product/info.php(B-0211)で確認)
+    const done = new Set(rec.entries.filter((x) => x.url === url).map((x) => `${x.id}::${x.field || ''}`));
     const brief = e.message.split('\n')[0].slice(0, 100);
-    for (const r of byUrl.get(url)) if (!done.has(r.id)) rec.add({ id: r.id, verdict: '要確認', note: `実行エラー: ${brief}`, url });
+    for (const r of byUrl.get(url)) {
+      for (const f of r.fields.length ? r.fields : ['']) {
+        if (!done.has(`${r.id}::${f}`)) rec.add({ id: r.id, field: f || undefined, verdict: '要確認', note: `実行エラー: ${brief}`, url });
+      }
+    }
     console.log(`error ${url}: ${brief}`);
    }
   }
