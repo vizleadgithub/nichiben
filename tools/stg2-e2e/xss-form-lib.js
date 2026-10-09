@@ -271,10 +271,17 @@ async function submitGuarded(session, { allowFormSubmit = true, acceptWrites = f
 }
 
 // 1回の送信結果を検査して、行ごとの検出内容を返す。injected: [{ id, marker, field, payload, type }]
+// res.navigated が false の場合、res.html・現在のDOMはサーバーの応答ではなく、送信後も同じページに
+// 留まったときのブラウザ上の状態(page.content())。hidden・checkbox欄は、JSで値を設定しただけでも
+// (サーバーを経由せず)その値がシリアライズされたHTMLの属性にそのまま現れる(ブラウザの仕様。text欄は
+// 現れない)ため、文字列一致による検出(未エスケープ出現・DOM上のイベント属性・確認用出力)がサーバー側の
+// エスケープとは無関係に誤検知する(2026-10-09発見。product_lecture/info_user.php 等22件の誤検知の原因
+// だった)。navigated=false のときはこれらの検出を一切行わず、「ページ遷移なし・未検証」として
+// 要確認扱いにする(ダイアログ実行の検出だけは、実際にJSが実行された結果なので navigated に関わらず有効)
 async function inspect(session, res, injected, baseDialogs) {
   const markers = injected.map((i) => i.marker);
-  const dom = await domInjection(session.page, markers);
-  const dbg = res.html ? debugFindings(res.html) : [];
+  const dom = res.navigated ? await domInjection(session.page, markers) : [];
+  const dbg = (res.navigated && res.html) ? debugFindings(res.html) : [];
   return injected.map((i) => {
     const findings = [];
     const mine = (s) => s.includes(i.marker);
@@ -285,15 +292,19 @@ async function inspect(session, res, injected, baseDialogs) {
     for (const d of dom) {
       if (d.value.includes(i.marker) || d.ng) findings.push({ kind: 'DOM上のイベント属性/JSリンク', text: `<${d.tag} ${d.attr}="${d.value}">`, ng: true });
     }
-    if (i.payload.sig) {
-      const sig = fill(i.payload.sig, i.marker);
-      const at = res.html.indexOf(sig);
-      if (at >= 0) findings.push({ kind: '未エスケープで出現', where: classify(res.html, at), text: sig.slice(0, 120) });
+    if (res.navigated) {
+      if (i.payload.sig) {
+        const sig = fill(i.payload.sig, i.marker);
+        const at = res.html.indexOf(sig);
+        if (at >= 0) findings.push({ kind: '未エスケープで出現', where: classify(res.html, at), text: sig.slice(0, 120) });
+      }
+      if (i.payload.errCheck) for (const f of dbg) findings.push({ kind: `確認用出力(${f.check})`, text: f.text });
+    } else if (findings.length === 0) {
+      findings.push({ kind: '未検証(ページ遷移なし)', text: '送信してもページ遷移が起きず、ブラウザのDOMしか確認できないため、サーバー応答でのエスケープを確認できない' });
     }
     if (i.payload.roundtrip && i.type && /text|search|textarea/.test(i.type) && !session.dialogs.length) {
       findings.push({ kind: '__roundtrip__', value: fill(i.payload.v, i.marker), name: i.field });
     }
-    if (i.payload.errCheck) for (const f of dbg) findings.push({ kind: `確認用出力(${f.check})`, text: f.text });
     if (res.status >= 500) findings.push({ kind: `HTTP ${res.status}`, text: '' });
     return findings;
   });
