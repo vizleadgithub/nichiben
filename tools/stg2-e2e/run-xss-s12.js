@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { fill } = require('./xss-payloads');
 const { Session } = require('./xss-session');
-const { Recorder } = require('./detect');
+const { Recorder, domInjection } = require('./detect');
 const { setFields, fieldForms, fillBaseline, submitGuarded, submitComplete } = require('./xss-form-lib');
 const { crawl, findMarkerOccurrences } = require('./s12-crawl-lib');
 
@@ -87,6 +87,21 @@ async function registerEntry(sessions, entry, rec) {
     rec.add({ id: entry.id, verdict: '要確認', note: `確認画面へ進めない: ${confirmRes.refused}`, url: entry.url });
     return null;
   }
+  // 確認画面自体も、計画の「○○/confirm」行が見たい表示先そのもの(S12の登録元画面)のため、
+  // ここで登録直後の確認画面も合わせてチェックしておく(巡回はPOST専用の/confirmへ原理的に到達できないため。2026-10-09追加)
+  if (confirmRes.navigated) {
+    const sig = sigFor(m);
+    if (confirmRes.html.includes(sig)) {
+      rec.add({ id: `${entry.id}-confirm`, verdict: 'NG', note: `確認画面(${confirmRes.finalUrl})で未エスケープのまま出現`, url: entry.url });
+    } else {
+      const dom = await domInjection(session.page, [m]);
+      if (dom.length) {
+        rec.add({ id: `${entry.id}-confirm`, verdict: 'NG', note: `確認画面(${confirmRes.finalUrl})のDOM上のイベント属性/JSリンクに出現`, url: entry.url });
+      } else {
+        rec.add({ id: `${entry.id}-confirm`, verdict: 'OK', note: `確認画面(${confirmRes.finalUrl})でエスケープ済みと確認`, url: entry.url });
+      }
+    }
+  }
   const completeRes = await submitComplete(session);
   if (completeRes.refused) {
     rec.add({ id: entry.id, verdict: '要確認', note: `登録ボタンを押せない: ${completeRes.refused}`, url: entry.url, scope: '確認画面までは到達' });
@@ -113,7 +128,7 @@ const EXTRA_SEEDS = {
 
 // 登録済みマーカーを使い、CMS・受講者サイトを巡回して出現箇所を探す
 async function crawlForMarkers(sessions, manifest, rec, sites) {
-  const markers = manifest.map((e) => ({ id: e.id, marker: e.marker, sig: e.sig }));
+  const markers = manifest.map((e) => ({ id: e.id, marker: e.marker, sig: e.sig, site: e.site }));
   if (!markers.length) { console.log('登録済みのマーカーがありません（--register-only を先に実行するか、--only を確認してください）'); return; }
   for (const site of sites) {
     const session = sessions[site];
