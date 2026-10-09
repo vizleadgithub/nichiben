@@ -125,18 +125,12 @@ class Cms_exam_problem_import extends CI_Controller {
 
 		if(!is_array($check_exam_problem_lectures) || !is_array($check_exam_problem_groups) || !check_array_data_num(array($check_exam_problem_lectures, $check_exam_problem_groups)) || !check_array_data_ids(array($check_exam_problem_lectures, $check_exam_problem_groups)) || !check_post_fields_scalar(array('teacher_id', 'local_file'))){
 			$this->lang->load('error');
-			$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout'); 
-			$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
-			$error_data['select_callview'] = 'admin_top';
-			
-			//ビュー設定引数設定
-			$disp_param = array(
-							'view_name'   => 'wide_use_error',
-							'submenu_idx' => 4,
-							'view_data'   => $error_data,
-						);
-			//確認フォーム表示
-			$this->_display_view($disp_param);
+			// _display_view()はサブメニュー生成・各種ドロップダウン取得等を無条件に行う重い処理のため、
+			// 不正な入力が原因でこの依存データ取得自体が例外になり500エラーになっていた。
+			// また'wide_use_error'というビュー自体が存在せず、本来はこの呼び出し自体が常に失敗していた。
+			// 依存の無いCodeIgniter標準のshow_error()で直接表示する。
+			$error_message = str_replace('<br />', ' ', $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください'));
+			show_error($error_message, 403);
 		}else{
 			//管理講師と所属講座の関係チェック
 			$check_teacher_id                  = $this->input->post('teacher_id') ? intval($this->input->post('teacher_id')):0;
