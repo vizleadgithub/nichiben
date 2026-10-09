@@ -86,7 +86,8 @@ if(!isset($_POST['act'])){
 	$arr_input = array(
 		'product_name' => $_POST["product_name"],
 		'price' => $_POST["price"],
-		'memo' => $_POST["memo"],
+		// memoは配列への改ざん送信(memo[]=...)でもエラーにならず、mysqli_real_escape_string()に配列を渡すTypeErrorでパス漏えいするため文字列化する
+		'memo' => (string)($_POST["memo"] ?? ""),
 		'passport_target' => $_POST["passport_target"]
 	);
 	
