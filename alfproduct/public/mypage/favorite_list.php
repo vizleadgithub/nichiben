@@ -12,7 +12,7 @@ $objDbConnect = new DbConnect();
 $objPager = new Pager();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $pagemax = 5;
-if( isset($_SESSION["mypage.favoritelist.pagemax"]) && !empty($_SESSION["mypage.favoritelist.pagemax"]) ){
+if( isset($_SESSION["mypage.favoritelist.pagemax"]) && is_numeric($_SESSION["mypage.favoritelist.pagemax"]) ){
 	$pagemax = $_SESSION["mypage.favoritelist.pagemax"];
 }
 
@@ -31,6 +31,11 @@ if( isset($_GET["page"]) && !empty($_GET["page"]) && is_numeric($_GET["page"]) )
 if( isset($_GET["pagemax"]) && is_numeric($_GET["pagemax"]) ){
 	$pagemax = intval($_GET["pagemax"]);
 	$_SESSION["mypage.favoritelist.pagemax"] = intval($pagemax);
+	// 表示件数を変更したとき（ページの指定がないとき）は、1ページ目に戻す。前のページ番号が残ると、ページャーが崩れる
+	if( !(isset($_GET["page"]) && is_numeric($_GET["page"])) ){
+		$page = 1;
+		$_SESSION["mypage.favoritelist.page"] = 1;
+	}
 }
 $objPager->setNowPage( $page );
 $objPager->setPageMax( $pagemax );

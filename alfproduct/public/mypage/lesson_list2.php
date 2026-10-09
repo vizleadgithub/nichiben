@@ -17,7 +17,7 @@ foreach ($tmp_mtb_bar_association as $key => $val){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $pagemax = 5;
-if( isset($_SESSION["mypage.lesson_list2.pagemax"]) && !empty($_SESSION["mypage.lesson_list2.pagemax"]) ){
+if( isset($_SESSION["mypage.lesson_list2.pagemax"]) && is_numeric($_SESSION["mypage.lesson_list2.pagemax"]) ){
 	$pagemax = $_SESSION["mypage.lesson_list2.pagemax"];
 }
 
@@ -36,6 +36,11 @@ if( isset($_GET["page"]) && !empty($_GET["page"]) && is_numeric($_GET["page"]) )
 if( isset($_GET["pagemax"]) && is_numeric($_GET["pagemax"]) ){
 	$pagemax = $_GET["pagemax"];
 	$_SESSION["mypage.lesson_list2.pagemax"] = $pagemax;
+	// 表示件数を変更したとき（ページの指定がないとき）は、1ページ目に戻す。前のページ番号が残ると、ページャーが崩れる
+	if( !(isset($_GET["page"]) && is_numeric($_GET["page"])) ){
+		$page = 1;
+		$_SESSION["lesson_list2.page"] = 1;
+	}
 }
 $objPager->setNowPage( $page );
 $objPager->setPageMax( $pagemax );
