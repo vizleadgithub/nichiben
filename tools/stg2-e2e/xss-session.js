@@ -143,8 +143,9 @@ class Session {
     // waitForNavigation がタイムアウトし、「遷移しなかった」扱いになることがあった(2026-10-09発見。
     // amount_order/index.php で実測: POST送信からHTTP応答まで56秒以上かかっていた。アプリ側の
     // パフォーマンス問題の可能性が高い。30秒でもまだ足りなかったため、goto()と同じ90秒に合わせる)
+    // product/add.php等の登録確定(S12)は実測92秒かかることがあり90秒でもまだ足りなかったため150秒に延長(2026-10-09)
     const [res] = await Promise.all([
-      this.page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 90000 }).catch(() => null),
+      this.page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 150000 }).catch(() => null),
       fn(),
     ]);
     await this.page.waitForTimeout(400);   // img onerror / svg onload 等の非同期の実行を待つ
