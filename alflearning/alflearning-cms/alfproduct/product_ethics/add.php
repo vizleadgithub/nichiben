@@ -163,7 +163,8 @@ if(!isset($_POST['act'])){
 		'start_date' => $_POST["start_date"] ?? "",
 		'end_date' => $_POST["end_date"] ?? "",
 		'open_period' => $_POST["open_period"] ?? "",
-		'memo' => $_POST["memo"] ?? "",
+		// memoは配列への改ざん送信(memo[]=...)でもエラーにならず、mysqli_real_escape_string()に配列を渡すTypeErrorでパス漏えいするため文字列化する
+		'memo' => (string)($_POST["memo"] ?? ""),
 		'term_id' => $_POST["term_id"] ?? "",
 		'play_time' => $_POST["play_time"] ?? "",
 		'teacher' => $_POST["teacher"] ?? "",

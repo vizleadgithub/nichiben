@@ -115,7 +115,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$search_target_parameter_job_type = trim($_POST["search_job_type"]);
 	$search_target_parameter_school_grade = trim($_POST["search_school_grade"]);
 
-	$search_mailmagazine_category = $_POST["search_mailmagazine_category"];
+	$search_mailmagazine_category = isset($_POST["search_mailmagazine_category"]) ? $_POST["search_mailmagazine_category"] : array();
 
 	$_SESSION["mailmagazine.search_start_date"] = $search_start_date;
 	$_SESSION["mailmagazine.search_end_date"] = $search_end_date;

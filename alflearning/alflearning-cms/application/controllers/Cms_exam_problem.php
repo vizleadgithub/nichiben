@@ -1797,18 +1797,12 @@ class Cms_exam_problem extends CI_Controller {
 	//----------------------------------------------
 	function _display_unjust_access(){
 		$this->lang->load('error');
-		$error_data['returnurl']       = site_url('admin_top');    // site_url('login_page/logout');
-		$error_data['error_message']   = $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください');
-		$error_data['select_callview'] = 'admin_top';
-
-		//ビュー設定引数設定
-		$disp_param = array(
-						'view_name'   => 'wide_use_error',
-						'submenu_idx' => 4,
-						'view_data'   => $error_data,
-					);
-		//エラーフォーム表示
-		$this->_display_view($disp_param);
+		// _display_view()はサブメニュー生成・各種ドロップダウン取得等を無条件に行う重い処理のため、
+		// 不正な入力が原因でこの依存データ取得自体が例外になり500エラーになっていた。
+		// また'wide_use_error'というビュー自体が存在せず、本来はこの呼び出し自体が常に失敗していた。
+		// 依存の無いCodeIgniter標準のshow_error()で直接表示する。
+		$error_message = str_replace('<br />', ' ', $this->lang->line_or_def('error_unjust_access','不正アクセスを検知しました<br />ログインし直してください'));
+		show_error($error_message, 403);
 	}
 
 	//----------------------------------------------
