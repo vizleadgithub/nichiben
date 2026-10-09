@@ -85,7 +85,7 @@
 											<?php
 											//解答種類 1:単一形式、2:複数形式、3:フリー回答
 											if( $export_data[0]["exam2_problem"][$i2]["answer_kind"] == 1 ){
-												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"],true );
+												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"] );
 												if( isset($arr_temp->answer_contents) && !empty($arr_temp->answer_contents) ){
 													for($i3=0;$i3<count($arr_temp->answer_contents);$i3++){
 														$temp = $arr_temp->answer_contents[$i3];
@@ -96,7 +96,7 @@
 												}
 											} elseif( $export_data[0]["exam2_problem"][$i2]["answer_kind"] == 2 ){
 												$arr_answer = explode(",",$student['answer'][$i2]["exam2_answer_contents"]);
-												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"],true );
+												$arr_temp = json_decode( $export_data[0]["exam2_problem"][$i2]["answer_contents"] );
 
 												for($i4=0;$i4<count($arr_answer);$i4++){
 													if( isset($arr_temp->answer_contents) && !empty($arr_temp->answer_contents) ){
