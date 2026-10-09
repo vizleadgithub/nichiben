@@ -762,7 +762,9 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
 
 **対応(`xss-form-lib.js`の`inspect()`):** `res.navigated`が`false`のときは、「未エスケープで出現」「確認用出力」「DOM上のイベント属性/JSリンク」の検出を一切行わず、「未検証(ページ遷移なし)」として要確認扱いにするよう修正。22件全てで再実行し、訂正を確認済み(`node ng-list.js --escape-only`の対象が22件→0件になった)。
 
-**残課題:** なぜこれらの画面で送信してもページ遷移が起きないのか(サーバー応答が得られない理由)は未調査。`product_lecture`系`info_user.php`・`amount_order/product_live`の`index.php`・CMSの6確認画面(cms_book_library・cms_exam2_download・cms_exam2_problem_import・cms_exam_problem_import・cms_issue・cms_material)は、現状「未検証」のままで、実際のXSS有無の自動判定ができていない。今後、送信方法(ボタン検出・`requestSubmit()`呼び出し箇所)を見直すか、人が実機で確認する必要がある。
+**残課題:** なぜこれらの画面で送信してもページ遷移が起きないのか(サーバー応答が得られない理由)は未調査だったが、`amount_order`/`product_live`の`index.php`については原因を特定した(下記)。`product_lecture`系`info_user.php`はB-0320/341/360として手動テストで決着済み([B-22]参照)。CMSの6確認画面(cms_book_library・cms_exam2_download・cms_exam2_problem_import・cms_exam_problem_import・cms_issue・cms_material)は原因未特定のまま残っている(ログに「セッション切れのため再ログインします」が混在しており、送信中のセッション切れ→自動再ログインが遷移検出を妨げている可能性がある)。
+
+**2026-10-09追加調査: `amount_order`/`product_live`の`index.php`(search_orderby)の原因を特定**: `xss-session.js`の`action()`のナビゲーション検出タイムアウト(15秒)を疑ったが、実測した結果、`amount_order/index.php`は検索条件(日付等)を指定しない状態で送信すると**サーバー応答に56秒以上かかる**ことが判明(診断スクリプトで実測)。**この画面は運用上、必ず日付等の検索条件を付けて使う前提であり、無条件検索はそもそも想定外の使い方**とのこと(担当者より確認)。`action()`のタイムアウトを90秒に延長(`goto()`と同じ)したうえで、`test-plan/form-defaults.json`に`amount_order/index.php`・`product_live/index.php`用の日付範囲の既定値を追加。**単体の診断スクリプトでは、日付条件を設定することで応答が142msまで改善することを確認済み**(アプリ側の問題ではなく、想定通りの挙動と確認できた)。ただし、**実際の`run-xss-form.js`本体を通すと、同じ既定値を設定しているはずなのに依然「未検証(ページ遷移なし)」のまま**という謎が残っている(単体の診断では再現しない。ハーネス側の別の問題の可能性。2026-10-09時点で未解決、深追いを保留)。
 
 **2026-10-09 根本原因判明・修正**: 上記の「ナビゲーションが連鎖的に割り込まれて失敗する」現象は、並行実行数とは無関係に、`xss-session.js`の`goto()`/`action()`がページ遷移後の遅延リダイレクト(JSのsetTimeout等)の完了を待たずに次の操作へ進んでいたことが原因と判明(stg2サーバーが安定している状態でも、単独実行で同じ現象が再現した)。`goto()`/`action()`に、遷移後`networkidle`を短時間(2秒)待つ処理を追加し、商品管理・受講者サイトとも大部分で解消を確認済み(`amount_order/info.php`(B-0016/B-0017)のみ、2秒待っても解消しない別要因が残っている)。
 
