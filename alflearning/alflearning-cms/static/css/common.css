@@ -81,6 +81,10 @@ TABLE.form{
 	TABLE.form TD, TABLE.form TH{
 		padding	: 5px;
 	}
+	/* 長い名前の選択肢があっても、レイアウトが崩れないよう、プルダウンの幅を制限 */
+	TABLE.form SELECT{
+		max-width	: 560px;
+	}
 
 UL.list{
 	margin-top	: 10px;
