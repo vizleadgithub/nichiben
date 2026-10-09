@@ -105,7 +105,7 @@ float:right;
 							<!--{foreach name=loop1 from=$row.answer_contents_select.answer_contents item="row1" key="key1"}-->
 							<!--{assign var=row_no1 value=$smarty.foreach.loop1.iteration}-->
 								<div class="problem_content">
-									<div class="content1"><input type="checkbox" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no|escape}-->" <!--{if array_search($row1.no, $exam2_answer[$row.exam2_problem_id].exam2_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
+									<div class="content1"><input type="checkbox" id="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->" name="exam2_problem_<!--{$row.exam2_problem_id}-->[]" value="<!--{$row1.no|escape}-->" <!--{if is_array($exam2_answer[$row.exam2_problem_id].exam2_answer_contents) && array_search($row1.no, $exam2_answer[$row.exam2_problem_id].exam2_answer_contents)!==false}-->checked<!--{/if}-->><!--{$row_no1}-->.</div>
 									<div class="content2"><label for="exam2_problem_<!--{$row.exam2_problem_id}-->_<!--{$row_no1}-->"><!--{$row1.word|purify_ethic_inline_html|nl2br}--></label></div>
 								</div>
 								<br style="clear:both;">
