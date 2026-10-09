@@ -335,8 +335,16 @@ async function submitComplete(session) {
   const info = await cand.evaluateAll((els) => els.map((e) => ({
     t: `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}${(e.getAttribute('src') || '').split('/').pop()}`,
     o: `${e.getAttribute('onclick') || ''} ${/^javascript:/i.test(e.getAttribute('href') || '') ? e.getAttribute('href') : ''}`,
+    isFormControl: e.tagName === 'BUTTON' || (e.tagName === 'INPUT' && ['submit', 'button', 'image'].includes(e.type)),
   })));
-  const idxs = info.reduce((a, c, i) => ((COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o)) ? [...a, i] : a), []);
+  let idxs = info.reduce((a, c, i) => ((COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o)) ? [...a, i] : a), []);
+  if (!idxs.length) {
+    // 文言の無い画像ボタン(btn_ok.png等)しか無い画面向け。submitGuarded の acceptWrites フォールバックと同じ考え方で、
+    // 本当に危険な操作(削除・取消等)でない候補を最後の手段として対象にする(2026-10-09発見。cms_category/confirm等)。
+    // ページ全体から探すため、ヘッダーのナビゲーション(<a>)を誤って押さないよう、実際のフォーム部品(ボタン・画像ボタン)
+    // のみを対象にする(<a>・img[onclick]は対象外)
+    idxs = info.reduce((a, c, i) => (c.isFormControl && !DESTRUCTIVE_LABEL.test(c.t) && !DESTRUCTIVE_LABEL.test(c.o) ? [...a, i] : a), []);
+  }
   if (!idxs.length) return { refused: `登録ボタンを特定できない。ボタン: ${info.map((c) => c.t.slice(0, 20)).join(' | ').slice(0, 100)}` };
   // 文言が一致する候補が複数ある場合(ページ内のナビゲーション等が偶然一致することがある。2026-10-08発見)、
   // 最初の候補が実際にはクリックできない(非表示等)ことがあるため、クリックできる候補が見つかるまで順に試す

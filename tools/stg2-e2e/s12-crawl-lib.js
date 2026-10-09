@@ -23,6 +23,7 @@ async function crawl(session, { maxPages = 300, seedUrls = [], onPage }) {
   const seen = new Set();
   const perPattern = new Map();
   const skipped = new Set();
+  const visitedUrls = [];
   let visited = 0;
 
   while (queue.length && visited < maxPages) {
@@ -39,6 +40,7 @@ async function crawl(session, { maxPages = 300, seedUrls = [], onPage }) {
     const res = await session.goto(url);
     if (res.status === 'ERROR' || res.status === 'SSO') continue;
     visited++;
+    visitedUrls.push(url);
     await onPage(url, res.html, res.status);
 
     const hrefs = await session.page.$$eval('a[href]', (as) => as.map((a) => a.href)).catch(() => []);
@@ -54,7 +56,7 @@ async function crawl(session, { maxPages = 300, seedUrls = [], onPage }) {
     }
     await session.page.waitForTimeout(WAIT_MS);
   }
-  return { visited, skipped: [...skipped].sort() };
+  return { visited, skipped: [...skipped].sort(), visitedUrls };
 }
 
 // ページの HTML・DOM から、各マーカーの出現を探して分類する。
