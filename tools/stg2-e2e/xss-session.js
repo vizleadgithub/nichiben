@@ -103,6 +103,11 @@ class Session {
       let res;
       try {
         res = await this.page.goto(this.abs(url), { waitUntil: 'domcontentloaded', timeout: 90000 });
+        // ページ側の遅延リダイレクト(JSのsetTimeout等)がこの時点でまだ発火していないことがあり、
+        // 次のgoto()呼び出しとタイミングが重なると「別のナビゲーションに割り込まれた」エラーが
+        // 連鎖することがある(2026-10-09発見。amount_order/info.php等)。短時間だけnetworkidleを
+        // 待ち、解決しなくても無視して続行する(安全側のベストエフォート)
+        await this.page.waitForLoadState('networkidle', { timeout: 2000 }).catch(() => {});
       } catch (e) {
         // SSO へのリダイレクトを遮断した場合: 保存済みセッションなら期限切れ。未ログインなら「SSO へ遷移した」ことだけ返す
         if (this.blocked) {
@@ -139,6 +144,7 @@ class Session {
       fn(),
     ]);
     await this.page.waitForTimeout(400);   // img onerror / svg onload 等の非同期の実行を待つ
+    if (res) await this.page.waitForLoadState('networkidle', { timeout: 2000 }).catch(() => {});   // 遅延リダイレクトの連鎖防止(goto()と同じ理由)
     const finalUrl = this.page.url();
     if (res) return { status: res.status(), html: await this.text(res, finalUrl), finalUrl, navigated: true };
     return { status: 200, html: await this.page.content(), finalUrl, navigated: false };
