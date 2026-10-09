@@ -2,31 +2,58 @@
 const { fill } = require('./xss-payloads');
 const { debugFindings, classify, domInjection } = require('./detect');
 
-// フォームの各項目へ値を入れる。select は選択肢を追加、radio/checkbox は value を書き換えてチェックする
-// （画面上は入力できない値を直接送る改ざん相当）。送信するフォームに目印の属性を付ける
-function setFields(page, fields) {
-  return page.evaluate((fs) => fs.map(({ name, value }) => {
-    const el = document.querySelector(`[name="${CSS.escape(name)}"]`);
-    if (!el) return { name, found: false };
-    if (el.form) el.form.setAttribute('data-xss-form', '1');
-    const tag = el.tagName.toLowerCase();
-    if (value === null) return { name, found: true, type: el.type || tag };   // 値は変えず、フォームの目印だけ付ける
-    if (tag === 'select') {
-      const o = document.createElement('option');
-      o.value = value; o.textContent = value; el.appendChild(o); el.value = value;
-    } else if (el.type === 'radio' || el.type === 'checkbox') {
-      el.value = value; el.checked = true;
-    } else {
-      el.removeAttribute('readonly'); el.value = value;
+// 画面内で対象項目(names)を最も多く含むフォームを本体として特定し、目印(data-xss-form)を付ける。
+// 個々の項目操作(setFields等)より先に1回呼ぶことで、同じ項目名(pid・aid等)が複数の小さなフォーム
+// (個別登録用・CSV取り込み用の隠しpid/aid欄等)に重複して存在する画面(product_lecture/info_user.php等)で、
+// document.querySelector の「最初に見つかった要素」が意図しない別フォームを指してしまう誤認識を防ぐ
+// (2026-10-08発見。B-0320のaidがinfo_user_regist_formの隠し欄に誤って紐付いていた)
+function markBestForm(page, names) {
+  return page.evaluate((ns) => {
+    const counts = new Map();
+    for (const n of ns) {
+      for (const el of document.querySelectorAll(`[name="${CSS.escape(n)}"]`)) {
+        if (el.form) counts.set(el.form, (counts.get(el.form) || 0) + 1);
+      }
     }
-    return { name, found: true, type: el.type || tag };
-  }), fields);
+    let best = null; let bestCount = 0;
+    for (const [f, c] of counts) { if (c > bestCount) { best = f; bestCount = c; } }
+    if (best) best.setAttribute('data-xss-form', '1');
+  }, names);
+}
+
+// フォームの各項目へ値を入れる。select は選択肢を追加、radio/checkbox は value を書き換えてチェックする
+// （画面上は入力できない値を直接送る改ざん相当）。送信するフォームに目印の属性を付ける。項目名が複数の
+// フォームに重複する画面では、markBestForm で先に印を付けた本体フォームの要素を優先する
+function setFields(page, fields) {
+  return page.evaluate((fs) => {
+    const findByName = (name) => {
+      const els = [...document.querySelectorAll(`[name="${CSS.escape(name)}"]`)];
+      return els.find((e) => e.form && e.form.hasAttribute('data-xss-form')) || els[0];
+    };
+    return fs.map(({ name, value }) => {
+      const el = findByName(name);
+      if (!el) return { name, found: false };
+      if (el.form) el.form.setAttribute('data-xss-form', '1');
+      const tag = el.tagName.toLowerCase();
+      if (value === null) return { name, found: true, type: el.type || tag };   // 値は変えず、フォームの目印だけ付ける
+      if (tag === 'select') {
+        const o = document.createElement('option');
+        o.value = value; o.textContent = value; el.appendChild(o); el.value = value;
+      } else if (el.type === 'radio' || el.type === 'checkbox') {
+        el.value = value; el.checked = true;
+      } else {
+        el.removeAttribute('readonly'); el.value = value;
+      }
+      return { name, found: true, type: el.type || tag };
+    });
+  }, fields);
 }
 
 // 各項目が属するフォームの番号を調べる（フォームの外の項目は -1）
 function fieldForms(page, names) {
   return page.evaluate((ns) => ns.map((name) => {
-    const el = document.querySelector(`[name="${CSS.escape(name)}"]`);
+    const els = [...document.querySelectorAll(`[name="${CSS.escape(name)}"]`)];
+    const el = els.find((e) => e.form && e.form.hasAttribute('data-xss-form')) || els[0];
     return { name, found: !!el, form: el && el.form ? [...document.forms].indexOf(el.form) : -1, type: el ? (el.type || el.tagName.toLowerCase()) : '' };
   }), names);
 }
@@ -35,7 +62,8 @@ function fieldForms(page, names) {
 // すでに値がある欄・選択済みの欄はそのまま。overrides: { 項目名: 値 }（画面ごとに必要なら test-plan/form-defaults.json で指定）
 function fillBaseline(page, targetName, overrides = {}, includeTarget = false) {
   return page.evaluate(({ targetName, overrides, includeTarget }) => {
-    const target = document.querySelector(`[name="${CSS.escape(targetName)}"]`);
+    const targetEls = [...document.querySelectorAll(`[name="${CSS.escape(targetName)}"]`)];
+    const target = targetEls.find((e) => e.form && e.form.hasAttribute('data-xss-form')) || targetEls[0];
     const form = target && target.form;
     if (!form) return { filled: 0 };
     const guess = (el) => {
@@ -102,6 +130,11 @@ const ALLOW_LABEL_PRIMARY = /確認|confirm/i;
 const ALLOW_LABEL_SECONDARY = /検索|search|preview|プレビュー|次へ|next|btn_revise/i;
 const ALLOW_LABEL = new RegExp(`${ALLOW_LABEL_PRIMARY.source}|${ALLOW_LABEL_SECONDARY.source}`, 'i');
 const DENY_LABEL = /登録|更新|削除|送信|実行|決定|完了|退会|ログアウト|logout|commit|regist|delete|remove|save|send|update|insert|upload|import|csv|complete/i;
+// acceptWrites(段階B)の最終手段フォールバック専用: DENY_LABEL は「登録・更新」等の正当な書き込み操作も
+// 含めて広く拒否するが、acceptWrites時はその書き込み自体が目的のため、本当に危険な操作(削除・取消・
+// ログアウト等。元に戻せない/対象外の操作)だけを避ければよい(2026-10-08発見。info_user_import.phpの
+// 「アップロードする」リンク(onclickの引数に'upload'を含む)がDENY_LABELで誤って除外されていた)
+const DESTRUCTIVE_LABEL = /削除|取消|キャンセル|退会|ログアウト|logout|delete|remove|cancel|reset|clear/i;
 // onclick の引数（'complete'・'regist'・'delete' など）が書き込み系なら、確認系の文言があっても押さない
 const DENY_ARG = /^(complete|regist\w*|commit|delete\w*|del|remove|exec\w*|save|update\w*|insert|upload\w*|import\w*|send\w*|cancel|reset|clear|logout|approve\w*)$/i;
 const DENY_ACTION = /commit|regist|insert|update|delete|del_|remove|save|exec|complete|send|upload|import|csv|download|approve|cancel|reset|clear|logout|bat_/i;
@@ -196,19 +229,19 @@ async function submitGuarded(session, { allowFormSubmit = true, acceptWrites = f
     // 書き込みを許容する場合(段階B)は、登録・更新系のボタン(COMPLETE_LABEL)を対象フォーム内から探して押す。
     // newdata→confirmの中間段階が無く、入力からそのまま登録される画面(cms_issue/newdata等)向け
     if (acceptWrites) {
-      const completeInfo = await evalInfo(form);
-      let completeIdx = completeInfo.findIndex((c) => COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o));
       let completeCand = form.locator(BUTTONS);
+      const completeInfo = await evalInfo(completeCand);
+      let completeIdx = completeInfo.findIndex((c) => COMPLETE_LABEL.test(c.t) || COMPLETE_LABEL.test(c.o));
       if (completeIdx < 0) {
-        // 文言が無い画像ボタン(<input type=image src="btn_ok.png"> 等。alt/value/onclickが無く、
-        // ファイル名からも意味を判定できない)だけの画面向け。ここまでで確認・検索ボタン(pickButton)も
-        // COMPLETE_LABELも見つからなかった場合、フォーム内の「本物の送信コントロール」(submit/image。
-        // <a>やonclick付きimg等、押しても送信されない物は対象外)のうち、明らかな削除・キャンセル等
-        // (DENY_LABEL)ではないものを最後の手段として対象にする(cms_issue/newdata等。2026-10-08発見)
-        const generic = form.locator('input[type=submit], input[type=image], button[type=submit], button:not([type])');
-        const genericInfo = await evalInfo(generic);
-        const genericIdx = genericInfo.findIndex((c) => !DENY_LABEL.test(c.t) && !DENY_LABEL.test(c.o));
-        if (genericIdx >= 0) { completeCand = generic; completeIdx = genericIdx; }
+        // ここまでで確認・検索ボタン(pickButton)も COMPLETE_LABEL(登録・更新等の文言)も見つからなかった
+        // 場合、フォーム内の全候補(BUTTONS。文言が無い画像ボタン・<a onclick>のCSV取り込みリンク等も含む)
+        // のうち、本当に危険な操作(DESTRUCTIVE_LABEL。削除・キャンセル・ログアウト等)ではないものを
+        // 最後の手段として対象にする(cms_issue/newdata等。2026-10-08発見)。acceptWrites時はDENY_LABELの
+        // 「登録・更新・upload」等まで除外すると、info_user_import.phpの「アップロードする」リンク
+        // (onclickの引数に'upload'を含みDENY_LABELに一致する)のような正当な書き込み操作まで除外して
+        // しまうため、ここだけはDESTRUCTIVE_LABEL(真に危険な操作のみ)で判定する(2026-10-08発見)
+        const genericIdx = completeInfo.findIndex((c) => !DESTRUCTIVE_LABEL.test(c.t) && !DESTRUCTIVE_LABEL.test(c.o));
+        if (genericIdx >= 0) { completeIdx = genericIdx; }
       }
       if (completeIdx >= 0) {
         return session.action(() => completeCand.nth(completeIdx).click({ timeout: 3000 }).catch(() => form.evaluate((f) => f.requestSubmit())));
@@ -305,4 +338,4 @@ async function submitComplete(session) {
   }
 }
 
-module.exports = { setFields, fieldForms, fillBaseline, submitGuarded, submitComplete, inspect, resolveRoundtrip };
+module.exports = { setFields, fieldForms, fillBaseline, submitGuarded, submitComplete, inspect, resolveRoundtrip, markBestForm };
