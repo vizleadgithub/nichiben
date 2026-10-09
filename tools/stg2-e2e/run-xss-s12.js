@@ -30,6 +30,9 @@ const registerOnly = args.includes('--register-only');
 const crawlOnly = args.includes('--crawl-only');
 const maxPages = opt('--max-pages') ? Number(opt('--max-pages')) : 300;
 const only = opt('--only') ? new Set(opt('--only').split(',')) : null;
+// 受講者SSOのセッションが短時間で切れるため、CMS巡回の後に受講者巡回へ進むと間に合わないことがある。
+// その場合は --crawl-site student で、ログイン直後に受講者サイトだけを単独で巡回できるようにする
+const crawlSites = opt('--crawl-site') ? [opt('--crawl-site')] : ['cms', 'student'];
 
 const ENTRIES_PATH = path.join(__dirname, 'test-plan/s12-entries.json');
 const MANIFEST_PATH = path.join(__dirname, 'test-results/s12-manifest.json');
@@ -107,10 +110,10 @@ const EXTRA_SEEDS = {
 };
 
 // 登録済みマーカーを使い、CMS・受講者サイトを巡回して出現箇所を探す
-async function crawlForMarkers(sessions, manifest, rec) {
+async function crawlForMarkers(sessions, manifest, rec, sites) {
   const markers = manifest.map((e) => ({ id: e.id, marker: e.marker, sig: e.sig }));
   if (!markers.length) { console.log('登録済みのマーカーがありません（--register-only を先に実行するか、--only を確認してください）'); return; }
-  for (const site of ['cms', 'student']) {
+  for (const site of sites) {
     const session = sessions[site];
     console.log(`\n巡回: ${site}（${markers.length} 件のマーカーを探索。最大 ${maxPages} 画面）`);
     const occurrencesByPage = [];
@@ -154,8 +157,16 @@ async function crawlForMarkers(sessions, manifest, rec) {
   if (!crawlOnly) {
     console.log(`登録: ${entries.length} 件`);
     for (const e of entries) {
-      const m = await registerEntry(sessions, e, rec);
-      if (m) manifest.push(m);
+      try {
+        const m = await registerEntry(sessions, e, rec);
+        if (m) manifest.push(m);
+      } catch (err) {
+        // 1件のクラッシュ・タイムアウトで残り全件の登録を失わないよう、記録して次へ進む
+        // (2026-10-09発見。product_live/add.php 等の重い画面で発生)
+        console.log(`skip ${e.id}: 登録中にエラー(${err.message.split('\n')[0]})`);
+        rec.add({ id: e.id, verdict: '要確認', note: `登録中にエラー: ${err.message.split('\n')[0]}`, url: e.url });
+        await sessions[e.session].recreatePage().catch(() => {});
+      }
     }
     fs.mkdirSync(path.dirname(MANIFEST_PATH), { recursive: true });
     fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 1));
@@ -165,7 +176,7 @@ async function crawlForMarkers(sessions, manifest, rec) {
     manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf-8'));
   }
 
-  if (!registerOnly) await crawlForMarkers(sessions, manifest, rec);
+  if (!registerOnly) await crawlForMarkers(sessions, manifest, rec, crawlSites);
 
   await sessions.cms.close();
   await sessions.student.close();

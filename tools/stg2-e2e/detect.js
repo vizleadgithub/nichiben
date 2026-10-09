@@ -44,12 +44,24 @@ function classify(html, idx) {
 // ng: 識別マーカーを含む、または攻撃文字列そのもの(alert(1))のとき。もともと画面にある alert( は ng=false（要確認）
 function domInjection(page, markers) {
   return page.evaluate((ms) => {
+    // マーカーの直後に、無害化されていない "・'・<・> が続く場合だけ「危険」とみなす。
+    // " (JS文字列エスケープ)・&quot; (HTML実体参照) 等で無害化された状態でも、
+    // マーカー文字列自体は部分一致してしまうため、直後の1文字まで見て判定する
+    // (2026-10-09発見。cms_videoのタグ候補一覧(set_tag())で、2段階エスケープ済みの値を
+    // 誤ってNGと判定していた)
+    const hasUnescapedMarker = (v, m) => {
+      let i = -1;
+      while ((i = v.indexOf(m, i + 1)) !== -1) {
+        if (['"', "'", '<', '>'].includes(v[i + m.length])) return true;
+      }
+      return false;
+    };
     const hits = [];
     for (const el of document.querySelectorAll('*')) {
       for (const a of el.attributes) {
         const v = a.value;
         const hasAlert = /alert\(/.test(v);
-        const mine = ms.some((m) => v.includes(m)) || /^\s*(javascript:)?\s*alert\(1\)\s*;?\s*$/.test(v);
+        const mine = ms.some((m) => hasUnescapedMarker(v, m)) || /^\s*(javascript:)?\s*alert\(1\)\s*;?\s*$/.test(v);
         const dangerousOn = /^on/i.test(a.name) && (hasAlert || mine);
         const jsUrl = /^(href|src|action|formaction|data)$/i.test(a.name) && /^\s*javascript:/i.test(v) && (hasAlert || mine);
         if (dangerousOn || jsUrl) hits.push({ tag: el.tagName.toLowerCase(), attr: a.name, value: v.slice(0, 120), ng: mine });
