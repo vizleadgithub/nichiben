@@ -300,31 +300,31 @@ foreach ($arr_rel_video_product as $val){
 	<?php foreach ($arr_rel_video_product as $video_id => $val){ ?>
 		<?php if ($val['disp_flg']){ ?>
 		<tr>
-			<td class="lecture_title" colspan="2"><h4><a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><?php echo htmlspecialchars( $val['product_name'], ENT_QUOTES, 'UTF-8'); ?></a></h4></td>
+			<td class="lecture_title" colspan="2"><h4><a href="/product/detail.php?pid=<?php echo (int)$val['product_id']; ?>"><?php echo htmlspecialchars( $val['product_name'], ENT_QUOTES, 'UTF-8'); ?></a></h4></td>
 		</tr>
 		<tr>
 			<td style="text-align:center;">
 
 			<div class="lecture_img">
 			<?php if ($val['thumbnail'] != ''){ ?>
-				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="/resize_image.php?image=<?php echo $val['thumbnail']; ?>&width=100&height=100" alt="" /></a>
+				<a href="/product/detail.php?pid=<?php echo (int)$val['product_id']; ?>"><img src="/resize_image.php?image=<?php echo esc_attr($val['thumbnail']); ?>&width=100&height=100" alt="" /></a>
 			<?php } else if ($val['contents_thumbnail1'] != ''){ ?>
-				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="/resize_image.php?image=<?php echo $val['contents_thumbnail1']; ?>&width=100&height=100" alt="" /></a>
+				<a href="/product/detail.php?pid=<?php echo (int)$val['product_id']; ?>"><img src="/resize_image.php?image=<?php echo esc_attr($val['contents_thumbnail1']); ?>&width=100&height=100" alt="" /></a>
 			<?php } else if ($val['video_thumbnail'] != ''){ ?>
-				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="/resize_video_image.php?image=<?php echo $val['video_thumbnail']; ?>&width=100&height=100" alt="" /></a>
+				<a href="/product/detail.php?pid=<?php echo (int)$val['product_id']; ?>"><img src="/resize_video_image.php?image=<?php echo esc_attr($val['video_thumbnail']); ?>&width=100&height=100" alt="" /></a>
 			<?php } else { ?>
-				<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><img src="/resize_image.php?image=noimage.jpg&width=100&height=100" alt="" /></a>
+				<a href="/product/detail.php?pid=<?php echo (int)$val['product_id']; ?>"><img src="/resize_image.php?image=noimage.jpg&width=100&height=100" alt="" /></a>
 			<?php } ?>
 			</div>
 			</td>
 			<td style="text-align:center;vertical-align:middle;">
-				<div class="lecture_status">受講<?php echo $val['max_percent']; ?>％</div>
-				<div class="lecture_status">残り<?php echo $val['all_remaining']; ?></div>
+				<div class="lecture_status">受講<?php echo esc_html($val['max_percent']); ?>％</div>
+				<div class="lecture_status">残り<?php echo esc_html($val['all_remaining']); ?></div>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2" style="text-align:center;padding-bottom:10px;border-bottom:1px #ededed solid;">
-				掲載期間：<a href="/product/detail.php?pid=<?php echo $val['product_id']; ?>"><?php if($val['start_date']!=''){echo date('Y/m/d', strtotime($val['start_date'])).'～';}else{echo '未定';} ?></a>
+				掲載期間：<a href="/product/detail.php?pid=<?php echo (int)$val['product_id']; ?>"><?php if($val['start_date']!=''){echo date('Y/m/d', strtotime($val['start_date'])).'～';}else{echo '未定';} ?></a>
 			</td>
 		</tr>
 		<?php } ?>

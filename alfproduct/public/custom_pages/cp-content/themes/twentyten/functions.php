@@ -601,3 +601,30 @@ function alf_purify_post_html($html) {
 }
 add_filter('the_content', 'alf_purify_post_html', 99);
 add_filter('the_excerpt', 'alf_purify_post_html', 99);
+
+// 画面からの導線がない WordPress 標準のページ(検索結果・著者・タグ・日付別アーカイブ)は、表示しない(404にする)。
+// これらのページは、標準ウィジェット(最近の投稿・アーカイブ・メタ情報など)を表示し、
+// 投稿タイトルをそのまま出力するため、タイトルに含まれる HTML(<script> など)が実行される(F-03)。
+// お知らせ・商品は、トップページ・カテゴリ・個別ページから表示するため、影響はない。
+function alf_disable_unused_front_pages() {
+	if ( is_search() || is_author() || is_tag() || is_date() ) {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
+		nocache_headers();
+	}
+}
+add_action('template_redirect', 'alf_disable_unused_front_pages', 1);
+
+// 未ログインでは、REST API(/wp-json/)を使えないようにする(ユーザー名の列挙などを防ぐ)。
+// サイトの画面は REST API を使っていない。ログイン中の管理操作には影響しない。
+function alf_restrict_rest_api($result) {
+	if ( ! empty( $result ) ) {
+		return $result;
+	}
+	if ( ! is_user_logged_in() ) {
+		return new WP_Error( 'rest_not_logged_in', 'Unauthorized', array( 'status' => 401 ) );
+	}
+	return $result;
+}
+add_filter('rest_authentication_errors', 'alf_restrict_rest_api');

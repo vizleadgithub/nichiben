@@ -91,7 +91,7 @@
 <h3></h3>
 <div class="lawyer_info_main">
 <p>あなたの弁護士会が主催する<br />研修はこちら</p>
-<p><?php if ($start_date){echo '更新日：'.$start_date;} ?></p>
+<p><?php if ($start_date){echo '更新日：'.esc_html($start_date);} ?></p>
 <p><a href="/product/list_bar_association_live_other.php"><img src="/img/lawyer_training_btn.png" alt="弁護士会主催研修" /></a></p>
 </div>
 </div>

@@ -56,7 +56,7 @@ $productcategory_list = get_product_category();
 					<div id="menu_big<?php echo $menu_big ?>" style="display:block;cursor: pointer; background-image: url( /img/l_cateback_blue_on.png );position: absolute;width: 210px;height:40px;overflow: hidden;" class="lc_bs_blue">
 						<img src="/img/c_ar_blue_off_w.png" id="image<?php echo $id_data ?>" style="z-index:-1;">
 					</div>
-					<div class="lc_mastitle" id="menu_big_font<?php echo $menu_big ?>" ><?= htmlspecialchars( $val['big']['name'], ENT_QUOTES, 'UTF-8') ?></div>
+					<div class="lc_mastitle" id="menu_big_font<?php echo $menu_big ?>" ><?php echo esc_html($val['big']['name']); ?></div>
 				</div>
 				<ol id="menu<?php echo $id_data ?>"
 						 style="display: none;clear:both;border-top:1px solid #eeeeee;border-left:1px solid #eeeeee;border-right:1px solid #eeeeee;background:#ffffff;width:206px;margin-top:0;">
@@ -64,7 +64,7 @@ $productcategory_list = get_product_category();
 						<ul>
 							<li class="lc_subtitle_2" id="category<?php echo $val['big']['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val['big']['term_id']; ?>" id="category<?php echo $val['big']['term_id']; ?>_a">すべて</a></li>
 							<?php foreach ($val['small'] as $val2){ ?>
-								<li class="lc_subtitle_2" id="category<?php echo $val2['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val2['term_id']; ?>" id="category<?php echo $val2['term_id']; ?>_a"><?= htmlspecialchars( $val2['name'], ENT_QUOTES, 'UTF-8') ?></a></li>
+								<li class="lc_subtitle_2" id="category<?php echo $val2['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val2['term_id']; ?>" id="category<?php echo $val2['term_id']; ?>_a"><?php echo esc_html($val2['name']); ?></a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -87,14 +87,14 @@ $productcategory_list = get_product_category();
 						<div id="menu_big<?php echo $menu_big ?>" style="display:block;cursor: pointer;background-image: url(/img/l_cateback_orange_on.png);position: absolute;width: 210px;height:40px;overflow: hidden;" class="lc_bs_orange">
 							<img src="/img/c_ar_orange_off_w.png" id="image<?php echo $id_data ?>" style="z-index:-1;">
 						</div>
-						<div class="lc_mastitle" id="menu_big_font<?php echo $menu_big ?>" ><?= htmlspecialchars( $val['big']['name'], ENT_QUOTES, 'UTF-8') ?></div>
+						<div class="lc_mastitle" id="menu_big_font<?php echo $menu_big ?>" ><?php echo esc_html($val['big']['name']); ?></div>
 					</div>
 					<ol id="menu<?php echo $id_data ?>" style="display: none; clear:both; border-top:1px solid #eeeeee; border-left:1px solid #eeeeee; border-right:1px solid #eeeeee; background:#ffffff; width:206px;margin-top:0;">
 						<li>
 							<ul>
 									<li class="lc_subtitle_0" id="category<?php echo $val['big']['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val['big']['term_id']; ?>" id="category<?php echo $val['big']['term_id']; ?>_a">すべて</a></li>
 								<?php foreach ($val['small'] as $val2){ ?>
-									<li class="lc_subtitle_0" id="category<?php echo $val2['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val2['term_id']; ?>" id="category<?php echo $val2['term_id']; ?>_a"><?= htmlspecialchars( $val2['name'], ENT_QUOTES, 'UTF-8') ?></a></li>
+									<li class="lc_subtitle_0" id="category<?php echo $val2['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val2['term_id']; ?>" id="category<?php echo $val2['term_id']; ?>_a"><?php echo esc_html($val2['name']); ?></a></li>
 								<?php } ?>
 							</ul>
 						</li>
@@ -106,14 +106,14 @@ $productcategory_list = get_product_category();
 						<div id="menu_big<?php echo $menu_big ?>" style="display:block;cursor:pointer;background-image:url(/img/l_cateback_green_on.png);position: absolute;width: 210px;height:40px;overflow: hidden;" class="lc_bs_green">
 							<img src="/img/c_ar_green_off_w.png" id="image<?php echo $id_data ?>" style="z-index:-1;">
 						</div>
-						<div class="lc_mastitle" id="menu_big_font<?php echo $menu_big ?>" ><?= htmlspecialchars( $val['big']['name'], ENT_QUOTES, 'UTF-8') ?></div>
+						<div class="lc_mastitle" id="menu_big_font<?php echo $menu_big ?>" ><?php echo esc_html($val['big']['name']); ?></div>
 					</div>
 					<ol id="menu<?php echo $id_data ?>" style="display: none; clear:both; border-top:1px solid #eeeeee; border-left:1px solid #eeeeee; border-right:1px solid #eeeeee; background:#ffffff; width:206px;margin-top:0;">
 						<li>
 							<ul>
 								<li class="lc_subtitle_1" id="category<?php echo $val['big']['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val['big']['term_id']; ?>" id="category<?php echo $val['big']['term_id']; ?>_a">すべて</a></li>
 								<?php foreach ($val['small'] as $val2){ ?>
-									<li class="lc_subtitle_1" id="category<?php echo $val2['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val2['term_id']; ?>" id="category<?php echo $val2['term_id']; ?>_a"><?= htmlspecialchars( $val2['name'], ENT_QUOTES, 'UTF-8') ?></a></li>
+									<li class="lc_subtitle_1" id="category<?php echo $val2['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val2['term_id']; ?>" id="category<?php echo $val2['term_id']; ?>_a"><?php echo esc_html($val2['name']); ?></a></li>
 								<?php } ?>
 							</ul>
 						</li>
@@ -125,7 +125,7 @@ $productcategory_list = get_product_category();
 						<div id="menu_big<?php echo $menu_big ?>" style="display:block;cursor: pointer; background-image: url( /img/l_cateback_blue_on.png );position: absolute;width: 210px;height:40px;overflow: hidden;" class="lc_bs_blue">
 							<img src="/img/c_ar_blue_off_w.png" id="image<?php echo $id_data ?>" style="z-index:-1;">
 						</div>
-						<div class="lc_mastitle" id="menu_big_font<?php echo $menu_big ?>" ><?= htmlspecialchars( $val['big']['name'], ENT_QUOTES, 'UTF-8') ?></div>
+						<div class="lc_mastitle" id="menu_big_font<?php echo $menu_big ?>" ><?php echo esc_html($val['big']['name']); ?></div>
 					</div>
 					<ol id="menu<?php echo $id_data ?>"
 							 style="display: none;clear:both;border-top:1px solid #eeeeee;border-left:1px solid #eeeeee;border-right:1px solid #eeeeee;background:#ffffff;width:206px;margin-top:0;">
@@ -133,7 +133,7 @@ $productcategory_list = get_product_category();
 							<ul>
 								<li class="lc_subtitle_2" id="category<?php echo $val['big']['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val['big']['term_id']; ?>" id="category<?php echo $val['big']['term_id']; ?>_a">すべて</a></li>
 								<?php foreach ($val['small'] as $val2){ ?>
-									<li class="lc_subtitle_2" id="category<?php echo $val2['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val2['term_id']; ?>" id="category<?php echo $val2['term_id']; ?>_a"><?= htmlspecialchars( $val2['name'], ENT_QUOTES, 'UTF-8') ?></a></li>
+									<li class="lc_subtitle_2" id="category<?php echo $val2['term_id']; ?>"><a href="/product/list.php?pcid=<?php echo $val2['term_id']; ?>" id="category<?php echo $val2['term_id']; ?>_a"><?php echo esc_html($val2['name']); ?></a></li>
 								<?php } ?>
 							</ul>
 						</li>

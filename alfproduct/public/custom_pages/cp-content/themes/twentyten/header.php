@@ -209,6 +209,7 @@ $(function(){
 <?php
 $productcategory_list = get_product_category();
 $id_data = 0;
+$ethic_menu_id = null;
 foreach ($productcategory_list as $val){
 	if($_GET["pcid"]==$val['big']['term_id']){
 		if ($val['big']['term_id']=="519"){
@@ -219,55 +220,61 @@ foreach ($productcategory_list as $val){
 			document.getElementById("menu_big_font<?php echo $id_data ?>").style.color = "#000000";
 			document.getElementById("menu_big<?php echo $id_data ?>").classList.add('select_menu');
 			document.getElementById("image<?php echo $id_data ?>").src = "/img/c_ar_blue_on_w.png";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>").style.background= "no-repeat scroll 6% center #61A6C3";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>").style.color= "#ffffff";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>_a").style.color= "#ffffff";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>").style.background= "no-repeat scroll 6% center #61A6C3";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>").style.color= "#ffffff";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>_a").style.color= "#ffffff";
 			<?php
 		}
+	}
+	if ($val['big']['term_id']=="519"){
+		$ethic_menu_id = $id_data;
 	}
 	$id_data = $id_data + 1;
 }
 foreach ($productcategory_list as $val){
+	// カテゴリ519は先行ループで menu<元の連番> として出力されるため、
+	// 配下カテゴリの選択時も同じメニューIDを参照する。
+	$menu_id = ($val['big']['term_id']=="519") ? $ethic_menu_id : $id_data;
 	if($_GET["pcid"]==$val['big']['term_id']){
 		//$id_data = $val['big']['term_id'];
 		if( $val['big']['term_group']=="0" && $val['big']['term_id']!="519" ){ 
 ?>
 			//b0
-			document.getElementById("menu<?php echo $id_data ?>").style.display="block";
-			document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundImage = "url(/img/l_cateback_orange_on.png)";
-			document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundRepeat = 'no-repeat';  
-			document.getElementById("menu_big_font<?php echo $id_data ?>").style.color = "#000000";
-			document.getElementById("menu_big<?php echo $id_data ?>").classList.add('select_menu');
-			document.getElementById("image<?php echo $id_data ?>").src = "/img/c_ar_orange_on_w.png";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>").style.background= "url(/img/c_ar_orange_on.png) no-repeat scroll 6% center #FF9C17";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>").style.color= "#ffffff";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>_a").style.color= "#ffffff";
+			document.getElementById("menu<?php echo $menu_id ?>").style.display="block";
+			document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundImage = "url(/img/l_cateback_orange_on.png)";
+			document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundRepeat = 'no-repeat';  
+			document.getElementById("menu_big_font<?php echo $menu_id ?>").style.color = "#000000";
+			document.getElementById("menu_big<?php echo $menu_id ?>").classList.add('select_menu');
+			document.getElementById("image<?php echo $menu_id ?>").src = "/img/c_ar_orange_on_w.png";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>").style.background= "url(/img/c_ar_orange_on.png) no-repeat scroll 6% center #FF9C17";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>").style.color= "#ffffff";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>_a").style.color= "#ffffff";
 <?php
 		} elseif( $val['big']['term_group']=="1" && $val['big']['term_id']!="519" ){ 
 ?>
 			//b1
-			document.getElementById("menu<?php echo $id_data ?>").style.display="block";
-			document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundImage = "url(/img/l_cateback_green_on.png)";
-			document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundRepeat = 'no-repeat';  
-			document.getElementById("menu_big_font<?php echo $id_data ?>").style.color = "#000000";
-			document.getElementById("menu_big<?php echo $id_data ?>").classList.add('select_menu');
-			document.getElementById("image<?php echo $id_data ?>").src = "/img/c_ar_green_on_w.png";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>").style.background= "url(/img/c_ar_green_on.png) no-repeat scroll 6% center #8dbd55";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>").style.color= "#ffffff";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>_a").style.color= "#ffffff";
+			document.getElementById("menu<?php echo $menu_id ?>").style.display="block";
+			document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundImage = "url(/img/l_cateback_green_on.png)";
+			document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundRepeat = 'no-repeat';  
+			document.getElementById("menu_big_font<?php echo $menu_id ?>").style.color = "#000000";
+			document.getElementById("menu_big<?php echo $menu_id ?>").classList.add('select_menu');
+			document.getElementById("image<?php echo $menu_id ?>").src = "/img/c_ar_green_on_w.png";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>").style.background= "url(/img/c_ar_green_on.png) no-repeat scroll 6% center #8dbd55";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>").style.color= "#ffffff";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>_a").style.color= "#ffffff";
 <?php
 		} elseif( $val['big']['term_group']=="2" && $val['big']['term_id']!="519" ){ 
 ?>
 			//b2
-			document.getElementById("menu<?php echo $id_data ?>").style.display="block";
-			document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundImage = "url(/img/l_cateback_blue_on.png)";
-			document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundRepeat = 'no-repeat';  
-			document.getElementById("menu_big_font<?php echo $id_data ?>").style.color = "#000000";
-			document.getElementById("menu_big<?php echo $id_data ?>").classList.add('select_menu');
-			document.getElementById("image<?php echo $id_data ?>").src = "/img/c_ar_blue_on_w.png";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>").style.background= "url(/img/c_ar_blue_on_w.png) no-repeat scroll 6% center #61A6C3";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>").style.color= "#ffffff";
-			document.getElementById("category<?php echo $val['big']['term_id'] ?>_a").style.color= "#ffffff";
+			document.getElementById("menu<?php echo $menu_id ?>").style.display="block";
+			document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundImage = "url(/img/l_cateback_blue_on.png)";
+			document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundRepeat = 'no-repeat';  
+			document.getElementById("menu_big_font<?php echo $menu_id ?>").style.color = "#000000";
+			document.getElementById("menu_big<?php echo $menu_id ?>").classList.add('select_menu');
+			document.getElementById("image<?php echo $menu_id ?>").src = "/img/c_ar_blue_on_w.png";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>").style.background= "url(/img/c_ar_blue_on_w.png) no-repeat scroll 6% center #61A6C3";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>").style.color= "#ffffff";
+			document.getElementById("category<?php echo (int)$val['big']['term_id'] ?>_a").style.color= "#ffffff";
 <?php
 		}
 	}
@@ -277,12 +284,12 @@ foreach ($productcategory_list as $val){
 			if( $val['big']['term_group']=="0" ){ 
 ?>
 				//s0
-				document.getElementById("menu<?php echo $id_data ?>").style.display="block";
-				document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundImage = "url(/img/l_cateback_orange_on.png)";
-				document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundRepeat = 'no-repeat';  
-				document.getElementById("menu_big_font<?php echo $id_data ?>").style.color = "#000000";
-				document.getElementById("menu_big<?php echo $id_data ?>").classList.add('select_menu');
-				document.getElementById("image<?php echo $id_data ?>").src = "/img/c_ar_orange_on_w.png";
+				document.getElementById("menu<?php echo $menu_id ?>").style.display="block";
+				document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundImage = "url(/img/l_cateback_orange_on.png)";
+				document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundRepeat = 'no-repeat';  
+				document.getElementById("menu_big_font<?php echo $menu_id ?>").style.color = "#000000";
+				document.getElementById("menu_big<?php echo $menu_id ?>").classList.add('select_menu');
+				document.getElementById("image<?php echo $menu_id ?>").src = "/img/c_ar_orange_on_w.png";
 				document.getElementById("category<?php echo $val2['term_id'] ?>").style.background= "no-repeat scroll 6% center #FF9C17";
 				document.getElementById("category<?php echo $val2['term_id'] ?>").style.color= "#ffffff";
 				document.getElementById("category<?php echo $val2['term_id'] ?>_a").style.color= "#ffffff";
@@ -290,12 +297,12 @@ foreach ($productcategory_list as $val){
 			} elseif( $val['big']['term_group']=="1" ){ 
 ?>
 				//s1
-				document.getElementById("menu<?php echo $id_data ?>").style.display="block";
-				document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundImage = "url(/img/l_cateback_green_on.png)";
-				document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundRepeat = 'no-repeat';  
-				document.getElementById("menu_big_font<?php echo $id_data ?>").style.color = "#000000";
-				document.getElementById("menu_big<?php echo $id_data ?>").classList.add('select_menu');
-				document.getElementById("image<?php echo $id_data ?>").src = "/img/c_ar_green_on_w.png";
+				document.getElementById("menu<?php echo $menu_id ?>").style.display="block";
+				document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundImage = "url(/img/l_cateback_green_on.png)";
+				document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundRepeat = 'no-repeat';  
+				document.getElementById("menu_big_font<?php echo $menu_id ?>").style.color = "#000000";
+				document.getElementById("menu_big<?php echo $menu_id ?>").classList.add('select_menu');
+				document.getElementById("image<?php echo $menu_id ?>").src = "/img/c_ar_green_on_w.png";
 				document.getElementById("category<?php echo $val2['term_id'] ?>").style.background= "no-repeat scroll 6% center #8dbd55";
 				document.getElementById("category<?php echo $val2['term_id'] ?>").style.color= "#ffffff";
 				document.getElementById("category<?php echo $val2['term_id'] ?>_a").style.color= "#ffffff";
@@ -303,12 +310,12 @@ foreach ($productcategory_list as $val){
 			} elseif( $val['big']['term_group']=="2" ){ 
 ?>
 				//s2
-				document.getElementById("menu<?php echo $id_data ?>").style.display="block";
-				document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundImage = "url(/img/l_cateback_blue_on.png)";
-				document.getElementById("menu_big<?php echo $id_data ?>").style.backgroundRepeat = 'no-repeat';  
-				document.getElementById("menu_big_font<?php echo $id_data ?>").style.color = "#000000";
-				document.getElementById("menu_big<?php echo $id_data ?>").classList.add('select_menu');
-				document.getElementById("image<?php echo $id_data ?>").src = "/img/c_ar_blue_on_w.png";
+				document.getElementById("menu<?php echo $menu_id ?>").style.display="block";
+				document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundImage = "url(/img/l_cateback_blue_on.png)";
+				document.getElementById("menu_big<?php echo $menu_id ?>").style.backgroundRepeat = 'no-repeat';  
+				document.getElementById("menu_big_font<?php echo $menu_id ?>").style.color = "#000000";
+				document.getElementById("menu_big<?php echo $menu_id ?>").classList.add('select_menu');
+				document.getElementById("image<?php echo $menu_id ?>").src = "/img/c_ar_blue_on_w.png";
 				document.getElementById("category<?php echo $val2['term_id'] ?>").style.background= "no-repeat scroll 6% center #61A6C3";
 				document.getElementById("category<?php echo $val2['term_id'] ?>").style.color= "#ffffff";
 				document.getElementById("category<?php echo $val2['term_id'] ?>_a").style.color= "#ffffff";
