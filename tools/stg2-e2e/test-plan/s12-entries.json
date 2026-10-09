@@ -10,7 +10,7 @@
     { "id": "S12-cat", "desc": "カテゴリ名(cms_category)", "url": "/cms_category/newdata", "field": "name" },
     { "id": "S12-cource", "desc": "講座名(cms_cource)", "url": "/cms_cource/newdata", "field": "cource_name" },
     { "id": "S12-class", "desc": "授業名(cms_class)", "url": "/cms_class/newdata", "field": "class_name" },
-    { "id": "S12-teacher", "desc": "講師名(cms_auth)", "url": "/cms_auth/newdata", "field": "teacher_name" },
+    { "id": "S12-teacher", "desc": "講師名(cms_auth)", "url": "/cms_auth/edit", "field": "teacher_name" },
     { "id": "S12-issue", "desc": "課題名(cms_issue)", "url": "/cms_issue/newdata", "field": "issue_name" },
     { "id": "S12-book", "desc": "図書室の表示名(cms_book_library)", "url": "/cms_book_library/newdata", "field": "book_library_logic_name" },
     { "id": "S12-video", "desc": "動画の表示名(cms_video)", "url": "/cms_video/newdata", "field": "video_logic_name" },
