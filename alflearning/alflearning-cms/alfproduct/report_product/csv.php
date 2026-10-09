@@ -48,7 +48,7 @@ if( isset($_SESSION["report_product.search_product_type_add"]) && !empty($_SESSI
 if( isset($_SESSION["report_product.search_association"]) && !empty($_SESSION["report_product.search_association"]) ){
 	$search_association = $_SESSION["report_product.search_association"];
 }
-if( isset($_SESSION["report_product.search_start_date"]) && !empty($_SESSION["product.search_start_date"]) ){
+if( isset($_SESSION["report_product.search_start_date"]) && !empty($_SESSION["report_product.search_start_date"]) ){
 	$search_start_date = $_SESSION["report_product.search_start_date"];
 }
 if( isset($_SESSION["report_product.search_end_date"]) && !empty($_SESSION["report_product.search_end_date"]) ){
