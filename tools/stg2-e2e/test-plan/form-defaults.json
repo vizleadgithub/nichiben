@@ -19,5 +19,7 @@
   "/alfproduct/product/add.php": { "arr_term_id[]": true, "+contents_contents1": "1", "+contents_free_time1": "0" },
   "/alfproduct/product_live/add.php": { "arr_term_id[]": true, "capacity": "10" },
   "/alfproduct/product_passport/add.php": { "passport_target[]": true },
-  "/ranking/index.php": { "pid": "26316", "act": "add" }
+  "/ranking/index.php": { "pid": "26316", "act": "add" },
+  "/alfproduct/amount_order/index.php": { "search_start_buy_date": "2026-10-08", "search_end_buy_date": "2026-10-09", "search_start_regist_date": "2026-10-08", "search_end_regist_date": "2026-10-09" },
+  "/alfproduct/product_live/index.php": { "search_start_date": "2026-10-08", "search_end_date": "2026-10-09" }
 }

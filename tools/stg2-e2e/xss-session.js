@@ -139,15 +139,27 @@ class Session {
   // 操作(クリック等)で遷移が起きたら、遷移先のソースを返す。遷移しなければ現在のDOMを返す
   async action(fn) {
     this.reset();
+    // 15秒だと、応答が遅い重い画面(一覧の行数が多い画面等)で実際には遷移しているのに
+    // waitForNavigation がタイムアウトし、「遷移しなかった」扱いになることがあった(2026-10-09発見。
+    // amount_order/index.php で実測: POST送信からHTTP応答まで56秒以上かかっていた。アプリ側の
+    // パフォーマンス問題の可能性が高い。30秒でもまだ足りなかったため、goto()と同じ90秒に合わせる)
     const [res] = await Promise.all([
-      this.page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => null),
+      this.page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 90000 }).catch(() => null),
       fn(),
     ]);
     await this.page.waitForTimeout(400);   // img onerror / svg onload 等の非同期の実行を待つ
     if (res) await this.page.waitForLoadState('networkidle', { timeout: 2000 }).catch(() => {});   // 遅延リダイレクトの連鎖防止(goto()と同じ理由)
     const finalUrl = this.page.url();
     if (res) return { status: res.status(), html: await this.text(res, finalUrl), finalUrl, navigated: true };
-    return { status: 200, html: await this.page.content(), finalUrl, navigated: false };
+    // ここまで来てもなお実際には遷移中のことがある(waitForNavigationの待ち方と実際の遷移完了のタイミングが
+    // ずれるケース)。page.content() がエラーになる場合は、遷移が収まるのを少し待ってから1回だけ取り直す
+    try {
+      return { status: 200, html: await this.page.content(), finalUrl, navigated: false };
+    } catch (e) {
+      await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 }).catch(() => {});
+      const settledUrl = this.page.url();
+      return { status: 200, html: await this.page.content().catch(() => ''), finalUrl: settledUrl, navigated: settledUrl !== finalUrl };
+    }
   }
 
   async close() {
