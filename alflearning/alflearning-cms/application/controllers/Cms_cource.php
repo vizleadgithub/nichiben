@@ -79,6 +79,10 @@ class Cms_cource extends CI_Controller {
 				's_id' => '',
 				's_free_word' => '',
 			);
+			// セッションに残っている検索条件が、過去の改ざん送信(配列等)で不正な値のまま保存されている
+			// ことがあるため、ここでも日付欄を再検証する(2026-10-11発見。cms_classと同じ問題)
+			if (!is_string($data['s_open'] ?? '') || !preg_match('/^[0-9\-\/: ]*$/', $data['s_open'] ?? '')) { $data['s_open'] = ''; }
+			if (!is_string($data['s_close'] ?? '') || !preg_match('/^[0-9\-\/: ]*$/', $data['s_close'] ?? '')) { $data['s_close'] = ''; }
 		} else {
 			//データ取得用引数設定
 			$data['s_name']      = ($this->input->post('s_name') ?? '');
