@@ -83,8 +83,12 @@ class Cms_class extends CI_Controller {
 		} else {
 			//データ取得用引数設定
 			$data['s_cource']    = ($this->input->post('s_cource') ?? '');
-			$data['s_open']      = ($this->input->post('s_open') ?? '');
-			$data['s_close']     = ($this->input->post('s_close') ?? '');
+			// s_open・s_closeは日付ピッカー(readonly)からのみ入力される前提のため、日付として不正な値(タグ等)は
+			// SQLの日付比較でデータベースエラー(500)になる。数字・区切り記号のみを許可し、それ以外は未指定として扱う
+			$s_open_raw  = $this->input->post('s_open') ?? '';
+			$s_close_raw = $this->input->post('s_close') ?? '';
+			$data['s_open']      = preg_match('/^[0-9\-\/: ]*$/', $s_open_raw) ? $s_open_raw : '';
+			$data['s_close']     = preg_match('/^[0-9\-\/: ]*$/', $s_close_raw) ? $s_close_raw : '';
 			$data['s_teacher']   = ($this->input->post('s_teacher') ?? '');
 			$data['s_id']        = ($this->input->post('s_id') ?? '');
 			$data['s_free_word'] = ($this->input->post('s_free_word') ?? '');
