@@ -793,6 +793,26 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
 - **一部修正**: B-21(ログの書き込み先は`/alflearning-data/`配下に移動済みだが、旧ログファイル`alfproduct/cron/logs/mailmagazine_submit.log`が公開ディレクトリにまだ残存。サーバー上での削除が必要)。
 - **未修正**: B-4(array型チェックボックス項目の改ざんで一律500になる件。入力チェック自体は追加されたが(2026-10-08のコミットで`_display_unjust_access()`を呼ぶよう修正)、その`_display_unjust_access()`→`_display_view()`の経路自体が、サブメニュー・ドロップダウン・受講者グループ一覧等の重い依存データ取得を伴ったままで、結局500になる。今回の再テストでも同一のHTTP 500を再現)。
 
+##### 2026-10-12: 静的解析候補255件(E-41・E-42)の人手レビュー完了
+
+`scan-unescaped-output.js`が検出した255件全てについて、コントローラ・テンプレートのソースを直接確認してレビューした。**genuineなXSS脆弱性は0件**(誤検知・デッドコード・安全な実装のいずれか)。
+
+- **新規発見(デッドコード。脆弱性ではないが記録)**:
+  - `cms_student_sub_auth/confirm.php`(580行。生の`$student[...]`出力が約25箇所)は、**どのコントローラからも`load->view()`されていないオーファンビュー**(`Cms_student_sub_auth::confirm()`は実際には`cms_student/confirm`の方を描画する)。`product/add_review.php`([B-14])と同種の到達経路なしコード。
+  - `cms_exam/confirm.php:536-541`・`cms_exam2/confirm.php:536-541`の受講者名表示(`exam_students_name`/`exam2_students_name`、コメントは「組み立て時に無害化済み」とあるが実際は無関係)は`<?php if(false){ ?>`で恒久的に無効化されたデッドコード。
+  - `product/detail.tpl:3375-3440`の「レビュー一覧」機能(`$exam2_problem_row.problem_contents`等)はSmartyの`{* *}`コメントブロックで丸ごと無効化されたデッドコード。
+- **確認の上で安全と判定**:
+  - `exam`・`exam2`の`answer_check.php`/`resubmit_check.php`が組み立てる`$return.formhtml`(設問再表示用hidden項目)は、`convert_symbole()`(`"'<>()`を全角文字に置換)と、同居する`$pid`/`$eid`等の`cmCheckInput(...,'CK_NUM')`数値検証の組み合わせで安全。`answer_save.php`側の同等コードは丸ごとコメントアウト済みで常に空文字。
+  - `product/detail.tpl`の`$product_list.memo|nl2br`・`contents|nl2br`(商品説明)は、`product/detail.php`側で`render_product_text()`→`purify_html()`により登録時点で許可タグ方式のサニタイズ済み(意図的な仕様。`|escape`を付けると二重エンコードになるため付けていない)。
+  - `cms_exam(2)/confirm_answer.php`の`exam_answer_contents`(フリー回答の表示)は、`Cms_exam(2).php`側で`htmlspecialchars()`適用後に改行を`<br/>`化していることをソースで確認(コメントの「組み立て時に無害化済み」は正確)。
+  - `cms_exam(2)_problem_group/confirm.php`の`position_exam(2)_problems_name`(ビューにコメント無し)も、コントローラ側で`htmlspecialchars()`適用済みを確認(他の「組み立て済み」系と同じパターンだが、コメントの付け忘れ)。
+  - `cms_video/edit.php:744,746,748`の`$chapter_text`は手前の行で`htmlspecialchars()`適用済み。
+  - `search/index.tpl`の`$url_plam`・`product/detail.tpl`の`$search_url`は、全構成要素が`urlencode()`済みまたは`cmCheckInput(...,'CK_NUM')`で数値検証済みの`$pid`。
+  - `product/document.tpl`の`$contents_download_key`/`$contents_download_before_key`は、Smartyの`{section}`ループ連番から生成する内部キー名(`"contents_download".$ccno."_".$cdno`)で、実際に画面へ出力する行は`|escape`を使用済み(スキャナが`{assign}`文自体を出力と誤認)。
+  - `member/regist.tpl`・`mypage/edit.tpl`の`*_style`系28件は、`{assign var=xxx_style value=$err_style}`でコントローラの固定CSS文字列(`'style="background-color:#ff8888;"'`)を参照しているだけで、ユーザー入力は含まない(確認済みの既知誤検知パターン)。
+  - `mail_templates/class_notification.php`はプレーンテキストメール本文で、HTMLレンダリング文脈が存在しないためXSS観点では対象外(エスケープ不要)。
+  - 残り(「組み立て時に無害化済み」コメント付きの他の十数件、`nl2br(htmlspecialchars(...))`、三項演算子による固定文字列(`'checked'`/`'○'`/`'－'`等)、CSRFトークン関数、`$this->config->item(...)`、`$this->lang->line_or_def(...)`、`disp_sponsor`系10件(既報告どおりPHP側で事前エスケープ済み)等、約150件)は、いずれもエスケープ済みか、そもそもユーザー入力を含まない固定値・フレームワーク内部値。
+
 ## アーキテクチャ
 
 ### ディレクトリ構成
