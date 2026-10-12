@@ -191,7 +191,7 @@ if ($mode == "upload") {
 }
 // 代替倫理研修権限を付与する
 elseif ($mode == "add") {
-	if (isset($_POST['ufnn'])){
+	if (isset($_POST['ufnn']) && is_string($_POST['ufnn']) && preg_match('/^[A-Za-z0-9]+$/', $_POST['ufnn'])){
 		$file = $upload_dir_name.'/'.$_POST['ufnn'].'.csv';
 		if (file_exists($file)){
 			$fp   = fopen($file, "r");
@@ -287,7 +287,7 @@ elseif ($mode == "add") {
 }
 // 追試×をレポートにする
 elseif ($mode == "report") {
-	if (isset($_POST['ufnn'])){
+	if (isset($_POST['ufnn']) && is_string($_POST['ufnn']) && preg_match('/^[A-Za-z0-9]+$/', $_POST['ufnn'])){
 		$file = $upload_dir_name.'/'.$_POST['ufnn'].'.csv';
 		if (file_exists($file)){
 			$fp   = fopen($file, "r");
@@ -364,7 +364,7 @@ elseif ($mode == "report") {
 }
 // 完了を済とする
 elseif ($mode == "end") {
-	if (isset($_POST['ufnn'])){
+	if (isset($_POST['ufnn']) && is_string($_POST['ufnn']) && preg_match('/^[A-Za-z0-9]+$/', $_POST['ufnn'])){
 		$file = $upload_dir_name.'/'.$_POST['ufnn'].'.csv';
 		if (file_exists($file)){
 			$fp   = fopen($file, "r");

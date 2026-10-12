@@ -45,6 +45,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+normalize_exam_post();
 csrf_token_verify();
 $_SESSION['wp_page_head_title'] = 'テスト';
 $objDbConnect = new DbConnect();
@@ -91,44 +92,57 @@ $formhtml_message.= '<input type="hidden" name="pid" value="'.$pid.'">'."";
 if( $exam2_list['exam2_id'] == $e2id ){
 	$exam2_check = 0;
 }
-if( count(@$_POST["exam2_problem_id"])==0 ){
+// exam2_problem_id は、数字の配列だけを受け付ける（改ざんされた値・配列以外の値は、除く）
+$post_problem_ids = array();
+if (isset($_POST["exam2_problem_id"]) && is_array($_POST["exam2_problem_id"])) {
+	foreach ($_POST["exam2_problem_id"] as $post_problem_id) {
+		if (is_string($post_problem_id) && ctype_digit($post_problem_id)) {
+			$post_problem_ids[] = $post_problem_id;
+		}
+	}
+}
+if( count($post_problem_ids)==0 ){
 	$return_check = false;
 } else {
 	if( $exam2_check>=0 ){
-		for ($i = 0; $i < count(@$_POST["exam2_problem_id"]); $i++){
+		for ($i = 0; $i < count($post_problem_ids); $i++){
 			$html_message .= '<b>設問'.($i+1).'解答</b><br>'."";
 			
 			//=指定半角文字を全角に変換
-			$formhtml_message.= '<input type="hidden" name="exam2_problem_id[]" value="'.convert_symbole( $_POST["exam2_problem_id"][$i] ).'">'."";
+			$formhtml_message.= '<input type="hidden" name="exam2_problem_id[]" value="'.convert_symbole( $post_problem_ids[$i] ).'">'."";
 			
 			$temp_check = array();
-			for ( $j = 0; $j < count(@$_POST["exam2_problem_".$_POST["exam2_problem_id"][$i]] ); $j++){
-				if( trim($_POST["exam2_problem_".$_POST["exam2_problem_id"][$i]][$j])!="" ){
-					$temp_check[] = trim($_POST["exam2_problem_".$_POST["exam2_problem_id"][$i]][$j]);
+			$post_answers = array();
+			if (isset($_POST["exam2_problem_".$post_problem_ids[$i]]) && is_array($_POST["exam2_problem_".$post_problem_ids[$i]])) {
+				$post_answers = array_values(array_filter($_POST["exam2_problem_".$post_problem_ids[$i]], 'is_string'));
+			}
+			for ( $j = 0; $j < count($post_answers); $j++){
+				if( trim($post_answers[$j])!="" ){
+					$temp_check[] = trim($post_answers[$j]);
 
 					for( $k=0;$k<count($exam2_list['problem']);$k++ ){
-						if( $exam2_list['problem'][$k]["exam2_problem_id"]==$_POST["exam2_problem_id"][$i] ){
+						if( $exam2_list['problem'][$k]["exam2_problem_id"]==$post_problem_ids[$i] ){
 							if( $exam2_list['problem'][$k]["answer_kind"]=="1" || $exam2_list['problem'][$k]["answer_kind"]=="2" ){
 								for( $l=0;$l<count($exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"]);$l++ ){
-									if( trim($_POST["exam2_problem_".$_POST["exam2_problem_id"][$i]][$j]) == $exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"] ){
+									if( trim($post_answers[$j]) == $exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"] ){
 										$html_message.= '・'.htmlspecialchars((string)$exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["no"], ENT_QUOTES, 'UTF-8').'. '.nl2br(htmlspecialchars( (string)$exam2_list['problem'][$k]["answer_contents_select"]["answer_contents"][$l]["word"], ENT_QUOTES, 'UTF-8'))."<br>";
 									}
 								}
 							} else {
-								$html_message.= '・'.nl2br(htmlspecialchars( (string)$_POST["exam2_problem_".$_POST["exam2_problem_id"][$i]][$j], ENT_QUOTES, 'UTF-8'))."<br>";
+								$html_message.= '・'.nl2br(htmlspecialchars( (string)$post_answers[$j], ENT_QUOTES, 'UTF-8'))."<br>";
 							}
 						}
 					}
 				}
 				//=指定半角文字を全角に変換
-				$formhtml_message.= '<input type="hidden" name="'."exam2_problem_".convert_symbole( $_POST["exam2_problem_id"][$i] ).'[]" value="'.convert_symbole( trim($_POST["exam2_problem_".$_POST["exam2_problem_id"][$i]][$j]) ).'">';
+				$formhtml_message.= '<input type="hidden" name="'."exam2_problem_".convert_symbole( $post_problem_ids[$i] ).'[]" value="'.convert_symbole( trim($post_answers[$j]) ).'">';
 			}
 			if( count($temp_check)==0 ){
 				$return_check = false;
 				$html_message.= '<span style="color: #FF0000;">未解答</span><br>'."";
 				if($prev_no==0){
 					//=指定半角文字を全角に変換
-					$prev_no = convert_symbole( $_POST["exam2_problem_id"][$i] );
+					$prev_no = convert_symbole( $post_problem_ids[$i] );
 				}
 			} else {
 				
