@@ -853,6 +853,24 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
   という実装で、「単位会(日弁連以外の弁護士会)」専用の機能であり、日弁連本体アカウント(`STG2_CMS_USER`)では明示的にブロックされる仕様。確認するには単位会用の管理者アカウント(`STG2_CMS_BAR_USER`)でのログインが必要(優先度は低いと判断し、今回は追加確認していない)。
 - **`product_lecture_ethics/info_user.php`・`info_user_import.php`・`info_user_regist.php`**: 実データでの再確認でも「管理」リンク自体がページ内に存在しないことを確認。既知の設計上の非対称(`product_lecture_ethics`は`aid`概念が無く`info.php`自身からCSV取り込みフォームを送信する作り)と一致し、対象外で確定。
 
+##### 2026-10-12: 未実施(テストコード未到達)382行の棚卸し。残りをコードレビューで追加解消
+
+`report-xss.js`で計画(plan.json)全1489行と自動テスト結果(byId)を突き合わせたところ、一度もテストコードが触れていない行は382行だった(対応不要を除く「未実施」の機械集計値)。これを1行ずつ精査し、E-41/E-42の静的解析レビュー・依頼A〜DのChrome拡張確認・既出の各種調査で実質的に決着済みの行を除外したうえで、残りについてさらにソースコードを直接確認して解消した。
+
+- **`product/detail.php`の残りフィールド(`free_html_area1/2/3`)**: `product/detail.php:185-187`で`memo`・`contents`と同じ`purify_html($x, 'general')`を適用済みと確認(安全)。`contents_baisoku_flg*`・`exam_id_question_key`・`contents_contents_so_key`等は、Smartyの`{if}`条件分岐専用、または数値のDB内部ID(URLクエリに使われるのみでユーザー入力ではない)、またはJS文脈への`|escape:'javascript'|escape`二重エスケープ済みのいずれかで安全。hidden項目も固定文字列または検証済み数値のみで安全。これで`product/detail.php`の全17項目(31行)を解消。
+- **CMS側「問い合わせ管理」(`alfproduct/inquiry/conf.php`・`status.php`・`status_conf.php`・`edit.php`)**: 対応するSmartyテンプレート(`alfproduct/smarty/templates/admin/inquiry/*.tpl`)を確認した結果、受講者が入力した`inquiry_name`・`inquiry_comment`・`inquiry_mail`を含む全出力に`|escape`(一部`|escape|nl2br`)が一貫して適用されていることを確認(安全)。
+- **共通フレームテンプレート(`main_frame.tpl`・`main_frame_non.tpl`・`pop_frame.tpl`)の`$admin_main_side_menu`**: `|escape`が無いが、`Template::admin_sidemenu()`経由で渡される値はPHP側で構築される**固定のメニューラベル文字列**(例: `product/index.php`の`$sidemenu_html`は"会場研修"等の固定テキストのみで構成)であり、DB・ユーザー入力は含まれないことを呼び出し元複数箇所で確認(安全)。
+- **`exam`(非2)の残り5画面(`index1.php`・`index2.php`・`resubmit_index2.php`・`result1.php`・`result2.php`)**: 対応するSmartyテンプレートで、設問本文・解説等の出力が全て`|purify_ethic_html`または`|purify_ethic_inline_html`(許可タグ方式のサニタイズ修飾子)を一貫して使用していることを確認(安全)。`exam_problem_id`等はDB内部の数値IDのみ。
+- **`login/error.php`・`login.php`・`user_err.php`**: 対応するSmartyテンプレート(`error.tpl`・`login.tpl`・`user_err.tpl`)は存在するが、`alfproduct/public/login/`配下にはこれらを描画するPHPファイル自体が存在せず(`index.php`・`login_sso.php`・`login_sso_new.php`・`sso_auth_callback.php`のみ)、リポジトリ全体を検索してもこれらのテンプレート名を参照する箇所が無い。`cms_student_sub_auth/confirm.php`・`product/add_review.php`と同種の**到達経路の無いオーファンテンプレート**と判明。対象外で確定。
+
+**これにより、382行のうち大半を解消。残る未解決(概算で数十行程度)は主に以下**:
+- `mailmagazine/info.php`のクラッシュ([B-3])がstg2に未デプロイのため、このページ自体のテストが依然ブロック中(コードは修正済みでデプロイ待ち)。
+- `product_live_branch/add.php`(3行)はファイル自体が存在しないことを確認(既出の「計画データ不備」`add_review.php`系と同種)。対象外で確定。
+- `search_contents.php`系・`search_elive.php`等のgidポップアップは、構造上の到達性は解決済みだが、実際に有効な`gid`を与えた状態での`search_contents_name`等自由入力欄のエスケープ確認は、`search_student.php`以外は未実施。
+- E-31(タグ許可ポリシー全体の横断確認)・E-34/E-37(全入力画面の入力値往復)・E-40(PC/SP差分)は、個別ページの確認は進んだが、横断的な観点としての総括確認は未実施。
+- モバイル表示(UA判定)の確認は、自動化ツールの制約により引き続き未完了。
+- 「?」区分の残り7項目(E-06・E-35・E-36・E-38・E-39・E-44・G-09)は、ログ・本番DB・インフラ比較等がブラウザでは確認できないため引き続き対象外(別途人による確認が必要)。
+
 ## アーキテクチャ
 
 ### ディレクトリ構成
