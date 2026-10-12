@@ -67,38 +67,38 @@ if( $sid == "" ){
 	//-----------------------------------
 	if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 	} else {
-		$where.= " AND student.bar_association_id = '".$arr_session["cms_master.login.bar_association_id"]."' ";
+		$where.= " AND student.bar_association_id = '".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.bar_association_id"])."' ";
 	}
 	//-----------------------------------
 	if( $search_name == "0" || $search_name == "" ){
 	} else {
-		$where.= " AND student.student_name LIKE '%".$search_name."%' ";
+		$where.= " AND student.student_name LIKE '%".mysqli_real_escape_string($objDbConnect->connect, $search_name)."%' ";
 	}
 	//-----------------------------------
 	if( $search_kana == "0" || $search_kana == "" ){
 	} else {
-		$where.= " AND student.student_name_kana LIKE '%".$search_kana."%' ";
+		$where.= " AND student.student_name_kana LIKE '%".mysqli_real_escape_string($objDbConnect->connect, $search_kana)."%' ";
 	}
 	//-----------------------------------
 	if( $search_start_lawyer_number == "0" || $search_start_lawyer_number == "" ){
 	} else {
-		$where.= " AND student.lawyer_number>='".$search_start_lawyer_number."' ";
+		$where.= " AND student.lawyer_number>='".mysqli_real_escape_string($objDbConnect->connect, $search_start_lawyer_number)."' ";
 	}
 	if( $search_end_lawyer_number == "0" || $search_end_lawyer_number == "" ){
 	} else {
-		$where.= " AND student.lawyer_number<='".$search_end_lawyer_number."' ";
+		$where.= " AND student.lawyer_number<='".mysqli_real_escape_string($objDbConnect->connect, $search_end_lawyer_number)."' ";
 	}
 	//-----------------------------------
 	if( $search_start_regist_date != "" ){
-		$where.= " and student.regist_date>='".$search_start_regist_date."' ";
+		$where.= " and student.regist_date>='".mysqli_real_escape_string($objDbConnect->connect, $search_start_regist_date)."' ";
 	}
 	if( $search_end_regist_date != "" ){
-		$where.= " and student.regist_date<='".substr($search_end_regist_date,0,14)."59:59' ";
+		$where.= " and student.regist_date<='".mysqli_real_escape_string($objDbConnect->connect, substr($search_end_regist_date,0,14))."59:59' ";
 	}
 	//-----------------------------------
 	if( $search_association == "0" || $search_association == "" ){
 	} else {
-		$where.= " AND student.bar_association_id='".$search_association."' ";
+		$where.= " AND student.bar_association_id='".mysqli_real_escape_string($objDbConnect->connect, $search_association)."' ";
 	}
 	//-----------------------------------
 	$group = "";
@@ -138,11 +138,11 @@ if( $sid == "" ){
 	$where = "";
 	$where.= "WHERE ";
 	$where.= " student.status='0' ";
-	$where.= " AND student.student_id='".$sid."'";
+	$where.= " AND student.student_id='".mysqli_real_escape_string($objDbConnect->connect, $sid)."'";
 	//-----------------------------------
 	if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 	} else {
-		$where.= " AND student.bar_association_id = '".$arr_session["cms_master.login.bar_association_id"]."' ";
+		$where.= " AND student.bar_association_id = '".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.bar_association_id"])."' ";
 	}
 	//-----------------------------------
 	$arr_student = $objDbConnect->query_fetch_arr($sql.$where);
@@ -176,7 +176,7 @@ if( $sid == "" ){
 	$where.= " tbl_order_detail.product_id IS NOT NULL ";
 	$where.= " and ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 ) ";
 	$where.= " AND tbl_order.order_no IS NOT NULL AND tbl_order.order_no<>'' ";
-	$where.= " and tbl_order_detail.member_id='".$sid."' ";
+	$where.= " and tbl_order_detail.member_id='".mysqli_real_escape_string($objDbConnect->connect, $sid)."' ";
 	if( $search_orderby=="1" ){
 		$order = " ORDER BY tbl_order_detail.payment_status ASC ";
 	} elseif( $search_orderby=="2" ){

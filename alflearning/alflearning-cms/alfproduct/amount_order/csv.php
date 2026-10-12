@@ -110,46 +110,46 @@ if( $oid == "" ){
 
 	$where = "";
 	$where.= "WHERE ";
-	$where.= " student.school_id='".$arr_session["cms_master.login.school_id"]."' ";
+	$where.= " student.school_id='".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.school_id"])."' ";
 	$where.= " and tbl_order_detail.product_id IS NOT NULL ";
 	$where.= " and tbl_order.payment_status>='1' ";//支払いステータス
 	//-----------------------------------
 	if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 	} else {
-		$where.= " AND student.bar_association_id = '".$arr_session["cms_master.login.bar_association_id"]."' ";
+		$where.= " AND student.bar_association_id = '".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.bar_association_id"])."' ";
 	}
 	//-----------------------------------
 	if( $search_name == "0" || $search_name == "" ){
 	} else {
-		$where.= " AND student.student_name LIKE '%".$search_name."%' ";
+		$where.= " AND student.student_name LIKE '%".mysqli_real_escape_string($objDbConnect->connect, $search_name)."%' ";
 	}
 	//-----------------------------------
 	if( $search_start_lawyer_number == "0" || $search_start_lawyer_number == "" ){
 	} else {
-		$where.= " AND student.lawyer_number>='".$search_start_lawyer_number."' ";
+		$where.= " AND student.lawyer_number>='".mysqli_real_escape_string($objDbConnect->connect, $search_start_lawyer_number)."' ";
 	}
 	if( $search_end_lawyer_number == "0" || $search_end_lawyer_number == "" ){
 	} else {
-		$where.= " AND student.lawyer_number<='".$search_end_lawyer_number."' ";
+		$where.= " AND student.lawyer_number<='".mysqli_real_escape_string($objDbConnect->connect, $search_end_lawyer_number)."' ";
 	}
 	//-----------------------------------
 	if( $search_start_regist_date != "" ){
-		$where.= " and student.regist_date>='".$search_start_regist_date."' ";
+		$where.= " and student.regist_date>='".mysqli_real_escape_string($objDbConnect->connect, $search_start_regist_date)."' ";
 	}
 	if( $search_end_regist_date != "" ){
-		$where.= " and student.regist_date<='".substr($search_end_regist_date,0,14)."59:59' ";
+		$where.= " and student.regist_date<='".mysqli_real_escape_string($objDbConnect->connect, substr($search_end_regist_date,0,14))."59:59' ";
 	}
 	//-----------------------------------
 	if( $search_association == "0" || $search_association == "" ){
 	} else {
-		$where.= " AND student.bar_association_id='".$search_association."' ";
+		$where.= " AND student.bar_association_id='".mysqli_real_escape_string($objDbConnect->connect, $search_association)."' ";
 	}
 	//-----------------------------------
 	if( $search_start_buy_date != "" ){
-		$where.= " and tbl_order.create_date>='".$search_start_buy_date."' ";
+		$where.= " and tbl_order.create_date>='".mysqli_real_escape_string($objDbConnect->connect, $search_start_buy_date)."' ";
 	}
 	if( $search_end_buy_date != "" ){
-		$where.= " and tbl_order.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
+		$where.= " and tbl_order.create_date<='".mysqli_real_escape_string($objDbConnect->connect, substr($search_end_buy_date,0,14))."59:59' ";
 	}
 	//-----------------------------------
 	$where.= " and tbl_order.payment_status<>'0' ";
@@ -180,7 +180,7 @@ if( $oid == "" ){
 	//-----------------------------------
 	if( $search_product_code == "0" || $search_product_code == "" ){
 	} else {
-		$where.= " AND tbl_product.product_code LIKE '%".$search_product_code."%' ";
+		$where.= " AND tbl_product.product_code LIKE '%".mysqli_real_escape_string($objDbConnect->connect, $search_product_code)."%' ";
 	}
 	//-----------------------------------
 	$group = "";
