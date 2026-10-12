@@ -383,7 +383,7 @@ for($i=0;$i<count($ret);$i++){
 
 
 
-$arr_product = $ret[0];
+$arr_product = $ret[0] ?? array();
 //var_dump($arr_product);
 if( 0<count($arr_product) ){
 } else {

@@ -25,7 +25,7 @@ $return_comment = $body;
 $return_name = "";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$iid = $_POST["iid"];
+	$iid = intval($_POST["iid"] ?? 0);
 	$return_name = $_POST["return_name"];
 	$return_title = $_POST["return_title"];
 	$return_comment = $_POST["return_comment"];
