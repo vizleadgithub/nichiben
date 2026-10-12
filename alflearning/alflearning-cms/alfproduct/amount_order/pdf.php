@@ -1,9 +1,14 @@
 <?php
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include("/srv/alfproduct/module/module.php");
-include("/srv/alfproduct/module/fpdf/japanese.php");
+require_once("/srv/alfproduct/module/vendor/autoload.php"); // TCPDF・FPDI（受講票 mypage/ticket_download.php と同じ構成）
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $template_file_path = '/srv/alfproduct/module/fpdf/template/';
+// TCPDF の Write(0) は、1行分の高さだけ下に描画される。旧 FPDF 用の座標のまま使えるよう、文字サイズ×0.7 だけ上げて書き込む
+function receipt_write($pdf, $x, $y, $text){
+	$pdf->SetXY($x, $y - $pdf->getFontSize() * 0.7);
+	$pdf->Write(0, (string)$text);
+}
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $objDbConnect = new DbConnect();
 $objAdminPager = new AdminPager();
@@ -139,8 +144,9 @@ $arr_order_detail = $ret;
 
 $template = 'receipt.pdf';
 if (file_exists($template_file_path . $template)){
-	$pdf= new PDF_Japanese('P', 'mm', 'A4');
-	$pdf->AddSJISFont();
+	$pdf = new \setasign\Fpdi\Tcpdf\Fpdi('P', 'mm', 'A4', true, 'UTF-8');
+	$pdf->setPrintHeader(false);
+	$pdf->setPrintFooter(false);
 	
 	$page_no = 1; // ページNo. 1ページ10商品
 	
@@ -155,26 +161,23 @@ if (file_exists($template_file_path . $template)){
 	// -----------------
 	// 発行年月日
 	$publish_date = date('Y/m/d');
-	$pdf->SetFont('SJIS', '', 10);
-	$pdf->SetXY(149, 44);
-	$pdf->Write(0, mb_convert_encoding($publish_date, "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 10);
+	receipt_write($pdf, 149, 44, $publish_date);
 	
 	// 宛名(フリーテキスト)
 	$atena_free = '';
 	if (isset($_POST['atena'])){
-		if ($_POST['atena'] != ''){
-			$atena_free = $_POST['atena'];
-			$pdf->SetFont('SJIS', '', 16);
-			$pdf->SetXY(30, 42);
-			$pdf->Write(0, mb_convert_encoding($atena_free, "SJIS-win", "UTF-8"));
+		if (request_str($_POST['atena']) != ''){
+			$atena_free = request_str($_POST['atena']);
+			$pdf->SetFont('kozgopromedium', '', 16);
+			receipt_write($pdf, 30, 42, $atena_free);
 		}
 	}
 	
 	// 宛名(氏名)
 	$atena_name = $arr_order['student_name'];
-	$pdf->SetFont('SJIS', '', 16);
-	$pdf->SetXY(30, 50);
-	$pdf->Write(0, mb_convert_encoding($atena_name, "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 16);
+	receipt_write($pdf, 30, 50, $atena_name);
 
 /*
 	// 宛名
@@ -188,41 +191,34 @@ if (file_exists($template_file_path . $template)){
 			}
 		}
 	}
-	$pdf->SetFont('SJIS', '', 1);
-	$pdf->SetXY(10, 25);
-	$pdf->Write(0, mb_convert_encoding($atena, "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 1);
+	receipt_write($pdf, 10, 25, $atena);
 */
 
 	// 領収書番号
 	$ryousyu_no = $arr_order['order_id'] . '-' . $page_no;
-	$pdf->SetFont('SJIS', '', 10);
-	$pdf->SetXY(48, 193);
-	$pdf->Write(0, mb_convert_encoding($ryousyu_no, "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 10);
+	receipt_write($pdf, 48, 193, $ryousyu_no);
 	
 	// 注文番号
-	$pdf->SetFont('SJIS', '', 10);
-	$pdf->SetXY(44, 198);
-	$pdf->Write(0, mb_convert_encoding($arr_order['order_no'], "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 10);
+	receipt_write($pdf, 44, 198, $arr_order['order_no']);
 	
 	// 登録番号
-	$pdf->SetFont('SJIS', '', 10);
-	$pdf->SetXY(44, 203);
-	$pdf->Write(0, mb_convert_encoding($arr_order['lawyer_number'], "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 10);
+	receipt_write($pdf, 44, 203, $arr_order['lawyer_number']);
 	
 	// 所属弁護士会
-	$pdf->SetFont('SJIS', '', 10);
-	$pdf->SetXY(53, 207);
-	$pdf->Write(0, mb_convert_encoding($arr_order['association_name'] . '弁護士会', "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 10);
+	receipt_write($pdf, 53, 207, $arr_order['association_name'] . '弁護士会');
 	
 	// 購入手続き完了日
-	$pdf->SetFont('SJIS', '', 10);
-	$pdf->SetXY(57, 212);
-	$pdf->Write(0, mb_convert_encoding($arr_order['payment_date'], "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 10);
+	receipt_write($pdf, 57, 212, $arr_order['payment_date']);
 	
 	// 決済方法
-	$pdf->SetFont('SJIS', '', 10);
-	$pdf->SetXY(45, 217);
-	$pdf->Write(0, mb_convert_encoding(get_str_payment_type($arr_order['payment_type']), "SJIS-win", "UTF-8"));
+	$pdf->SetFont('kozgopromedium', '', 10);
+	receipt_write($pdf, 45, 217, get_str_payment_type($arr_order['payment_type']));
 	
 	// -----------------
 	// 動的部分書き込み
@@ -253,57 +249,48 @@ if (file_exists($template_file_path . $template)){
 			
 			// 発行年月日
 			$publish_date = date('Y/m/d');
-			$pdf->SetFont('SJIS', '', 10);
-			$pdf->SetXY(149, 44);
-			$pdf->Write(0, mb_convert_encoding($publish_date, "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 10);
+			receipt_write($pdf, 149, 44, $publish_date);
 			
 			// 宛名(フリーテキスト)
 			$atena_free = '';
 			if (isset($_POST['atena'])){
-				if ($_POST['atena'] != ''){
-					$atena_free = $_POST['atena'];
-					$pdf->SetFont('SJIS', '', 16);
-					$pdf->SetXY(30, 42);
-					$pdf->Write(0, mb_convert_encoding($atena_free, "SJIS-win", "UTF-8"));
+				if (request_str($_POST['atena']) != ''){
+					$atena_free = request_str($_POST['atena']);
+					$pdf->SetFont('kozgopromedium', '', 16);
+					receipt_write($pdf, 30, 42, $atena_free);
 				}
 			}
 			
 			// 宛名(氏名)
 			$atena_name = $arr_order['student_name'];
-			$pdf->SetFont('SJIS', '', 16);
-			$pdf->SetXY(30, 50);
-			$pdf->Write(0, mb_convert_encoding($atena_name, "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 16);
+			receipt_write($pdf, 30, 50, $atena_name);
 			
 			// 領収書番号
 			$ryousyu_no = $arr_order['order_id'] . '-' . $page_no;
-			$pdf->SetFont('SJIS', '', 10);
-			$pdf->SetXY(48, 193);
-			$pdf->Write(0, mb_convert_encoding($ryousyu_no, "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 10);
+			receipt_write($pdf, 48, 193, $ryousyu_no);
 			
 			// 注文番号
-			$pdf->SetFont('SJIS', '', 10);
-			$pdf->SetXY(44, 198);
-			$pdf->Write(0, mb_convert_encoding($arr_order['order_no'], "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 10);
+			receipt_write($pdf, 44, 198, $arr_order['order_no']);
 			
 			// 登録番号
-			$pdf->SetFont('SJIS', '', 10);
-			$pdf->SetXY(44, 203);
-			$pdf->Write(0, mb_convert_encoding($arr_order['lawyer_number'], "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 10);
+			receipt_write($pdf, 44, 203, $arr_order['lawyer_number']);
 			
 			// 所属弁護士会
-			$pdf->SetFont('SJIS', '', 10);
-			$pdf->SetXY(53, 207);
-			$pdf->Write(0, mb_convert_encoding($arr_order['association_name'] . '弁護士会', "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 10);
+			receipt_write($pdf, 53, 207, $arr_order['association_name'] . '弁護士会');
 			
 			// 購入手続き完了日
-			$pdf->SetFont('SJIS', '', 10);
-			$pdf->SetXY(57, 212);
-			$pdf->Write(0, mb_convert_encoding($arr_order['payment_date'], "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 10);
+			receipt_write($pdf, 57, 212, $arr_order['payment_date']);
 			
 			// 決済方法
-			$pdf->SetFont('SJIS', '', 10);
-			$pdf->SetXY(45, 217);
-			$pdf->Write(0, mb_convert_encoding(get_str_payment_type($arr_order['payment_type']), "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 10);
+			receipt_write($pdf, 45, 217, get_str_payment_type($arr_order['payment_type']));
 		}
 		
 		// 商品名
@@ -313,25 +300,22 @@ if (file_exists($template_file_path . $template)){
 		} else if ($arr_order_detail[$i]['product_name_TP'] != ''){
 			$product_name = $arr_order_detail[$i]['product_name_TP'];
 		}
-		$pdf->SetFont('SJIS', '', 10);
-		$pdf->SetXY($product_name_x, $pd_y);
-		$pdf->Write(0, mb_convert_encoding(mb_strimwidth($product_name, 0, 57, '...'), "SJIS-win", "UTF-8"));
+		$pdf->SetFont('kozgopromedium', '', 10);
+		receipt_write($pdf, $product_name_x, $pd_y, mb_strimwidth($product_name, 0, 57, '...'));
 		
 		// 単価
-		$pdf->SetFont('SJIS', '', 10);
-		$pdf->SetXY($product_price_x, $pd_y);
-		$pdf->Write(0, mb_convert_encoding("\\" . number_format($arr_order_detail[$i]['price']), "SJIS-win", "UTF-8"));
+		$pdf->SetFont('kozgopromedium', '', 10);
+		receipt_write($pdf, $product_price_x, $pd_y, "¥" . number_format($arr_order_detail[$i]['price']));
 		
 		// 数量
-		//$pdf->SetFont('SJIS', '', 10);
+		//$pdf->SetFont('kozgopromedium', '', 10);
 		//$pdf->SetXY($product_unit_x, $pd_y);
-		//$pdf->Write(0, mb_convert_encoding($arr_order_detail[$i]['unit'], "SJIS-win", "UTF-8"));
+		//$pdf->Write(0, $arr_order_detail[$i]['unit']);
 		
 		// 小計
 		$subtotal = $arr_order_detail[$i]['price'] * $arr_order_detail[$i]['unit'];
-		$pdf->SetFont('SJIS', '', 10);
-		$pdf->SetXY($product_subtotal_x, $pd_y);
-		$pdf->Write(0, mb_convert_encoding("\\" . number_format($subtotal), "SJIS-win", "UTF-8"));
+		$pdf->SetFont('kozgopromedium', '', 10);
+		receipt_write($pdf, $product_subtotal_x, $pd_y, "¥" . number_format($subtotal));
 		
 		// 総計集計
 		$total += $subtotal;
@@ -342,13 +326,11 @@ if (file_exists($template_file_path . $template)){
 			$next_page_flg = true;
 			
 			// 総計(表下部)
-			$pdf->SetFont('SJIS', '', 10);
-			$pdf->SetXY(170, 179);
-			$pdf->Write(0, mb_convert_encoding("\\" . number_format($total), "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 10);
+			receipt_write($pdf, 170, 179, "¥" . number_format($total));
 			// 総計(上部)
-			$pdf->SetFont('SJIS', '', 20);
-			$pdf->SetXY(55, 76);
-			$pdf->Write(0, mb_convert_encoding("\\" . number_format($total) . '-', "SJIS-win", "UTF-8"));
+			$pdf->SetFont('kozgopromedium', '', 20);
+			receipt_write($pdf, 55, 76, "¥" . number_format($total) . '-');
 			
 			$total = 0;
 			$count_gyo = 0;
@@ -356,13 +338,11 @@ if (file_exists($template_file_path . $template)){
 	}
 	if ($total != 0){
 		// 総計(表下部)
-		$pdf->SetFont('SJIS', '', 10);
-		$pdf->SetXY(170, 179);
-		$pdf->Write(0, mb_convert_encoding("\\" . number_format($total), "SJIS-win", "UTF-8"));
+		$pdf->SetFont('kozgopromedium', '', 10);
+		receipt_write($pdf, 170, 179, "¥" . number_format($total));
 		// 総計(上部)
-		$pdf->SetFont('SJIS', '', 20);
-		$pdf->SetXY(55, 76);
-		$pdf->Write(0, mb_convert_encoding("\\" . number_format($total) . '-', "SJIS-win", "UTF-8"));
+		$pdf->SetFont('kozgopromedium', '', 20);
+		receipt_write($pdf, 55, 76, "¥" . number_format($total) . '-');
 	}
 	
 	// 出力する
