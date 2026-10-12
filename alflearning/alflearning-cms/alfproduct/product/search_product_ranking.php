@@ -181,7 +181,7 @@ if( $search_start_date != "" && $search_end_date != "" ){
 $cat_where = "";
 if( count($search_category)!=0 ){
 	for($i=0;$i<count($search_category);$i++){
-		$sql_sub = "SELECT wp_term_taxonomy.term_id,wp_term_taxonomy.parent FROM wp_term_taxonomy where taxonomy='category' and parent='".$search_category[$i]."'";
+		$sql_sub = "SELECT wp_term_taxonomy.term_id,wp_term_taxonomy.parent FROM wp_term_taxonomy where taxonomy='category' and parent='".mysqli_real_escape_string($objDbConnect->connect, $search_category[$i])."'";
 		$temp = $objDbConnect->query_fetch_arr($sql_sub);
 		if( count($temp)==0 ){
 			$temp_arr_cat[] = $search_category[$i];
@@ -201,7 +201,7 @@ if( count($search_category)!=0 ){
 	}
 	for($i=0;$i<count($temp_arr_cat);$i++){
 		if($cat_where !="" ){ $cat_where.= " OR "; }
-		$cat_where.= " concat(',',tbl_product.term_id,',') LIKE '%,".$temp_arr_cat[$i].",%' ";
+		$cat_where.= " concat(',',tbl_product.term_id,',') LIKE '%,".mysqli_real_escape_string($objDbConnect->connect, $temp_arr_cat[$i]).",%' ";
 	}
 	if($cat_where !="" ){
 		$where.= " and ( ";

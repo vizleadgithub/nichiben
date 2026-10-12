@@ -60,10 +60,10 @@ $objAdminPager->setNowPage( $page );
 $sql = "select count(*) as c from tbl_product where del_flg=0 ";
 $where = "";
 if( $search_product_name != "" ){
-	$where.= " and ( product_name like '%".$search_product_name."%' ) ";
+	$where.= " and ( product_name like '%".mysqli_real_escape_string($objDbConnect->connect, $search_product_name)."%' ) ";
 }
 if( $search_product_code != "" ){
-	$where.= " and ( product_code like '%".$search_product_code."%' ) ";
+	$where.= " and ( product_code like '%".mysqli_real_escape_string($objDbConnect->connect, $search_product_code)."%' ) ";
 }
 if( $search_start_date != "" && $search_end_date != "" ){
 	$where.= " and start_date<='".$search_start_date."' and end_date>='".$search_end_date."' ";

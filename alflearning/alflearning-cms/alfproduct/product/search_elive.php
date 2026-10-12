@@ -63,10 +63,10 @@ $sql = "select count(tbl_product.product_id) as c from tbl_product INNER JOIN tb
 
 $where = "";
 if( $search_product_name != "" ){
-	$where.= " and ( tbl_product.product_name like '%".$search_product_name."%' ) ";
+	$where.= " and ( tbl_product.product_name like '%".mysqli_real_escape_string($objDbConnect->connect, $search_product_name)."%' ) ";
 }
 if( $search_product_code != "" ){
-	$where.= " and ( tbl_product.product_code like '%".$search_product_code."%' ) ";
+	$where.= " and ( tbl_product.product_code like '%".mysqli_real_escape_string($objDbConnect->connect, $search_product_code)."%' ) ";
 }
 if( $search_start_date != "" && $search_end_date != "" ){
 	$where.= " and tbl_product.start_date<='".$search_start_date."' and tbl_product.end_date>='".$search_end_date."' ";
