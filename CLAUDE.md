@@ -827,6 +827,32 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
 - `/member/regist.php`で入力後に確認画面へ進まずフォームが空で再表示される挙動が1回観測された(再現性未確認)。
 - `/exam/resubmit_index1.php`は実体が無い可能性が高い(既知の`exam2`番号違いファイルと同系統。計画(xlsx)側の確認待ち)。
 
+##### 2026-10-12: 「到達できず」10件の正体をソースで特定。WAF/Webサーバー側の懸念は否定
+
+上記チェックの過程で、`/player/player_ethic.php`・`player_ethic_commentary.php`(HTTP 403・応答ボディ完全に空)と、商品管理の`search_contents.php`系8画面(`product/search_contents.php`・`search_contents_so.php`・`search_elive.php`・`search_student.php`・`product_ethics/search_contents.php`・`search_product.php`・`product_live/search_product.php`・`product_passport/search_product.php`。HTTP 400・応答ボディ完全に空)、`product_live_branch/index.php`・`info.php`(CMSトップへリダイレクト)が報告された。応答ボディが完全に空でChromeのネイティブエラー画面として表示されたことから、一時「Webサーバー／WAFレベルでの一律ブロックの可能性」が疑われたが、**ソースを確認した結果、全てアプリケーション側の正規のガード処理による意図的な動作であり、WAF等の確認は不要と判明した**。
+
+- **`player_ethic.php`系(403・空ボディ)**: `csrf_token_verify()`(`alfproduct/module/functions.php`)が、POSTされた`csrf_token`が無い場合に`http_response_code(403); exit;`を実行する実装。echoを一切通らないため応答ボディが完全に空になり、ブラウザには「サーバーに拒否された」ように見える。本来は講座詳細ページの動画再生ボタンから`pid`等と一緒にPOSTで呼ばれる想定で、直接GETでアクセスした場合の仕様通りの挙動。
+- **`search_contents.php`系8画面(400・空ボディ)**: 全ファイル共通で
+  ```php
+  $gid = isset($_GET['gid']) ? (string)$_GET['gid'] : '';
+  // gidは親画面の項目名(英数字・_)のみ許可
+  if (!preg_match('/^[A-Za-z0-9_]+$/', $gid)) {
+      header('HTTP/1.1 400 Bad Request');
+      exit();
+  }
+  ```
+  という実装で、必須の`gid`パラメータが無いと即座に400・空ボディで終了する。これらは単体ページではなく、親画面から`window.open()`等で`?gid=対象項目名`付きで開く**ポップアップ検索画面**(`test-plan/plan.json`に「コンテンツ検索ポップアップ(search_contents)」「受講者検索ポップアップ(search_student)」等として既出)で、直接URLを叩くとUI上に導線が見えないのは当然(JSで動的に組み立てられるURLのため)。これらのポップアップ本来のXSS確認対象(`search_contents_name`・`search_student_name`等の自由入力欄)は、`search_student.php`について既に`run-xss-data-linked.js`のcheckE14で正しい`gid`付きで自動テスト済み(上記「段階B: 重点項目」節参照)であり、テスト漏れではない。
+- **`product_live_branch`(CMSトップへリダイレクト)**:
+  ```php
+  $login_bar_association_id = $arr_session["cms_master.login.bar_association_id"];
+  if ($login_bar_association_id == 1){  // 日弁連
+      header("Location: /?backurl=".$_SERVER['PHP_SELF']);
+      exit();
+  }
+  ```
+  という実装で、「単位会(日弁連以外の弁護士会)」専用の機能であり、日弁連本体アカウント(`STG2_CMS_USER`)では明示的にブロックされる仕様。確認するには単位会用の管理者アカウント(`STG2_CMS_BAR_USER`)でのログインが必要(優先度は低いと判断し、今回は追加確認していない)。
+- **`product_lecture_ethics/info_user.php`・`info_user_import.php`・`info_user_regist.php`**: 実データでの再確認でも「管理」リンク自体がページ内に存在しないことを確認。既知の設計上の非対称(`product_lecture_ethics`は`aid`概念が無く`info.php`自身からCSV取り込みフォームを送信する作り)と一致し、対象外で確定。
+
 ## アーキテクチャ
 
 ### ディレクトリ構成
