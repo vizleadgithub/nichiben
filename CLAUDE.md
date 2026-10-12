@@ -881,7 +881,8 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
 - **ツール**: `tools/stg2-e2e/build-final-report.js`(`node build-final-report.js`で再生成可能)。自動テスト結果の集計(report-xss.jsと同じロジック)に、個別ID指定の手動判定(要確認140件の再確認・untouched382行の解消)を重ねる。
 - **出力**: `secure_report/脆弱性テスト計画_最終結果一覧.csv`。内訳: OK 921 / NG 9 / 対応不要 413 / 未実施 146。
 - **未実施146件の主な内訳**: 商品管理の重い画面(product_live/add.php。手動確認が必要)・CSV取り込みリンクの不安定さ・[B-13]修正後の再テストが必要な項目(E-10・E-12・E-13等)・決済画面(方針により手動)・モバイル表示・横断的観点(E-31/E-34/E-37/E-40)・ブラウザでは確認不可能なインフラ系7項目、等。
-- **新規発見: [B-23]** 既存の自動テスト結果(`run-xss-http.js`)を精査する過程で、ページ送り(`Pager.php`/`AdminPager.php`)等のGETパラメータ改ざんにより、[B-3]と同じ「WordPress連携層の未処理エラーがWP_Errorのvar_dumpとしてサーバー内部パス・スタックトレース付きでそのまま応答に出力される」情報漏えいが複数画面(E-19・F-05・F-06・E-47・E-52・E-54)で再現することを発見。このうち`mypage/buy_detail.php`の`oid`パラメータ(配列送信でTypeError)は原因を特定し修正済み(**デプロイ待ち**)。`Pager.php`/`AdminPager.php`経由で発生する分は正確な原因が未調査のため、優先的な追加調査が必要(詳細は`secure_report/stg2自動テストで発見した不具合_2026-10-07.md`の[B-23]参照)。
+- **新規発見: [B-23]** 既存の自動テスト結果(`run-xss-http.js`)を精査する過程で、[B-3]と同じ「WordPress連携層の未処理エラーがWP_Errorのvar_dumpとしてサーバー内部パス・スタックトレース付きでそのまま応答に出力される」情報漏えいが複数画面(E-19・F-05・F-06・E-47・E-52・E-54)で再現することを発見。stg2で実際にエラー本文を取得して原因を特定: `mypage/buy_detail.php`(`oid`配列送信でTypeError)・`report_product/info.php`・`report_product/csv.php`(いずれも該当レコード無しで`$ret[0]`が`null`になり`count(null)`がTypeError)の3箇所が原因と判明、修正済み(**デプロイ待ち**)。`Pager.php`/`AdminPager.php`自体は無関係で、ページ送りを使う画面の中にこのパターンを持つものが複数あっただけと判明。
+- **新規発見: [B-24]** 上記の調査中に、`inquiry/`配下6ファイル(`conf.php`・`edit.php`・`regist.php`・`status.php`・`status_conf.php`・`status_regist.php`)で`iid`パラメータがSQLに未エスケープで直接連結されるSQLインジェクションを発見(同じディレクトリの`info.php`だけは`intval()`で数値検証済みだった)。全6ファイルを`info.php`と同じ検証方式に統一し修正済み(**デプロイ待ち**)。詳細は`secure_report/stg2自動テストで発見した不具合_2026-10-07.md`の[B-23]・[B-24]参照。
 
 ## アーキテクチャ
 
