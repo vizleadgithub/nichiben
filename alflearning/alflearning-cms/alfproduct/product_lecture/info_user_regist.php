@@ -29,7 +29,7 @@ if ($login_bar_association_id == 1){
 // 商品ID
 $pid = '';
 if(isset($_POST["pid"])){
-	$pid = $_POST["pid"];
+	$pid = request_str($_POST["pid"] ?? "");
 }
 if (strlen($pid) == 0) {
 	header('Location: index.php');

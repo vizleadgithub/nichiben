@@ -15,7 +15,7 @@ if(!$arr_session){
 $mid = "";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$mid = $_POST["mid"];
+	$mid = request_str($_POST["mid"] ?? "");
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $sql = "select * from mtb_mailmagazine_category";
@@ -25,6 +25,8 @@ $sql = "select * from mtb_pref";
 $arr_pref = $objDbConnect->query_fetch_arr($sql);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $member_count = 0;
+$arr_err = array();
+$where = "";
 if(count($arr_err)==0){
 	$sql = "select tbl_mailmagazine_sended.*,student.* from tbl_mailmagazine_sended LEFT JOIN student ON tbl_mailmagazine_sended.member_id=student.student_id where mailmagazine_id='".mysqli_real_escape_string($objDbConnect->connect, (string)$mid)."' ";
 	$ret = $objDbConnect->query_fetch_arr($sql.$where);

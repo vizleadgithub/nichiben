@@ -25,16 +25,16 @@ $order_id = "";
 $order_detail_id = "";
 $payment_status = "";
 if( isset($_GET["mode"]) && !empty($_GET["mode"]) ){
-	$mode = $_GET["mode"];
+	$mode = request_str($_GET["mode"]);
 }
 if( isset($_GET["oid"]) && !empty($_GET["oid"]) ){
-	$order_id = $_GET["oid"];
+	$order_id = request_str($_GET["oid"]);
 }
 if( isset($_GET["order_detail_id"]) && !empty($_GET["order_detail_id"]) ){
-	$order_detail_id = $_GET["order_detail_id"];
+	$order_detail_id = request_str($_GET["order_detail_id"]);
 }
 if( isset($_GET["payment_status"]) && !empty($_GET["payment_status"]) ){
-	$payment_status = $_GET["payment_status"];
+	$payment_status = request_str($_GET["payment_status"]);
 }
 
 if($order_id == ""){
@@ -85,7 +85,7 @@ $sql.= " LEFT JOIN mtb_bar_association ON mtb_bar_association.id = student.bar_a
 $where = "";
 $where.= "WHERE ";
 $where.= " student.school_id='".$arr_session["cms_master.login.school_id"]."' ";
-$where.= " and tbl_order.order_id='".$order_id."' ";
+$where.= " and tbl_order.order_id='".mysqli_real_escape_string($objDbConnect->connect, $order_id)."' ";
 $where.= " and tbl_order.payment_status>='1' ";//支払いステータス
 //-----------------------------------
 if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
@@ -107,7 +107,7 @@ $sql.= "FROM ";
 $sql.= "tbl_order_detail ";
 $where = "";
 $where.= "WHERE ";
-$where.= " order_id='".$order_id."'";
+$where.= " order_id='".mysqli_real_escape_string($objDbConnect->connect, $order_id)."'";
 $group = "";
 $ret = $objDbConnect->query_fetch($sql.$where.$group);
 //$objAdminPager->setPageMax(1);
@@ -135,7 +135,7 @@ $sql.= " LEFT JOIN tbl_product ON tbl_order_detail.product_id=tbl_product.produc
 $sql.= " LEFT JOIN tbl_product_add ON tbl_order_detail.product_id=tbl_product_add.product_id ";
 $where = "";
 $where.= "WHERE ";
-$where.= " tbl_order.order_id='".$order_id."' ";
+$where.= " tbl_order.order_id='".mysqli_real_escape_string($objDbConnect->connect, $order_id)."' ";
 $order = " ORDER BY tbl_order_detail.create_date DESC ";
 $ret = $objDbConnect->query_fetch_arr($sql.$where.$group.$order.$offset);
 

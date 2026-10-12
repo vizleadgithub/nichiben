@@ -25,10 +25,10 @@ $template->assign('nichibenren_flg', $nichibenren_flg);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 商品ID
 $pid = '';
-if (isset($_POST["pid"]) && strlen($_POST["pid"]) > 0) {
-	$pid = $_POST["pid"];
-} elseif (isset($_GET["pid"]) && strlen($_GET["pid"]) > 0) {
-	$pid = $_GET["pid"];
+if (request_str($_POST["pid"] ?? "") !== "") {
+	$pid = request_str($_POST["pid"]);
+} elseif (request_str($_GET["pid"] ?? "") !== "") {
+	$pid = request_str($_GET["pid"]);
 }
 if (strlen($pid) == 0) {
 	header('Location: index.php');
@@ -45,7 +45,7 @@ $sql.= " product_code ";
 $sql.= "FROM ";
 $sql.= " tbl_product ";
 $sql.= "WHERE ";
-$sql.= " product_id='".$pid."' ";
+$sql.= " product_id='".mysqli_real_escape_string($objDbConnect->connect, $pid)."' ";
 $arr_input_2 = $objDbConnect->query_fetch($sql);
 //$temp = $objDbConnect->query_fetch_arr($sql);
 if( count($arr_input_2)==0 ){

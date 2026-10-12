@@ -46,7 +46,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 		$job = $_POST["job"];
 		$job_type = $_POST["job_type"];
 		$school_grade = $_POST["school_grade"];
-		$mailmagazine_category = $_POST["mailmagazine_category"];
+		$mailmagazine_category = isset($_POST["mailmagazine_category"]) && is_array($_POST["mailmagazine_category"]) ? $_POST["mailmagazine_category"] : array();
 
 		$bar_association_id = $_POST["bar_association_id"];
 		$start_regist_date = $_POST["start_regist_date"];

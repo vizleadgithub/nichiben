@@ -53,7 +53,7 @@ if( isset($_SESSION["product_lecture_info.search_end_date"]) && !empty($_SESSION
 // 商品ID
 $pid = '';
 if(isset($_GET["pid"])){
-	$pid = $_GET["pid"];
+	$pid = request_str($_GET["pid"]);
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 弁護士会支部ID
@@ -70,9 +70,14 @@ if(isset($_GET["aid"])){
 // CSV種類
 $type = '';
 if(isset($_GET["type"])){
-	$type = $_GET["type"];
+	$type = request_str($_GET["type"]);
 }
 if (strlen($type) == 0) {
+	header("Location: /index.php");
+	exit;
+}
+// 商品IDは数字だけ(数字以外だと、旧商品IDの計算で TypeError になる)
+if (!preg_match('/^[0-9]+$/', $pid)) {
 	header("Location: /index.php");
 	exit;
 }
@@ -547,7 +552,7 @@ function _get_product_lecture_info_user($objDbConnect, $pid, $aid, $arr_session,
 		}
 	}
 	$where.= " and tbl_order_detail.product_id IS NOT NULL ";
-	$where.= " and tbl_order_detail.product_id = '".$pid."'";
+	$where.= " and tbl_order_detail.product_id = '".mysqli_real_escape_string($objDbConnect->connect, $pid)."'";
 	$where.= " and tbl_order_detail.bar_association_branch_id = '".$aid."'";
 	$where.= " and tbl_order_detail.product_type_add ='2' ";
 	$where.= " and ( tbl_order_detail.payment_status = 1 OR tbl_order_detail.payment_status = 2 OR tbl_order_detail.payment_status = 3 ) ";

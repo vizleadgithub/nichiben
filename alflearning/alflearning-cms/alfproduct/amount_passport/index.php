@@ -73,8 +73,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$search_start_lawyer_number = request_str($_POST["search_start_lawyer_number"] ?? "");
 	$search_end_lawyer_number = request_str($_POST["search_end_lawyer_number"] ?? "");
 	$search_association = request_str($_POST["search_association"] ?? "");
-	$search_passport_target = $_POST["search_passport_target"];
-	$search_payment_status = $_POST["search_payment_status"];
+	$search_passport_target = isset($_POST["search_passport_target"]) && is_array($_POST["search_passport_target"]) ? $_POST["search_passport_target"] : array();
+	$search_payment_status = isset($_POST["search_payment_status"]) && is_array($_POST["search_payment_status"]) ? $_POST["search_payment_status"] : array();
 	$search_start_buy_date = request_str($_POST["search_start_buy_date"] ?? "");
 	$search_end_buy_date = request_str($_POST["search_end_buy_date"] ?? "");
 	$search_orderby = request_str($_POST["search_orderby"] ?? "");
