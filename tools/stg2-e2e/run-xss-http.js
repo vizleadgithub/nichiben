@@ -344,10 +344,17 @@ async function checkF04() {
     rec.add({ id, verdict: f.length ? 'NG' : 'OK', label: `X-Forwarded-Host ${p}`, status: r.status, findings: f, scope: 'X-Forwarded-Host のみ' });
     if (f.length) console.log(`NG ${id} ${p} -> ${f.map((x) => x.kind).join(',')}`);
   }
-  // Host ヘッダー本体の差し替え。ライブラリ・サーバー側の都合で上書きできない/到達できないことがあるため、例外は「要確認」にする
+  // Host ヘッダー本体の差し替え。ブラウザコンテキストの request(ignoreHTTPSErrors未指定)経由だと、
+  // Hostヘッダーの書き換えでSNI/証明書のホスト名検証に不整合が起き自己署名証明書エラーになることがあるため、
+  // ignoreHTTPSErrorsを有効にした専用のAPIRequestContextを使う(SNI・接続先は変わらずstg2へ実際に接続する)
+  const { request } = require('playwright');
+  const apiCtx = await request.newContext({ ignoreHTTPSErrors: true, httpCredentials: { username: env('STG2_BASIC_USER'), password: env('STG2_BASIC_PASS') } });
   for (const p of pages) {
     let r;
-    try { r = await rawGet(s, p, { Host: 'evil.example' }); } catch (e) {
+    try {
+      const res = await apiCtx.get(s.abs(p), { maxRedirects: 0, headers: { Host: 'evil.example' }, failOnStatusCode: false, timeout: 60000 });
+      r = { status: res.status(), headers: res.headers(), body: await res.text().catch(() => '') };
+    } catch (e) {
       rec.add({ id, verdict: '要確認', label: `Hostヘッダー本体 ${p}`, note: `確認できず: ${e.message.split('\n')[0]}` });
       continue;
     }
@@ -359,6 +366,7 @@ async function checkF04() {
     rec.add({ id, verdict: f.length ? 'NG' : 'OK', label: `Hostヘッダー本体 ${p}`, status: r.status, findings: f, scope: 'Host ヘッダー本体の差し替え(SNI・証明書は正規のまま)' });
     if (f.length) console.log(`NG ${id} ${p}(Host本体) -> ${f.map((x) => x.kind).join(',')}`);
   }
+  await apiCtx.dispose();
 }
 
 // 改ざん値のGET: パラメータすべてに同じ値を入れて開く（ページ送り・ID・gid 等）
