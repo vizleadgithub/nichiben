@@ -912,8 +912,8 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
 - `run-xss-search.js`に`--account bar`オプションを追加(`Session`の`statePath`を`.auth/cms-bar.json`に切り替えるだけ)。
 - このアカウントで`product_live_branch/index.php`に実アクセスした結果、リダイレクトされず200で正常に表示されることを確認。`node run-xss-search.js cms --account bar --only B-0429,...,B-0439`を実行し、**研修名・商品コード・カテゴリ・研修実施日(開始/終了)・公開状態・講師名・有料無料・フリーワードの9項目(B-0429/430/431/432/433/436/437/438/439)はS8(15種)の攻撃文字列すべてでNG0件・OK**。B-0440(まとめ)もこれを受けてOKへ。
 - B-0434・B-0435(「受付期間」の検索欄)は、画面に到達できるようになった後も**項目自体が存在しない**ことを確認(研修実施日の検索欄(search_dates_start/end)のみで、受付期間の個別検索欄は無い)。対象外のまま、理由を「認証でブロックされ未到達」から「項目不存在」に訂正。
-- B-0441・B-0442(`info.php`の詳細画面)は、到達はできるようになったが、**この弁護士会にはproduct_live_branch商品がまだ1件も登録されておらず(検索結果0件)**、詳細画面の実データが無いため確認できなかった。「未実施」に変更(テスト用商品の登録が必要。`product_live/add.php`と同系統の重い登録画面である可能性があり、登録を試みる場合はDBダンプが前提)。
-- `apply-results-to-xlsx.py`で14行をxlsxへ反映済み。
+- B-0441・B-0442(`info.php`の詳細画面)は、この弁護士会にproduct_live_branch商品が1件も無く(検索結果0件)実データが無いため一度は「未実施」としたが、`product_live_branch`に専用の登録画面(`add.php`)が無く既存の日弁連主催研修の`target`(受講対象弁護士会。パイプ区切り)に乗る形でしか単位会側から見えない仕組みと判明したため、**新規登録はせず、既存データへの乗り換えで解決**した。既存の研修(`product_id:26318`。`sponsor=|1|`・`target`に全弁護士会含む。商品名に攻撃文字列入りの既存テストデータ)の`target`に含まれる実在の弁護士会IDに、テストアカウントの`teacher.bar_association_id`をDBで直接変更(ユーザーが実施)。`info.php?mid=26318`に実アクセスした結果、hidden項目(`bar_association_sponsor[]`等)・商品名表示(攻撃文字列が54箇所出現)とも全てエスケープ済みで安全と確認し、**OKへ更新**。
+- `apply-results-to-xlsx.py`で14行をxlsxへ反映済み。B-0429〜0442は全件決着(OK 12件・対象外2件)。
 
 ## アーキテクチャ
 
