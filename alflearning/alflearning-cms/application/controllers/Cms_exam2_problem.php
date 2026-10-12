@@ -1562,8 +1562,8 @@ class Cms_exam2_problem extends CI_Controller {
 		if($exam2_problems){
 			
 			// 設問名・管理講師・解答配点
-			$result_data['exam2_problems_name']         = $exam2_problems['exam2_problem_name'];
-			$result_data['exam2_problems_teacher_name'] = $exam2_problems['teacher_name'];
+			$result_data['exam2_problems_name']         = htmlspecialchars((string)$exam2_problems['exam2_problem_name'], ENT_QUOTES, 'UTF-8');
+			$result_data['exam2_problems_teacher_name'] = htmlspecialchars((string)$exam2_problems['teacher_name'], ENT_QUOTES, 'UTF-8');
 			$result_data['exam2_problems_problem_kind'] = $exam2_problems['problem_kind'];
 			
 			// 設問 - 詳細 - 設問内容
