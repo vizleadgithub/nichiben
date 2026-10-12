@@ -33,7 +33,7 @@ $search_teacher = "";
 $search_free = "0";
 
 if( isset($_GET["pid"]) && !empty($_GET["pid"]) ){
-	$pid = trim($_GET["pid"]);
+	$pid = request_str($_GET["pid"] ?? "");
 }
 
 if( isset($_SESSION["report_product.search_product_name"]) && !empty($_SESSION["report_product.search_product_name"]) ){

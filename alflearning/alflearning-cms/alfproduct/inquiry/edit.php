@@ -30,7 +30,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$return_title = $_POST["return_title"];
 	$return_comment = $_POST["return_comment"];
 } else {
-	$iid = trim($_GET["iid"]);
+	$iid = request_str($_GET["iid"] ?? "");
 }
 if($iid!=""){
 	$sql = "";

@@ -100,20 +100,20 @@ if( isset($_GET["search"]) && $_GET["search"]=="new" ){
 	}
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_start_date = preg_replace('/[^0-9\/: \-]/', '', trim($_POST["search_start_date"]));
-	$search_end_date = preg_replace('/[^0-9\/: \-]/', '', trim($_POST["search_end_date"]));
-	$search_start_regist_date = trim($_POST["search_start_regist_date"]);
-	$search_end_regist_date = trim($_POST["search_end_regist_date"]);
-	$search_keyword = trim($_POST["search_keyword"]);
+	$search_start_date = preg_replace('/[^0-9\/: \-]/', '', request_str($_POST["search_start_date"] ?? ""));
+	$search_end_date = preg_replace('/[^0-9\/: \-]/', '', request_str($_POST["search_end_date"] ?? ""));
+	$search_start_regist_date = request_str($_POST["search_start_regist_date"] ?? "");
+	$search_end_regist_date = request_str($_POST["search_end_regist_date"] ?? "");
+	$search_keyword = request_str($_POST["search_keyword"] ?? "");
 
-	$search_target_parameter_member_type = trim($_POST["search_member_type"]);
-	$search_target_parameter_sex = trim($_POST["search_sex"]);
-	$search_target_parameter_pref = trim($_POST["search_pref"]);
+	$search_target_parameter_member_type = request_str($_POST["search_member_type"] ?? "");
+	$search_target_parameter_sex = request_str($_POST["search_sex"] ?? "");
+	$search_target_parameter_pref = request_str($_POST["search_pref"] ?? "");
 
-	$search_target_parameter_age = trim($_POST["search_age"]);
-	$search_target_parameter_job = trim($_POST["search_job"]);
-	$search_target_parameter_job_type = trim($_POST["search_job_type"]);
-	$search_target_parameter_school_grade = trim($_POST["search_school_grade"]);
+	$search_target_parameter_age = request_str($_POST["search_age"] ?? "");
+	$search_target_parameter_job = request_str($_POST["search_job"] ?? "");
+	$search_target_parameter_job_type = request_str($_POST["search_job_type"] ?? "");
+	$search_target_parameter_school_grade = request_str($_POST["search_school_grade"] ?? "");
 
 	$search_mailmagazine_category = isset($_POST["search_mailmagazine_category"]) ? $_POST["search_mailmagazine_category"] : array();
 

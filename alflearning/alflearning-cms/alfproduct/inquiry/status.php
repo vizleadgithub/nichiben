@@ -21,7 +21,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$inquiry_status = $_POST["inquiry_status"];
 	$return_name = $_POST["return_name"];
 } else {
-	$iid = trim($_GET["iid"]);
+	$iid = request_str($_GET["iid"] ?? "");
 }
 if($iid!=""){
 	$sql = "";

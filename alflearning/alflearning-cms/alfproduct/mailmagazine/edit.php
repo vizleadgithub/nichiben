@@ -60,7 +60,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$mail_title = $_POST["mail_title"];
 	$mail_body = $_POST["mail_body"];
 } else {
-	$mid = trim($_GET["mid"]);
+	$mid = request_str($_GET["mid"] ?? "");
 	if($mid!=""){
 		$sql = "";
 		$sql.= "select ";

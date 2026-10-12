@@ -66,7 +66,7 @@ if( isset($_SESSION["report_product.info.search_orderby"]) && !empty($_SESSION["
 	$search_orderby = $_SESSION["report_product.info.search_orderby"];
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_orderby = strip_tags(trim($_POST["search_orderby"]));
+	$search_orderby = strip_tags(request_str($_POST["search_orderby"] ?? ""));
 	$_SESSION["report_product.info.search_orderby"] = $search_orderby;
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

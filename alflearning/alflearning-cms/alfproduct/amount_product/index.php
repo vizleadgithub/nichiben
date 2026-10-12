@@ -22,7 +22,7 @@ $search_product_type_add = array();
 $search_payment_type = array();
 $search_claim_flg = array();
 
-if( isset($_GET["search"]) && trim($_GET["search"])=="new" ){
+if( isset($_GET["search"]) && request_str($_GET["search"] ?? "")=="new" ){
 } else {
 	if( isset($_SESSION["amount_product.search_start_buy_date"]) && !empty($_SESSION["amount_product.search_start_buy_date"]) ){
 		$search_start_buy_date = $_SESSION["amount_product.search_start_buy_date"];
@@ -58,11 +58,11 @@ if( isset($_GET["search"]) && trim($_GET["search"])=="new" ){
 	}
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_start_buy_date = trim($_POST["search_start_buy_date"]);
-	$search_end_buy_date = trim($_POST["search_end_buy_date"]);
-	$search_monthly = trim($_POST["search_monthly"]);
-	$search_product_name = trim($_POST["search_product_name"]);
-	$search_product_code = trim($_POST["search_product_code"]);
+	$search_start_buy_date = request_str($_POST["search_start_buy_date"] ?? "");
+	$search_end_buy_date = request_str($_POST["search_end_buy_date"] ?? "");
+	$search_monthly = request_str($_POST["search_monthly"] ?? "");
+	$search_product_name = request_str($_POST["search_product_name"] ?? "");
+	$search_product_code = request_str($_POST["search_product_code"] ?? "");
 	$search_product_type_add = $_POST["search_product_type_add"]??[];
 	if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 		$search_payment_type = $_POST["search_payment_type"]??[];
@@ -91,8 +91,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 
 if( isset( $_GET["post_data"]) && $_GET["post_data"] != "" ){
 	$temp = unserialize( $_GET["post_data"], ['allowed_classes' => false] );
-	$temp_y = trim( $_GET["buy_y"] );
-	$temp_m = trim( $_GET["buy_m"] );
+	$temp_y = request_str($_GET["buy_y"] ?? "");
+	$temp_m = request_str($_GET["buy_m"] ?? "");
 	$temp_d = date("t", mktime(0, 0, 0, $temp_m, 1, $temp_y));
 
 	$search_start_buy_date = $temp_y."/".$temp_m."/01 00:00";
