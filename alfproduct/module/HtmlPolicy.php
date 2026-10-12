@@ -53,6 +53,17 @@ function html_policy_definitions()
     );
 }
 
+/**
+ * HTMLPurifier を使えないときの代わり。タグを許可せず、すべて文字として出力する。
+ */
+class HtmlPolicyFallbackPurifier
+{
+    public function purify($html)
+    {
+        return htmlspecialchars((string) $html, ENT_QUOTES, 'UTF-8');
+    }
+}
+
 function html_policy_purifier($profile)
 {
     static $purifiers = array();
@@ -66,7 +77,17 @@ function html_policy_purifier($profile)
     }
     $def = $defs[$profile];
 
-    require_once dirname(__FILE__) . '/vendor/autoload.php';
+    // vendor（composer install）がない・HTMLPurifier が読み込めない場合は、ページを止めずに、
+    // すべてのタグを文字として表示する（安全側）。エラーログに、原因を残す。
+    $autoload = dirname(__FILE__) . '/vendor/autoload.php';
+    if (is_file($autoload)) {
+        require_once $autoload;
+    }
+    if (!class_exists('HTMLPurifier') || !class_exists('HTMLPurifier_Config')) {
+        error_log('HtmlPolicy: HTMLPurifier を読み込めません（alfproduct/module で composer install が必要）。すべてのタグを、文字として表示します。');
+        $purifiers[$profile] = new HtmlPolicyFallbackPurifier();
+        return $purifiers[$profile];
+    }
 
     $config = HTMLPurifier_Config::createDefault();
     $config->set('HTML.Allowed', $def['allowed']);

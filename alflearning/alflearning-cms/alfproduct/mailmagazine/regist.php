@@ -152,24 +152,24 @@ if(count($arr_err)==0){
 		//都道府県の条件
 		if( $pref=="" ){
 		} else {
-			$where.= " and student.pref='".$pref."' ";
+			$where.= " and student.pref='".mysqli_real_escape_string($objDbConnect->connect, (string)$pref)."' ";
 		}
 
 		if( $age == "" ){
 		} else {
-			$where.= " and student.age='".$age."' ";
+			$where.= " and student.age='".mysqli_real_escape_string($objDbConnect->connect, (string)$age)."' ";
 		}
 		if( $job == "" ){
 		} else {
-			$where.= " and student.job='".$job."' ";
+			$where.= " and student.job='".mysqli_real_escape_string($objDbConnect->connect, (string)$job)."' ";
 		}
 		if( $job_type == "" ){
 		} else {
-			$where.= " and student.job_type='".$job_type."' ";
+			$where.= " and student.job_type='".mysqli_real_escape_string($objDbConnect->connect, (string)$job_type)."' ";
 		}
 		if( $school_grade == "" ){
 		} else {
-			$where.= " and student.school_grade='".$school_grade."' ";
+			$where.= " and student.school_grade='".mysqli_real_escape_string($objDbConnect->connect, (string)$school_grade)."' ";
 		}
 
 		//カテゴリの条件
@@ -186,20 +186,20 @@ if(count($arr_err)==0){
 */
 		if( $bar_association_id == "" ){
 		} else {
-			$where.= " and student.bar_association_id='".$bar_association_id."' ";
+			$where.= " and student.bar_association_id='".mysqli_real_escape_string($objDbConnect->connect, (string)$bar_association_id)."' ";
 		}
 		if( $start_regist_date != "" ){
-			$where.= " and student.regist_date>='".substr($start_regist_date,0,10)."' ";
+			$where.= " and student.regist_date>='".mysqli_real_escape_string($objDbConnect->connect, substr((string)$start_regist_date,0,10))."' ";
 		}
 		if( $end_regist_date != "" ){
-			$where.= " and student.regist_date<='".substr($end_regist_date,0,10)."' ";
+			$where.= " and student.regist_date<='".mysqli_real_escape_string($objDbConnect->connect, substr((string)$end_regist_date,0,10))."' ";
 		}
 
 		if( $start_lawyer_number != "" ){
-			$where.= " and student.lawyer_number>='".$start_lawyer_number."' ";
+			$where.= " and student.lawyer_number>='".mysqli_real_escape_string($objDbConnect->connect, (string)$start_lawyer_number)."' ";
 		}
 		if( $end_lawyer_number != "" ){
-			$where.= " and student.lawyer_number<='".$end_lawyer_number."' ";
+			$where.= " and student.lawyer_number<='".mysqli_real_escape_string($objDbConnect->connect, (string)$end_lawyer_number)."' ";
 		}
 
 	}

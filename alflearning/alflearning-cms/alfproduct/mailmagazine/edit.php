@@ -88,7 +88,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 		$sql.= "from ";
 		$sql.= "tbl_mailmagazine ";
 		$sql.= "where ";
-		$sql.= "mailmagazine_id='".$mid."'";
+		$sql.= "mailmagazine_id='".mysqli_real_escape_string($objDbConnect->connect, (string)$mid)."'";
 		$ret = $objDbConnect->query_fetch_arr($sql);
 		//$temp_arr = unserialize( $ret[0]["target_parameter"] );
 

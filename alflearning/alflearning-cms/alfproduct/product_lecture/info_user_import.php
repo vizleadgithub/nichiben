@@ -331,7 +331,7 @@ if ($mode == "upload") {
 
 // 申込状況に追加する
 elseif ($mode == "regist") {
-	if (isset($_POST['ufnn'])){
+	if (isset($_POST['ufnn']) && is_string($_POST['ufnn']) && preg_match('/^[A-Za-z0-9]+$/', $_POST['ufnn'])){
 		$file = $upload_dir_name.'/'.$_POST['ufnn'].'.csv';
 		
 		if (file_exists($file)){
@@ -586,7 +586,7 @@ elseif ($mode == "regist") {
 
 // 受講済みにする
 elseif ($mode == "change") {
-	if (isset($_POST['ufnn'])){
+	if (isset($_POST['ufnn']) && is_string($_POST['ufnn']) && preg_match('/^[A-Za-z0-9]+$/', $_POST['ufnn'])){
 		$file = $upload_dir_name.'/'.$_POST['ufnn'].'.csv';
 		
 		if (file_exists($file)){
