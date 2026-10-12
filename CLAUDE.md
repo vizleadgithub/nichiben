@@ -874,6 +874,15 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
 
 `run-xss-search.js`に、親画面から`?gid=対象項目名`付きで開くポップアップ検索画面(`search_contents.php`・`search_contents_so.php`・`search_elive.php`)向けに、実在するgid値を自動付与する`URL_QUERY_SUFFIX`マップを追加(値は`alfproduct/smarty/templates/admin/product/add.tpl`の`searchButton()`呼び出しから採取: `contents_contents0`・`contents_contents0so`・`live_training_product_id`)。これにより従来gid無しで400止まりだったこれらの画面もS8(検索条件)のテスト対象になった。実行結果は8行中NG 0・要確認2・OK 6(`node run-xss-search.js cms --only B-0215,B-0216,B-0218,B-0219,B-0221,B-0222,B-0223,B-0224`)。要確認2件(`search_elive.php`の`search_start_date`・`search_end_date`)は、再表示された値が日付欄の整形処理により攻撃文字列ではなく末尾の数字断片のみに変わっていたもので、未エスケープ出現ではなく既知の日付欄の型破り耐性と同種の無害な挙動(OKと判断)。これにより`search_contents.php`系の全10行(S8実体8行+S12まとめ2行)を解消。
 
+##### 2026-10-12: 脆弱性テスト計画の全行(1489行)についてOK/NG/対応不要/未実施の最終結果一覧を作成。新規の情報漏えい[B-23]を発見
+
+`secure_report\browser\`配下にユーザーが保存したChrome拡張での確認用出力チェックレポート(デバッグ出力チェック_テストレポート*.md。依頼A〜E累積)と、これまでの自動テスト結果・コードレビューでの判定を突き合わせ、計画の全1489行について最終結果(OK/NG/対応不要/未実施)と対応不要・未実施の理由をまとめた一覧を作成した。
+
+- **ツール**: `tools/stg2-e2e/build-final-report.js`(`node build-final-report.js`で再生成可能)。自動テスト結果の集計(report-xss.jsと同じロジック)に、個別ID指定の手動判定(要確認140件の再確認・untouched382行の解消)を重ねる。
+- **出力**: `secure_report/脆弱性テスト計画_最終結果一覧.csv`。内訳: OK 921 / NG 9 / 対応不要 413 / 未実施 146。
+- **未実施146件の主な内訳**: 商品管理の重い画面(product_live/add.php。手動確認が必要)・CSV取り込みリンクの不安定さ・[B-13]修正後の再テストが必要な項目(E-10・E-12・E-13等)・決済画面(方針により手動)・モバイル表示・横断的観点(E-31/E-34/E-37/E-40)・ブラウザでは確認不可能なインフラ系7項目、等。
+- **新規発見: [B-23]** 既存の自動テスト結果(`run-xss-http.js`)を精査する過程で、ページ送り(`Pager.php`/`AdminPager.php`)等のGETパラメータ改ざんにより、[B-3]と同じ「WordPress連携層の未処理エラーがWP_Errorのvar_dumpとしてサーバー内部パス・スタックトレース付きでそのまま応答に出力される」情報漏えいが複数画面(E-19・F-05・F-06・E-47・E-52・E-54)で再現することを発見。このうち`mypage/buy_detail.php`の`oid`パラメータ(配列送信でTypeError)は原因を特定し修正済み(**デプロイ待ち**)。`Pager.php`/`AdminPager.php`経由で発生する分は正確な原因が未調査のため、優先的な追加調査が必要(詳細は`secure_report/stg2自動テストで発見した不具合_2026-10-07.md`の[B-23]参照)。
+
 ## アーキテクチャ
 
 ### ディレクトリ構成
