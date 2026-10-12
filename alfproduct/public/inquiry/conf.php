@@ -13,13 +13,13 @@ $input_mail = "";
 $input_comment = "";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$input_lawyer_number	 = trim($_POST["input_lawyer_number"]);
-	$input_name	 = trim($_POST["input_name"]);
+	$input_lawyer_number	 = request_str($_POST["input_lawyer_number"] ?? "");
+	$input_name	 = request_str($_POST["input_name"] ?? "");
 	//$input_company	 = trim($_POST["input_company"]);
 	//$input_post	 = trim($_POST["input_post"]);
 	//$input_tel	 = trim($_POST["input_tel"]);
-	$input_mail	 = trim($_POST["input_mail"]);
-	$input_comment	 = trim($_POST["input_comment"]);
+	$input_mail	 = request_str($_POST["input_mail"] ?? "");
+	$input_comment	 = request_str($_POST["input_comment"] ?? "");
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ユーザー情報の取得
