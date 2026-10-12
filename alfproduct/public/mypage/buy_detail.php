@@ -11,7 +11,7 @@ if (!st_login_check()){
 
 $objDbConnect = new DbConnect();
 
-$order_id = $_GET['oid'];
+$order_id = isset($_GET['oid']) ? (string)$_GET['oid'] : '';
 
 // 購入履歴詳細の取得＆ログインユーザーの購入履歴かチェック
 $arr_buy_detail = array();

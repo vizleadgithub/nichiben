@@ -17,7 +17,7 @@ $inquiry_status = "3";
 $return_name = "";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$iid = $_POST["iid"];
+	$iid = intval($_POST["iid"] ?? 0);
 	$inquiry_status = $_POST["inquiry_status"];
 	$return_name = $_POST["return_name"];
 } else {
