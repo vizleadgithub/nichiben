@@ -419,3 +419,33 @@ SELECT product_id FROM tbl_product WHERE product_id = 14206 AND teacher = '矢�
 -- UPDATE tbl_product t JOIN tbl_product_bk_no39_20261006 b ON b.product_id = t.product_id SET t.contents_contents1_name = b.contents_contents1_name, t.contents_contents1so_name = b.contents_contents1so_name WHERE t.product_id = 25087;
 
 -- 確認が済み、不要になったらバックアップテーブルを削除する:  DROP TABLE tbl_product_bk_no39_20261006;
+
+-- =====================================================================
+-- 追加分(2026-10-12) tbl_product_live_training.memo2(商品14206の「講義タイトル、講師名」) 1件
+-- 経緯: 手順1〜4は、tbl_product だけが対象だった。stg2で、データベース内検索(旧値の正規表現)をしたところ、
+--       tbl_product_live_training の memo2 にも、同じ旧値(姜&#22989;)が残っていた(他の一致は、テストで登録した商品の入力値で、対象外)
+-- 手順は、上と同じ(バックアップ → トランザクションで更新 → 件数を確認してからCOMMIT → 確認)。上の手順1〜4の後に、実行する
+-- =====================================================================
+
+-- 追加手順1 事前確認 → 結果は1
+SELECT COUNT(*) AS target_rows FROM tbl_product_live_training WHERE product_id = 14206 AND memo2 = '矢吹公敏（東京）、向宣明（第一東京）、宮川裕光（第二東京）、姜&#22989;（中国律師）';
+
+-- 追加手順2 バックアップ(該当の行を別テーブルへ退避する) → 結果は1行
+CREATE TABLE tbl_product_live_training_bk_no39_20261012 LIKE tbl_product_live_training;
+INSERT INTO tbl_product_live_training_bk_no39_20261012 SELECT * FROM tbl_product_live_training WHERE product_id = 14206;
+SELECT COUNT(*) AS backup_rows FROM tbl_product_live_training_bk_no39_20261012;
+
+-- 追加手順3 更新(トランザクション内)。updated_rows が1であることを確認してからCOMMIT(COMMITまたはROLLBACKは、別に実行する)
+START TRANSACTION;
+UPDATE tbl_product_live_training SET memo2 = '矢吹公敏（東京）、向宣明（第一東京）、宮川裕光（第二東京）、姜姍（中国律師）' WHERE product_id = 14206 AND memo2 = '矢吹公敏（東京）、向宣明（第一東京）、宮川裕光（第二東京）、姜&#22989;（中国律師）';
+SELECT ROW_COUNT() AS updated_rows;
+-- COMMIT;
+-- ROLLBACK;
+
+-- 追加手順4 COMMIT後の確認 → (a)旧値が残っていない: 結果は0 (b)新値になっている: 結果は1
+SELECT COUNT(*) AS old_value_rows FROM tbl_product_live_training WHERE product_id = 14206 AND memo2 = '矢吹公敏（東京）、向宣明（第一東京）、宮川裕光（第二東京）、姜&#22989;（中国律師）';
+SELECT COUNT(*) AS new_value_rows FROM tbl_product_live_training WHERE product_id = 14206 AND memo2 = '矢吹公敏（東京）、向宣明（第一東京）、宮川裕光（第二東京）、姜姍（中国律師）';
+
+-- 戻し方(COMMIT後に元へ戻す場合のみ)
+-- UPDATE tbl_product_live_training t JOIN tbl_product_live_training_bk_no39_20261012 b ON b.product_id = t.product_id SET t.memo2 = b.memo2 WHERE t.product_id = 14206;
+-- 確認が済み、不要になったらバックアップテーブルを削除する:  DROP TABLE tbl_product_live_training_bk_no39_20261012;
