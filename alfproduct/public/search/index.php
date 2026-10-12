@@ -97,7 +97,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 				mb_str_replace(
 					"　", 
 					" ", 
-					trim($_POST["search_keyword"])
+					request_str($_POST["search_keyword"] ?? "")
 				)
 			)
 		), 
@@ -137,7 +137,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$disp_flg = false;
 
 	$search_type = $_GET["search_type"];
-	$search_category = array_filter( explode(  "|",  trim($_GET["search_category"])  ), 'strlen' );
+	$search_category = array_filter( explode(  "|",  request_str($_GET["search_category"] ?? "")  ), 'strlen' );
 	$search_keyword = array_filter(
 		explode(
 			" ",
@@ -147,7 +147,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 				mb_str_replace(
 					"　", 
 					" ", 
-					trim($_GET["search_keyword"])
+					request_str($_GET["search_keyword"] ?? "")
 				)
 			)
 		), 

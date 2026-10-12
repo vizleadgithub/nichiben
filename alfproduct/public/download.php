@@ -17,7 +17,12 @@ if (intval($student_id) > 0) {
 	$file_name = "";
 	
 	if ($_GET["filename"] ?? "") {
-		$file_name = trim($_GET["filename"]);
+		$file_name = request_str($_GET["filename"]);
+	}
+	
+	// 「../」で、公開ディレクトリの外のファイルを指定できないようにする(ディレクトリトラバーサル対策)
+	if (strpos($file_name, "..") !== false || strpos($file_name, chr(0)) !== false) {
+		$file_name = "";
 	}
 	
 	if (!empty($file_name)) {

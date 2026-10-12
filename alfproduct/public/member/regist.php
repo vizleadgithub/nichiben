@@ -116,7 +116,7 @@ if(!isset($_POST['act'])){
 		$media = trim($arr_media, 'Array');
 	}
 
-	$mail_magazine_flag = trim($_POST["mail_magazine_flag"]);
+	$mail_magazine_flag = request_str($_POST["mail_magazine_flag"] ?? "");
 //print_r("[".$mail_magazine_flag."]");
 
 	$mail_magazine = '';

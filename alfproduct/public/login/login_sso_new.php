@@ -112,7 +112,7 @@ if (isset($_SESSION['user']['token_id']) && isset($_SESSION['user']['login_resul
 		//} else {
 		//	header("Location: /");
 		//}
-		$burl = isset($_GET["burl"]) ? trim($_GET["burl"]) : "";
+		$burl = request_str($_GET["burl"] ?? "");
 		if( $burl !== "" && substr($burl, 0, 1) === '/' && substr($burl, 0, 2) !== '//' ){
 			header("Location: ".$burl);
 			exit();

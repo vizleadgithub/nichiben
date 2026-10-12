@@ -19,9 +19,9 @@
 					<?php
 					$search_keyword = "";
 					if( $_GET["search"]=="new" ){
-						$search_keyword = array_filter(explode(  " ",  mb_str_replace( "　", " ", trim($_POST["search_keyword"]) )  ), 'strlen');
+						$search_keyword = array_filter(explode(  " ",  mb_str_replace( "　", " ", request_str($_POST["search_keyword"] ?? "") )  ), 'strlen');
 					} else {
-						$search_keyword = array_filter(explode(  " ",  mb_str_replace( "　", " ", trim($_GET["search_keyword"]) )  ), 'strlen');
+						$search_keyword = array_filter(explode(  " ",  mb_str_replace( "　", " ", request_str($_GET["search_keyword"] ?? "") )  ), 'strlen');
 					}
 					?>
 					<input type="text" name="search_keyword" value="<?php print( htmlspecialchars(implode(' ', $search_keyword)) ); ?>" placeholder="フリーワード検索" class="nav_search_area_input_form_keyword_input" style="width: 380px;height: 28px;font-size: 20px;line-height: 28px;border: solid 0 #ffffff;padding: 0;float:left;box-shadow: none;background-color: #ffffff;color: #666666;">
