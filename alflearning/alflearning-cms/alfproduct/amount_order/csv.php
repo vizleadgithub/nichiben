@@ -81,6 +81,24 @@ if( isset($_SESSION["amount_order.search_orderby"]) && !empty($_SESSION["amount_
 	$search_orderby = $_SESSION["amount_order.search_orderby"];
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// 検索条件が1つもない場合は、全注文を一度に読み込み、メモリ不足(HTTP 500)になるため、CSVを出力しない
+// (支払いステータスと並び順は、件数が絞れないため、検索条件に含めない)
+if( $oid == "" ){
+	$has_condition = false;
+	foreach( array($search_name, $search_start_lawyer_number, $search_end_lawyer_number, $search_start_regist_date, $search_end_regist_date, $search_association, $search_start_buy_date, $search_end_buy_date, $search_product_code) as $v ){
+		if( is_string($v) && $v !== "" && $v !== "0" ){
+			$has_condition = true;
+			break;
+		}
+	}
+	if( !$has_condition ){
+		header("HTTP/1.1 400 Bad Request");
+		header("Content-Type: text/html; charset=UTF-8");
+		echo '<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>CSVダウンロード</title></head><body><p>検索条件（氏名・登録番号・登録日・弁護士会・購入日・商品コードのいずれか）を指定してから、CSVダウンロードを実行してください。条件がないと、データが多すぎて出力できません。</p><p><a href="index.php">売上(注文)の画面へ戻る</a></p></body></html>';
+		exit();
+	}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $sql = "";
 if( $oid == "" ){
 	$sql = "";
