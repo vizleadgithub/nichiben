@@ -2285,7 +2285,7 @@ function get_bar_association_info($bar_association_branch_id){
 	  mtb_bar_association_branch AS T2
 	      ON T1.id = T2.bar_association_id
 	WHERE
-	  T2.bar_association_branch_id = '".$bar_association_branch_id."'
+	  T2.bar_association_branch_id = '".mysqli_real_escape_string($objDbConnect->connect, (string)$bar_association_branch_id)."'
 	";
 	$res = $objDbConnect->query_fetch($sql);
 	if ($res){

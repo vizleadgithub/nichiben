@@ -46,10 +46,20 @@ function loadRows() {
 async function submitForm(session, formIndex) {
   const { page } = session;
   const form = page.locator('form[data-xss-form]').first();
-  const cand = form.locator('button, input[type=submit], input[type=button], input[type=image], a, img[onclick]');
-  const n = await cand.count();
-  const labels = await cand.evaluateAll((els) => els.map((e) => `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}`));
-  const idx = labels.findIndex((l) => /検索|絞り込|search/i.test(l));
+  // cms_class等、検索結果の一覧行(各行の詳細・編集リンク)が検索フォームと同じ<form>内にある画面では、
+  // `a, img[onclick]`まで含む全候補のevaluateAllが数百件規模になり30秒超かかることがある(2026-10-11発見。
+  // submitComplete/pickButtonの既知の問題と同じ原因)。先に実際のボタン部品だけの狭いセレクタで探す
+  let cand = form.locator('button, input[type=submit], input[type=button], input[type=image]');
+  let n = await cand.count();
+  let labels = n > 0 ? await cand.evaluateAll((els) => els.map((e) => `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}`)) : [];
+  let idx = labels.findIndex((l) => /検索|絞り込|search/i.test(l));
+  if (idx < 0) {
+    // 狭いセレクタで見つからない場合だけ、<a>・img[onclick]まで含めて探す
+    cand = form.locator('button, input[type=submit], input[type=button], input[type=image], a, img[onclick]');
+    n = await cand.count();
+    labels = await cand.evaluateAll((els) => els.map((e) => `${e.value || ''}${e.textContent || ''}${e.alt || ''}${e.title || ''}`));
+    idx = labels.findIndex((l) => /検索|絞り込|search/i.test(l));
+  }
   return session.action(async () => {
     const target = idx >= 0 ? cand.nth(idx) : n === 1 ? cand.first() : null;
     // 検索ボタンが見えない・押せないフォームは、フォームを直接送信する

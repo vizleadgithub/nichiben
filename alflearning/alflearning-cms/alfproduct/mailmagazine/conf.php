@@ -45,7 +45,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 		$job = $_POST["job"];
 		$job_type = $_POST["job_type"];
 		$school_grade = $_POST["school_grade"];
-		$mailmagazine_category = $_POST["mailmagazine_category"];
+		$mailmagazine_category = isset($_POST["mailmagazine_category"]) ? $_POST["mailmagazine_category"] : array();
 
 		$bar_association_id = $_POST["bar_association_id"];
 		$start_regist_date = $_POST["start_regist_date"];
@@ -175,7 +175,7 @@ if(count($arr_err)==0){
 			for($i=0;$i<count($mailmagazine_category);$i++){
 				if($i>0){ $where.= " or "; }
 				$where.= " ( ";
-					$where.= " concat(',',student.mailmagazine_ids,',') LIKE '%,".$mailmagazine_category[$i].",%' ";
+					$where.= " concat(',',student.mailmagazine_ids,',') LIKE '%,".mysqli_real_escape_string($objDbConnect->connect, (string)$mailmagazine_category[$i]).",%' ";
 				$where.= " ) ";
 			}
 			$where.= " ) ";
