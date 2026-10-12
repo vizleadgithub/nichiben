@@ -864,12 +864,15 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
 - **`login/error.php`・`login.php`・`user_err.php`**: 対応するSmartyテンプレート(`error.tpl`・`login.tpl`・`user_err.tpl`)は存在するが、`alfproduct/public/login/`配下にはこれらを描画するPHPファイル自体が存在せず(`index.php`・`login_sso.php`・`login_sso_new.php`・`sso_auth_callback.php`のみ)、リポジトリ全体を検索してもこれらのテンプレート名を参照する箇所が無い。`cms_student_sub_auth/confirm.php`・`product/add_review.php`と同種の**到達経路の無いオーファンテンプレート**と判明。対象外で確定。
 
 **これにより、382行のうち大半を解消。残る未解決(概算で数十行程度)は主に以下**:
-- `mailmagazine/info.php`のクラッシュ([B-3])がstg2に未デプロイのため、このページ自体のテストが依然ブロック中(コードは修正済みでデプロイ待ち)。
-- `product_live_branch/add.php`(3行)はファイル自体が存在しないことを確認(既出の「計画データ不備」`add_review.php`系と同種)。対象外で確定。
-- `search_contents.php`系・`search_elive.php`等のgidポップアップは、構造上の到達性は解決済みだが、実際に有効な`gid`を与えた状態での`search_contents_name`等自由入力欄のエスケープ確認は、`search_student.php`以外は未実施。
 - E-31(タグ許可ポリシー全体の横断確認)・E-34/E-37(全入力画面の入力値往復)・E-40(PC/SP差分)は、個別ページの確認は進んだが、横断的な観点としての総括確認は未実施。
 - モバイル表示(UA判定)の確認は、自動化ツールの制約により引き続き未完了。
 - 「?」区分の残り7項目(E-06・E-35・E-36・E-38・E-39・E-44・G-09)は、ログ・本番DB・インフラ比較等がブラウザでは確認できないため引き続き対象外(別途人による確認が必要)。
+
+##### 2026-10-12: `mailmagazine/info.php`のデプロイ確認・gidポップアップ3画面のテストコード実装
+
+ユーザーが[B-3]の修正(`$arr_err`初期化漏れ)をstg2へデプロイ。`alfproduct/mailmagazine/info.php`に実アクセスし、PHPエラー・サーバーパスの露出が無いこと(HTTP 200、クラッシュ解消)を確認。対応するSmartyテンプレート(`mailmagazine/info.tpl`)も全出力が`|escape`済みであることをソースで確認し、B-0107は解消。
+
+`run-xss-search.js`に、親画面から`?gid=対象項目名`付きで開くポップアップ検索画面(`search_contents.php`・`search_contents_so.php`・`search_elive.php`)向けに、実在するgid値を自動付与する`URL_QUERY_SUFFIX`マップを追加(値は`alfproduct/smarty/templates/admin/product/add.tpl`の`searchButton()`呼び出しから採取: `contents_contents0`・`contents_contents0so`・`live_training_product_id`)。これにより従来gid無しで400止まりだったこれらの画面もS8(検索条件)のテスト対象になった。実行結果は8行中NG 0・要確認2・OK 6(`node run-xss-search.js cms --only B-0215,B-0216,B-0218,B-0219,B-0221,B-0222,B-0223,B-0224`)。要確認2件(`search_elive.php`の`search_start_date`・`search_end_date`)は、再表示された値が日付欄の整形処理により攻撃文字列ではなく末尾の数字断片のみに変わっていたもので、未エスケープ出現ではなく既知の日付欄の型破り耐性と同種の無害な挙動(OKと判断)。これにより`search_contents.php`系の全10行(S8実体8行+S12まとめ2行)を解消。
 
 ## アーキテクチャ
 

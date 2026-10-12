@@ -32,6 +32,16 @@ const limit = opt('--limit') ? Number(opt('--limit')) : Infinity;
 
 const marker = (id) => 'X' + id.replace('-', '');
 
+// 親画面からwindow.open()等で`?gid=対象項目名`付きで開くポップアップ検索画面。gidが無いと
+// 即400(空ボディ)で終了し画面自体が開けないため、実在するgid値をあらかじめ付与する
+// (値は alfproduct/smarty/templates/admin/product/add.tpl 等の searchButton() 呼び出しから採取)
+const URL_QUERY_SUFFIX = {
+  '/alfproduct/product/search_contents.php': '?gid=contents_contents0',
+  '/alfproduct/product/search_contents_so.php': '?gid=contents_contents0so',
+  '/alfproduct/product/search_elive.php': '?gid=live_training_product_id',
+};
+const withQuery = (url) => url + (URL_QUERY_SUFFIX[url] || '');
+
 function loadRows() {
   const planPath = path.join(__dirname, 'test-plan/plan.json');
   if (!fs.existsSync(planPath)) throw new Error('先に python test-plan/export-plan.py を実行してください');
@@ -84,7 +94,7 @@ async function submitForm(session, formIndex) {
 
   for (const [url, urlRows] of byUrl) {
     // 1) 画面を開き、項目の有無とフォームを調べる
-    const first = await session.goto(url);
+    const first = await session.goto(withQuery(url));
     if (first.status === 'ERROR' || first.status === 'SSO' || first.status >= 400) {
       const why = `HTTP ${first.status} ${first.error || ''}`.trim();
       for (const r of urlRows) rec.add({ id: r.id, verdict: '対象外', note: `画面が開けない: ${why}`, url });
@@ -112,7 +122,7 @@ async function submitForm(session, formIndex) {
     for (const group of groups.values()) {
       const formIndex = group[0].form;
       for (const p of payloads) {
-        const opened = await session.goto(url);
+        const opened = await session.goto(withQuery(url));
         if (opened.status === 'ERROR' || opened.status === 'SSO') break;
         const fields = group.map((r) => ({ name: r.field, value: fill(p.v, marker(r.id)) }));
         const set = await setFields(session.page, fields);
