@@ -4,7 +4,7 @@
 	<title><!--{$admin_main_title|escape}-->　|　JFBA総合研修サイト</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" href="/static/image/favicon.ico" >
-	<link rel="stylesheet" href="/alfproduct/css/common.css?_=20250305" type="text/css" />
+	<link rel="stylesheet" href="/alfproduct/css/common.css?_=20261012" type="text/css" />
 	<link rel="stylesheet" href="/alfproduct/css/header.css?_=20250305" type="text/css" />
 	<link rel="stylesheet" href="/alfproduct/css/main.css?_=20250305" type="text/css" />
 

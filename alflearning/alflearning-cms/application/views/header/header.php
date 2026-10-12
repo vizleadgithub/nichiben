@@ -14,7 +14,7 @@
 	<? else: ?>
 		<link rel="shortcut icon" href="/static/image/favicon.ico" >
 	<? endif; ?>
-	<link rel="stylesheet" href="<?=base_url()?>static/css/common.css?_=20250305" type="text/css" />
+	<link rel="stylesheet" href="<?=base_url()?>static/css/common.css?_=20261012" type="text/css" />
 	<link rel="stylesheet" href="<?=base_url()?>static/css/header.css?_=20250305" type="text/css" />
 	<link rel="stylesheet" href="<?=base_url()?>static/css/main.css?_=20250305" type="text/css" />
 	<!--<link href="<?=base_url()?>static/css/jquery_smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />  -->

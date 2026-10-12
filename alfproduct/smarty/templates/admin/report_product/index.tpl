@@ -225,13 +225,13 @@
 		<!--{cycle values="0,1" assign="cycle_bg"}-->
 		<tr style="">
 			<!--{if $row.product_type_add=="1"}-->
-				<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
+				<td class="tdc" style="white-space:nowrap;"><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
 			<!--{elseif $row.product_type_add=="2"}-->
-				<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|escape}-->&aid=<!--{$row.bar_association_branch_id|escape}-->"><!--{$row.product_id|escape}--></td>
+				<td class="tdc" style="white-space:nowrap;"><a href="info.php?pid=<!--{$row.product_id|escape}-->&aid=<!--{$row.bar_association_branch_id|escape}-->"><!--{$row.product_id|escape}--></td>
 			<!--{elseif $row.product_type_add=="3"}-->
-				<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
+				<td class="tdc" style="white-space:nowrap;"><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
 			<!--{elseif $row.product_type_add=="4"}-->
-				<td class="tdc" style=""><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
+				<td class="tdc" style="white-space:nowrap;"><a href="info.php?pid=<!--{$row.product_id|escape}-->"><!--{$row.product_id|escape}--></td>
 			<!--{/if}-->
 			<td class="tdc"><!--{$row.product_name|escape}--></td>
 			<td class="tdc"><!--{$row.product_code|escape}--></td>
