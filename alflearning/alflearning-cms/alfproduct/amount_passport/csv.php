@@ -104,33 +104,33 @@ $where.= "   AND tbl_order.payment_status <> 9";
 //-----------------------------------
 if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 } else {
-	$where.= " AND student.bar_association_id = '".$arr_session["cms_master.login.bar_association_id"]."' ";
+	$where.= " AND student.bar_association_id = '".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.bar_association_id"])."' ";
 }
 //-----------------------------------
 if( $search_name == "0" || $search_name == "" ){
 } else {
-	$where.= " AND student.student_name LIKE '%".$search_name."%' ";
+	$where.= " AND student.student_name LIKE '%".mysqli_real_escape_string($objDbConnect->connect, $search_name)."%' ";
 }
 //-----------------------------------
 if( $search_start_lawyer_number == "0" || $search_start_lawyer_number == "" ){
 } else {
-	$where.= " AND student.lawyer_number >= CAST(".$search_start_lawyer_number." AS SIGNED) ";
+	$where.= " AND student.lawyer_number >= CAST(".intval($search_start_lawyer_number)." AS SIGNED) ";
 }
 if( $search_end_lawyer_number == "0" || $search_end_lawyer_number == "" ){
 } else {
-	$where.= " AND student.lawyer_number <= CAST(".$search_end_lawyer_number." AS SIGNED) ";
+	$where.= " AND student.lawyer_number <= CAST(".intval($search_end_lawyer_number)." AS SIGNED) ";
 }
 //-----------------------------------
 if( $search_association == "0" || $search_association == "" ){
 } else {
-	$where.= " AND student.bar_association_id='".$search_association."' ";
+	$where.= " AND student.bar_association_id='".mysqli_real_escape_string($objDbConnect->connect, $search_association)."' ";
 }
 //-----------------------------------
 if( $search_start_buy_date != "" ){
-	$where.= " AND tbl_order.order_date >= '".$search_start_buy_date."' ";
+	$where.= " AND tbl_order.order_date >= '".mysqli_real_escape_string($objDbConnect->connect, $search_start_buy_date)."' ";
 }
 if( $search_end_buy_date != "" ){
-	$where.= " AND tbl_order.order_date <= '".substr($search_end_buy_date,0,14)."59:59' ";
+	$where.= " AND tbl_order.order_date <= '".mysqli_real_escape_string($objDbConnect->connect, substr($search_end_buy_date,0,14))."59:59' ";
 }
 //-----------------------------------
 $temp_where = "";
@@ -139,7 +139,7 @@ if( 0<count($search_passport_target) ){
 	for($i=0;$i<count($search_passport_target);$i++){
 		if($i>0){ $temp_where.= " OR "; }
 		$temp_where.= " ( ";
-		$temp_where.= " tbl_product_passport.passport_target LIKE '%|" . $search_passport_target[$i] . "|%' ";
+		$temp_where.= " tbl_product_passport.passport_target LIKE '%|" . mysqli_real_escape_string($objDbConnect->connect, $search_passport_target[$i]) . "|%' ";
 		$temp_where.= " ) ";
 	}
 	$temp_where.= " ) ";

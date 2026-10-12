@@ -215,23 +215,23 @@ if( $disp_flg ){
 	//-----------------------------------
 	if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 	} else {
-		$where.= " AND student.bar_association_id = '".$arr_session["cms_master.login.bar_association_id"]."' ";
+		$where.= " AND student.bar_association_id = '".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.bar_association_id"])."' ";
 	}
 	//----------------------------------------------------------
 	if( $search_start_buy_date != "" ){
-		$where.= " and tbl_order.create_date>='".$search_start_buy_date."' ";
+		$where.= " and tbl_order.create_date>='".mysqli_real_escape_string($objDbConnect->connect, $search_start_buy_date)."' ";
 	}
 	//----------------------------------------------------------
 	if( $search_end_buy_date != "" ){
-		$where.= " and tbl_order.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
+		$where.= " and tbl_order.create_date<='".mysqli_real_escape_string($objDbConnect->connect, substr($search_end_buy_date,0,14))."59:59' ";
 	}
 	//----------------------------------------------------------
 	if( $search_product_name != "" ){
-		$where.= " and tbl_product.product_name LIKE '%".trim($search_product_name)."%' ";
+		$where.= " and tbl_product.product_name LIKE '%".mysqli_real_escape_string($objDbConnect->connect, trim($search_product_name))."%' ";
 	}
 	//----------------------------------------------------------
 	if( $search_product_code != "" ){
-		$where.= " and tbl_product.product_code LIKE '%".trim($search_product_code)."%' ";
+		$where.= " and tbl_product.product_code LIKE '%".mysqli_real_escape_string($objDbConnect->connect, trim($search_product_code))."%' ";
 	}
 	//----------------------------------------------------------
 	$temp_where = "";
@@ -286,7 +286,7 @@ if( $disp_flg ){
 		for($i=0;$i<count($search_payment_type);$i++){
 			if($i>0){ $temp_where.= " or "; }
 			$temp_where.= " ( ";
-			$temp_where.= " tbl_order.payment_type = '".$search_payment_type[$i]."' ";
+			$temp_where.= " tbl_order.payment_type = '".mysqli_real_escape_string($objDbConnect->connect, $search_payment_type[$i])."' ";
 			$temp_where.= " ) ";
 		}
 		$temp_where.= " ) ";
@@ -299,7 +299,7 @@ if( $disp_flg ){
 		for($i=0;$i<count($search_claim_flg);$i++){
 			if($i>0){ $temp_where.= " or "; }
 			$temp_where.= " ( ";
-			$temp_where.= " tbl_order.claim_flg = '".$search_claim_flg[$i]."' ";
+			$temp_where.= " tbl_order.claim_flg = '".mysqli_real_escape_string($objDbConnect->connect, $search_claim_flg[$i])."' ";
 			$temp_where.= " ) ";
 		}
 		$temp_where.= " ) ";
@@ -347,23 +347,23 @@ if( $disp_flg ){
 	//-----------------------------------
 	if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 	} else {
-		$where.= " AND student.bar_association_id = '".$arr_session["cms_master.login.bar_association_id"]."' ";
+		$where.= " AND student.bar_association_id = '".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.bar_association_id"])."' ";
 	}
 	//----------------------------------------------------------
 	if( $search_start_buy_date != "" ){
-		$where.= " and tbl_order.create_date>='".$search_start_buy_date."' ";
+		$where.= " and tbl_order.create_date>='".mysqli_real_escape_string($objDbConnect->connect, $search_start_buy_date)."' ";
 	}
 	//----------------------------------------------------------
 	if( $search_end_buy_date != "" ){
-		$where.= " and tbl_order.create_date<='".substr($search_end_buy_date,0,14)."59:59' ";
+		$where.= " and tbl_order.create_date<='".mysqli_real_escape_string($objDbConnect->connect, substr($search_end_buy_date,0,14))."59:59' ";
 	}
 	//----------------------------------------------------------
 	if( $search_product_name != "" ){
-		$where.= " and tbl_product.product_name LIKE '%".trim($search_product_name)."%' ";
+		$where.= " and tbl_product.product_name LIKE '%".mysqli_real_escape_string($objDbConnect->connect, trim($search_product_name))."%' ";
 	}
 	//----------------------------------------------------------
 	if( $search_product_code != "" ){
-		$where.= " and tbl_product.product_code LIKE '%".trim($search_product_code)."%' ";
+		$where.= " and tbl_product.product_code LIKE '%".mysqli_real_escape_string($objDbConnect->connect, trim($search_product_code))."%' ";
 	}
 	//----------------------------------------------------------
 	$temp_where = "";
@@ -372,7 +372,7 @@ if( $disp_flg ){
 		for($i=0;$i<count($search_product_type_add);$i++){
 			if($i>0){ $temp_where.= " or "; }
 			$temp_where.= " ( ";
-			$temp_where.= " tbl_product_add.product_type_add = '".$search_product_type_add[$i]."' ";
+			$temp_where.= " tbl_product_add.product_type_add = '".mysqli_real_escape_string($objDbConnect->connect, $search_product_type_add[$i])."' ";
 			$temp_where.= " ) ";
 		}
 		$temp_where.= " ) ";
@@ -385,7 +385,7 @@ if( $disp_flg ){
 		for($i=0;$i<count($search_payment_type);$i++){
 			if($i>0){ $temp_where.= " or "; }
 			$temp_where.= " ( ";
-			$temp_where.= " tbl_order.payment_type = '".$search_payment_type[$i]."' ";
+			$temp_where.= " tbl_order.payment_type = '".mysqli_real_escape_string($objDbConnect->connect, $search_payment_type[$i])."' ";
 			$temp_where.= " ) ";
 		}
 		$temp_where.= " ) ";
@@ -398,7 +398,7 @@ if( $disp_flg ){
 		for($i=0;$i<count($search_claim_flg);$i++){
 			if($i>0){ $temp_where.= " or "; }
 			$temp_where.= " ( ";
-			$temp_where.= " tbl_order.claim_flg = '".$search_claim_flg[$i]."' ";
+			$temp_where.= " tbl_order.claim_flg = '".mysqli_real_escape_string($objDbConnect->connect, $search_claim_flg[$i])."' ";
 			$temp_where.= " ) ";
 		}
 		$temp_where.= " ) ";

@@ -249,7 +249,7 @@ $sql.= "LEFT JOIN tbl_product ON tbl_order_detail.product_id = tbl_product.produ
 
 $where = "";
 $where.= "WHERE ";
-$where.= " student.school_id='".$arr_session["cms_master.login.school_id"]."' ";
+$where.= " student.school_id='".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.school_id"])."' ";
 $where.= " and tbl_order_detail.product_id IS NOT NULL ";
 $where.= " and ".$order_payment_status_sql." >= '1' ";//支払いステータス
 //-----------------------------------

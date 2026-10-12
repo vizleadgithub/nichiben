@@ -38,7 +38,7 @@ $TEMP_COOKIE = $_COOKIE;
 */
 //+++++++++++++++++++++++++++++++++++++++++++
 require_once("session_start.php");
-//require_once("GMOPaymentProtocol.php");
+require_once("GMOPaymentProtocol.php");
 require_once("DbConnect.php");
 require_once("define_list.php");
 require_once("functions.php");
