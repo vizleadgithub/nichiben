@@ -180,6 +180,7 @@ class Login_page extends CI_Controller {
 		} else if($this->input->get('backurl')) {
 			//redirect($this->input->get('backurl'));
 			// 自サイト内のURLかチェック
+			$backurl = (string)$this->input->get('backurl');
 			if ($this->_is_valid_backurl($backurl)) {
 				redirect($backurl);
 			} else {

@@ -3,6 +3,17 @@ require_once '/srv/alfproduct/module/define_list.php';
 
 ini_set( 'display_errors', 0 ); 
 
+// ログに出す会員番号・uid は、個人を特定できる識別子なので、末尾の3文字だけを残して、伏せる
+if (!function_exists('mask_log_id')) {
+	function mask_log_id($value) {
+		$value = (string)$value;
+		if ($value === '') {
+			return '';
+		}
+		return str_repeat('*', max(strlen($value) - 3, 0)) . substr($value, -3);
+	}
+}
+
 #[AllowDynamicProperties]
 class Sso_update_profile extends CI_Controller {
 	//----------------------------------------------
@@ -152,7 +163,7 @@ class Sso_update_profile extends CI_Controller {
 					$get_attribute['nongaijiopennamefamily'] = $profile_userInfo['openName_family']; // 公開氏(外字なし)
 					$get_attribute['nongaijiopennamefirst'] = $profile_userInfo['openName_first']; // 公開名(外字なし)
 					$get_attribute['membersection'] = $profile_userInfo['membershipType']; // 会員区分
-					error_log("[".date("Y-m-d H:i:s")."] update profile uid=".$profile_userInfo['uid']." memberNo=".$profile_userInfo['memberNo']."\n", 3, "/alflearning-data/test_log/sso.log");
+					error_log("[".date("Y-m-d H:i:s")."] update profile uid=".mask_log_id($profile_userInfo['uid'])." memberNo=".mask_log_id($profile_userInfo['memberNo'])."\n", 3, "/alflearning-data/test_log/sso.log");
 
 					if($profile_userInfo['registrationDate'] != ''){
 						$get_attribute['bengoshientrydate'] = str_replace('/', '', $profile_userInfo['registrationDate']); // 登録年月日（yyyymmdd 型）

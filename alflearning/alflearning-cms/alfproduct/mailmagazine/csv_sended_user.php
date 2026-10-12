@@ -26,7 +26,7 @@ $arr_pref = $objDbConnect->query_fetch_arr($sql);
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $member_count = 0;
 if(count($arr_err)==0){
-	$sql = "select tbl_mailmagazine_sended.*,student.* from tbl_mailmagazine_sended LEFT JOIN student ON tbl_mailmagazine_sended.member_id=student.student_id where mailmagazine_id='".$mid."' ";
+	$sql = "select tbl_mailmagazine_sended.*,student.* from tbl_mailmagazine_sended LEFT JOIN student ON tbl_mailmagazine_sended.member_id=student.student_id where mailmagazine_id='".mysqli_real_escape_string($objDbConnect->connect, (string)$mid)."' ";
 	$ret = $objDbConnect->query_fetch_arr($sql.$where);
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

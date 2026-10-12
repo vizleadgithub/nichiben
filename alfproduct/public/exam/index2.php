@@ -40,6 +40,7 @@ if(preg_match("/Android/", $agent)){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 include(dirname(__FILE__) ."./../../module/module.php");
+normalize_exam_post();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { csrf_token_verify(); }
 $_SESSION['wp_page_head_title'] = 'テスト';
 $objDbConnect = new DbConnect();

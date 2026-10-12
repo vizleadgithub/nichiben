@@ -1,5 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+// ログに出す会員番号・uid は、個人を特定できる識別子なので、末尾の3文字だけを残して、伏せる
+if (!function_exists('mask_log_id')) {
+	function mask_log_id($value) {
+		$value = (string)$value;
+		if ($value === '') {
+			return '';
+		}
+		return str_repeat('*', max(strlen($value) - 3, 0)) . substr($value, -3);
+	}
+}
+
 #[AllowDynamicProperties]
 class Openam_sso extends CI_Controller {
 	//----------------------------------------------
@@ -472,7 +483,7 @@ return array(
 				$this->db->trans_begin();
 				
 				// INSERT student
-error_log("INSERT student[".$param['employeenumber']."].");
+error_log("INSERT student[".mask_log_id($param['employeenumber'])."].");
 				$this->db->query($sql, array(
 									$param['student_name'],
 									$param['mail'],
@@ -534,7 +545,7 @@ error_log("INSERT student[".$param['employeenumber']."].");
 						  AND lawyer_number   = ? 
 						  AND lawyer_division = ? ";
 						// 対象外 status, regist_at, presence_passport, exp_date_passport, sub_auth_ethic_training
-error_log("UPDATE student[".$param['employeenumber']."].");
+error_log("UPDATE student[".mask_log_id($param['employeenumber'])."].");
 				$this->db->query($sql, array(
 									$param['student_name'],
 									$param['mail'],

@@ -3197,6 +3197,45 @@ function csrf_token_get(): string {
 	return $_SESSION['csrf_token'];
 }
 
+/**
+ * 試験・アンケートの送信値の形式を整える。
+ * 改ざんで、配列でない値・数字でない ID が送られても、PHP 8 の TypeError（HTTP 500・内部パスの表示）にならないようにする。
+ * - exam_problem_id[]・exam_problem_id_q[]・exam2_problem_id[]: 数字の文字列だけの配列にする（なければ、キーごと除く）
+ * - exam_problem_{ID}[]・exam_problem_q_{ID}[]・exam2_problem_{ID}[]: 文字列だけの配列にする
+ */
+function normalize_exam_post(): void {
+	foreach (array('exam_problem_id', 'exam_problem_id_q', 'exam2_problem_id') as $key) {
+		if (!isset($_POST[$key])) {
+			continue;
+		}
+		$ids = array();
+		if (is_array($_POST[$key])) {
+			foreach ($_POST[$key] as $id) {
+				if (is_string($id) && ctype_digit($id)) {
+					$ids[] = $id;
+				}
+			}
+		}
+		if (count($ids) > 0) {
+			$_POST[$key] = $ids;
+		} else {
+			unset($_POST[$key]);
+		}
+	}
+	foreach (array_keys($_POST) as $key) {
+		if (is_string($key) && preg_match('/^exam2?_problem_(q_)?[0-9]+$/', $key)) {
+			$value = $_POST[$key];
+			if (is_array($value)) {
+				$_POST[$key] = array_values(array_filter($value, 'is_string'));
+			} elseif (is_string($value)) {
+				$_POST[$key] = array($value);
+			} else {
+				$_POST[$key] = array();
+			}
+		}
+	}
+}
+
 function csrf_token_verify(): void {
 	$stored = $_SESSION['csrf_token'] ?? '';
 	$posted = $_POST['csrf_token'] ?? '';
