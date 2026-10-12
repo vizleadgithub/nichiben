@@ -904,6 +904,17 @@ node scan-unescaped-output.js --csv    # test-results/unescaped-scan-<日時>.cs
 
 **再チェックで確認した前回(トークン切れ前)の更新内容**: `secure_report/XSS対応_脆弱性テスト計画.xlsx`の`product_live/add.php`関連27件(`B-0368`等)が「要確認」→「OK」に、`secure_report/XSS対応_手動テスト手順書.xlsx`の決済関連8件(`C-0420`等)が「対象外」→「OK」に更新されていた。いずれも実機(Chrome操作)で有料商品を新規登録し購入手続きを完了させた結果であり、内容は正当と確認（データの欠落・破損は無し。openpyxlの再保存によりファイルサイズは変化しているが、シート構成・行数・データ検証(プルダウン)は保持されていることを確認済み)。
 
+##### 2026-10-12: `product_live_branch`(単位会専用機能)を、単位会権限のテストアカウントで実際にテスト。B-0429〜0442の「対象外」判定の大半を解消
+
+`product_live_branch`(B-0429〜0442が対象の画面)は「単位会(日弁連以外の弁護士会)」専用機能で、`teacher.bar_association_id`が1(日弁連)以外のアカウントでなければ使えない(コントローラが`bar_association_id==1`なら即リダイレクト)。これまで日弁連アカウント(`STG2_CMS_USER`)でしかテストしておらず、本画面自体に到達できていなかったため14行とも「対象外」にしていたが、ユーザーがCMSの「講師管理」(`/cms_teacher/newdata`。所属弁護士会のプルダウンで日弁連以外を選択)から単位会権限のテストアカウントを作成し、`.env.stg2`の`STG2_CMS_BAR_USER`/`STG2_CMS_BAR_PASS`に設定。
+
+- `tools/stg2-e2e/login.js`に`loginCmsBar()`を追加(`node login.js cms-bar`。セッションは`.auth/cms-bar.json`に保存。`student-ethic`と同じ「別アカウント用に保存先を分ける」パターン)。
+- `run-xss-search.js`に`--account bar`オプションを追加(`Session`の`statePath`を`.auth/cms-bar.json`に切り替えるだけ)。
+- このアカウントで`product_live_branch/index.php`に実アクセスした結果、リダイレクトされず200で正常に表示されることを確認。`node run-xss-search.js cms --account bar --only B-0429,...,B-0439`を実行し、**研修名・商品コード・カテゴリ・研修実施日(開始/終了)・公開状態・講師名・有料無料・フリーワードの9項目(B-0429/430/431/432/433/436/437/438/439)はS8(15種)の攻撃文字列すべてでNG0件・OK**。B-0440(まとめ)もこれを受けてOKへ。
+- B-0434・B-0435(「受付期間」の検索欄)は、画面に到達できるようになった後も**項目自体が存在しない**ことを確認(研修実施日の検索欄(search_dates_start/end)のみで、受付期間の個別検索欄は無い)。対象外のまま、理由を「認証でブロックされ未到達」から「項目不存在」に訂正。
+- B-0441・B-0442(`info.php`の詳細画面)は、到達はできるようになったが、**この弁護士会にはproduct_live_branch商品がまだ1件も登録されておらず(検索結果0件)**、詳細画面の実データが無いため確認できなかった。「未実施」に変更(テスト用商品の登録が必要。`product_live/add.php`と同系統の重い登録画面である可能性があり、登録を試みる場合はDBダンプが前提)。
+- `apply-results-to-xlsx.py`で14行をxlsxへ反映済み。
+
 ## アーキテクチャ
 
 ### ディレクトリ構成

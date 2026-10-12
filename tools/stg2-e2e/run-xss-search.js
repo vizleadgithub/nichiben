@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { expand, fill } = require('./xss-payloads');
 const { Session } = require('./xss-session');
+const { CMS_BAR_STATE } = require('./login');
 const { Recorder } = require('./detect');
 const { setFields, fieldForms, inspect, resolveRoundtrip } = require('./xss-form-lib');
 
@@ -29,6 +30,10 @@ const full = args.includes('--full');
 const each = args.includes('--each');
 const only = opt('--only') ? new Set(opt('--only').split(',')) : null;
 const limit = opt('--limit') ? Number(opt('--limit')) : Infinity;
+// --account bar: 単位会(日弁連以外の弁護士会)権限のテストアカウント(.auth/cms-bar.json)でログインする
+// (product_live_branch等、単位会専用機能の画面向け。事前に node login.js cms-bar が必要)
+const account = opt('--account');
+const statePath = account === 'bar' ? CMS_BAR_STATE : null;
 
 const marker = (id) => 'X' + id.replace('-', '');
 
@@ -89,7 +94,7 @@ async function submitForm(session, formIndex) {
     byUrl.get(r.url).push(r);
   }
   const rec = new Recorder(`search-${site}`);
-  const session = await new Session(site).open();
+  const session = await new Session(site, { statePath }).open();
   console.log(`${site}: ${rows.length} 行 / ${byUrl.size} 画面 / 攻撃文字列 ${payloads.length} 種 / ${each ? '1項目ずつ' : 'フォーム単位でまとめて'}送信`);
 
   for (const [url, urlRows] of byUrl) {
