@@ -72,16 +72,16 @@ $sql = "select count(*) as c from student where status=0 ";
 
 $where = "";
 if( $search_student_name != "" ){
-	$where.= " and ( student_name like '%".$search_student_name."%' ) ";
+	$where.= " and ( student_name like '%".mysqli_real_escape_string($objDbConnect->connect, $search_student_name)."%' ) ";
 }
 if( $search_lawyer_number != "" ){
-	$where.= " and ( lawyer_number = '".$search_lawyer_number."' ) ";
+	$where.= " and ( lawyer_number = '".mysqli_real_escape_string($objDbConnect->connect, $search_lawyer_number)."' ) ";
 }
 if( $search_student_email != "" ){
-	$where.= " and ( student_email like '%".$search_student_email."%' ) ";
+	$where.= " and ( student_email like '%".mysqli_real_escape_string($objDbConnect->connect, $search_student_email)."%' ) ";
 }
 if( $search_bar_association_id != "" ){
-	$where.= " and ( bar_association_id = '".$search_bar_association_id."' ) ";
+	$where.= " and ( bar_association_id = '".mysqli_real_escape_string($objDbConnect->connect, $search_bar_association_id)."' ) ";
 }
 
 $ret = $objDbConnect->query_fetch($sql.$where);

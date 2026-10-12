@@ -407,7 +407,8 @@ async function resolveTemplate(session, url) {
           value = isContent ? `xsstest_${marker(t.row.id)}${p.ext || '.pdf'}` : fill(p.v, marker(t.row.id));
           const content = isContent ? fill(p.v, marker(t.row.id)) : `%PDF-1.4\n% XSSTEST ${marker(t.row.id)}\n`;
           try {
-            await session.page.locator(`[name="${attrEscape(t.field)}"]`).setInputFiles({ name: value, mimeType: p.mime || 'application/pdf', buffer: Buffer.from(content) });
+            // 同名のファイル欄が複数ある画面(cms_ranking等)向けに、最初の1つを対象にする
+            await session.page.locator(`[name="${attrEscape(t.field)}"]`).first().setInputFiles({ name: value, mimeType: p.mime || 'application/pdf', buffer: Buffer.from(content) });
           } catch (e) {
             rec.add({ id: t.row.id, field: t.field, pid: p.pid, idx: p.idx, verdict: '要確認', note: `ファイルを設定できない: ${e.message.split('\n')[0]}`, url });
             continue;

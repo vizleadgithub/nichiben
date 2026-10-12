@@ -57,10 +57,10 @@ $sql = "select count(*) as c from video where status=0 and sound_only=0 ";
 
 $where = "";
 if( $search_contents_name != "" ){
-	$where.= " and ( video_logic_name like '%".$search_contents_name."%' ) ";
+	$where.= " and ( video_logic_name like '%".mysqli_real_escape_string($objDbConnect->connect, $search_contents_name)."%' ) ";
 }
 if( $search_contents_code != "" ){
-	$where.= " and ( video_id = '".$search_contents_code."' ) ";
+	$where.= " and ( video_id = '".mysqli_real_escape_string($objDbConnect->connect, $search_contents_code)."' ) ";
 }
 
 $ret = $objDbConnect->query_fetch($sql.$where);
