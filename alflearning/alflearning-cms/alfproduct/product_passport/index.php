@@ -41,7 +41,7 @@ if( isset($_GET["search"]) && $_GET["search"]=="new" ){
 }
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_product_name = trim($_POST["search_product_name"]);
+	$search_product_name = request_str($_POST["search_product_name"] ?? "");
 
 	$_SESSION["product_passport.search_product_name"] = $search_product_name;
 

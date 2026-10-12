@@ -135,7 +135,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST" ){
 	$search_teacher = isset($_POST["search_teacher"]) ? $_POST["search_teacher"] : "" ;
 	$search_free = isset($_POST["search_free"]) ? $_POST["search_free"] : "0" ;
 	$search_word = isset($_POST["search_word"]) ? $_POST["search_word"] : "" ;
-	$search_bar_association_year = trim($_POST["search_bar_association_year"]);
+	$search_bar_association_year = request_str($_POST["search_bar_association_year"] ?? "");
 
 	$_SESSION["product_ethics.search_product_name"] = $search_product_name;
 	$_SESSION["product_ethics.search_product_code"] = $search_product_code;
