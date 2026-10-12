@@ -110,7 +110,9 @@ SELECT product_id FROM tbl_product WHERE product_id = 14206 AND teacher = '矢�
 -- 手順2 バックアップ: 対象15商品の行を丸ごと別テーブルへ退避する → 結果は15行
 -- (これとは別に、運用手順どおりtbl_productのダンプも取得してください)
 -- ---------------------------------------------------------------------
-CREATE TABLE tbl_product_bk_no39_20261006 AS SELECT * FROM tbl_product WHERE product_id IN (13,14206,19674,20156,20297,20571,24301,24576,24577,24578,24580,24740,25082,25086,25087);
+-- (CREATE TABLE ... AS SELECT は、tbl_product の列が多く、「#1118 Row size too large」で失敗するため、LIKE で同じ構造の表を作り、INSERT で行を入れる)
+CREATE TABLE tbl_product_bk_no39_20261006 LIKE tbl_product;
+INSERT INTO tbl_product_bk_no39_20261006 SELECT * FROM tbl_product WHERE product_id IN (13,14206,19674,20156,20297,20571,24301,24576,24577,24578,24580,24740,25082,25086,25087);
 SELECT COUNT(*) AS backup_rows FROM tbl_product_bk_no39_20261006;
 
 -- ---------------------------------------------------------------------
