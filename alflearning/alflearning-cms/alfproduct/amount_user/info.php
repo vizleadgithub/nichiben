@@ -40,7 +40,7 @@ if( $_GET["search"]=="new" ){
 	}
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_orderby = trim($_POST["search_orderby"]);
+	$search_orderby = request_str($_POST["search_orderby"] ?? "");
 	$_SESSION["amount_user.info.search_orderby"] = $search_orderby;
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

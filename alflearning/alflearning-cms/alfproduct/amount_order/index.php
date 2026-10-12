@@ -42,7 +42,7 @@ $search_payment_status = array();
 $search_claim_flg = array();
 $search_product_code = "";
 $search_orderby = "";
-if( isset($_GET["search"]) && trim($_GET["search"])=="new" ){
+if( isset($_GET["search"]) && request_str($_GET["search"] ?? "")=="new" ){
 } else {
 	if( isset($_SESSION["amount_order.search_name"]) && !empty($_SESSION["amount_order.search_name"]) ){
 		$search_name = $_SESSION["amount_order.search_name"];
@@ -85,19 +85,19 @@ if( isset($_GET["search"]) && trim($_GET["search"])=="new" ){
 	}
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_name = trim($_POST["search_name"] ?? "");
-	$search_kana = trim($_POST["search_kana"] ?? "");
-	$search_start_lawyer_number = trim($_POST["search_start_lawyer_number"] ?? "");
-	$search_end_lawyer_number = trim($_POST["search_end_lawyer_number"] ?? "");
-	$search_start_regist_date = trim($_POST["search_start_regist_date"] ?? "");
-	$search_end_regist_date = trim($_POST["search_end_regist_date"] ?? "");
-	$search_association = trim($_POST["search_association"] ?? "");
+	$search_name = request_str($_POST["search_name"] ?? "");
+	$search_kana = request_str($_POST["search_kana"] ?? "");
+	$search_start_lawyer_number = request_str($_POST["search_start_lawyer_number"] ?? "");
+	$search_end_lawyer_number = request_str($_POST["search_end_lawyer_number"] ?? "");
+	$search_start_regist_date = request_str($_POST["search_start_regist_date"] ?? "");
+	$search_end_regist_date = request_str($_POST["search_end_regist_date"] ?? "");
+	$search_association = request_str($_POST["search_association"] ?? "");
 	$search_payment_status = $_POST["search_payment_status"] ?? [];
 	$search_claim_flg = $_POST["search_claim_flg"] ?? [];
-	$search_start_buy_date = trim($_POST["search_start_buy_date"] ?? "");
-	$search_end_buy_date = trim($_POST["search_end_buy_date"] ?? "");
-	$search_product_code = trim($_POST["search_product_code"] ?? "");
-	$search_orderby = trim($_POST["search_orderby"] ?? "");
+	$search_start_buy_date = request_str($_POST["search_start_buy_date"] ?? "");
+	$search_end_buy_date = request_str($_POST["search_end_buy_date"] ?? "");
+	$search_product_code = request_str($_POST["search_product_code"] ?? "");
+	$search_orderby = request_str($_POST["search_orderby"] ?? "");
 
 	if( $search_payment_status==null ){
 		$search_payment_status = array();

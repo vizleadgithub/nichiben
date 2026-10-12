@@ -42,7 +42,7 @@ $search_orderby = "";
 //exit();
 
 if( isset($_GET["oid"]) && !empty($_GET["oid"]) ){
-	$sid = trim($_GET["oid"]);
+	$sid = request_str($_GET["oid"] ?? "");
 }
 if( isset($_SESSION["amount_order.search_name"]) && !empty($_SESSION["amount_order.search_name"]) ){
 	$search_name = $_SESSION["amount_order.search_name"];

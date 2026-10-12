@@ -22,7 +22,7 @@ $search_end_regist_date = "";
 $search_association = "";
 
 if( isset($_GET["sid"]) && !empty($_GET["sid"]) ){
-	$sid = trim($_GET["sid"]);
+	$sid = request_str($_GET["sid"] ?? "");
 }
 
 if( isset($_SESSION["amount_user.search_name"]) && !empty($_SESSION["amount_user.search_name"]) ){

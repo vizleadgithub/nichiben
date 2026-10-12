@@ -3198,6 +3198,14 @@ function csrf_token_get(): string {
 }
 
 /**
+ * リクエストの値を、前後の空白を除いた文字列にする。
+ * 改ざんで、配列（xxx[]=...）が送られても、PHP 8 の TypeError（HTTP 500・内部情報の表示）にならないよう、配列などは、空文字にする。
+ */
+function request_str($value): string {
+	return is_scalar($value) ? trim((string) $value) : '';
+}
+
+/**
  * 試験・アンケートの送信値の形式を整える。
  * 改ざんで、配列でない値・数字でない ID が送られても、PHP 8 の TypeError（HTTP 500・内部パスの表示）にならないようにする。
  * - exam_problem_id[]・exam_problem_id_q[]・exam2_problem_id[]: 数字の文字列だけの配列にする（なければ、キーごと除く）
