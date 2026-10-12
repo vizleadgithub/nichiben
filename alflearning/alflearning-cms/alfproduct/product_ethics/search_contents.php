@@ -28,8 +28,8 @@ if( isset($_SESSION["scontents.search_contents_code"]) && !empty($_SESSION["scon
 	$search_contents_code = $_SESSION["scontents.search_contents_code"];
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_contents_name = trim($_POST["search_contents_name"]);
-	$search_contents_code = trim($_POST["search_contents_code"]);
+	$search_contents_name = request_str($_POST["search_contents_name"] ?? "");
+	$search_contents_code = request_str($_POST["search_contents_code"] ?? "");
 	$_SESSION["scontents.search_contents_name"] = $search_contents_name;
 	$_SESSION["scontents.search_contents_code"] = $search_contents_code;
 	$_SESSION["scontents.page"] = 1;

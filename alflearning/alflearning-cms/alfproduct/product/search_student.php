@@ -37,10 +37,10 @@ if( isset($_SESSION["scontents.search_bar_association_id"]) && !empty($_SESSION[
 }
 
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_student_name = trim($_POST["search_student_name"]);
-	$search_lawyer_number = trim($_POST["search_lawyer_number"]);
-	$search_student_email = trim($_POST["search_student_email"]);
-	$search_bar_association_id = trim($_POST["search_bar_association_id"]);
+	$search_student_name = request_str($_POST["search_student_name"] ?? "");
+	$search_lawyer_number = request_str($_POST["search_lawyer_number"] ?? "");
+	$search_student_email = request_str($_POST["search_student_email"] ?? "");
+	$search_bar_association_id = request_str($_POST["search_bar_association_id"] ?? "");
 
 	$_SESSION["scontents.search_student_name"] = $search_student_name;
 	$_SESSION["scontents.search_lawyer_number"] = $search_lawyer_number;

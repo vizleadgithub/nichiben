@@ -122,15 +122,15 @@ if( $_GET["search"]=="new" ){
 	}
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST" ){
-	$search_product_name = trim($_POST["search_product_name"]);
-	$search_product_code = trim($_POST["search_product_code"]);
-	$search_start_date = preg_replace('/[^0-9\/: \-]/', '', trim($_POST["search_start_date"]));
-	$search_end_date = preg_replace('/[^0-9\/: \-]/', '', trim($_POST["search_end_date"]));
+	$search_product_name = request_str($_POST["search_product_name"] ?? "");
+	$search_product_code = request_str($_POST["search_product_code"] ?? "");
+	$search_start_date = preg_replace('/[^0-9\/: \-]/', '', request_str($_POST["search_start_date"] ?? ""));
+	$search_end_date = preg_replace('/[^0-9\/: \-]/', '', request_str($_POST["search_end_date"] ?? ""));
 	$search_category = array_filter(($_POST["search_category"] ?? []), 'strlen');
-	$search_open = trim($_POST["search_open"]);if($search_open == ""){$search_open = "0";}
-	$search_teacher = trim($_POST["search_teacher"]);
-	$search_free = trim($_POST["search_free"]);if($search_free == ""){$search_free = "0";}
-	$search_word = trim($_POST["search_word"]);
+	$search_open = request_str($_POST["search_open"] ?? "");if($search_open == ""){$search_open = "0";}
+	$search_teacher = request_str($_POST["search_teacher"] ?? "");
+	$search_free = request_str($_POST["search_free"] ?? "");if($search_free == ""){$search_free = "0";}
+	$search_word = request_str($_POST["search_word"] ?? "");
 
 	$_SESSION["product_ranking.search_product_name"] = $search_product_name;
 	$_SESSION["product_ranking.search_product_code"] = $search_product_code;
