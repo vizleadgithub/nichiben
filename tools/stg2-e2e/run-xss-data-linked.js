@@ -65,32 +65,57 @@ const SIG = `<img src=x onerror=alert('${MARKER}')>`;
 const NAME_PAYLOAD = fill("{m}\"><img src=x onerror=alert('{m}')>", MARKER);
 
 // 受講者サイトでテスト用の受講者を登録する(S12-student-nameと同じ仕組み)。DBへ書き込む
+// 2026-10-12発見: fillBaselineの既定メールアドレス(xsstest@example.invalid)は全テスト共通の固定値のため、
+// 過去の実行で既に登録済みだと「既に登録済みのメールアドレスです」で毎回失敗する(submitGuarded/submitComplete
+// はボタンのクリック可否しか見ないため、この種の検証エラーに気付かず「成功」扱いしてしまっていた)。
+// 毎回ユニークなメールアドレスを使い、かつ完了後に実際にエラー文言が残っていないかも確認する
 async function registerMarkerStudent(student) {
   const first = await student.goto('/member/regist.php');
   if (first.status === 'ERROR' || first.status === 'SSO' || first.status >= 400) return { error: `画面が開けない: HTTP ${first.status}` };
   const found = (await fieldForms(student.page, ['name1']))[0];
   if (!found || !found.found) return { error: '/member/regist.php に name1 欄がない(画面構成が変わった可能性)' };
-  await fillBaseline(student.page, 'name1', overridesFor('/member/regist.php'), true);
-  await setFields(student.page, [{ name: 'name1', value: NAME_PAYLOAD }]);
+  const runToken = `${Date.now()}`;
+  const uniqueEmail = `xsstest_datalink_${runToken}@example.invalid`;
+  // 名前の先頭に実行ごとのユニークな識別子を付与する(同じマーカー名の受講者が過去の実行分も含めて
+  // 複数蓄積されており、findStudentIdが今回登録した本人を一意に特定できなかったため)。
+  // 末尾に付けるとstudent_nameカラムの長さ上限で切り詰められ検索に失敗することが判明したため、先頭に置く
+  const uniqueNamePayload = `${runToken}_${NAME_PAYLOAD}`;
+  await fillBaseline(student.page, 'name1', { ...overridesFor('/member/regist.php'), email: uniqueEmail, email_conf: uniqueEmail }, true);
+  await setFields(student.page, [{ name: 'name1', value: uniqueNamePayload }]);
   const confirmRes = await submitGuarded(student);
   if (confirmRes.refused) return { error: `確認画面へ進めない: ${confirmRes.refused}` };
   const completeRes = await submitComplete(student);
   if (completeRes.refused) return { error: `登録を完了できない: ${completeRes.refused}` };
-  console.log(`受講者を登録しました: ${NAME_PAYLOAD} -> ${completeRes.finalUrl}`);
-  return { ok: true };
+  const redText = [...completeRes.html.matchAll(/color:\s*red[^>]*>([^<]{1,100})</gi)].map((m) => m[1].trim()).filter((t) => t && t !== '※必須');
+  if (redText.length) return { error: `登録確定後もエラー表示が残っている: ${redText.join(' / ')}` };
+  console.log(`受講者を登録しました: ${uniqueNamePayload} (${uniqueEmail}) -> ${completeRes.finalUrl}`);
+  // searchToken: 末尾に付けた runToken 部分だけを検索語にする(MARKER+runTokenだと間にXSSペイロード本体が
+  // 挟まるため連続した部分文字列として一致しない。末尾のrunToken単体なら必ずそのまま出現する)
+  return { ok: true, searchToken: runToken };
 }
 
-// CMSの受講者検索(s_name)で、登録したテスト受講者の student_id を探す
-async function findStudentId(cms) {
-  const res = await cms.goto('/cms_student');
+// 受講者のstudent_idを探す。
+// 2026-10-12発見: /cms_student の検索は student.school_id = (ログイン中管理者のschool_id) で絞り込むが、
+// STG2_CMS_USER(config上のadmin_email。Model_auth.phpの特権ログイン分岐)はschool_id=0固定になる一方、
+// alfproduct側の新規登録(member/regist.php)はSCHOOL_ID定数(='1')で受講者を作成するため、
+// このアカウントでは/cms_studentの検索が常に0件になる(受講者自体は正しく作成されている)。
+// amount_user/index.php(alfproduct側。school_idでの絞り込みが無い)の検索を使うことで回避する。
+// この画面の検索ボタンは文言の無い画像ボタン(btn_search.png)で、submitGuardedのボタン検出では
+// 実際にフォーム送信まで至らない(navigated:falseのまま)ことが判明したため、フォームを直接requestSubmit()する
+async function findStudentId(cms, searchToken = MARKER) {
+  const res = await cms.goto('/alfproduct/amount_user/index.php');
   if (res.status === 'ERROR' || res.status === 'SSO' || res.status >= 400) return null;
-  const found = (await fieldForms(cms.page, ['s_name']))[0];
+  const found = (await fieldForms(cms.page, ['search_name']))[0];
   if (!found || !found.found) return null;
-  await setFields(cms.page, [{ name: 's_name', value: MARKER }]);
-  const result = await submitGuarded(cms, { allowFormSubmit: true }).catch(() => ({ refused: true }));
+  await setFields(cms.page, [{ name: 'search_name', value: searchToken }]);
+  const form = cms.page.locator('form[name="search_form"]').first();
+  const result = await cms.action(async () => { await form.evaluate((f) => f.requestSubmit()); }).catch(() => ({ refused: true }));
   const html = result && result.html ? result.html : await cms.page.content();
-  const m = html.match(/\/cms_student\/detail\/(\d+)/);
-  return m ? m[1] : null;
+  // 同じマーカー名の受講者が過去の実行分も含めて複数件ヒットすることがあるため、
+  // student_id(auto increment)が最大=最も新しく登録されたものを選ぶ
+  const ids = [...html.matchAll(/info\.php\?sid=(\d+)/g)].map((m) => Number(m[1]));
+  if (!ids.length) return null;
+  return String(Math.max(...ids));
 }
 
 // B-0015: 売上の注文詳細(amount_order/info.php)の「atena」欄。確認画面を経由せず、別フォーム(downloadForm)で
@@ -144,9 +169,9 @@ async function checkE1213(rec) {
       for (const id of idsAll) rec.add({ id, verdict: '対象外', note: `無料商品の詳細画面が開けない: HTTP ${detail.status}(pidを確認してください)` });
       return;
     }
-    const sid = await findStudentId(cms);
+    const sid = await findStudentId(cms, reg.searchToken);
     if (!sid) {
-      for (const id of idsAll) rec.add({ id, verdict: '要確認', note: '登録した受講者が /cms_student の検索結果に見つからない' });
+      for (const id of idsAll) rec.add({ id, verdict: '要確認', note: '登録した受講者が amount_user/index.php の検索結果に見つからない' });
       return;
     }
     console.log(`受講者ID(sid)=${sid} が見つかりました`);
@@ -202,8 +227,8 @@ async function checkE10(rec) {
   try {
     const reg = await registerMarkerStudent(student);
     if (reg.error) { rec.add({ id, verdict: '要確認', note: reg.error }); return; }
-    const sid = await findStudentId(cms);
-    if (!sid) { rec.add({ id, verdict: '要確認', note: '登録した受講者が /cms_student の検索結果に見つからない' }); return; }
+    const sid = await findStudentId(cms, reg.searchToken);
+    if (!sid) { rec.add({ id, verdict: '要確認', note: '登録した受講者が amount_user/index.php の検索結果に見つからない' }); return; }
 
     const list = await cms.goto('/cms_cource/');
     const href = await cms.page.evaluate(() => {
