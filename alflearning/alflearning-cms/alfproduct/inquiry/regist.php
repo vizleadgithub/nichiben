@@ -80,7 +80,8 @@ if(count($arr_err)==0){
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if(count($arr_err)==0){
-	$to      = $arr_data["inquiry_mail"];
+	// 宛先に改行が含まれていても、メールのヘッダーに別の項目を差し込めないよう、改行・NULを取り除く
+	$to      = str_replace(array("\r", "\n", "\0"), "", (string)$arr_data["inquiry_mail"]);
 	$subject = $return_title;
 	$body    = $return_comment;
 	$from    = mb_encode_mimeheader(mb_convert_encoding(FROMNAME,"JIS","UTF-8"))."<".FROMADDRESS.">";

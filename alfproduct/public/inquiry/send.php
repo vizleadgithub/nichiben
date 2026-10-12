@@ -64,6 +64,9 @@ if (cmCheckInput($input_name, "CK_KARA")!=0){
 //メールアドレス
 if (cmCheckInput($input_mail, "CK_KARA")!=0){
 	$arr_err["input_mail"] = "メールアドレス は必須です。";
+} else if (preg_match('/[\r\n\0]/', $input_mail)){
+	// 改行を含む値は、メールのヘッダーに別の項目を差し込めてしまう(ヘッダーインジェクション)ため受け付けない
+	$arr_err["input_mail"] = "メールアドレス の形式が正しくありません。";
 } else {
 }
 //------------------------------------------------------------
