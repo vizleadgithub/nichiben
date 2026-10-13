@@ -107,6 +107,25 @@ if ($aid != ''){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //var_dump($pid);
 //exit();
+// pid がない(一覧のCSV)場合に、検索条件が1つもないと、全商品を集計するため(約55秒かかる)、出力しない
+if( $pid=="" ){
+	$has_condition = false;
+	foreach( array($search_product_name, $search_product_code, $search_association, $search_start_date, $search_end_date, $search_teacher, $search_word) as $v ){
+		if( is_string($v) && $v !== "" && $v !== "0" ){
+			$has_condition = true;
+			break;
+		}
+	}
+	if( !$has_condition && is_array($search_category) && 0<count($search_category) ){
+		$has_condition = true;
+	}
+	if( !$has_condition ){
+		header("HTTP/1.1 400 Bad Request");
+		header("Content-Type: text/html; charset=UTF-8");
+		echo '<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>CSVダウンロード</title></head><body><p>検索条件（商品名・商品コード・弁護士会・期間・カテゴリ・講師・フリーワードのいずれか）を指定してから、CSVダウンロードを実行してください。条件がないと、データが多すぎて出力できません。</p><p><a href="index.php">レポートの画面へ戻る</a></p></body></html>';
+		exit();
+	}
+}
 $arr_list = array();
 if( $pid=="" ){
 	//----------------------------------------------------------

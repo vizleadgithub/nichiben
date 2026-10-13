@@ -212,8 +212,7 @@ $sql_c.= "FROM ";
 $sql_c.= "tbl_order ";
 $sql_c.= "LEFT JOIN tbl_order_detail ON tbl_order.order_id = tbl_order_detail.order_id ";
 $sql_c.= "LEFT JOIN student ON student.student_id = tbl_order_detail.member_id ";
-$sql_c.= "LEFT JOIN mtb_bar_association ON mtb_bar_association.id = student.bar_association_id ";
-$sql_c.= "LEFT JOIN tbl_product ON tbl_order_detail.product_id = tbl_product.product_id ";
+// 件数用SQLでは、弁護士会は使わない。商品は、商品コードで絞るときだけ結合する(下)
 
 $sql = "";
 $sql.= "SELECT ";
@@ -251,7 +250,7 @@ $where = "";
 $where.= "WHERE ";
 $where.= " student.school_id='".mysqli_real_escape_string($objDbConnect->connect, $arr_session["cms_master.login.school_id"])."' ";
 $where.= " and tbl_order_detail.product_id IS NOT NULL ";
-$where.= " and ".$order_payment_status_sql." >= '1' ";//支払いステータス
+// (支払いステータスの CASE 式は '1'・'2'・'3'・'9' のどれかになり、「>= '1'」は常に成立する。行ごとにサブクエリを3つ実行して遅くなるため、条件から外した)
 //-----------------------------------
 if( $arr_session["cms_master.login.bar_association_id"]=="1" ){
 } else {
@@ -364,6 +363,9 @@ if( $search_orderby=="1" ){
 	$order = " ORDER BY tbl_order.order_id DESC ";
 }
 //-----------------------------------
+if( !($search_product_code == "0" || $search_product_code == "") ){
+	$sql_c.= "LEFT JOIN tbl_product ON tbl_order_detail.product_id = tbl_product.product_id ";
+}
 if( $disp_flg ){
 	$ret = $objDbConnect->query_fetch_arr($sql_c.$where.$group);
 	//var_dump($ret);

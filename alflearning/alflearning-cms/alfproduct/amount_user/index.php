@@ -186,8 +186,9 @@ if( $search_orderby=="1" ){
 	$order = " ORDER BY student.lawyer_number ASC ";
 }
 //-----------------------------------
-$ret = $objDbConnect->query_fetch_arr($sql.$where.$group);
-$objAdminPager->setListMax(count($ret));
+$sql_c = "SELECT COUNT(*) AS c FROM student LEFT JOIN mtb_bar_association ON mtb_bar_association.id = student.bar_association_id ";
+$ret = $objDbConnect->query_fetch_arr($sql_c.$where.$group);
+$objAdminPager->setListMax($ret[0]["c"]);
 $objAdminPager->setPagerUrl("?page=");
 $pager = $objAdminPager->getPager();
 $offset = $objAdminPager->getOffset();
