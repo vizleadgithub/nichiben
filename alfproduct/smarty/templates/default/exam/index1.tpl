@@ -170,7 +170,7 @@ function examFormSubmit(flg){
 			<!--{if $eflg=='1'}-->
 				<div style="text-align:center;width:420px;margin-left:246px;">
 					<!--<a class="btn" href="javascript:void(0)" onclick="javascript:location.href='/exam/confirm1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->';" style="margin-left:0px;float:left;background: #666666;">戻る</a>-->
-					<input class="btn2" type="button" onclick="javascript:location.href='/exam/confirm1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}-->';" value="戻る" style="display: block;text-align: center;vertical-align: middle;background: #666666;font-size: 16px;line-height: 40px;height: 40px;color: #ffffff;text-decoration: none;border-radius: 8px;width: 200px;float: left;border: none;">
+					<input class="btn2" type="button" onclick="javascript:location.href='/exam/confirm1.php?pid=<!--{$pid}-->&ccno=<!--{$ccno}-->&eid=<!--{$eid}--><!--{if $qid!=''}-->&qid=<!--{$qid}--><!--{/if}-->';" value="戻る" style="display: block;text-align: center;vertical-align: middle;background: #666666;font-size: 16px;line-height: 40px;height: 40px;color: #ffffff;text-decoration: none;border-radius: 8px;width: 200px;float: left;border: none;">
 					<a class="btn" href="javascript:void(0)" onclick="examFormSubmit('exec');" style="margin-left:0px;float:right;"><!--{if $btn_type=='2'}-->回答する<!--{else}-->解答を修正する<!--{/if}--></a>
 				</div>
 			<!--{else}-->
