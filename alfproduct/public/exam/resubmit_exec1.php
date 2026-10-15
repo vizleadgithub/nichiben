@@ -776,20 +776,15 @@ if(!$err_flg){
 }
 
 // エラーがあった場合は解答結果画面に戻す
-$redirect_result = "/exam/result1.php?pid=".$pid."&ccno=".$ccno."&eid=".$eid;
-if($qid!=''){
-	$redirect_result .= "&qid=".urlencode($qid);
-}
-$redirect_result .= "&_=".date("YmdHis");
 if($err_flg){
 	$objDbConnect->close();
-	header("Location: ".$redirect_result);
+	header("Location: /exam/result1.php?pid=".$pid."&ccno=".$ccno."&eid=".$eid."&_=".date("YmdHis"));
 	exit();
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if($eflg=='1'){
 	$objDbConnect->close();
-	header("Location: ".$redirect_result);
+	header("Location: /exam/result1.php?pid=".$pid."&ccno=".$ccno."&eid=".$eid."&_=".date("YmdHis"));
 	exit();
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

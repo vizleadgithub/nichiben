@@ -441,12 +441,7 @@ if($ret){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 if($eflg=='1'){
 	$objDbConnect->close();
-	$redirect = "/exam/confirm1.php?pid=".$pid."&ccno=".$ccno."&eid=".$eid;
-	if($qid!=''){
-		$redirect .= "&qid=".urlencode($qid);
-	}
-	$redirect .= "&_=".date("YmdHis");
-	header("Location: ".$redirect);
+	header("Location: /exam/confirm1.php?pid=".$pid."&ccno=".$ccno."&eid=".$eid."&_=".date("YmdHis"));
 	exit();
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
