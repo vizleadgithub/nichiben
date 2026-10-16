@@ -280,7 +280,7 @@ class Bat_update_student_from_csv extends CI_Controller {
 							'student_name_kana'  => $_convert['student_name_kana'],     // 氏名かな
 							'status'             => 0,                                  // 状態（有効化にする）
 							'update_at'          => $_convert['update_at'],             // 更新日時
-						),"lawyer_number='".$_convert['lawyer_number']."' AND lawyer_division='".$_convert['lawyer_division']."'"
+						),"lawyer_number=".$this->db->escape($_convert['lawyer_number'])." AND lawyer_division=".$this->db->escape($_convert['lawyer_division'])
 					));
 
 					// 更新した行数、0の場合対象なし
