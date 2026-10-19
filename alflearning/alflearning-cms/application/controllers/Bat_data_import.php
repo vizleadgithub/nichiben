@@ -4,6 +4,8 @@
 class Bat_data_import extends CI_Controller {
 	function __construct(){
 		parent::__construct();
+		// URL(Web)からの実行を禁止する。コマンドライン(CLI)からの起動のみ許可する
+		if (!is_cli()) { show_404(); exit; }
 
 		// 最大実行時間を無制限に設定
 		if (function_exists("set_time_limit") == TRUE AND @ini_get("safe_mode") == 0) {

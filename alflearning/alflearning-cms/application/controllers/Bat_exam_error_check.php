@@ -14,6 +14,8 @@ class Bat_exam_error_check extends CI_Controller {
 
 	function __construct(){
 		parent::__construct();
+		// URL(Web)からの実行を禁止する。コマンドライン(CLI)からの起動のみ許可する
+		if (!is_cli()) { show_404(); exit; }
 		$this->load->library('email');
 		$this->load->helper('unit');
 

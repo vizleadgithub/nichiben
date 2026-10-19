@@ -63,6 +63,8 @@ class Bat_update_student_from_csv extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		// URL(Web)からの実行を禁止する。コマンドライン(CLI)からの起動のみ許可する
+		if (!is_cli()) { show_404(); exit; }
 
 		//DB接続
 		$this->load->database();
@@ -280,7 +282,7 @@ class Bat_update_student_from_csv extends CI_Controller {
 							'student_name_kana'  => $_convert['student_name_kana'],     // 氏名かな
 							'status'             => 0,                                  // 状態（有効化にする）
 							'update_at'          => $_convert['update_at'],             // 更新日時
-						),"lawyer_number=".$this->db->escape($_convert['lawyer_number'])." AND lawyer_division=".$this->db->escape($_convert['lawyer_division'])
+						),"lawyer_number='".$_convert['lawyer_number']."' AND lawyer_division='".$_convert['lawyer_division']."'"
 					));
 
 					// 更新した行数、0の場合対象なし
