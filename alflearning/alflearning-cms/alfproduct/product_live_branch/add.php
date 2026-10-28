@@ -246,10 +246,11 @@ if(!isset($_POST['act'])){
 	}
 	
 	$template->assign('arr_input', $arr_input);
-	
+
 	$template->assign('productcategory_list', get_product_category());
+	$template->assign('csrf_token', csrf_token_get());
 	$template->admin_layout('product_live_branch/add.tpl');
-	
+
 // 初期表示以外
 } else {
 	//++++++++++入力値取得++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -458,21 +459,24 @@ if(!isset($_POST['act'])){
 		// 確認
 		case 'confirm':
 			$err_msg = err_check($template, $arr_input);
-			
+
 			// 入力エラーなし
 			if(empty($err_msg)){
+				$template->assign('csrf_token', csrf_token_get());
 				$template->admin_layout('product_live_branch/add_confirm.tpl');
-				
+
 			// 入力エラーあり
 			} else {
 				$template->assign('err_style', 'style="background-color:red;"');
 				$template->assign('productcategory_list', get_product_category());
+				$template->assign('csrf_token', csrf_token_get());
 				$template->admin_layout('product_live_branch/add.tpl');
 			}
 			break;
-			
+
 		// 完了
 		case 'complete':
+			csrf_token_verify();
 			$err_flag = 0;
 			$err_msg = err_check($template, $arr_input);
 			// 改竄なし
@@ -995,19 +999,22 @@ if (false){
 		// 修正初期表示
 		case 'edit':
 			$template->assign('productcategory_list', get_product_category());
+			$template->assign('csrf_token', csrf_token_get());
 			$template->admin_layout('product_live_branch/add.tpl');
 			break;
-			
+
 		// 戻る
 		case 'back':
 			$template->assign('productcategory_list', get_product_category());
+			$template->assign('csrf_token', csrf_token_get());
 			$template->admin_layout('product_live_branch/add.tpl');
 			break;
-			
+
 		// サムネイル画像アップロード
 		case 'upload':
 			$template->assign('productcategory_list', get_product_category());
 			$err_msg = err_check($template, $arr_input);
+			$template->assign('csrf_token', csrf_token_get());
 			$template->admin_layout('product_live_branch/add.tpl');
 			break;
 			
